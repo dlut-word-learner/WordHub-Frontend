@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent} from 'vue';
 import { ElButton } from 'element-plus';
 
 export default defineComponent({

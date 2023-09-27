@@ -1,5 +1,5 @@
 //引入路由对象
-import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
  
 //vue2 mode history vue3 createWebHistory
 //vue2 mode  hash  vue3  createWebHashHistory
