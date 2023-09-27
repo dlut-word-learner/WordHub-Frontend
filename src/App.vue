@@ -3,7 +3,7 @@
 <template>
   <router-link :to="{ name: 'HelloWorld' }">Login</router-link>
   <router-link style="margin-left: 10px" :to="{ name: 'UI' }">UI</router-link>
-  <RouterView></RouterView>
+  <router-view></router-view>
 </template>
 
 <style scoped>
