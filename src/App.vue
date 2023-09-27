@@ -1,17 +1,9 @@
-<script setup lang="ts">
-
-
-
-
-
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-
-<router-link :to="{name:'HelloWorld'}">Login</router-link>
-      <router-link style="margin-left:10px" :to="{name:'UI'}">UI</router-link>
-     <RouterView></RouterView>
+  <router-link :to="{ name: 'HelloWorld' }">Login</router-link>
+  <router-link style="margin-left: 10px" :to="{ name: 'UI' }">UI</router-link>
+  <RouterView></RouterView>
 </template>
 
 <style scoped>

@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent} from 'vue';
-import { ElButton } from 'element-plus';
+import { defineComponent } from "vue";
+import { ElButton } from "element-plus";
 
 export default defineComponent({
   components: {
@@ -23,10 +23,10 @@ export default defineComponent({
   },
   data() {
     return {
-      words: ['apple', 'banana', 'cherry', 'date'],
+      words: ["apple", "banana", "cherry", "date"],
       currentWordIndex: 0,
-      currentWord: '',
-      userInput: '',
+      currentWord: "",
+      userInput: "",
       isCorrect: false,
     };
   },
@@ -36,7 +36,7 @@ export default defineComponent({
   methods: {
     loadWord() {
       this.currentWord = this.words[this.currentWordIndex];
-      this.userInput = '';
+      this.userInput = "";
       this.isCorrect = false;
     },
     checkSpelling() {
@@ -47,7 +47,7 @@ export default defineComponent({
       if (this.currentWordIndex < this.words.length) {
         this.loadWord();
       } else {
-        alert('恭喜，你已完成所有单词！');
+        alert("恭喜，你已完成所有单词！");
       }
     },
   },
