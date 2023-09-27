@@ -25,27 +25,20 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 
-// import { defineComponent} from 'vue';
 
-// export default defineComponent({
-//   data() {
-//     return {
-//       username: '',
-//       password: '',
-//     };
-//   },
-//   methods: {
-//     login() {
-//       // 在这里处理登录逻辑，例如验证用户信息
-//       if (this.username === 'user' && this.password === 'password') {
-//         alert('登录成功');
-//       } else {
-//         alert('登录失败');
-//       }
-//     },
-//   },
-// });
+const username=ref('')
+const password=ref('')
+
+function login() {
+  // 在这里处理登录逻辑，例如验证用户信息
+  if (username.value === 'user' && password.value === 'password') {
+    alert('登录成功');
+  } else {
+    alert('登录失败');
+  }
+}
 
 </script>
 <style scoped>
