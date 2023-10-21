@@ -10,6 +10,8 @@
       <p v-else>拼写错误，请继续尝试。</p>
     </div>
     <el-button @click="nextWord" type="primary">下一个单词</el-button>
+    <input type="checkbox" id="autoNextCheckBox" v-model="autoNext" />
+    <label>拼写正确自动切换</label>
   </div>
 </template>
 
@@ -28,6 +30,7 @@ export default defineComponent({
       currentWord: "",
       userInput: "",
       isCorrect: false,
+      autoNext: true, // Go to the next word automatically
     };
   },
   mounted() {
@@ -41,6 +44,7 @@ export default defineComponent({
     },
     checkSpelling() {
       this.isCorrect = this.userInput.toLowerCase() === this.currentWord;
+      if (this.isCorrect && this.autoNext) setTimeout(this.nextWord, 500);
     },
     nextWord() {
       this.currentWordIndex++;
@@ -77,5 +81,9 @@ input {
 
 .result {
   margin-top: 10px;
+}
+
+#autoNextCheckBox {
+  margin-left: 20px;
 }
 </style>
