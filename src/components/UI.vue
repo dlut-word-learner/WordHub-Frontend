@@ -2,14 +2,18 @@
   <div class="word-spelling-app">
     <h1>单词拼写</h1>
     <div class="word-container">
-      <div class="word">{{ currentWord }}</div>
+      <div class="word">
+        <label id="prevWord">{{ prevWord }}</label>
+        <label id="currWord">{{ currWord }}</label>
+        <label id="nextWord">{{ nextWord }}</label>
+      </div>
       <input v-model="userInput" @input="checkSpelling" />
     </div>
     <div class="result">
       <p v-if="isCorrect">拼写正确！</p>
       <p v-else>拼写错误，请继续尝试。</p>
     </div>
-    <el-button @click="nextWord" type="primary">下一个单词</el-button>
+    <el-button @click="goToNextWord" type="primary">下一个单词</el-button>
     <input type="checkbox" id="autoNextCheckBox" v-model="autoNext" />
     <label>拼写正确自动切换</label>
   </div>
@@ -26,8 +30,10 @@ export default defineComponent({
   data() {
     return {
       words: ["apple", "banana", "cherry", "date"],
-      currentWordIndex: 0,
-      currentWord: "",
+      currWordIndex: 0,
+      prevWord: "",
+      currWord: "",
+      nextWord: "",
       userInput: "",
       isCorrect: false,
       autoNext: true, // Go to the next word automatically
@@ -38,21 +44,23 @@ export default defineComponent({
   },
   methods: {
     loadWord() {
-      this.currentWord = this.words[this.currentWordIndex];
+      this.prevWord = this.words[this.currWordIndex - 1] || "";
+      this.currWord = this.words[this.currWordIndex];
+      this.nextWord = this.words[this.currWordIndex + 1] || "";
       this.userInput = "";
       this.isCorrect = false;
     },
     checkSpelling() {
-      this.isCorrect = this.userInput.toLowerCase() === this.currentWord;
-      if (this.isCorrect && this.autoNext) setTimeout(this.nextWord, 500);
+      this.isCorrect = this.userInput.toLowerCase() === this.currWord;
+      if (this.isCorrect && this.autoNext) setTimeout(this.goToNextWord, 500);
     },
-    nextWord() {
+    goToNextWord() {
       if (!this.isCorrect)
         if (!confirm("当前单词尚未拼写正确，确定要切换到下一个单词吗？"))
           return;
 
-      this.currentWordIndex++;
-      if (this.currentWordIndex < this.words.length) this.loadWord();
+      this.currWordIndex++;
+      if (this.currWordIndex < this.words.length) this.loadWord();
       else alert("恭喜，你已完成所有单词！");
     },
   },
@@ -86,5 +94,21 @@ input {
 
 #autoNextCheckBox {
   margin-left: 20px;
+}
+
+#prevWord {
+  text-align: left;
+  margin: 2.5em;
+}
+
+#currWord {
+  text-align: center;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+#nextWord {
+  text-align: right;
+  margin: 2.5em;
 }
 </style>
