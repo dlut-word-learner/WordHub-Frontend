@@ -9,10 +9,7 @@
       </div>
       <input v-model="userInput" @input="checkSpelling" />
     </div>
-    <div class="result">
-      <p v-if="isCorrect">拼写正确！</p>
-      <p v-else>拼写错误，请继续尝试。</p>
-    </div>
+    <div class="result">{{ wordPrompt }}</div>
     <el-button @click="goToNextWord" type="primary">下一个单词</el-button>
     <input type="checkbox" class="option" v-model="autoNext" />
     <label>拼写正确自动切换</label>
@@ -26,6 +23,7 @@ import { defineComponent } from "vue";
 import { ElButton } from "element-plus";
 
 const correctSound = new Audio("src/assets/audio/correct.wav");
+const wrongSound = new Audio("src/assets/audio/wrong.wav");
 
 export default defineComponent({
   components: {
@@ -39,6 +37,7 @@ export default defineComponent({
       currWord: "",
       nextWord: "",
       userInput: "",
+      wordPrompt: "",
       isCorrect: false,
       autoNext: true, // Go to the next word automatically
       sound: true, // Sound effects
@@ -53,13 +52,21 @@ export default defineComponent({
       this.currWord = this.words[this.currWordIndex];
       this.nextWord = this.words[this.currWordIndex + 1] || "";
       this.userInput = "";
+      this.wordPrompt = "";
       this.isCorrect = false;
     },
     checkSpelling() {
+      if (this.userInput.length != this.currWord.length) return;
+
       this.isCorrect = this.userInput.toLowerCase() === this.currWord;
-      if (this.isCorrect && this.autoNext) {
-        setTimeout(this.goToNextWord, 500);
+      if (this.isCorrect) {
+        this.wordPrompt = "拼写正确！";
         if (this.sound) correctSound.play();
+        if (this.autoNext) setTimeout(this.goToNextWord, 500);
+      } else {
+        this.wordPrompt = "拼写错误，请继续尝试。";
+        if (this.sound) wrongSound.play();
+        this.userInput = "";
       }
     },
     goToNextWord() {
