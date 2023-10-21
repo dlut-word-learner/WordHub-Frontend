@@ -14,14 +14,18 @@
       <p v-else>拼写错误，请继续尝试。</p>
     </div>
     <el-button @click="goToNextWord" type="primary">下一个单词</el-button>
-    <input type="checkbox" id="autoNextCheckBox" v-model="autoNext" />
+    <input type="checkbox" class="option" v-model="autoNext" />
     <label>拼写正确自动切换</label>
+    <input type="checkbox" class="option" v-model="sound" />
+    <label>音效</label>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ElButton } from "element-plus";
+
+const correctSound = new Audio("src/assets/audio/correct.wav");
 
 export default defineComponent({
   components: {
@@ -37,6 +41,7 @@ export default defineComponent({
       userInput: "",
       isCorrect: false,
       autoNext: true, // Go to the next word automatically
+      sound: true, // Sound effects
     };
   },
   mounted() {
@@ -52,7 +57,10 @@ export default defineComponent({
     },
     checkSpelling() {
       this.isCorrect = this.userInput.toLowerCase() === this.currWord;
-      if (this.isCorrect && this.autoNext) setTimeout(this.goToNextWord, 500);
+      if (this.isCorrect && this.autoNext) {
+        setTimeout(this.goToNextWord, 500);
+        if (this.sound) correctSound.play();
+      }
     },
     goToNextWord() {
       if (!this.isCorrect)
@@ -92,7 +100,7 @@ input {
   margin-top: 10px;
 }
 
-#autoNextCheckBox {
+.option {
   margin-left: 20px;
 }
 
