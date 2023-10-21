@@ -47,12 +47,13 @@ export default defineComponent({
       if (this.isCorrect && this.autoNext) setTimeout(this.nextWord, 500);
     },
     nextWord() {
+      if (!this.isCorrect)
+        if (!confirm("当前单词尚未拼写正确，确定要切换到下一个单词吗？"))
+          return;
+
       this.currentWordIndex++;
-      if (this.currentWordIndex < this.words.length) {
-        this.loadWord();
-      } else {
-        alert("恭喜，你已完成所有单词！");
-      }
+      if (this.currentWordIndex < this.words.length) this.loadWord();
+      else alert("恭喜，你已完成所有单词！");
     },
   },
 });
