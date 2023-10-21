@@ -2,7 +2,7 @@
 
 <template>
   <div id="nav">
-    <router-link :to="{ name: 'HelloWorld' }">Login</router-link>
+    <router-link :to="{ name: 'Login' }">Login</router-link>
     <router-link style="margin-left: 10px" :to="{ name: 'UI' }">UI</router-link>
   </div>
   <router-view></router-view>
