@@ -38,6 +38,15 @@
         }}
       </h2>
       <h2>进度：{{ currWordIndex + 1 }} / {{ words.length }}</h2>
+      <h2>
+        速度：{{
+          (
+            currWordIndex /
+            (stopWatch.hours * 60 + stopWatch.minutes + stopWatch.seconds / 60)
+          ).toFixed(0)
+        }}
+        WPM
+      </h2>
     </div>
   </div>
 </template>
