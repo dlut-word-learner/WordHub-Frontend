@@ -32,6 +32,13 @@
       <label>拼写正确自动切换</label>
       <input type="checkbox" class="option" v-model="sound" />
       <label>音效</label>
+      <input
+        type="checkbox"
+        class="option"
+        v-model="isWordHidden"
+        @change="hideShowWord"
+      />
+      <label>隐藏单词</label>
     </div>
     <div class="status-container">
       <table>
@@ -116,6 +123,7 @@ export default defineComponent({
       shake: false,
       autoNext: true, // Go to the next word automatically
       sound: true, // Sound effects
+      isWordHidden: false,
       stopWatch: useStopwatch(0, false),
     };
   },
@@ -172,6 +180,17 @@ export default defineComponent({
 
       if (++this.currWordIndex < this.words.length) this.loadWord();
       else this.finish();
+    },
+    hideShowWord() {
+      const words = [
+        document?.getElementById("prevWord") as HTMLLabelElement,
+        document?.getElementById("currWord") as HTMLLabelElement,
+        document?.getElementById("nextWord") as HTMLLabelElement,
+      ];
+
+      if (this.isWordHidden)
+        words.forEach((word) => (word.style.display = "none"));
+      else words.forEach((word) => (word.style.display = ""));
     },
     finish() {
       this.currWordIndex = this.words.length - 1;
