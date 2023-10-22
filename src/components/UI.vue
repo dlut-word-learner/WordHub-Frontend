@@ -2,7 +2,7 @@
   <div class="word-spelling-app">
     <h1>单词拼写</h1>
     <div class="word-container">
-      <div class="word">
+      <div class="words">
         <label id="prevWord">{{ prevWord }}</label>
         <div :class="{ shake: shake }">
           <label id="currWord">{{ currWord }}</label>
@@ -17,10 +17,12 @@
     </div>
     <div class="result">{{ wordPrompt }}</div>
     <el-button @click="goToNextWord" type="primary">下一个单词</el-button>
-    <input type="checkbox" class="option" v-model="autoNext" />
-    <label>拼写正确自动切换</label>
-    <input type="checkbox" class="option" v-model="sound" />
-    <label>音效</label>
+    <div class="option-container">
+      <input type="checkbox" class="option" v-model="autoNext" />
+      <label>拼写正确自动切换</label>
+      <input type="checkbox" class="option" v-model="sound" />
+      <label>音效</label>
+    </div>
   </div>
 </template>
 
@@ -105,7 +107,7 @@ export default defineComponent({
   margin: 20px;
 }
 
-.word {
+.words {
   font-size: 24px;
   margin-bottom: 10px;
 }
@@ -117,8 +119,12 @@ input {
 
 .result {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
+.option-container {
+  margin-top: 10px;
+}
 .option {
   margin-left: 20px;
 }
