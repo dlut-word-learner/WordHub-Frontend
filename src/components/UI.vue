@@ -55,10 +55,11 @@
 import { defineComponent } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
+import { Howl } from "howler";
 
-const correctSound = new Audio("src/assets/audio/correct.wav");
-const wrongSound = new Audio("src/assets/audio/wrong.wav");
-const typingSound = new Audio("src/assets/audio/typing.wav");
+const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
+const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
+const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 
 export default defineComponent({
   components: {
