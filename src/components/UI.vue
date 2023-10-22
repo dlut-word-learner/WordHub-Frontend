@@ -3,11 +3,17 @@
     <h1>单词拼写</h1>
     <div class="word-container">
       <div class="words">
-        <label id="prevWord">{{ prevWord }}</label>
+        <label id="prevWord">{{ prevWord.word }}</label>
+        <br />
+        <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
         <div :class="{ shake: shake }">
-          <label id="currWord">{{ currWord }}</label>
+          <label id="currWord">{{ currWord.word }}</label>
+          <br />
+          <label id="currWordPhone">{{ currWord.phonetic }}</label>
         </div>
-        <label id="nextWord">{{ nextWord }}</label>
+        <label id="nextWord">{{ nextWord.word }}</label>
+        <br />
+        <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
       </div>
       <input
         id="userInputBox"
@@ -94,11 +100,16 @@ export default defineComponent({
   },
   data() {
     return {
-      words: ["apple", "banana", "cherry", "date"],
+      words: [
+        { word: "apple", phonetic: "[ˈæp(ə)l]" },
+        { word: "banana", phonetic: "[bəˈnɑːnə]" },
+        { word: "cherry", phonetic: "[ˈtʃɛri]" },
+        { word: "date", phonetic: "[deɪt]" },
+      ],
       currWordIndex: 0,
-      prevWord: "",
-      currWord: "",
-      nextWord: "",
+      prevWord: { word: "", phonetic: "" },
+      currWord: { word: "", phonetic: "" },
+      nextWord: { word: "", phonetic: "" },
       userInput: "",
       wordPrompt: "",
       isCorrect: false,
@@ -123,9 +134,11 @@ export default defineComponent({
       userInputBox?.removeEventListener("keydown", this.init);
     },
     loadWord() {
-      this.prevWord = this.words[this.currWordIndex - 1] || "";
+      const emptyWord = { word: "", phonetic: "" };
+      this.prevWord = this.words[this.currWordIndex - 1] || emptyWord;
       this.currWord = this.words[this.currWordIndex];
-      this.nextWord = this.words[this.currWordIndex + 1] || "";
+      this.nextWord = this.words[this.currWordIndex + 1] || emptyWord;
+
       this.userInput = "";
       this.wordPrompt = "";
       this.isCorrect = false;
@@ -138,9 +151,9 @@ export default defineComponent({
       if (this.sound) typingSound.play();
     },
     checkSpelling() {
-      if (this.userInput.length != this.currWord.length) return;
+      if (this.userInput.length != this.currWord.word.length) return;
 
-      this.isCorrect = this.userInput.toLowerCase() === this.currWord;
+      this.isCorrect = this.userInput.toLowerCase() === this.currWord.word;
       if (this.isCorrect) {
         this.wordPrompt = "拼写正确！";
         if (this.sound) correctSound.play();
@@ -223,7 +236,6 @@ table {
 th,
 td {
   padding: 0.5em;
-  text-align: center;
   width: 33.33%;
 }
 
@@ -231,20 +243,24 @@ th {
   border-bottom: 1px solid #ddd;
 }
 
-#prevWord {
-  text-align: center;
+#prevWord,
+#nextWord {
   margin: 2.5em;
 }
 
 #currWord {
-  text-align: center;
   font-size: 3em;
   font-weight: bold;
 }
 
-#nextWord {
-  text-align: right;
-  margin: 2.5em;
+#prevWordPhone,
+#nextWordPhone {
+  font-size: 0.6em;
+}
+
+#currWordPhone {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .shake {
