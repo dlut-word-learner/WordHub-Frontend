@@ -28,25 +28,52 @@
       <label>音效</label>
     </div>
     <div class="status-container">
-      <h2>
-        用时：{{
-          stopWatch.hours < 10 ? "0" + stopWatch.hours : stopWatch.hours
-        }}:{{
-          stopWatch.minutes < 10 ? "0" + stopWatch.minutes : stopWatch.minutes
-        }}:{{
-          stopWatch.seconds < 10 ? "0" + stopWatch.seconds : stopWatch.seconds
-        }}
-      </h2>
-      <h2>进度：{{ currWordIndex + 1 }} / {{ words.length }}</h2>
-      <h2>
-        速度：{{
-          (
-            currWordIndex /
-            (stopWatch.hours * 60 + stopWatch.minutes + stopWatch.seconds / 60)
-          ).toFixed(0)
-        }}
-        WPM
-      </h2>
+      <table>
+        <thead>
+          <tr>
+            <th>用时</th>
+            <th>进度</th>
+            <th>速度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <h2>
+                {{
+                  stopWatch.hours < 10
+                    ? "0" + stopWatch.hours
+                    : stopWatch.hours
+                }}:{{
+                  stopWatch.minutes < 10
+                    ? "0" + stopWatch.minutes
+                    : stopWatch.minutes
+                }}:{{
+                  stopWatch.seconds < 10
+                    ? "0" + stopWatch.seconds
+                    : stopWatch.seconds
+                }}
+              </h2>
+            </td>
+            <td>
+              <h2>{{ currWordIndex + 1 }} / {{ words.length }}</h2>
+            </td>
+            <td>
+              <h2>
+                {{
+                  (
+                    currWordIndex /
+                    (stopWatch.hours * 60 +
+                      stopWatch.minutes +
+                      stopWatch.seconds / 60)
+                  ).toFixed(0)
+                }}
+                WPM
+              </h2>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -84,6 +111,7 @@ export default defineComponent({
   mounted() {
     this.loadWord();
     this.wordPrompt = "键入以开始";
+
     const userInputBox = document.getElementById("userInputBox");
     userInputBox?.addEventListener("keydown", this.init);
   },
@@ -184,8 +212,27 @@ input {
   margin-left: 20px;
 }
 
+.status-container {
+  margin-top: 10px;
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  padding: 0.5em;
+  text-align: center;
+  width: 33.33%;
+}
+
+th {
+  border-bottom: 1px solid #ddd;
+}
+
 #prevWord {
-  text-align: left;
+  text-align: center;
   margin: 2.5em;
 }
 
