@@ -18,7 +18,9 @@
       />
     </div>
     <div class="result">{{ wordPrompt }}</div>
-    <el-button @click="goToNextWord" type="primary">下一个单词</el-button>
+    <el-button id="nextWordButton" @click="goToNextWord" type="primary"
+      >下一个单词</el-button
+    >
     <div class="option-container">
       <input type="checkbox" class="option" v-model="autoNext" />
       <label>拼写正确自动切换</label>
@@ -35,6 +37,7 @@
           stopWatch.seconds < 10 ? "0" + stopWatch.seconds : stopWatch.seconds
         }}
       </h2>
+      <h2>进度：{{ currWordIndex + 1 }} / {{ words.length }}</h2>
     </div>
   </div>
 </template>
@@ -116,9 +119,23 @@ export default defineComponent({
         if (!confirm("当前单词尚未拼写正确，确定要切换到下一个单词吗？"))
           return;
 
-      this.currWordIndex++;
-      if (this.currWordIndex < this.words.length) this.loadWord();
-      else alert("恭喜，你已完成所有单词！");
+      if (++this.currWordIndex < this.words.length) this.loadWord();
+      else this.finish();
+    },
+    finish() {
+      this.currWordIndex = this.words.length - 1;
+      this.stopWatch.pause();
+      const userInputBox = document?.getElementById(
+        "userInputBox",
+      ) as HTMLInputElement;
+      userInputBox.disabled = true;
+
+      const nextWordButton = document?.getElementById(
+        "nextWordButton",
+      ) as HTMLButtonElement;
+      nextWordButton.disabled = true;
+
+      alert("恭喜，你已完成所有单词！");
     },
   },
 });
