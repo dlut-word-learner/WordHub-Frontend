@@ -12,6 +12,7 @@
       <input
         v-model="userInput"
         @input="checkSpelling"
+        @keypress="playTypingSound"
         :class="{ shake: shake }"
       />
     </div>
@@ -32,6 +33,7 @@ import { ElButton } from "element-plus";
 
 const correctSound = new Audio("src/assets/audio/correct.wav");
 const wrongSound = new Audio("src/assets/audio/wrong.wav");
+const typingSound = new Audio("src/assets/audio/typing.wav");
 
 export default defineComponent({
   components: {
@@ -67,6 +69,9 @@ export default defineComponent({
     shakeWord() {
       this.shake = true;
       setTimeout(() => (this.shake = false), 400);
+    },
+    playTypingSound() {
+      if (this.sound) typingSound.play();
     },
     checkSpelling() {
       if (this.userInput.length != this.currWord.length) return;
