@@ -30,15 +30,22 @@
     <div class="option-container">
       <input type="checkbox" class="option" v-model="autoNext" />
       <label>拼写正确自动切换</label>
-      <input type="checkbox" class="option" v-model="sound" />
-      <label>音效</label>
       <input
         type="checkbox"
         class="option"
         v-model="isWordHidden"
         @change="hideShowWord"
       />
-      <label>隐藏单词</label>
+      <label>隐藏单词</label><br />
+      <input type="checkbox" class="option" v-model="sound" />
+      <label>音效</label>
+      <label id="volumeLabel">音量</label>
+      <input
+        id="volumeSlider"
+        type="range"
+        v-model="volume"
+        @change="setVolume"
+      />
     </div>
     <div class="status-container">
       <table>
@@ -100,6 +107,7 @@ import { Howl } from "howler";
 const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
 const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
+const sounds = [correctSound, wrongSound, typingSound];
 
 export default defineComponent({
   components: {
@@ -123,6 +131,7 @@ export default defineComponent({
       shake: false,
       autoNext: true, // Go to the next word automatically
       sound: true, // Sound effects
+      volume: 50,
       isWordHidden: false,
       stopWatch: useStopwatch(0, false),
     };
@@ -192,6 +201,9 @@ export default defineComponent({
         words.forEach((word) => (word.style.display = "none"));
       else words.forEach((word) => (word.style.display = ""));
     },
+    setVolume() {
+      sounds.forEach((sound) => sound.volume(this.volume / 100));
+    },
     finish() {
       this.currWordIndex = this.words.length - 1;
       this.stopWatch.pause();
@@ -242,6 +254,16 @@ input {
 }
 .option {
   margin-left: 20px;
+}
+
+#volumeLabel {
+  margin-left: 20px;
+}
+
+#volumeSlider {
+  width: 8em;
+  padding-top: 0px;
+  vertical-align: bottom;
 }
 
 .status-container {
