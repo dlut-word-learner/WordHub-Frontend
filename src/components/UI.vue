@@ -4,10 +4,16 @@
     <div class="word-container">
       <div class="word">
         <label id="prevWord">{{ prevWord }}</label>
-        <label id="currWord">{{ currWord }}</label>
+        <div :class="{ shake: shake }">
+          <label id="currWord">{{ currWord }}</label>
+        </div>
         <label id="nextWord">{{ nextWord }}</label>
       </div>
-      <input v-model="userInput" @input="checkSpelling" />
+      <input
+        v-model="userInput"
+        @input="checkSpelling"
+        :class="{ shake: shake }"
+      />
     </div>
     <div class="result">{{ wordPrompt }}</div>
     <el-button @click="goToNextWord" type="primary">下一个单词</el-button>
@@ -39,6 +45,7 @@ export default defineComponent({
       userInput: "",
       wordPrompt: "",
       isCorrect: false,
+      shake: false,
       autoNext: true, // Go to the next word automatically
       sound: true, // Sound effects
     };
@@ -55,6 +62,10 @@ export default defineComponent({
       this.wordPrompt = "";
       this.isCorrect = false;
     },
+    shakeWord() {
+      this.shake = true;
+      setTimeout(() => (this.shake = false), 400);
+    },
     checkSpelling() {
       if (this.userInput.length != this.currWord.length) return;
 
@@ -65,6 +76,7 @@ export default defineComponent({
         if (this.autoNext) setTimeout(this.goToNextWord, 500);
       } else {
         this.wordPrompt = "拼写错误，请继续尝试。";
+        this.shakeWord();
         if (this.sound) wrongSound.play();
         this.userInput = "";
       }
@@ -125,5 +137,33 @@ input {
 #nextWord {
   text-align: right;
   margin: 2.5em;
+}
+
+.shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 </style>
