@@ -10,6 +10,7 @@
         <label id="nextWord">{{ nextWord }}</label>
       </div>
       <input
+        id="userInputBox"
         v-model="userInput"
         @input="checkSpelling"
         @keypress="playTypingSound"
@@ -24,12 +25,24 @@
       <input type="checkbox" class="option" v-model="sound" />
       <label>音效</label>
     </div>
+    <div class="status-container">
+      <h2>
+        用时：{{
+          stopWatch.hours < 10 ? "0" + stopWatch.hours : stopWatch.hours
+        }}:{{
+          stopWatch.minutes < 10 ? "0" + stopWatch.minutes : stopWatch.minutes
+        }}:{{
+          stopWatch.seconds < 10 ? "0" + stopWatch.seconds : stopWatch.seconds
+        }}
+      </h2>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ElButton } from "element-plus";
+import { useStopwatch } from "vue-timer-hook";
 
 const correctSound = new Audio("src/assets/audio/correct.wav");
 const wrongSound = new Audio("src/assets/audio/wrong.wav");
@@ -52,12 +65,22 @@ export default defineComponent({
       shake: false,
       autoNext: true, // Go to the next word automatically
       sound: true, // Sound effects
+      stopWatch: useStopwatch(0, false),
     };
   },
   mounted() {
     this.loadWord();
+    this.wordPrompt = "键入以开始";
+    const userInputBox = document.getElementById("userInputBox");
+    userInputBox?.addEventListener("keydown", this.init);
   },
   methods: {
+    init() {
+      this.wordPrompt = "";
+      this.stopWatch.start();
+      const userInputBox = document.getElementById("userInputBox");
+      userInputBox?.removeEventListener("keydown", this.init);
+    },
     loadWord() {
       this.prevWord = this.words[this.currWordIndex - 1] || "";
       this.currWord = this.words[this.currWordIndex];

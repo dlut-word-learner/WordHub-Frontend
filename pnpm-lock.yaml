@@ -20,6 +20,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.5
     version: 4.2.5(vue@3.3.6)
+  vue-timer-hook:
+    specifier: ^1.0.84
+    version: 1.0.84(vue@3.3.6)
 
 devDependencies:
   '@vitejs/plugin-vue':
@@ -740,6 +743,14 @@ packages:
       de-indent: 1.0.2
       he: 1.2.0
     dev: true
+
+  /vue-timer-hook@1.0.84(vue@3.3.6):
+    resolution: {integrity: sha512-OcHWYO8WD/XcGHdEqMkBI1Vj8m+OnXONrcmZvLcL3Gc6Js5LEs3UJ0eg1akVjNB0cXHishEmrmrhK7PZ+iULww==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: 3.3.6(typescript@5.2.2)
+    dev: false
 
   /vue-tsc@1.8.19(typescript@5.2.2):
     resolution: {integrity: sha512-tacMQLQ0CXAfbhRycCL5sWIy1qujXaIEtP1hIQpzHWOUuICbtTj9gJyFf91PvzG5KCNIkA5Eg7k2Fmgt28l5DQ==}

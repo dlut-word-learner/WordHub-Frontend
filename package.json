@@ -14,7 +14,8 @@
     "node.js": "0.0.1-security",
     "prettier": "^3.0.3",
     "vue": "^3.3.6",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-timer-hook": "^1.0.84"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
