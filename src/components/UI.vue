@@ -108,10 +108,10 @@ export default defineComponent({
   data() {
     return {
       words: [
-        { word: "apple", phonetic: "[ˈæp(ə)l]" },
-        { word: "banana", phonetic: "[bəˈnɑːnə]" },
-        { word: "cherry", phonetic: "[ˈtʃɛri]" },
-        { word: "date", phonetic: "[deɪt]" },
+        { word: "apple", phonetic: "AmE: [ˈæp(ə)l]" },
+        { word: "banana", phonetic: "AmE: [bəˈnɑːnə]" },
+        { word: "cherry", phonetic: "AmE: [ˈtʃɛri]" },
+        { word: "date", phonetic: "AmE: [deɪt]" },
       ],
       currWordIndex: 0,
       prevWord: { word: "", phonetic: "" },
