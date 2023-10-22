@@ -76,7 +76,14 @@
               </h2>
             </td>
             <td>
-              <h2>{{ currWordIndex + 1 }} / {{ words.length }}</h2>
+              <h2>
+                {{
+                  currWordIndex < words.length
+                    ? currWordIndex + 1
+                    : currWordIndex
+                }}
+                / {{ words.length }}
+              </h2>
             </td>
             <td>
               <h2>
@@ -205,7 +212,6 @@ export default defineComponent({
       sounds.forEach((sound) => sound.volume(this.volume / 100));
     },
     finish() {
-      this.currWordIndex = this.words.length - 1;
       this.stopWatch.pause();
       const userInputBox = document?.getElementById(
         "userInputBox",
