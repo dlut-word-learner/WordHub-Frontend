@@ -89,7 +89,14 @@
               }}
               WPM
             </td>
-            <td>{{ ((currWordIndex / tries) * 100).toFixed(2) }} %</td>
+            <td>
+              {{
+                currWordIndex > tries
+                  ? "100.00"
+                  : ((currWordIndex / tries) * 100).toFixed(2)
+              }}
+              %
+            </td>
           </tr>
         </tbody>
       </table>
