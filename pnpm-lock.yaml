@@ -17,6 +17,9 @@ dependencies:
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.2.2)(vue@3.3.6)
+  pinia-plugin-persistedstate:
+    specifier: ^3.2.0
+    version: 3.2.0(pinia@2.1.7)
   prettier:
     specifier: ^3.0.3
     version: 3.0.3
@@ -651,6 +654,14 @@ packages:
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+
+  /pinia-plugin-persistedstate@3.2.0(pinia@2.1.7):
+    resolution: {integrity: sha512-tZbNGf2vjAQcIm7alK40sE51Qu/m9oWr+rEgNm/2AWr1huFxj72CjvpQcIQzMknDBJEkQznCLAGtJTIcLKrKdw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.1.7(typescript@5.2.2)(vue@3.3.6)
+    dev: false
 
   /pinia@2.1.7(typescript@5.2.2)(vue@3.3.6):
     resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}

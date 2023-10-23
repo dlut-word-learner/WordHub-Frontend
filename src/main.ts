@@ -5,12 +5,13 @@ import Options from "./components/Options.vue";
 import App from "./App.vue";
 import router from "./router";
 import { createPinia } from "pinia";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App);
-const pinia = createPinia();
+const pinia = createPinia().use(piniaPluginPersistedstate);
 
-app.component("Login", Login);
-app.component("Options", Options);
-app.use(router);
-app.use(pinia);
-app.mount("#app");
+app.component("Login", Login)
+    .component("Options", Options)
+    .use(router)
+    .use(pinia)
+    .mount("#app");
