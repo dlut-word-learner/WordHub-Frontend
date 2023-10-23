@@ -164,7 +164,7 @@ export default defineComponent({
       setTimeout(() => (this.shake = false), 400);
     },
     playTypingSound() {
-      if (this.store.sound) typingSound.play();
+      if (this.store.isSoundEnabled) typingSound.play();
     },
     checkSpelling() {
       if (this.userInput.length != this.currWord.word.length) return;
@@ -172,12 +172,12 @@ export default defineComponent({
       this.isCorrect = this.userInput.toLowerCase() === this.currWord.word;
       if (this.isCorrect) {
         this.wordPrompt = "拼写正确！";
-        if (this.store.sound) correctSound.play();
+        if (this.store.isSoundEnabled) correctSound.play();
         if (this.store.autoNext) setTimeout(this.goToNextWord, 500);
       } else {
         this.wordPrompt = "拼写错误，请继续尝试。";
         this.shakeWord();
-        if (this.store.sound) wrongSound.play();
+        if (this.store.isSoundEnabled) wrongSound.play();
         this.tries++;
         this.userInput = "";
       }

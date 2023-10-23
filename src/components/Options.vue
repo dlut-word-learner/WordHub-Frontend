@@ -8,12 +8,17 @@
     <label>隐藏单词</label>
   </div>
   <div class="option">
-    <input type="checkbox" v-model="store.sound" />
+    <input type="checkbox" v-model="store.isSoundEnabled" />
     <label>启用音效</label>
   </div>
   <div class="option">
     <label id="volumeLabel">音量</label>
-    <input id="volumeSlider" type="range" v-model="store.volume" />
+    <input
+      id="volumeSlider"
+      type="range"
+      v-model="store.volume"
+      :disabled="!store.isSoundEnabled"
+    />
   </div>
 </template>
 
@@ -37,7 +42,7 @@ export const optionsStore = defineStore("options", {
     return {
       autoNext: true,
       isWordHidden: false,
-      sound: true,
+      isSoundEnabled: true,
       volume: 50,
     };
   },
