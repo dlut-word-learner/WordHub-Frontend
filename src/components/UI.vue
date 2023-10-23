@@ -3,21 +3,21 @@
     <h1>单词拼写</h1>
     <div class="word-container">
       <div class="words">
-        <label id="prevWord" v-if="!store.isWordHidden">{{
-          prevWord.word
-        }}</label>
+        <label id="prevWord" v-if="!store.isWordHidden">
+          {{ prevWord.word }}
+        </label>
         <br />
         <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
         <div :class="{ shake: shake }">
-          <label id="currWord" v-if="!store.isWordHidden">{{
-            currWord.word
-          }}</label>
+          <label id="currWord" v-if="!store.isWordHidden">
+            {{ currWord.word }}
+          </label>
           <br />
           <label id="currWordPhone">{{ currWord.phonetic }}</label>
         </div>
-        <label id="nextWord" v-if="!store.isWordHidden">{{
-          nextWord.word
-        }}</label>
+        <label id="nextWord" v-if="!store.isWordHidden">
+          {{ nextWord.word }}
+        </label>
         <br />
         <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
       </div>
@@ -27,10 +27,16 @@
         @input="checkSpelling"
         @keypress="playTypingSound"
         :class="{ shake: shake }"
+        :disabled="isFinished"
       />
     </div>
     <div class="result">{{ wordPrompt }}</div>
-    <el-button id="nextWordButton" @click="goToNextWord" type="primary">
+    <el-button
+      id="nextWordButton"
+      type="primary"
+      @click="goToNextWord"
+      :disabled="!stopWatch.isRunning"
+    >
       下一个单词
     </el-button>
     <div class="status-container">
@@ -131,6 +137,7 @@ export default defineComponent({
       userInput: "",
       wordPrompt: "",
       isCorrect: false,
+      isFinished: false,
       shake: false,
       stopWatch: useStopwatch(0, false),
     };
@@ -193,17 +200,8 @@ export default defineComponent({
       } else this.finish();
     },
     finish() {
+      this.isFinished = true;
       this.stopWatch.pause();
-      const userInputBox = document?.getElementById(
-        "userInputBox",
-      ) as HTMLInputElement;
-      userInputBox.disabled = true;
-
-      const nextWordButton = document?.getElementById(
-        "nextWordButton",
-      ) as HTMLButtonElement;
-      nextWordButton.disabled = true;
-
       alert("恭喜，你已完成所有单词！");
     },
   },
