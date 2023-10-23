@@ -3,15 +3,21 @@
     <h1>单词拼写</h1>
     <div class="word-container">
       <div class="words">
-        <label id="prevWord" v-if="!isWordHidden">{{ prevWord.word }}</label>
+        <label id="prevWord" v-if="!store.isWordHidden">{{
+          prevWord.word
+        }}</label>
         <br />
         <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
         <div :class="{ shake: shake }">
-          <label id="currWord" v-if="!isWordHidden">{{ currWord.word }}</label>
+          <label id="currWord" v-if="!store.isWordHidden">{{
+            currWord.word
+          }}</label>
           <br />
           <label id="currWordPhone">{{ currWord.phonetic }}</label>
         </div>
-        <label id="nextWord" v-if="!isWordHidden">{{ nextWord.word }}</label>
+        <label id="nextWord" v-if="!store.isWordHidden">{{
+          nextWord.word
+        }}</label>
         <br />
         <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
       </div>
@@ -85,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watchEffect } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -101,13 +107,12 @@ export default defineComponent({
     ElButton,
   },
   setup() {
-    const { autoNext, isWordHidden, sound, volume } = optionsStore();
-
+    const store = optionsStore();
+    watchEffect(() => {
+      sounds.forEach((sound) => sound.volume(store.volume / 100));
+    });
     return {
-      autoNext,
-      isWordHidden,
-      sound,
-      volume,
+      store,
     };
   },
   data() {
@@ -159,7 +164,7 @@ export default defineComponent({
       setTimeout(() => (this.shake = false), 400);
     },
     playTypingSound() {
-      if (this.sound) typingSound.play();
+      if (this.store.sound) typingSound.play();
     },
     checkSpelling() {
       if (this.userInput.length != this.currWord.word.length) return;
@@ -167,12 +172,12 @@ export default defineComponent({
       this.isCorrect = this.userInput.toLowerCase() === this.currWord.word;
       if (this.isCorrect) {
         this.wordPrompt = "拼写正确！";
-        if (this.sound) correctSound.play();
-        if (this.autoNext) setTimeout(this.goToNextWord, 500);
+        if (this.store.sound) correctSound.play();
+        if (this.store.autoNext) setTimeout(this.goToNextWord, 500);
       } else {
         this.wordPrompt = "拼写错误，请继续尝试。";
         this.shakeWord();
-        if (this.sound) wrongSound.play();
+        if (this.store.sound) wrongSound.play();
         this.tries++;
         this.userInput = "";
       }
@@ -186,9 +191,6 @@ export default defineComponent({
         this.tries++;
         this.loadWord();
       } else this.finish();
-    },
-    setVolume() {
-      sounds.forEach((sound) => sound.volume(this.volume / 100));
     },
     finish() {
       this.stopWatch.pause();

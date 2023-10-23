@@ -20,14 +20,14 @@
 /* input: @change setVolume */
 
 <script lang="ts">
-import { defineComponent} from "vue";
+import { defineComponent } from "vue";
 import { defineStore } from "pinia";
 
 export default defineComponent({
   setup() {
     const store = optionsStore();
     return {
-      store
+      store,
     };
   },
 });
