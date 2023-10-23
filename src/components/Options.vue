@@ -22,32 +22,9 @@
   </div>
 </template>
 
-/* input: @change setVolume */
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { defineStore } from "pinia";
-
-export default defineComponent({
-  setup() {
-    const store = optionsStore();
-    return {
-      store,
-    };
-  },
-});
-
-export const optionsStore = defineStore("options", {
-  state: () => {
-    return {
-      autoNext: true,
-      isWordHidden: false,
-      isSoundEnabled: true,
-      volume: 50,
-    };
-  },
-  persist: true,
-});
+<script setup lang="ts">
+import { optionsStore } from "../scripts/optionsStore";
+const store = optionsStore();
 </script>
 
 <style scoped>
