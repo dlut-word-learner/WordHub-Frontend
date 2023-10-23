@@ -40,6 +40,11 @@
     >
       下一个单词
     </el-button>
+    <el-progress
+      id="progressBar"
+      :show-text="false"
+      :percentage="(currWordIndex / words.length) * 100"
+    />
     <div class="status-container">
       <table>
         <thead>
@@ -261,6 +266,9 @@ input {
   vertical-align: bottom;
 }
 
+#progressBar {
+  margin-top: 1em;
+}
 .status-container {
   margin-top: 10px;
 }
