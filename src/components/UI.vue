@@ -26,6 +26,7 @@
         v-model="userInput"
         @input="checkSpelling"
         @keypress="playTypingSound"
+        @keydown="if (!stopWatch.isRunning) init();"
         :class="{ shake: shake }"
         :disabled="isFinished"
       />
@@ -145,16 +146,11 @@ export default defineComponent({
   mounted() {
     this.loadWord();
     this.wordPrompt = "键入以开始";
-
-    const userInputBox = document.getElementById("userInputBox");
-    userInputBox?.addEventListener("keydown", this.init);
   },
   methods: {
     init() {
       this.wordPrompt = "";
       this.stopWatch.start();
-      const userInputBox = document.getElementById("userInputBox");
-      userInputBox?.removeEventListener("keydown", this.init);
     },
     loadWord() {
       const emptyWord = { word: "", phonetic: "" };
