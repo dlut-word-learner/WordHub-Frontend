@@ -54,50 +54,42 @@
             <th>用时</th>
             <th>进度</th>
             <th>速度</th>
+            <th>正确率</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <h2>
-                {{
-                  stopWatch.hours < 10
-                    ? "0" + stopWatch.hours
-                    : stopWatch.hours
-                }}:{{
-                  stopWatch.minutes < 10
-                    ? "0" + stopWatch.minutes
-                    : stopWatch.minutes
-                }}:{{
-                  stopWatch.seconds < 10
-                    ? "0" + stopWatch.seconds
-                    : stopWatch.seconds
-                }}
-              </h2>
+              {{
+                stopWatch.hours < 10 ? "0" + stopWatch.hours : stopWatch.hours
+              }}:{{
+                stopWatch.minutes < 10
+                  ? "0" + stopWatch.minutes
+                  : stopWatch.minutes
+              }}:{{
+                stopWatch.seconds < 10
+                  ? "0" + stopWatch.seconds
+                  : stopWatch.seconds
+              }}
             </td>
             <td>
-              <h2>
-                {{
-                  currWordIndex < words.length
-                    ? currWordIndex + 1
-                    : currWordIndex
-                }}
-                / {{ words.length }}
-              </h2>
+              {{
+                currWordIndex < words.length ? currWordIndex + 1 : currWordIndex
+              }}
+              / {{ words.length }}
             </td>
             <td>
-              <h2>
-                {{
-                  (
-                    currWordIndex /
-                    (stopWatch.hours * 60 +
-                      stopWatch.minutes +
-                      stopWatch.seconds / 60)
-                  ).toFixed(0)
-                }}
-                WPM
-              </h2>
+              {{
+                (
+                  currWordIndex /
+                  (stopWatch.hours * 60 +
+                    stopWatch.minutes +
+                    stopWatch.seconds / 60)
+                ).toFixed(0)
+              }}
+              WPM
             </td>
+            <td>{{ ((currWordIndex / tries) * 100).toFixed(2) }} %</td>
           </tr>
         </tbody>
       </table>
@@ -132,6 +124,7 @@ export default defineComponent({
       prevWord: { word: "", phonetic: "" },
       currWord: { word: "", phonetic: "" },
       nextWord: { word: "", phonetic: "" },
+      tries: 0,
       userInput: "",
       wordPrompt: "",
       isCorrect: false,
@@ -186,6 +179,7 @@ export default defineComponent({
         this.wordPrompt = "拼写错误，请继续尝试。";
         this.shakeWord();
         if (this.sound) wrongSound.play();
+        this.tries++;
         this.userInput = "";
       }
     },
@@ -194,8 +188,10 @@ export default defineComponent({
         if (!confirm("当前单词尚未拼写正确，确定要切换到下一个单词吗？"))
           return;
 
-      if (++this.currWordIndex < this.words.length) this.loadWord();
-      else this.finish();
+      if (++this.currWordIndex < this.words.length) {
+        this.tries++;
+        this.loadWord();
+      } else this.finish();
     },
     hideShowWord() {
       const words = [
@@ -283,11 +279,15 @@ table {
 th,
 td {
   padding: 0.5em;
-  width: 33.33%;
+  width: 25%;
 }
 
 th {
   border-bottom: 1px solid #ddd;
+}
+
+td {
+  font-size: 1.5em;
 }
 
 #prevWord,
