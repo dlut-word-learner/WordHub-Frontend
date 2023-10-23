@@ -35,7 +35,7 @@
     <el-button
       id="nextWordButton"
       type="primary"
-      @click="goToNextWord"
+      @click="promptGoToNextWord"
       :disabled="!stopWatch.isRunning"
     >
       下一个单词
@@ -96,6 +96,23 @@
         </tbody>
       </table>
     </div>
+    <el-dialog v-model="confirmVisible" title="提示" width="30%">
+      <span>当前单词尚未拼写正确，确定要切换到下一个单词吗？</span>
+      <template #footer>
+        <span>
+          <el-button @click="confirmVisible = false">取消</el-button>
+          <el-button
+            type="primary"
+            @click="
+              confirmVisible = false;
+              goToNextWord();
+            "
+          >
+            确定
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -125,6 +142,8 @@ const isCorrect = ref(false);
 const isFinished = ref(false);
 const shake = ref(false);
 const stopWatch = useStopwatch(0, false);
+
+const confirmVisible = ref(false);
 
 const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
 const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
@@ -160,10 +179,11 @@ function shakeWord() {
   setTimeout(() => (shake.value = false), 400);
 }
 
-function goToNextWord() {
-  if (!isCorrect.value)
-    if (!confirm("当前单词尚未拼写正确，确定要切换到下一个单词吗？")) return;
+function promptGoToNextWord() {
+  if (!isCorrect.value) confirmVisible.value = true;
+}
 
+function goToNextWord() {
   if (++currWordIndex.value < words.value.length) {
     tries.value++;
     loadWord();
@@ -194,7 +214,7 @@ function checkSpelling() {
 function finish() {
   isFinished.value = true;
   stopWatch.pause();
-  alert("恭喜，你已完成所有单词！");
+  ElMessage.success("恭喜，你已完成所有单词！");
 }
 </script>
 
