@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { optionsStore } from "../scripts/optionsStore";
+
 const store = optionsStore();
 </script>
 
