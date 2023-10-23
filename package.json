@@ -13,6 +13,7 @@
     "element-plus": "^2.4.1",
     "howler": "^2.2.4",
     "node.js": "0.0.1-security",
+    "pinia": "^2.1.7",
     "prettier": "^3.0.3",
     "vue": "^3.3.6",
     "vue-router": "^4.2.5",

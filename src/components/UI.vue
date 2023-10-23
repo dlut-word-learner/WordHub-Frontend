@@ -3,15 +3,15 @@
     <h1>单词拼写</h1>
     <div class="word-container">
       <div class="words">
-        <label id="prevWord">{{ prevWord.word }}</label>
+        <label id="prevWord" v-if="!isWordHidden">{{ prevWord.word }}</label>
         <br />
         <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
         <div :class="{ shake: shake }">
-          <label id="currWord">{{ currWord.word }}</label>
+          <label id="currWord" v-if="!isWordHidden">{{ currWord.word }}</label>
           <br />
           <label id="currWordPhone">{{ currWord.phonetic }}</label>
         </div>
-        <label id="nextWord">{{ nextWord.word }}</label>
+        <label id="nextWord" v-if="!isWordHidden">{{ nextWord.word }}</label>
         <br />
         <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
       </div>
@@ -24,29 +24,9 @@
       />
     </div>
     <div class="result">{{ wordPrompt }}</div>
-    <el-button id="nextWordButton" @click="goToNextWord" type="primary"
-      >下一个单词</el-button
-    >
-    <div class="option-container">
-      <input type="checkbox" class="option" v-model="autoNext" />
-      <label>拼写正确自动切换</label>
-      <input
-        type="checkbox"
-        class="option"
-        v-model="isWordHidden"
-        @change="hideShowWord"
-      />
-      <label>隐藏单词</label><br />
-      <input type="checkbox" class="option" v-model="sound" />
-      <label>音效</label>
-      <label id="volumeLabel">音量</label>
-      <input
-        id="volumeSlider"
-        type="range"
-        v-model="volume"
-        @change="setVolume"
-      />
-    </div>
+    <el-button id="nextWordButton" @click="goToNextWord" type="primary">
+      下一个单词
+    </el-button>
     <div class="status-container">
       <table>
         <thead>
@@ -109,6 +89,7 @@ import { defineComponent } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
+import { optionsStore } from "./Options.vue";
 
 const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
 const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
@@ -118,6 +99,16 @@ const sounds = [correctSound, wrongSound, typingSound];
 export default defineComponent({
   components: {
     ElButton,
+  },
+  setup() {
+    const { autoNext, isWordHidden, sound, volume } = optionsStore();
+
+    return {
+      autoNext,
+      isWordHidden,
+      sound,
+      volume,
+    };
   },
   data() {
     return {
@@ -136,10 +127,6 @@ export default defineComponent({
       wordPrompt: "",
       isCorrect: false,
       shake: false,
-      autoNext: true, // Go to the next word automatically
-      sound: true, // Sound effects
-      volume: 50,
-      isWordHidden: false,
       stopWatch: useStopwatch(0, false),
     };
   },
@@ -199,17 +186,6 @@ export default defineComponent({
         this.tries++;
         this.loadWord();
       } else this.finish();
-    },
-    hideShowWord() {
-      const words = [
-        document?.getElementById("prevWord") as HTMLLabelElement,
-        document?.getElementById("currWord") as HTMLLabelElement,
-        document?.getElementById("nextWord") as HTMLLabelElement,
-      ];
-
-      if (this.isWordHidden)
-        words.forEach((word) => (word.style.display = "none"));
-      else words.forEach((word) => (word.style.display = ""));
     },
     setVolume() {
       sounds.forEach((sound) => sound.volume(this.volume / 100));

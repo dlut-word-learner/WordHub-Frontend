@@ -4,6 +4,9 @@
   <div id="nav">
     <router-link :to="{ name: 'Login' }">Login</router-link>
     <router-link style="margin-left: 10px" :to="{ name: 'UI' }">UI</router-link>
+    <router-link style="margin-left: 10px" :to="{ name: 'Options' }">
+      选项
+    </router-link>
   </div>
   <router-view></router-view>
 </template>
