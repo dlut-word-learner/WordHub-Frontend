@@ -6,6 +6,10 @@ export const messages = {
       ui: "UI",
       options: "选项",
       loggedOut: "未登录",
+      prompt: "提示",
+      logoutPrompt: "确定要退出登录吗？",
+      confirm: "确定",
+      cancel: "取消",
     },
     login: {
       userLogin: "用户登录",
@@ -47,6 +51,10 @@ export const messages = {
       ui: "UI",
       options: "Options",
       loggedOut: "Logged out",
+      prompt: "Prompt",
+      logoutPrompt: "Are you sure you want to logout?",
+      confirm: "Confirm",
+      cancel: "Cancel",
     },
     login: {
       userLogin: "User Login",
@@ -90,6 +98,10 @@ export const messages = {
       ui: "UI",
       options: "选项",
       loggedOut: "未登录",
+      prompt: "提示",
+      logoutPrompt: "确定要退出登录吗？",
+      confirm: "确定",
+      cancel: "取消",
     },
     login: {
       userLogin: "用户登录",
