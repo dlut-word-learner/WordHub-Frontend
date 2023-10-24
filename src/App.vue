@@ -1,6 +1,13 @@
 <template>
   <el-menu class="menu" mode="horizontal" :router="true">
-    <el-menu-item>{{ loginStatus }}</el-menu-item>
+    <el-menu-item>
+      <el-avatar
+        class="avatar"
+        src="/default-avatar.png"
+        v-if="loginStore.online"
+      />
+      <h3>{{ loginStatus }}</h3>
+    </el-menu-item>
     <el-menu-item index="/">登录</el-menu-item>
     <el-menu-item index="UI">UI</el-menu-item>
     <el-menu-item index="Options">选项</el-menu-item>
@@ -24,5 +31,9 @@ watchEffect(() => {
 .menu {
   margin-bottom: 1em;
   min-width: 640px;
+}
+
+.avatar {
+  margin-right: 1em;
 }
 </style>
