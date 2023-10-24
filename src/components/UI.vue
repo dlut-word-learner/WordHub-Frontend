@@ -1,5 +1,11 @@
 <template>
   <div class="word-spelling-app">
+    <el-alert
+      :title="$t('ui.typingToStart')"
+      :center="true"
+      :show-icon="true"
+      v-if="!stopWatch.isRunning.value && !isFinished"
+    />
     <div class="word-container" v-if="!isFinished">
       <div class="words">
         <el-card
@@ -49,7 +55,6 @@
     <div v-if="isFinished">
       <el-result icon="success" :title="$t('ui.finishPrompt')"> </el-result>
     </div>
-    <div class="result" v-if="!isFinished">{{ wordPrompt }}</div>
     <el-button
       id="nextWordButton"
       type="primary"
@@ -167,7 +172,6 @@ const nextWord = ref({ word: "", phonetic: "" });
 const tries = ref(0);
 const skips = ref(0);
 const userInput = ref("");
-const wordPrompt = ref("");
 const isCorrect = ref(false);
 const isFinished = ref(false);
 const shake = ref(false);
@@ -185,14 +189,10 @@ watchEffect(() => {
 
 onMounted(() => {
   loadWord();
-  wordPrompt.value = t("ui.typingToStart");
 });
 
 function init() {
-  if (!stopWatch.isRunning.value) {
-    wordPrompt.value = "";
-    stopWatch.start();
-  }
+  if (!stopWatch.isRunning.value) stopWatch.start();
 }
 
 function loadWord() {
@@ -202,7 +202,6 @@ function loadWord() {
   nextWord.value = words.value[currWordIndex.value + 1] || emptyWord;
 
   userInput.value = "";
-  wordPrompt.value = "";
   isCorrect.value = false;
 }
 
@@ -231,11 +230,21 @@ function checkSpelling() {
 
   isCorrect.value = userInput.value.toLowerCase() === currWord.value.word;
   if (isCorrect.value) {
-    wordPrompt.value = t("ui.correctSpelling");
+    ElMessage({
+      message: t("ui.correctSpelling"),
+      duration: 500,
+      type: "success",
+    });
+
     if (optionsStore.isSoundEnabled) correctSound.play();
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
   } else {
-    wordPrompt.value = t("ui.wrongSpelling");
+    ElMessage({
+      message: t("ui.wrongSpelling"),
+      duration: 500,
+      type: "error",
+    });
+
     shakeWord();
     if (optionsStore.isSoundEnabled) wrongSound.play();
     tries.value++;
