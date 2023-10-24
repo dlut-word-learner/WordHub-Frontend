@@ -22,7 +22,6 @@ export const messages = {
       errorPrompt: "用户名或密码错误",
     },
     ui: {
-      wordSpelling: "单词拼写",
       typingToStart: "键入以开始",
       goToNextWord: "下一个单词",
       prompt: "提示",
@@ -81,7 +80,6 @@ export const messages = {
       errorPrompt: "Username or password is incorrect",
     },
     ui: {
-      wordSpelling: "Word Spelling",
       typingToStart: "Type to start",
       goToNextWord: "Next Word",
       prompt: "Prompt",
@@ -142,7 +140,6 @@ export const messages = {
       errorPrompt: "用户名或密码错误",
     },
     ui: {
-      wordSpelling: "单词拼写",
       typingToStart: "键入以开始",
       goToNextWord: "下一个单词",
       prompt: "提示",

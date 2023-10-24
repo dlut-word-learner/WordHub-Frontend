@@ -1,25 +1,35 @@
 <template>
   <div class="word-spelling-app">
-    <h1>{{ $t("ui.wordSpelling") }}</h1>
     <div class="word-container" v-if="!isFinished">
       <div class="words">
-        <label id="prevWord" v-if="!optionsStore.isWordHidden">
-          {{ prevWord.word }}
-        </label>
-        <br />
-        <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
+        <el-card
+          id="prevWord"
+          :body-style="{ padding: '0px' }"
+          v-if="prevWord.word != ''"
+        >
+          <template #header v-if="!optionsStore.isWordHidden">
+            <label id="prevWordContent">{{ prevWord.word }}</label>
+          </template>
+          <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
+        </el-card>
         <div :class="{ shake: shake }">
-          <label id="currWord" v-if="!optionsStore.isWordHidden">
-            {{ currWord.word }}
-          </label>
-          <br />
-          <label id="currWordPhone">{{ currWord.phonetic }}</label>
+          <el-card id="currWord" :body-style="{ padding: '0px' }">
+            <template #header v-if="!optionsStore.isWordHidden">
+              <label id="currWordContent">{{ currWord.word }}</label>
+            </template>
+            <label id="currWordPhone">{{ currWord.phonetic }}</label>
+          </el-card>
         </div>
-        <label id="nextWord" v-if="!optionsStore.isWordHidden">
-          {{ nextWord.word }}
-        </label>
-        <br />
-        <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
+        <el-card
+          id="nextWord"
+          :body-style="{ padding: '0px' }"
+          v-if="nextWord.word != ''"
+        >
+          <template #header v-if="!optionsStore.isWordHidden">
+            <label id="nextWordContent">{{ nextWord.word }}</label>
+          </template>
+          <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
+        </el-card>
       </div>
       <div id="inputArea">
         <el-input
@@ -251,8 +261,9 @@ function finish() {
 }
 
 .words {
-  font-size: 24px;
-  margin-bottom: 10px;
+  width: 640px;
+  margin: auto auto;
+  margin-bottom: 1.5em;
 }
 
 .result {
@@ -296,24 +307,35 @@ td {
 
 #prevWord,
 #nextWord {
-  margin: 2.5em;
+  width: 320px;
+  margin: auto auto;
 }
 
-#currWord {
+#prevWord {
+  margin-bottom: 1em;
+}
+
+#nextWord {
+  margin-top: 1em;
+}
+
+#currWordContent {
   font-size: 3em;
-  font-weight: bold;
 }
 
-#prevWordPhone,
-#nextWordPhone {
-  font-size: 0.6em;
+#prevWordContent,
+#nextWordContent {
+  font-size: 1.35em;
 }
 
 #currWordPhone {
   font-size: 1.5em;
-  font-weight: bold;
 }
 
+#prevWordPhone,
+#nextWordPhone {
+  font-size: 0.9em;
+}
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
