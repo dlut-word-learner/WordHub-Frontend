@@ -6,25 +6,21 @@
         src="/default-avatar.png"
         v-if="loginStore.online"
       />
-      <h3>{{ loginStatus }}</h3>
+      <h3>
+        {{ loginStore.online ? loginStore.username : $t("app.loggedOut") }}
+      </h3>
     </el-menu-item>
-    <el-menu-item index="/">登录</el-menu-item>
-    <el-menu-item index="UI">UI</el-menu-item>
-    <el-menu-item index="Options">选项</el-menu-item>
+    <el-menu-item index="/">{{ $t("app.login") }}</el-menu-item>
+    <el-menu-item index="UI">{{ $t("app.ui") }}</el-menu-item>
+    <el-menu-item index="Options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
   <router-view></router-view>
 </template>
 
 <script setup lang="ts">
-import { watchEffect, ref } from "vue";
-import { useLoginStore } from "./scripts/loginStore";
+import { useLoginStore } from "./store/loginStore";
 
 const loginStore = useLoginStore();
-const loginStatus = ref("未登录");
-
-watchEffect(() => {
-  if (loginStore.online) loginStatus.value = loginStore.username;
-});
 </script>
 
 <style scoped>
@@ -37,3 +33,4 @@ watchEffect(() => {
   margin-right: 1em;
 }
 </style>
+./storage/loginStore

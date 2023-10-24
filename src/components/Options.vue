@@ -1,21 +1,21 @@
 <template>
   <el-form label-position="left" label-width="50%">
-    <el-form-item label="拼写正确自动切换">
+    <el-form-item :label="$t('options.autoNext')">
       <el-switch v-model="optionsStore.autoNext" />
     </el-form-item>
-    <el-form-item label="隐藏单词">
+    <el-form-item :label="$t('options.hideWord')">
       <el-switch v-model="optionsStore.isWordHidden" />
     </el-form-item>
-    <el-form-item label="启用音效">
+    <el-form-item :label="$t('options.enableSound')">
       <el-switch v-model="optionsStore.isSoundEnabled" />
     </el-form-item>
-    <el-form-item label="音量">
+    <el-form-item :label="$t('options.volume')">
       <el-slider
         v-model="optionsStore.volume"
         :disabled="!optionsStore.isSoundEnabled"
       />
     </el-form-item>
-    <el-form-item label="语言">
+    <el-form-item :label="$t('options.lang')">
       <el-select v-model="optionsStore.lang">
         <el-option
           v-for="lang in languages"
@@ -29,15 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import { useOptionsStore } from "../scripts/optionsStore";
+import { watchEffect } from "vue";
+import { useOptionsStore } from "../store/optionsStore";
+import { languages } from "../lang/list";
 
 const optionsStore = useOptionsStore();
-
-const languages = [
-  { value: "zh-cn", label: "简体中文" },
-  { value: "en", label: "English" },
-  { value: "ja", label: "日本語" },
-];
+watchEffect(() => optionsStore.setLang());
 </script>
 
 <style scoped></style>

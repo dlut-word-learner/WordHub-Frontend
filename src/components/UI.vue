@@ -1,6 +1,6 @@
 <template>
   <div class="word-spelling-app">
-    <h1>单词拼写</h1>
+    <h1>{{ $t("ui.wordSpelling") }}</h1>
     <div class="word-container" v-if="!isFinished">
       <div class="words">
         <label id="prevWord" v-if="!optionsStore.isWordHidden">
@@ -32,7 +32,7 @@
       />
     </div>
     <div v-if="isFinished">
-      <el-result icon="success" title="恭喜，你已完成所有单词！"> </el-result>
+      <el-result icon="success" :title="$t('ui.finishPrompt')"> </el-result>
     </div>
     <div class="result" v-if="!isFinished">{{ wordPrompt }}</div>
     <el-button
@@ -42,7 +42,7 @@
       :disabled="!stopWatch.isRunning"
       v-if="!isFinished"
     >
-      下一个单词
+      {{ $t("ui.goToNextWord") }}
     </el-button>
     <el-progress
       id="progressBar"
@@ -53,10 +53,10 @@
       <table>
         <thead>
           <tr>
-            <th>用时</th>
-            <th>进度</th>
-            <th>速度</th>
-            <th>正确率</th>
+            <th>{{ $t("ui.elapsedTime") }}</th>
+            <th>{{ $t("ui.progress") }}</th>
+            <th>{{ $t("ui.speed") }}</th>
+            <th>{{ $t("ui.accuracy") }}</th>
           </tr>
         </thead>
         <tbody>
@@ -105,11 +105,13 @@
         </tbody>
       </table>
     </div>
-    <el-dialog v-model="confirmVisible" title="提示" width="30%">
-      <span>当前单词尚未拼写正确，确定要切换到下一个单词吗？</span>
+    <el-dialog v-model="confirmVisible" :title="$t('ui.prompt')" width="30%">
+      <span>{{ $t("ui.promptGoToNextWord") }}</span>
       <template #footer>
         <span>
-          <el-button @click="confirmVisible = false">取消</el-button>
+          <el-button @click="confirmVisible = false">
+            {{ $t("ui.cancel") }}
+          </el-button>
           <el-button
             type="primary"
             @click="
@@ -117,7 +119,7 @@
               goToNextWord();
             "
           >
-            确定
+            {{ $t("ui.confirm") }}
           </el-button>
         </span>
       </template>
@@ -130,8 +132,10 @@ import { onMounted, watchEffect, ref } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
-import { useOptionsStore } from "../scripts/optionsStore";
+import { useOptionsStore } from "../store/optionsStore";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const optionsStore = useOptionsStore();
 
 const words = ref([
@@ -164,7 +168,7 @@ watchEffect(() => {
 
 onMounted(() => {
   loadWord();
-  wordPrompt.value = "键入以开始";
+  wordPrompt.value = t("ui.typingToStart");
 });
 
 function init() {
@@ -208,11 +212,11 @@ function checkSpelling() {
 
   isCorrect.value = userInput.value.toLowerCase() === currWord.value.word;
   if (isCorrect.value) {
-    wordPrompt.value = "拼写正确！";
+    wordPrompt.value = t("ui.correctSpelling");
     if (optionsStore.isSoundEnabled) correctSound.play();
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
   } else {
-    wordPrompt.value = "拼写错误，请继续尝试。";
+    wordPrompt.value = t("ui.wrongSpelling");
     shakeWord();
     if (optionsStore.isSoundEnabled) wrongSound.play();
     tries.value++;
