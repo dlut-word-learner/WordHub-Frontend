@@ -55,7 +55,7 @@ function logout() {
 
 <style scoped>
 .menu {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
   min-width: 640px;
 }
 

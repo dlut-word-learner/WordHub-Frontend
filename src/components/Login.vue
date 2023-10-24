@@ -1,6 +1,6 @@
 <template>
   <router-view></router-view>
-  <div>
+  <div id="loginPanel">
     <img src="/wordhub.png" width="100" height="100" />
     <h2>{{ $t("login.userLogin") }}</h2>
     <el-form label-width="80px">
@@ -43,4 +43,9 @@ function login() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+#loginPanel {
+  width: 400px;
+  margin: 200px auto;
+}
+</style>

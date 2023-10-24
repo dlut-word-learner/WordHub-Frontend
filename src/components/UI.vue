@@ -267,19 +267,12 @@ input {
   margin-left: 20px;
 }
 
-#volumeLabel {
-  margin-left: 20px;
-}
-
-#volumeSlider {
-  width: 8em;
-  padding-top: 0px;
-  vertical-align: bottom;
-}
-
+#nextWordButton,
 #progressBar {
-  margin-top: 1em;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
+
 .status-container {
   margin-top: 10px;
 }

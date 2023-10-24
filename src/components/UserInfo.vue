@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="userInfo">
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userinfo.username')">
         <el-input v-model="form.username" />
@@ -74,4 +74,10 @@ function saveUserInfo() {
   // Save user information
 }
 </script>
-<style scoped></style>
+
+<style scoped>
+#userInfo {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+</style>
