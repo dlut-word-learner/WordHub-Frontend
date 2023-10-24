@@ -95,9 +95,9 @@
             </td>
             <td>
               {{
-                currWordIndex > tries
+                currWordIndex - skips > tries
                   ? "100.00"
-                  : ((currWordIndex / tries) * 100).toFixed(2)
+                  : (((currWordIndex - skips) / tries) * 100).toFixed(2)
               }}
               %
             </td>
@@ -199,10 +199,10 @@ function promptGoToNextWord() {
 }
 
 function goToNextWord() {
-  if (++currWordIndex.value < words.value.length) {
-    tries.value++;
-    loadWord();
-  } else finish();
+  tries.value++;
+
+  if (++currWordIndex.value < words.value.length) loadWord();
+  else finish();
 }
 
 function playTypingSound() {
