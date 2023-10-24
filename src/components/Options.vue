@@ -31,12 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { watchEffect } from "vue";
 import { useOptionsStore } from "../store/optionsStore";
 import { languages } from "../lang/list";
 
 const optionsStore = useOptionsStore();
-watchEffect(() => optionsStore.setLang());
 </script>
 
 <style scoped>

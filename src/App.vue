@@ -38,8 +38,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useLoginStore } from "./store/loginStore";
 import router from "./router/index";
+import { useLoginStore } from "./store/loginStore";
+import { useOptionsStore } from "./store/optionsStore";
+import { watchEffect } from "vue";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);
@@ -51,6 +53,12 @@ function logout() {
   loginStore.password = "";
   router.push("/");
 }
+
+const optionsStore = useOptionsStore();
+
+watchEffect(() => {
+  optionsStore.setLang();
+});
 </script>
 
 <style scoped>
