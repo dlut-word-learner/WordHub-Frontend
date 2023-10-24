@@ -21,15 +21,20 @@
         <br />
         <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
       </div>
-      <input
-        id="userInputBox"
-        v-model="userInput"
-        @input="checkSpelling"
-        @keypress="playTypingSound"
-        @keydown="init"
-        :class="{ shake: shake }"
-        :disabled="isFinished"
-      />
+      <div id="inputArea">
+        <el-input
+          id="userInputBox"
+          size="large"
+          v-model="userInput"
+          @input="checkSpelling"
+          @keypress="playTypingSound"
+          @keydown="init"
+          :class="{ shake: shake }"
+          :maxlength="currWord.word.length"
+          :disabled="isFinished"
+          :clearable="true"
+        />
+      </div>
     </div>
     <div v-if="isFinished">
       <el-result icon="success" :title="$t('ui.finishPrompt')"> </el-result>
@@ -237,7 +242,7 @@ function finish() {
 <style scoped>
 .word-spelling-app {
   text-align: center;
-  margin: 20px;
+  margin: 3em;
   font-family: Arial, sans-serif;
 }
 
@@ -250,27 +255,21 @@ function finish() {
   margin-bottom: 10px;
 }
 
-input {
-  padding: 5px;
-  font-size: 18px;
-}
-
 .result {
   margin-top: 10px;
   margin-bottom: 10px;
-}
-
-.option-container {
-  margin-top: 10px;
-}
-.option {
-  margin-left: 20px;
 }
 
 #nextWordButton,
 #progressBar {
   margin-top: 0.75em;
   margin-bottom: 0.75em;
+}
+
+#inputArea {
+  width: 25em;
+  text-align: center;
+  margin: auto auto;
 }
 
 .status-container {
