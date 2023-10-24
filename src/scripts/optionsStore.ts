@@ -8,12 +8,14 @@ export const useOptionsStore = defineStore(
     const isWordHidden = ref(false);
     const isSoundEnabled = ref(true);
     const volume = ref(50);
+    const lang = ref("简体中文");
 
     return {
       autoNext,
       isWordHidden,
       isSoundEnabled,
       volume,
+      lang,
     };
   },
   {

@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <el-form label-position="left" label-width="50%">
     <el-form-item label="拼写正确自动切换">
       <el-switch v-model="optionsStore.autoNext" />
     </el-form-item>
@@ -15,6 +15,16 @@
         :disabled="!optionsStore.isSoundEnabled"
       />
     </el-form-item>
+    <el-form-item label="语言">
+      <el-select v-model="optionsStore.lang">
+        <el-option
+          v-for="lang in languages"
+          :key="lang.value"
+          :label="lang.label"
+          :value="lang.value"
+        />
+      </el-select>
+    </el-form-item>
   </el-form>
 </template>
 
@@ -22,10 +32,12 @@
 import { useOptionsStore } from "../scripts/optionsStore";
 
 const optionsStore = useOptionsStore();
+
+const languages = [
+  { value: "zh-cn", label: "简体中文" },
+  { value: "en", label: "English" },
+  { value: "ja", label: "日本語" },
+];
 </script>
 
-<style scoped>
-.option {
-  margin: 1em;
-}
-</style>
+<style scoped></style>
