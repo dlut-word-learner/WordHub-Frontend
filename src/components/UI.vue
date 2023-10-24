@@ -3,19 +3,19 @@
     <h1>单词拼写</h1>
     <div class="word-container">
       <div class="words">
-        <label id="prevWord" v-if="!store.isWordHidden">
+        <label id="prevWord" v-if="!optionsStore.isWordHidden">
           {{ prevWord.word }}
         </label>
         <br />
         <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
         <div :class="{ shake: shake }">
-          <label id="currWord" v-if="!store.isWordHidden">
+          <label id="currWord" v-if="!optionsStore.isWordHidden">
             {{ currWord.word }}
           </label>
           <br />
           <label id="currWordPhone">{{ currWord.phonetic }}</label>
         </div>
-        <label id="nextWord" v-if="!store.isWordHidden">
+        <label id="nextWord" v-if="!optionsStore.isWordHidden">
           {{ nextWord.word }}
         </label>
         <br />
@@ -126,9 +126,9 @@ import { onMounted, watchEffect, ref } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
-import { optionsStore } from "../scripts/optionsStore";
+import { useOptionsStore } from "../scripts/optionsStore";
 
-const store = optionsStore();
+const optionsStore = useOptionsStore();
 
 const words = ref([
   { word: "apple", phonetic: "AmE: [ˈæp(ə)l]" },
@@ -155,7 +155,7 @@ const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const sounds = [correctSound, wrongSound, typingSound];
 watchEffect(() => {
-  sounds.forEach((sound) => sound.volume(store.volume / 100));
+  sounds.forEach((sound) => sound.volume(optionsStore.volume / 100));
 });
 
 onMounted(() => {
@@ -196,7 +196,7 @@ function goToNextWord() {
 }
 
 function playTypingSound() {
-  if (store.isSoundEnabled) typingSound.play();
+  if (optionsStore.isSoundEnabled) typingSound.play();
 }
 
 function checkSpelling() {
@@ -205,12 +205,12 @@ function checkSpelling() {
   isCorrect.value = userInput.value.toLowerCase() === currWord.value.word;
   if (isCorrect.value) {
     wordPrompt.value = "拼写正确！";
-    if (store.isSoundEnabled) correctSound.play();
-    if (store.autoNext) setTimeout(goToNextWord, 500);
+    if (optionsStore.isSoundEnabled) correctSound.play();
+    if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
   } else {
     wordPrompt.value = "拼写错误，请继续尝试。";
     shakeWord();
-    if (store.isSoundEnabled) wrongSound.play();
+    if (optionsStore.isSoundEnabled) wrongSound.play();
     tries.value++;
     userInput.value = "";
   }

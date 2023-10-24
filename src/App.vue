@@ -1,15 +1,24 @@
-<script setup lang="ts"></script>
-
 <template>
-  <div id="nav">
-    <router-link :to="{ name: 'Login' }">Login</router-link>
-    <router-link style="margin-left: 10px" :to="{ name: 'UI' }">UI</router-link>
-    <router-link style="margin-left: 10px" :to="{ name: 'Options' }">
-      选项
-    </router-link>
-  </div>
+  <el-menu mode="horizontal" :router="true">
+    <el-menu-item>{{ loginStatus }}</el-menu-item>
+    <el-menu-item index="/">登录</el-menu-item>
+    <el-menu-item index="UI">UI</el-menu-item>
+    <el-menu-item index="Options">选项</el-menu-item>
+  </el-menu>
   <router-view></router-view>
 </template>
+
+<script setup lang="ts">
+import { watchEffect, ref } from "vue";
+import { useLoginStore } from "./scripts/loginStore";
+
+const loginStore = useLoginStore();
+const loginStatus = ref("未登录");
+
+watchEffect(() => {
+  if (loginStore.online) loginStatus.value = loginStore.username;
+});
+</script>
 
 <style scoped>
 .logo {

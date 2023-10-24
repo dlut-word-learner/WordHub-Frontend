@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const optionsStore = defineStore(
+export const useOptionsStore = defineStore(
   "options",
   () => {
     const autoNext = ref(true);

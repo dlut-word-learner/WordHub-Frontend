@@ -17,18 +17,29 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
+import { useLoginStore } from "../scripts/loginStore";
 
 const form = reactive({
   username: "",
   password: "",
 });
 
+const loginStore = useLoginStore();
+
 function login() {
+  if (loginStore.online) {
+    ElMessage.info("您已登录");
+    return;
+  }
+
   if (form.username === "" || form.password === "")
     ElMessage.info("请输入用户名和密码");
-  else if (form.username === "user" && form.password === "password")
+  else if (form.username === "user" && form.password === "password") {
+    loginStore.username = form.username;
+    loginStore.password = form.password;
+    loginStore.online = true;
     ElMessage.success("登录成功");
-  else ElMessage.error("用户名或密码错误");
+  } else ElMessage.error("用户名或密码错误");
 }
 </script>
 
