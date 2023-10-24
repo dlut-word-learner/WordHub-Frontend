@@ -1,16 +1,19 @@
 <template>
   <el-menu class="menu" mode="horizontal" :router="true">
-    <el-menu-item>
-      <el-avatar
-        class="avatar"
-        src="/default-avatar.png"
-        v-if="loginStore.online"
-      />
-      <h3>
+    <el-sub-menu index="2" v-if="loginStore.online">
+      <template #title>
+        <el-avatar
+          class="avatar"
+          src="/default-avatar.png"
+          v-if="loginStore.online"
+        />
         {{ loginStore.online ? loginStore.username : $t("app.loggedOut") }}
-      </h3>
-    </el-menu-item>
-    <el-menu-item index="/">{{ $t("app.login") }}</el-menu-item>
+      </template>
+      <el-menu-item @click="logout">{{ $t("app.logout") }}</el-menu-item>
+    </el-sub-menu>
+    <el-menu-item index="/" v-if="!loginStore.online">{{
+      $t("app.login")
+    }}</el-menu-item>
     <el-menu-item index="UI">{{ $t("app.ui") }}</el-menu-item>
     <el-menu-item index="Options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
@@ -21,6 +24,12 @@
 import { useLoginStore } from "./store/loginStore";
 
 const loginStore = useLoginStore();
+
+function logout() {
+  loginStore.online = false;
+  loginStore.username = "";
+  loginStore.password = "";
+}
 </script>
 
 <style scoped>
@@ -33,4 +42,3 @@ const loginStore = useLoginStore();
   margin-right: 1em;
 }
 </style>
-./storage/loginStore

@@ -2,6 +2,7 @@ export const messages = {
   zh_cn: {
     app: {
       login: "登录",
+      logout: "退出登录",
       ui: "UI",
       options: "选项",
       loggedOut: "未登录",
@@ -14,7 +15,6 @@ export const messages = {
       inputPrompt: "请输入用户名和密码",
       successPrompt: "登录成功",
       errorPrompt: "用户名或密码错误",
-      loggedInPrompt: "您已登录",
     },
     ui: {
       wordSpelling: "单词拼写",
@@ -43,6 +43,7 @@ export const messages = {
   en: {
     app: {
       login: "Login",
+      logout: "Logout",
       ui: "UI",
       options: "Options",
       loggedOut: "Logged out",
@@ -55,7 +56,6 @@ export const messages = {
       inputPrompt: "Please input your username and password",
       successPrompt: "Logged in successfully",
       errorPrompt: "Username or password is incorrect",
-      loggedInPrompt: "You have logged in",
     },
     ui: {
       wordSpelling: "Word Spelling",
@@ -86,6 +86,7 @@ export const messages = {
   ja: {
     app: {
       login: "登录",
+      logout: "退出登录",
       ui: "UI",
       options: "选项",
       loggedOut: "未登录",
@@ -98,7 +99,6 @@ export const messages = {
       inputPrompt: "请输入用户名和密码",
       successPrompt: "登录成功",
       errorPrompt: "用户名或密码错误",
-      loggedInPrompt: "您已登录",
     },
     ui: {
       wordSpelling: "单词拼写",

@@ -29,11 +29,6 @@ const form = reactive({
 const loginStore = useLoginStore();
 
 function login() {
-  if (loginStore.online) {
-    ElMessage.info(t("login.loggedInPrompt"));
-    return;
-  }
-
   if (form.username === "" || form.password === "")
     ElMessage.info(t("login.inputPrompt"));
   else if (form.username === "user" && form.password === "password") {

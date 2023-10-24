@@ -20,6 +20,7 @@ declare module 'vue' {
     ElResult: typeof import('element-plus/es')['ElResult']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSlider: typeof import('element-plus/es')['ElSlider']
+    ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     Login: typeof import('./src/components/Login.vue')['default']
     Options: typeof import('./src/components/Options.vue')['default']
