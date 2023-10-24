@@ -1,7 +1,7 @@
 <template>
   <div class="word-spelling-app">
     <h1>单词拼写</h1>
-    <div class="word-container">
+    <div class="word-container" v-if="!isFinished">
       <div class="words">
         <label id="prevWord" v-if="!optionsStore.isWordHidden">
           {{ prevWord.word }}
@@ -31,12 +31,16 @@
         :disabled="isFinished"
       />
     </div>
-    <div class="result">{{ wordPrompt }}</div>
+    <div v-if="isFinished">
+      <el-result icon="success" title="恭喜，你已完成所有单词！"> </el-result>
+    </div>
+    <div class="result" v-if="!isFinished">{{ wordPrompt }}</div>
     <el-button
       id="nextWordButton"
       type="primary"
       @click="promptGoToNextWord"
       :disabled="!stopWatch.isRunning"
+      v-if="!isFinished"
     >
       下一个单词
     </el-button>
@@ -219,7 +223,6 @@ function checkSpelling() {
 function finish() {
   isFinished.value = true;
   stopWatch.pause();
-  ElMessage.success("恭喜，你已完成所有单词！");
 }
 </script>
 
