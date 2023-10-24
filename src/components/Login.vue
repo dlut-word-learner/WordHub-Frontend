@@ -8,7 +8,12 @@
         <el-input type="text" id="username" v-model="form.username" />
       </el-form-item>
       <el-form-item :label="$t('login.password')">
-        <el-input type="text" id="password" v-model="form.password" />
+        <el-input
+          type="password"
+          id="password"
+          v-model="form.password"
+          :show-password="true"
+        />
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="login">{{ $t("login.login") }}</el-button>
