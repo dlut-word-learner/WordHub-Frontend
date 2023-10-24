@@ -26,7 +26,7 @@
         v-model="userInput"
         @input="checkSpelling"
         @keypress="playTypingSound"
-        @keydown="if (!stopWatch.isRunning.value) init();"
+        @keydown="init"
         :class="{ shake: shake }"
         :disabled="isFinished"
       />
@@ -174,8 +174,10 @@ onMounted(() => {
 });
 
 function init() {
-  wordPrompt.value = "";
-  stopWatch.start();
+  if (!stopWatch.isRunning.value) {
+    wordPrompt.value = "";
+    stopWatch.start();
+  }
 }
 
 function loadWord() {
