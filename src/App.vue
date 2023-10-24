@@ -9,6 +9,7 @@
         />
         {{ loginStore.online ? loginStore.username : $t("app.loggedOut") }}
       </template>
+      <el-menu-item index="UserInfo">{{ $t("app.userinfo") }}</el-menu-item>
       <el-menu-item @click="confirmVisible = true">
         {{ $t("app.logout") }}
       </el-menu-item>
@@ -38,6 +39,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useLoginStore } from "./store/loginStore";
+import router from "./router/index";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);
@@ -47,6 +49,7 @@ function logout() {
   loginStore.online = false;
   loginStore.username = "";
   loginStore.password = "";
+  router.push("/");
 }
 </script>
 

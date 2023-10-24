@@ -19,6 +19,8 @@
 import { reactive } from "vue";
 import { useLoginStore } from "../store/loginStore";
 import { useI18n } from "vue-i18n";
+import router from "../router/index";
+
 const { t } = useI18n();
 
 const form = reactive({
@@ -35,6 +37,7 @@ function login() {
     loginStore.username = form.username;
     loginStore.password = form.password;
     loginStore.online = true;
+    router.push("/UserInfo");
     ElMessage.success(t("login.successPrompt"));
   } else ElMessage.error(t("login.errorPrompt"));
 }

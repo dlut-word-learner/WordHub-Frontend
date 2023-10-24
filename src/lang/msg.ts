@@ -10,6 +10,7 @@ export const messages = {
       logoutPrompt: "确定要退出登录吗？",
       confirm: "确定",
       cancel: "取消",
+      userinfo: "个人资料",
     },
     login: {
       userLogin: "用户登录",
@@ -43,6 +44,19 @@ export const messages = {
       volume: "音量",
       lang: "语言",
     },
+    userinfo: {
+      username: "用户名",
+      email: "邮箱",
+      phone: "手机号",
+      gender: "性别",
+      birthday: "生日",
+      pleaseSelect: "请选择",
+      male: "男",
+      female: "女",
+      nonbinary: "非二元性别",
+      secret: "保密",
+      save: "保存",
+    },
   },
   en: {
     app: {
@@ -55,6 +69,7 @@ export const messages = {
       logoutPrompt: "Are you sure you want to logout?",
       confirm: "Confirm",
       cancel: "Cancel",
+      userinfo: "My Profile",
     },
     login: {
       userLogin: "User Login",
@@ -90,6 +105,19 @@ export const messages = {
       volume: "Volume",
       lang: "Language",
     },
+    userinfo: {
+      username: "Username",
+      email: "E-mail",
+      phone: "Phone number",
+      gender: "Gender",
+      birthday: "Birthday",
+      pleaseSelect: "Please Select",
+      male: "Male",
+      female: "Female",
+      nonbinary: "Nonbinary",
+      secret: "Secret",
+      save: "Save",
+    },
   },
   ja: {
     app: {
@@ -102,6 +130,7 @@ export const messages = {
       logoutPrompt: "确定要退出登录吗？",
       confirm: "确定",
       cancel: "取消",
+      userinfo: "个人资料",
     },
     login: {
       userLogin: "用户登录",
@@ -134,6 +163,18 @@ export const messages = {
       enableSound: "启用音效",
       volume: "音量",
       lang: "语言",
+    },
+    userinfo: {
+      username: "用户名",
+      email: "邮箱",
+      phone: "手机号",
+      gender: "性别",
+      birthday: "生日",
+      male: "男",
+      female: "女",
+      nonbinary: "非二元性别",
+      secret: "保密",
+      save: "保存",
     },
   },
 };

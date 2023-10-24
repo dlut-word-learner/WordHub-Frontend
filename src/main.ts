@@ -1,7 +1,5 @@
 import { createApp } from "vue";
 import "./style.css";
-import Login from "./components/Login.vue";
-import Options from "./components/Options.vue";
 import App from "./App.vue";
 import router from "./router";
 import { createPinia } from "pinia";
@@ -19,10 +17,4 @@ export const i18n = createI18n({
   messages,
 });
 
-app
-  .component("Login", Login)
-  .component("Options", Options)
-  .use(router)
-  .use(pinia)
-  .use(i18n)
-  .mount("#app");
+app.use(router).use(pinia).use(i18n).mount("#app");
