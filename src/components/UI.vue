@@ -85,7 +85,7 @@
             <td>
               {{
                 (
-                  currWordIndex /
+                  (currWordIndex - skips) /
                   (stopWatch.hours.value * 60 +
                     stopWatch.minutes.value +
                     stopWatch.seconds.value / 60)
@@ -116,6 +116,7 @@
             type="primary"
             @click="
               confirmVisible = false;
+              skips++;
               goToNextWord();
             "
           >
@@ -149,6 +150,7 @@ const prevWord = ref({ word: "", phonetic: "" });
 const currWord = ref({ word: "", phonetic: "" });
 const nextWord = ref({ word: "", phonetic: "" });
 const tries = ref(0);
+const skips = ref(0);
 const userInput = ref("");
 const wordPrompt = ref("");
 const isCorrect = ref(false);
