@@ -175,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watchEffect, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -248,20 +248,25 @@ const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
 const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const sounds = [correctSound, wrongSound, typingSound];
-watchEffect(() => {
-  sounds.forEach((sound) => sound.volume(optionsStore.volume / 100));
-});
-
-watchEffect(() => {
-  words.value.forEach((word) => word.sound.volume(optionsStore.volume / 100));
-});
+watch(
+  () => optionsStore.volume,
+  (value) => {
+    sounds.forEach((sound) => sound.volume(value / 100));
+    words.value.forEach((word) => word.sound.volume(optionsStore.volume / 100));
+  },
+  { immediate: true },
+);
 
 if (optionsStore.isWordHidden) {
-  watchEffect(() => {
-    hiddenWord.value =
-      userInput.value +
-      "_ ".repeat(currWord.value.word.length - userInput.value.length);
-  });
+  watch(
+    userInput,
+    (newUserInput) => {
+      hiddenWord.value =
+        newUserInput +
+        "_ ".repeat(currWord.value.word.length - newUserInput.length);
+    },
+    { immediate: true },
+  );
 }
 
 onMounted(() => {
@@ -280,6 +285,8 @@ function loadWord() {
 
   userInput.value = "";
   isCorrect.value = false;
+  hiddenWord.value = "_ ".repeat(currWord.value.word.length);
+
   playWordPhone();
 }
 
