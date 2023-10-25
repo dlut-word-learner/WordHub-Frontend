@@ -13,6 +13,7 @@
       <el-form-item :label="$t('options.hideMeaning')">
         <el-switch v-model="optionsStore.isMeaningHidden" />
       </el-form-item>
+      <el-divider />
       <el-form-item :label="$t('options.enableSound')">
         <el-switch v-model="optionsStore.isSoundEnabled" />
       </el-form-item>
@@ -22,6 +23,7 @@
           :disabled="!optionsStore.isSoundEnabled"
         />
       </el-form-item>
+      <el-divider />
       <el-form-item :label="$t('options.lang')">
         <el-select v-model="optionsStore.lang">
           <el-option
