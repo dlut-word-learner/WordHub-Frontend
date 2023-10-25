@@ -38,6 +38,7 @@ export const messages = {
     },
     options: {
       autoNext: "拼写正确自动切换",
+      showPrevNext: "显示上一个/下一个单词",
       hideWord: "隐藏单词",
       enableSound: "启用音效",
       volume: "音量",
@@ -98,6 +99,7 @@ export const messages = {
     },
     options: {
       autoNext: "Auto switching for correct spelling",
+      showPrevNext: "Show previous/next word",
       hideWord: "Hide words",
       enableSound: "Sound effects",
       volume: "Volume",
@@ -156,6 +158,7 @@ export const messages = {
     },
     options: {
       autoNext: "拼写正确自动切换",
+      showPrevNext: "显示上一个/下一个单词",
       hideWord: "隐藏单词",
       enableSound: "启用音效",
       volume: "音量",

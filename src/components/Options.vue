@@ -4,6 +4,9 @@
       <el-form-item :label="$t('options.autoNext')">
         <el-switch v-model="optionsStore.autoNext" />
       </el-form-item>
+      <el-form-item :label="$t('options.showPrevNext')">
+        <el-switch v-model="optionsStore.showPrevNext" />
+      </el-form-item>
       <el-form-item :label="$t('options.hideWord')">
         <el-switch v-model="optionsStore.isWordHidden" />
       </el-form-item>

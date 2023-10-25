@@ -6,6 +6,7 @@ export const useOptionsStore = defineStore(
   "options",
   () => {
     const autoNext = ref(true);
+    const showPrevNext = ref(true);
     const isWordHidden = ref(false);
     const isSoundEnabled = ref(true);
     const volume = ref(50);
@@ -17,6 +18,7 @@ export const useOptionsStore = defineStore(
 
     return {
       autoNext,
+      showPrevNext,
       isWordHidden,
       isSoundEnabled,
       volume,

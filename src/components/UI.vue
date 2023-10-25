@@ -11,20 +11,20 @@
         <el-card
           id="prevWord"
           :body-style="{ padding: '0px' }"
-          v-if="prevWord.word != ''"
+          v-if="prevWord.word != '' && optionsStore.showPrevNext"
         >
           <template #header>
-            <div id="prevWordContent">{{ prevWord.word }}</div>
+            <div id="prevWordMain">{{ prevWord.word }}</div>
           </template>
           <div id="prevWordPhone">{{ prevWord.phonetic }}</div>
         </el-card>
         <div :class="{ shake: shake }">
           <el-card id="currWord" :body-style="{ padding: '0px' }">
             <template #header v-if="!optionsStore.isWordHidden">
-              <div id="currWordContent">{{ currWord.word }}</div>
+              <div id="currWordMain">{{ currWord.word }}</div>
             </template>
             <template #header v-else>
-              <div id="currWordContent">
+              <div id="currWordMain">
                 {{ hiddenWord }}
               </div>
             </template>
@@ -34,13 +34,13 @@
         <el-card
           id="nextWord"
           :body-style="{ padding: '0px' }"
-          v-if="nextWord.word != ''"
+          v-if="nextWord.word != '' && optionsStore.showPrevNext"
         >
           <template #header v-if="!optionsStore.isWordHidden">
-            <div id="nextWordContent">{{ nextWord.word }}</div>
+            <div id="nextWordMain">{{ nextWord.word }}</div>
           </template>
           <template #header v-else>
-            <div id="nextWordContent">
+            <div id="nextWordMain">
               {{ "_ ".repeat(nextWord.word.length) }}
             </div>
           </template>
@@ -348,14 +348,14 @@ td {
   margin-top: 1em;
 }
 
-#currWordContent {
+#currWordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
-#prevWordContent,
-#nextWordContent {
-  font-size: 1.35em;
+#prevWordMain,
+#nextWordMain {
+  font-size: 1.5em;
 }
 
 #currWordPhone {
