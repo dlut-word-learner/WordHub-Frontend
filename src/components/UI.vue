@@ -14,16 +14,26 @@
           v-if="prevWord.word != ''"
         >
           <template #header v-if="!optionsStore.isWordHidden">
-            <label id="prevWordContent">{{ prevWord.word }}</label>
+            <div id="prevWordContent">{{ prevWord.word }}</div>
           </template>
-          <label id="prevWordPhone">{{ prevWord.phonetic }}</label>
+          <template #header v-else>
+            <div id="prevWordContent">
+              {{ "_ ".repeat(prevWord.word.length) }}
+            </div>
+          </template>
+          <div id="prevWordPhone">{{ prevWord.phonetic }}</div>
         </el-card>
         <div :class="{ shake: shake }">
           <el-card id="currWord" :body-style="{ padding: '0px' }">
             <template #header v-if="!optionsStore.isWordHidden">
-              <label id="currWordContent">{{ currWord.word }}</label>
+              <div id="currWordContent">{{ currWord.word }}</div>
             </template>
-            <label id="currWordPhone">{{ currWord.phonetic }}</label>
+            <template #header v-else>
+              <div id="currWordContent">
+                {{ hiddenWord }}
+              </div>
+            </template>
+            <div id="currWordPhone">{{ currWord.phonetic }}</div>
           </el-card>
         </div>
         <el-card
@@ -32,9 +42,14 @@
           v-if="nextWord.word != ''"
         >
           <template #header v-if="!optionsStore.isWordHidden">
-            <label id="nextWordContent">{{ nextWord.word }}</label>
+            <div id="nextWordContent">{{ nextWord.word }}</div>
           </template>
-          <label id="nextWordPhone">{{ nextWord.phonetic }}</label>
+          <template #header v-else>
+            <div id="nextWordContent">
+              {{ "_ ".repeat(nextWord.word.length) }}
+            </div>
+          </template>
+          <div id="nextWordPhone">{{ nextWord.phonetic }}</div>
         </el-card>
       </div>
       <div id="inputArea">
@@ -169,6 +184,8 @@ const currWordIndex = ref(0);
 const prevWord = ref({ word: "", phonetic: "" });
 const currWord = ref({ word: "", phonetic: "" });
 const nextWord = ref({ word: "", phonetic: "" });
+const hiddenWord = ref("");
+
 const tries = ref(0);
 const skips = ref(0);
 const userInput = ref("");
@@ -186,6 +203,14 @@ const sounds = [correctSound, wrongSound, typingSound];
 watchEffect(() => {
   sounds.forEach((sound) => sound.volume(optionsStore.volume / 100));
 });
+
+if (optionsStore.isWordHidden) {
+  watchEffect(() => {
+    hiddenWord.value =
+      userInput.value +
+      "_ ".repeat(currWord.value.word.length - userInput.value.length);
+  });
+}
 
 onMounted(() => {
   loadWord();
@@ -330,6 +355,7 @@ td {
 
 #currWordContent {
   font-size: 3em;
+  font-weight: bold;
 }
 
 #prevWordContent,
@@ -339,6 +365,7 @@ td {
 
 #currWordPhone {
   font-size: 1.5em;
+  font-weight: bold;
 }
 
 #prevWordPhone,
