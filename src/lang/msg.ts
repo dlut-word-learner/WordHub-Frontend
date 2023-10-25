@@ -44,6 +44,7 @@ export const messages = {
       enableSound: "启用音效",
       volume: "音量",
       lang: "语言",
+      darkMode: "深色模式",
     },
     userinfo: {
       username: "用户名",
@@ -106,6 +107,7 @@ export const messages = {
       enableSound: "Sound effects",
       volume: "Volume",
       lang: "Language",
+      darkMode: "Dark mode",
     },
     userinfo: {
       username: "Username",
@@ -166,6 +168,7 @@ export const messages = {
       enableSound: "启用音效",
       volume: "音量",
       lang: "语言",
+      darkMode: "深色模式",
     },
     userinfo: {
       username: "用户名",

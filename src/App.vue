@@ -54,9 +54,9 @@ function logout() {
 }
 
 const optionsStore = useOptionsStore();
-onMounted(()=>{
+onMounted(() => {
   optionsStore.setLang();
-})
+});
 </script>
 
 <style scoped>

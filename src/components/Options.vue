@@ -32,6 +32,9 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item :label="$t('options.darkMode')">
+        <el-switch v-model="isDark"></el-switch>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -39,6 +42,7 @@
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { languages } from "../lang/list";
+import { isDark } from "../main";
 
 const optionsStore = useOptionsStore();
 </script>
