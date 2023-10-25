@@ -31,7 +31,14 @@
                 {{ hiddenWord }}
               </div>
             </template>
-            <div class="currWordItem">{{ currWord.phonetic }}</div>
+            <div class="currWordItem">
+              {{ currWord.phonetic }}
+              <img
+                src="../assets/img/speaker.png"
+                class="speaker"
+                @click="playWordPhone"
+              />
+            </div>
             <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
               {{ currWord.meaning }}
             </div>
@@ -182,24 +189,49 @@ const words = ref([
   {
     word: "apple",
     phonetic: "AmE: [ˈæp(ə)l]",
+    sound: new Howl({ src: "src/assets/audio/apple-us.mp3" }),
     meaning: "n. 苹果公司；【植】苹果；【植】苹果树",
   },
-  { word: "banana", phonetic: "AmE: [bəˈnɑːnə]", meaning: "n.【食】香蕉" },
+  {
+    word: "banana",
+    phonetic: "AmE: [bəˈnɑːnə]",
+    sound: new Howl({ src: "src/assets/audio/banana-us.mp3" }),
+    meaning: "n.【食】香蕉",
+  },
   {
     word: "cherry",
     phonetic: "AmE: [ˈtʃɛri]",
+    sound: new Howl({ src: "src/assets/audio/cherry-us.mp3" }),
     meaning: "n.【植】樱桃；adj. 樱桃色的",
   },
   {
     word: "date",
     phonetic: "AmE: [deɪt]",
+    sound: new Howl({ src: "src/assets/audio/date-us.mp3" }),
     meaning: "n. 日期，约会；v. 过时，注明日期",
   },
 ]);
 const currWordIndex = ref(0);
-const prevWord = ref({ word: "", phonetic: "", meaning: "" });
-const currWord = ref({ word: "", phonetic: "", meaning: "" });
-const nextWord = ref({ word: "", phonetic: "", meaning: "" });
+
+const prevWord = ref({
+  word: "",
+  phonetic: "",
+  sound: words.value[0].sound,
+  meaning: "",
+});
+const currWord = ref({
+  word: "",
+  phonetic: "",
+  sound: words.value[1].sound,
+  meaning: "",
+});
+const nextWord = ref({
+  word: "",
+  phonetic: "",
+  sound: words.value[2].sound,
+  meaning: "",
+});
+
 const hiddenWord = ref("");
 
 const tries = ref(0);
@@ -218,6 +250,10 @@ const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const sounds = [correctSound, wrongSound, typingSound];
 watchEffect(() => {
   sounds.forEach((sound) => sound.volume(optionsStore.volume / 100));
+});
+
+watchEffect(() => {
+  words.value.forEach((word) => word.sound.volume(optionsStore.volume / 100));
 });
 
 if (optionsStore.isWordHidden) {
@@ -244,6 +280,7 @@ function loadWord() {
 
   userInput.value = "";
   isCorrect.value = false;
+  playWordPhone();
 }
 
 function shakeWord() {
@@ -264,6 +301,10 @@ function goToNextWord() {
 
 function playTypingSound() {
   if (optionsStore.isSoundEnabled) typingSound.play();
+}
+
+function playWordPhone() {
+  currWord.value.sound.play();
 }
 
 function checkSpelling() {
@@ -380,10 +421,17 @@ td {
   font-size: 1.5em;
 }
 
-.prevWordPhone,
-.nextWordPhone {
+.prevWordItem,
+.nextWordItem {
   font-size: 0.9em;
 }
+
+.speaker {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
