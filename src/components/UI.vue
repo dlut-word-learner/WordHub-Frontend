@@ -14,21 +14,23 @@
           v-if="prevWord.word != '' && optionsStore.showPrevNext"
         >
           <template #header>
-            <div id="prevWordMain">{{ prevWord.word }}</div>
+            <div class="prevWordMain">{{ prevWord.word }}</div>
           </template>
-          <div id="prevWordPhone">{{ prevWord.phonetic }}</div>
+          <div class="prevWordItem">{{ prevWord.phonetic }}</div>
+          <div class="prevWordItem">{{ prevWord.meaning }}</div>
         </el-card>
         <div :class="{ shake: shake }">
           <el-card id="currWord" :body-style="{ padding: '0px' }">
             <template #header v-if="!optionsStore.isWordHidden">
-              <div id="currWordMain">{{ currWord.word }}</div>
+              <div class="currWordMain">{{ currWord.word }}</div>
             </template>
             <template #header v-else>
-              <div id="currWordMain">
+              <div class="currWordMain">
                 {{ hiddenWord }}
               </div>
             </template>
-            <div id="currWordPhone">{{ currWord.phonetic }}</div>
+            <div class="currWordItem">{{ currWord.phonetic }}</div>
+            <div class="currWordItem">{{ currWord.meaning }}</div>
           </el-card>
         </div>
         <el-card
@@ -37,14 +39,15 @@
           v-if="nextWord.word != '' && optionsStore.showPrevNext"
         >
           <template #header v-if="!optionsStore.isWordHidden">
-            <div id="nextWordMain">{{ nextWord.word }}</div>
+            <div class="nextWordMain">{{ nextWord.word }}</div>
           </template>
           <template #header v-else>
-            <div id="nextWordMain">
+            <div class="nextWordMain">
               {{ "_ ".repeat(nextWord.word.length) }}
             </div>
           </template>
-          <div id="nextWordPhone">{{ nextWord.phonetic }}</div>
+          <div class="nextWordItem">{{ nextWord.phonetic }}</div>
+          <div class="nextWordItem">{{ nextWord.meaning }}</div>
         </el-card>
       </div>
       <div id="inputArea">
@@ -170,15 +173,27 @@ const { t } = useI18n();
 const optionsStore = useOptionsStore();
 
 const words = ref([
-  { word: "apple", phonetic: "AmE: [ˈæp(ə)l]" },
-  { word: "banana", phonetic: "AmE: [bəˈnɑːnə]" },
-  { word: "cherry", phonetic: "AmE: [ˈtʃɛri]" },
-  { word: "date", phonetic: "AmE: [deɪt]" },
+  {
+    word: "apple",
+    phonetic: "AmE: [ˈæp(ə)l]",
+    meaning: "n. 苹果公司；【植】苹果；【植】苹果树",
+  },
+  { word: "banana", phonetic: "AmE: [bəˈnɑːnə]", meaning: "n.【食】香蕉" },
+  {
+    word: "cherry",
+    phonetic: "AmE: [ˈtʃɛri]",
+    meaning: "n.【植】樱桃；adj. 樱桃色的",
+  },
+  {
+    word: "date",
+    phonetic: "AmE: [deɪt]",
+    meaning: "n. 日期，约会；v. 过时，注明日期",
+  },
 ]);
 const currWordIndex = ref(0);
-const prevWord = ref({ word: "", phonetic: "" });
-const currWord = ref({ word: "", phonetic: "" });
-const nextWord = ref({ word: "", phonetic: "" });
+const prevWord = ref({ word: "", phonetic: "", meaning: "" });
+const currWord = ref({ word: "", phonetic: "", meaning: "" });
+const nextWord = ref({ word: "", phonetic: "", meaning: "" });
 const hiddenWord = ref("");
 
 const tries = ref(0);
@@ -281,7 +296,7 @@ function finish() {
 <style scoped>
 .word-spelling-app {
   text-align: center;
-  margin: 3em;
+  margin: auto 3em;
   font-family: Arial, sans-serif;
 }
 
@@ -348,23 +363,19 @@ td {
   margin-top: 1em;
 }
 
-#currWordMain {
+.currWordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
-#prevWordMain,
-#nextWordMain {
+.prevWordMain,
+.nextWordMain,
+.currWordItem {
   font-size: 1.5em;
 }
 
-#currWordPhone {
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-#prevWordPhone,
-#nextWordPhone {
+.prevWordPhone,
+.nextWordPhone {
   font-size: 0.9em;
 }
 .shake {
