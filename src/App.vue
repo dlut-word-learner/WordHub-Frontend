@@ -37,11 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import router from "./router/index";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
-import { watchEffect } from "vue";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);
@@ -55,10 +54,9 @@ function logout() {
 }
 
 const optionsStore = useOptionsStore();
-
-watchEffect(() => {
+onMounted(()=>{
   optionsStore.setLang();
-});
+})
 </script>
 
 <style scoped>
