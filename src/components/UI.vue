@@ -17,7 +17,9 @@
             <div class="prevWordMain">{{ prevWord.word }}</div>
           </template>
           <div class="prevWordItem">{{ prevWord.phonetic }}</div>
-          <div class="prevWordItem">{{ prevWord.meaning }}</div>
+          <div class="prevWordItem" v-if="!optionsStore.isMeaningHidden">
+            {{ prevWord.meaning }}
+          </div>
         </el-card>
         <div :class="{ shake: shake }">
           <el-card id="currWord" :body-style="{ padding: '0px' }">
@@ -30,7 +32,9 @@
               </div>
             </template>
             <div class="currWordItem">{{ currWord.phonetic }}</div>
-            <div class="currWordItem">{{ currWord.meaning }}</div>
+            <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
+              {{ currWord.meaning }}
+            </div>
           </el-card>
         </div>
         <el-card
@@ -47,7 +51,9 @@
             </div>
           </template>
           <div class="nextWordItem">{{ nextWord.phonetic }}</div>
-          <div class="nextWordItem">{{ nextWord.meaning }}</div>
+          <div class="nextWordItem" v-if="!optionsStore.isMeaningHidden">
+            {{ nextWord.meaning }}
+          </div>
         </el-card>
       </div>
       <div id="inputArea">

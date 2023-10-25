@@ -10,6 +10,9 @@
       <el-form-item :label="$t('options.hideWord')">
         <el-switch v-model="optionsStore.isWordHidden" />
       </el-form-item>
+      <el-form-item :label="$t('options.hideMeaning')">
+        <el-switch v-model="optionsStore.isMeaningHidden" />
+      </el-form-item>
       <el-form-item :label="$t('options.enableSound')">
         <el-switch v-model="optionsStore.isSoundEnabled" />
       </el-form-item>
