@@ -13,10 +13,6 @@ export const useOptionsStore = defineStore(
     const volume = ref(50);
     const lang = ref(i18n.global.locale.value);
 
-    function setLang() {
-      i18n.global.locale.value = lang.value;
-    }
-
     return {
       autoNext,
       showPrevNext,
@@ -25,7 +21,6 @@ export const useOptionsStore = defineStore(
       isSoundEnabled,
       volume,
       lang,
-      setLang,
     };
   },
   {

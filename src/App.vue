@@ -37,10 +37,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref, watch } from "vue";
 import router from "./router/index";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
+import { i18n } from "./main";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);
@@ -54,9 +55,15 @@ function logout() {
 }
 
 const optionsStore = useOptionsStore();
-onMounted(() => {
-  optionsStore.setLang();
-});
+watch(
+  () => optionsStore.lang,
+  (value) => {
+    i18n.global.locale.value = value;
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <style scoped>
