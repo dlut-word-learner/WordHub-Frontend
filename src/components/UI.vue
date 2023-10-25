@@ -250,9 +250,9 @@ const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const sounds = [correctSound, wrongSound, typingSound];
 watch(
   () => optionsStore.volume,
-  (value) => {
-    sounds.forEach((sound) => sound.volume(value / 100));
-    words.value.forEach((word) => word.sound.volume(optionsStore.volume / 100));
+  (volume) => {
+    sounds.forEach((sound) => sound.volume(volume / 100));
+    words.value.forEach((word) => word.sound.volume(volume / 100));
   },
   { immediate: true },
 );

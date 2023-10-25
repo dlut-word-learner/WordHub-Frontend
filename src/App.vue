@@ -60,9 +60,7 @@ watch(
   (value) => {
     i18n.global.locale.value = value;
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 );
 </script>
 
