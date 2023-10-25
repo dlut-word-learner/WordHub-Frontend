@@ -13,13 +13,8 @@
           :body-style="{ padding: '0px' }"
           v-if="prevWord.word != ''"
         >
-          <template #header v-if="!optionsStore.isWordHidden">
+          <template #header>
             <div id="prevWordContent">{{ prevWord.word }}</div>
-          </template>
-          <template #header v-else>
-            <div id="prevWordContent">
-              {{ "_ ".repeat(prevWord.word.length) }}
-            </div>
           </template>
           <div id="prevWordPhone">{{ prevWord.phonetic }}</div>
         </el-card>
