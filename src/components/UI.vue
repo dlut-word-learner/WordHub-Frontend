@@ -36,7 +36,7 @@
               <img
                 src="../assets/img/speaker.png"
                 class="speaker"
-                @click="playWordPhone"
+                @click="playWordSound"
               />
             </div>
             <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
@@ -287,7 +287,7 @@ function loadWord() {
   isCorrect.value = false;
   hiddenWord.value = "_ ".repeat(currWord.value.word.length);
 
-  playWordPhone();
+  playWordSound();
 }
 
 function shakeWord() {
@@ -310,8 +310,8 @@ function playTypingSound() {
   if (optionsStore.isSoundEnabled) typingSound.play();
 }
 
-function playWordPhone() {
-  currWord.value.sound.play();
+function playWordSound() {
+  if (optionsStore.isSoundEnabled) currWord.value.sound.play();
 }
 
 function checkSpelling() {
