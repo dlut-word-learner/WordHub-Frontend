@@ -9,7 +9,7 @@
         />
         {{ loginStore.online ? loginStore.username : $t("app.loggedOut") }}
       </template>
-      <el-menu-item index="UserInfo">{{ $t("app.userinfo") }}</el-menu-item>
+      <el-menu-item index="user-info">{{ $t("app.userinfo") }}</el-menu-item>
       <el-menu-item @click="confirmVisible = true">
         {{ $t("app.logout") }}
       </el-menu-item>
@@ -18,8 +18,8 @@
       {{ $t("app.login") }}
     </el-menu-item>
     <el-menu-item index="dicts">{{ $t("app.dict") }}</el-menu-item>
-    <el-menu-item index="UI">{{ $t("app.ui") }}</el-menu-item>
-    <el-menu-item index="Options">{{ $t("app.options") }}</el-menu-item>
+    <el-menu-item index="ui">{{ $t("app.ui") }}</el-menu-item>
+    <el-menu-item index="options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
   <el-dialog v-model="confirmVisible" :title="$t('app.prompt')" width="30%">
     <span>{{ $t("app.logoutPrompt") }}</span>

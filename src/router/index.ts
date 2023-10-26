@@ -12,17 +12,17 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../components/Dict.vue"),
   },
   {
-    path: "/UI",
+    path: "/ui",
     name: "UI",
     component: () => import("../components/UI.vue"),
   },
   {
-    path: "/Options",
+    path: "/options",
     name: "Options",
     component: () => import("../components/Options.vue"),
   },
   {
-    path: "/UserInfo",
+    path: "/user-info",
     name: "UserInfo",
     component: () => import("../components/UserInfo.vue"),
   },

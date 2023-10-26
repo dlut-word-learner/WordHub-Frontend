@@ -42,7 +42,7 @@ function login() {
     loginStore.username = form.username;
     loginStore.password = form.password;
     loginStore.online = true;
-    router.push("/UserInfo");
+    router.push("/user-info");
     ElMessage.success(t("login.successPrompt"));
   } else ElMessage.error(t("login.errorPrompt"));
 }
