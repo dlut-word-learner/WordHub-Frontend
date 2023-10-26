@@ -3,6 +3,7 @@ export const messages = {
     app: {
       login: "登录",
       logout: "退出登录",
+      dict: "词典",
       ui: "UI",
       options: "选项",
       loggedOut: "未登录",
@@ -20,6 +21,10 @@ export const messages = {
       inputPrompt: "请输入用户名和密码",
       successPrompt: "登录成功",
       errorPrompt: "用户名或密码错误",
+    },
+    dict: {
+      English: "英语词典",
+      Japanese: "日语词典",
     },
     ui: {
       typingToStart: "键入以开始",
@@ -64,6 +69,7 @@ export const messages = {
     app: {
       login: "Login",
       logout: "Logout",
+      dict: "Dictionary",
       ui: "UI",
       options: "Options",
       loggedOut: "Logged out",
@@ -81,6 +87,10 @@ export const messages = {
       inputPrompt: "Please input your username and password",
       successPrompt: "Logged in successfully",
       errorPrompt: "Username or password is incorrect",
+    },
+    dict: {
+      English: "English Dictionary",
+      Japanese: "Japanese Dictionary",
     },
     ui: {
       typingToStart: "Type to start",
@@ -127,6 +137,7 @@ export const messages = {
     app: {
       login: "登录",
       logout: "退出登录",
+      dict: "词典",
       ui: "UI",
       options: "选项",
       loggedOut: "未登录",
@@ -144,6 +155,10 @@ export const messages = {
       inputPrompt: "请输入用户名和密码",
       successPrompt: "登录成功",
       errorPrompt: "用户名或密码错误",
+    },
+    dict: {
+      English: "英语词典",
+      Japanese: "日语词典",
     },
     ui: {
       typingToStart: "键入以开始",

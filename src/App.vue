@@ -17,6 +17,7 @@
     <el-menu-item index="/" v-if="!loginStore.online">
       {{ $t("app.login") }}
     </el-menu-item>
+    <el-menu-item index="dicts">{{ $t("app.dict") }}</el-menu-item>
     <el-menu-item index="UI">{{ $t("app.ui") }}</el-menu-item>
     <el-menu-item index="Options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
