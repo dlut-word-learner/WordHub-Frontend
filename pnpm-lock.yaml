@@ -30,8 +30,8 @@ dependencies:
     specifier: ^3.3.7
     version: 3.3.7(typescript@5.2.2)
   vue-i18n:
-    specifier: ^9.5.0
-    version: 9.5.0(vue@3.3.7)
+    specifier: ^9.6.0
+    version: 9.6.0(vue@3.3.7)
   vue-router:
     specifier: ^4.2.5
     version: 4.2.5(vue@3.3.7)
@@ -50,8 +50,8 @@ devDependencies:
     specifier: ^5.2.2
     version: 5.2.2
   unplugin-auto-import:
-    specifier: ^0.16.6
-    version: 0.16.6(@vueuse/core@10.5.0)
+    specifier: ^0.16.7
+    version: 0.16.7(@vueuse/core@10.5.0)
   unplugin-vue-components:
     specifier: ^0.25.2
     version: 0.25.2(vue@3.3.7)
@@ -319,24 +319,24 @@ packages:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
     dev: false
 
-  /@intlify/core-base@9.5.0:
-    resolution: {integrity: sha512-y3ufM1RJbI/DSmJf3lYs9ACq3S/iRvaSsE3rPIk0MGH7fp+JxU6rdryv/EYcwfcr3Y1aHFlCBir6S391hRZ57w==}
+  /@intlify/core-base@9.6.0:
+    resolution: {integrity: sha512-9xWsUFrQq4iP1amH3cEIlUHsCXO541RGRDfrKqaDhlYvMbf2qTzpSjqeL3kWw1b+rC8XWHw+cgZXa4VPdOzqfg==}
     engines: {node: '>= 16'}
     dependencies:
-      '@intlify/message-compiler': 9.5.0
-      '@intlify/shared': 9.5.0
+      '@intlify/message-compiler': 9.6.0
+      '@intlify/shared': 9.6.0
     dev: false
 
-  /@intlify/message-compiler@9.5.0:
-    resolution: {integrity: sha512-CAhVNfEZcOVFg0/5MNyt+OFjvs4J/ARjCj2b+54/FvFP0EDJI5lIqMTSDBE7k0atMROSP0SvWCkwu/AZ5xkK1g==}
+  /@intlify/message-compiler@9.6.0:
+    resolution: {integrity: sha512-GucIIYA2H86gdf/lKHAahfLpyYm9Q1IUc/yUEMk8wwwfrzBwuYmTDg90ooed7eRVx2N/omyDyuhKV4cRp3b+DQ==}
     engines: {node: '>= 16'}
     dependencies:
-      '@intlify/shared': 9.5.0
+      '@intlify/shared': 9.6.0
       source-map-js: 1.0.2
     dev: false
 
-  /@intlify/shared@9.5.0:
-    resolution: {integrity: sha512-tAxV14LMXZDZbu32XzLMTsowNlgJNmLwWHYzvMUl6L8gvQeoYiZONjY7AUsqZW8TOZDX9lfvF6adPkk9FSRdDA==}
+  /@intlify/shared@9.6.0:
+    resolution: {integrity: sha512-vZeID7kn10rhgRYZQvjULTOYXDGnC0j49HI0AD9CK08aj4nWmlPai/8awTsMg0qrfHVMTna8ZMNmBZNyFAUCfA==}
     engines: {node: '>= 16'}
     dev: false
 
@@ -826,6 +826,14 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
+  /local-pkg@0.5.0:
+    resolution: {integrity: sha512-ok6z3qlYyCDS4ZEU27HaU6x/xZa9Whf8jD4ptH5UZTQYZVYeb9bnZ3ojVhiJNLiXK1Hfc0GNbLXcmZ5plLDDBg==}
+    engines: {node: '>=14'}
+    dependencies:
+      mlly: 1.4.2
+      pkg-types: 1.0.3
+    dev: true
+
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
@@ -1086,8 +1094,8 @@ packages:
       - rollup
     dev: true
 
-  /unplugin-auto-import@0.16.6(@vueuse/core@10.5.0):
-    resolution: {integrity: sha512-M+YIITkx3C/Hg38hp8HmswP5mShUUyJOzpifv7RTlAbeFlO2Tyw0pwrogSSxnipHDPTtI8VHFBpkYkNKzYSuyA==}
+  /unplugin-auto-import@0.16.7(@vueuse/core@10.5.0):
+    resolution: {integrity: sha512-w7XmnRlchq6YUFJVFGSvG1T/6j8GrdYN6Em9Wf0Ye+HXgD/22kont+WnuCAA0UaUoxtuvRR1u/mXKy63g/hfqQ==}
     engines: {node: '>=14'}
     peerDependencies:
       '@nuxt/kit': ^3.2.2
@@ -1102,7 +1110,7 @@ packages:
       '@rollup/pluginutils': 5.0.5
       '@vueuse/core': 10.5.0(vue@3.3.7)
       fast-glob: 3.3.1
-      local-pkg: 0.4.3
+      local-pkg: 0.5.0
       magic-string: 0.30.5
       minimatch: 9.0.3
       unimport: 3.4.0
@@ -1198,14 +1206,14 @@ packages:
     dependencies:
       vue: 3.3.7(typescript@5.2.2)
 
-  /vue-i18n@9.5.0(vue@3.3.7):
-    resolution: {integrity: sha512-NiI3Ph1qMstNf7uhYh8trQBOBFLxeJgcOxBq51pCcZ28Vs18Y7BDS58r8HGDKCYgXdLUYqPDXdKatIF4bvBVZg==}
+  /vue-i18n@9.6.0(vue@3.3.7):
+    resolution: {integrity: sha512-DSUaHmc2qpXpB0oeHXrW4JtOXnzpmAeaPopDIlubRyXkxIdbzGTsQekZYrCoI3rCEouYKwD1tIw01/YYSYqWAw==}
     engines: {node: '>= 16'}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
-      '@intlify/core-base': 9.5.0
-      '@intlify/shared': 9.5.0
+      '@intlify/core-base': 9.6.0
+      '@intlify/shared': 9.6.0
       '@vue/devtools-api': 6.5.1
       vue: 3.3.7(typescript@5.2.2)
     dev: false
