@@ -7,7 +7,9 @@
           src="/default-avatar.png"
           v-if="loginStore.online"
         />
-        {{ loginStore.online ? loginStore.username : $t("app.loggedOut") }}
+        {{
+          loginStore.online ? loginStore.userVo.username : $t("app.loggedOut")
+        }}
       </template>
       <el-menu-item index="user-info">{{ $t("app.userinfo") }}</el-menu-item>
       <el-menu-item @click="confirmVisible = true">
@@ -50,8 +52,7 @@ const confirmVisible = ref(false);
 function logout() {
   confirmVisible.value = false;
   loginStore.online = false;
-  loginStore.username = "";
-  loginStore.password = "";
+  loginStore.userVo = { id: "", username: "", email: "", score: 0, role: 0 };
   router.push("/");
 }
 

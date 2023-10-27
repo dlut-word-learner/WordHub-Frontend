@@ -1,6 +1,6 @@
 <template>
   <router-view></router-view>
-  <div id="loginPanel">
+  <div id="body">
     <img src="/wordhub.png" width="100" height="100" />
     <h2>{{ $t("login.userLogin") }}</h2>
     <el-form label-width="80px">
@@ -17,13 +17,17 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="login">{{ $t("login.login") }}</el-button>
+    <el-button @click="router.push('/register')">
+      {{ $t("login.register") }}
+    </el-button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useLoginStore } from "../store/loginStore";
+import { UserVo, useLoginStore } from "../store/loginStore";
 import { useI18n } from "vue-i18n";
+import { axiosInstance } from "../main";
 import router from "../router/index";
 
 const { t } = useI18n();
@@ -35,21 +39,37 @@ const form = reactive({
 
 const loginStore = useLoginStore();
 
-function login() {
-  if (form.username === "" || form.password === "")
+async function login() {
+  if (form.username == "" || form.password == "") {
     ElMessage.info(t("login.inputPrompt"));
-  else if (form.username === "user" && form.password === "password") {
-    loginStore.username = form.username;
-    loginStore.password = form.password;
-    loginStore.online = true;
-    router.push("/user-info");
-    ElMessage.success(t("login.successPrompt"));
-  } else ElMessage.error(t("login.errorPrompt"));
+    return;
+  }
+
+  const { scryptSync, randomBytes } = await import("crypto");
+  const salt = randomBytes(32).toString("hex");
+  const hash = await scryptSync(form.password, salt, 64).toString("hex");
+
+  await axiosInstance
+    .post(
+      "/session",
+      { username: form.username, password: hash },
+      { headers: { "Content-Type": "text/json" } },
+    )
+    .then((response) => {
+      ElMessage.success(t("login.successPrompt"));
+      const userVo: UserVo = JSON.parse(response.data);
+      loginStore.userVo = userVo;
+      loginStore.online = true;
+    })
+    .catch((error) => {
+      if (error.response) ElMessage.error(t("login.userErrPrompt"));
+      else ElMessage.error(t("login.networkErrPrompt"));
+    });
 }
 </script>
 
 <style scoped>
-#loginPanel {
+#body {
   width: 400px;
   margin: 200px auto;
 }

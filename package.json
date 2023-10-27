@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",
+    "axios": "^1.5.1",
     "element-plus": "^2.4.1",
     "howler": "^2.2.4",
     "node.js": "0.0.1-security",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@types/howler": "^2.2.10",
+    "@types/node": "^20.8.9",
     "@vitejs/plugin-vue": "^4.4.0",
     "typescript": "^5.2.2",
     "unplugin-auto-import": "^0.16.7",
