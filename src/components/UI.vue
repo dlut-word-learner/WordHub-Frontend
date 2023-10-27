@@ -351,6 +351,7 @@ function finish() {
 .word-spelling-app {
   text-align: center;
   margin: auto 3em;
+  margin-top: 2em;
   font-family: Arial, sans-serif;
 }
 

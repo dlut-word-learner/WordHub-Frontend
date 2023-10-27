@@ -68,7 +68,6 @@ watch(
 
 <style scoped>
 .menu {
-  margin-bottom: 2em;
   min-width: 640px;
 }
 

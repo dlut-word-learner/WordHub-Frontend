@@ -8,7 +8,7 @@
         <el-input v-model="loginStore.userVo.username" />
       </el-form-item>
       <el-form-item :label="$t('userinfo.role')">
-        <div>{{ loginStore.userVo.role }}</div>
+        <div>{{ userRole[loginStore.userVo.role] }}</div>
       </el-form-item>
       <el-form-item :label="$t('userinfo.email')">
         <el-input type="email" v-model="loginStore.userVo.email" />
@@ -25,8 +25,12 @@
 
 <script setup lang="ts">
 import { useLoginStore } from "../store/loginStore";
+import { useI18n } from "vue-i18n";
 
 const loginStore = useLoginStore();
+const { t } = useI18n();
+
+const userRole = [t("userinfo.normalUser"), t("userinfo.admin")];
 
 function saveUserInfo() {
   // Save user information
@@ -37,5 +41,6 @@ function saveUserInfo() {
 #userInfo {
   margin-left: 2em;
   margin-right: 2em;
+  margin-top: 2em;
 }
 </style>
