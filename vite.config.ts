@@ -16,13 +16,9 @@ export default defineConfig({
     }),
   ],
   server: {
-    hmr: true,
-    open: true,
-    cors: true,
-
     proxy: {
       '^/api/*': {
-        target: 'http://localhost:25564/',
+        target: 'http://127.0.0.1:25564/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
