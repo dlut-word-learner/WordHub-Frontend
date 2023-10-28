@@ -12,6 +12,7 @@
   "dependencies": {
     "@vueuse/core": "^10.5.0",
     "axios": "^1.6.0",
+    "crypto-js": "^4.2.0",
     "element-plus": "^2.4.1",
     "howler": "^2.2.4",
     "node.js": "0.0.1-security",
@@ -24,6 +25,7 @@
     "vue-timer-hook": "^1.0.84"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.3",
     "@types/howler": "^2.2.10",
     "@types/node": "^20.8.9",
     "@vitejs/plugin-vue": "^4.4.0",

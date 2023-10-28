@@ -35,7 +35,7 @@ export const messages = {
       email: "邮箱",
       register: "注册",
       successPrompt: "注册成功",
-      errorPrompt: "注册失败，请检查网络是否正常",
+      errPrompt: "注册失败，请检查网络是否正常",
     },
     dict: {
       English: "英语词典",
@@ -123,7 +123,7 @@ export const messages = {
       invalidPwd: "Invalid Password",
       email: "E-mail",
       successPrompt: "Registered successfully",
-      errorPrompt: "Register failed, please check network status",
+      errPrompt: "Register failed, please check network status",
       register: "Register",
     },
     dict: {
@@ -214,7 +214,7 @@ export const messages = {
       email: "邮箱",
       register: "注册",
       successPrompt: "注册成功",
-      errorPrompt: "注册失败，请检查网络是否正常",
+      errPrompt: "注册失败，请检查网络是否正常",
     },
     dict: {
       English: "英语词典",

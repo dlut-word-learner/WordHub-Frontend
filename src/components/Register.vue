@@ -31,6 +31,7 @@
 import { reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import router from "../router";
+import sha3 from "crypto-js/sha3";
 import axios from "axios";
 
 const form = reactive({
@@ -41,21 +42,20 @@ const form = reactive({
 
 const { t } = useI18n();
 
-async function register() {
+function register() {
   if (form.username == "" || form.password == "" || form.email == "") {
     ElMessage.info(t("register.inputPrompt"));
+    return;
   }
 
   if (!checkPasswd()) return;
-  // const { scryptSync } = await import("node:crypto");
-  // const salt = randomBytes(32).toString("hex");
-  // const salt = "1".repeat(32);
-  // const hash = await scryptSync(form.password, salt, 64).toString("hex");
+
+  const hash = sha3(form.password).toString();
 
   axios
     .post(
       "/api/users",
-      { username: form.username, password: form.password, email: form.email },
+      { username: form.username, password: hash, email: form.email },
       { headers: { "Content-Type": "multipart/form-data" } },
     )
     .then(() => {

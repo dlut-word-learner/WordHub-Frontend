@@ -27,8 +27,8 @@
 import { reactive } from "vue";
 import { UserVo, useLoginStore } from "../store/loginStore";
 import { useI18n } from "vue-i18n";
-// import { axiosInstance } from "../main";
 import router from "../router/index";
+import sha3 from "crypto-js/sha3";
 import axios from "axios";
 
 const { t } = useI18n();
@@ -40,20 +40,18 @@ const form = reactive({
 
 const loginStore = useLoginStore();
 
-async function login() {
+function login() {
   if (form.username == "" || form.password == "") {
     ElMessage.info(t("login.inputPrompt"));
     return;
   }
 
-  // const { scryptSync, randomBytes } = await import("crypto");
-  // const salt = randomBytes(32).toString("hex");
-  // const hash = await scryptSync(form.password, salt, 64).toString("hex");
+  const hash = sha3(form.password).toString();
 
   axios
     .post(
       "/api/session",
-      { username: form.username, password: form.password },
+      { username: form.username, password: hash },
       { headers: { "Content-Type": "application/json; charset=UTF-8" } },
     )
     .then((response) => {
