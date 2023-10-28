@@ -35,7 +35,7 @@
         type="file"
         id="uploads"
         style="position: absolute; clip: rect(0 0 0 0)"
-        accept="image/png, image/jpeg, image/gif, image/jpg"
+        accept="image/bmp, image/png, image/jpeg, image/jpg, image/gif"
         @change="uploadImg($event)"
       />
       <div id="cropper" v-if="!isAvatarDef">
@@ -125,18 +125,18 @@ function checkPasswd(): boolean {
   return false;
 }
 
-function uploadImg(e: any) {
-  const file = e.target.files[0];
-  if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
+function uploadImg(event: any) {
+  const file = event.target.files[0];
+  if (
+    !/\.(bmp|gif|jpg|jpeg|png|BMP|GIF|JPG|JPEG|PNG)$/.test(event.target.value)
+  )
     ElMessage.error(t("register.avatarTypeErr"));
-    return false;
-  }
 
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = (event) => {
     let data: string;
-    if (typeof e.target?.result === "object" && e.target?.result) {
-      data = window.URL.createObjectURL(new Blob([e.target?.result]));
+    if (typeof event.target?.result === "object" && event.target?.result) {
+      data = window.URL.createObjectURL(new Blob([event.target?.result]));
       option.img = data;
     }
   };
