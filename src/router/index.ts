@@ -29,7 +29,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/user-info",
     name: "UserInfo",
-    component: () => import("../components/UserInfo.vue"),
+    component: () => import("../components/UserInfo/UserInfo.vue"),
+    children: [
+      {
+        path: "basic",
+        component: () => import("../components/UserInfo/Basic.vue"),
+      },
+      {
+        path: "change-pwd",
+        component: () => import("../components/UserInfo/ChangePwd.vue"),
+      },
+    ],
   },
 ];
 

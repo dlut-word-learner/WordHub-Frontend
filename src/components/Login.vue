@@ -27,8 +27,9 @@
 import { reactive } from "vue";
 import { UserVo, useLoginStore } from "../store/loginStore";
 import { useI18n } from "vue-i18n";
-import { axiosInstance } from "../main";
+// import { axiosInstance } from "../main";
 import router from "../router/index";
+import axios from "axios";
 
 const { t } = useI18n();
 
@@ -45,15 +46,15 @@ async function login() {
     return;
   }
 
-  const { scryptSync, randomBytes } = await import("crypto");
-  const salt = randomBytes(32).toString("hex");
-  const hash = await scryptSync(form.password, salt, 64).toString("hex");
+  // const { scryptSync, randomBytes } = await import("crypto");
+  // const salt = randomBytes(32).toString("hex");
+  // const hash = await scryptSync(form.password, salt, 64).toString("hex");
 
-  await axiosInstance
+  axios
     .post(
       "/session",
-      { username: form.username, password: hash },
-      { headers: { "Content-Type": "text/json" } },
+      { username: form.username, password: form.password },
+      { headers: { "Content-Type": "text/json; charset=UTF-8" } },
     )
     .then((response) => {
       ElMessage.success(t("login.successPrompt"));

@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Basic: typeof import('./src/components/UserInfo/Basic.vue')['default']
+    ChangePwd: typeof import('./src/components/UserInfo/ChangePwd.vue')['default']
     Dict: typeof import('./src/components/Dict.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -34,6 +36,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UI: typeof import('./src/components/UI.vue')['default']
-    UserInfo: typeof import('./src/components/UserInfo.vue')['default']
+    UserInfo: typeof import('./src/components/UserInfo/UserInfo.vue')['default']
   }
 }

@@ -11,7 +11,7 @@ export const messages = {
       logoutPrompt: "确定要退出登录吗？",
       confirm: "确定",
       cancel: "取消",
-      userinfo: "个人资料",
+      userInfo: "个人资料",
     },
     login: {
       userLogin: "用户登录",
@@ -66,17 +66,27 @@ export const messages = {
       lang: "语言",
       darkMode: "深色模式",
     },
-    userinfo: {
-      id: "ID",
-      username: "用户名",
-      role: "用户组",
-      normalUser: "普通用户",
-      admin: "管理员",
-      email: "邮箱",
-      score: "积分",
-      save: "保存",
+    userInfo: {
+      nav: {
+        basic: "基本信息",
+        changePwd: "修改密码",
+      },
+      basic: {
+        id: "ID",
+        username: "用户名",
+        role: "用户组",
+        normalUser: "普通用户",
+        admin: "管理员",
+        email: "邮箱",
+        score: "积分",
+        save: "保存",
+      },
+      changePwd: {
+        originalPwd: "原密码",
+        newPasswd: "新密码",
+      },
     },
-  },
+ },
   en: {
     app: {
       login: "Login",
@@ -89,7 +99,7 @@ export const messages = {
       logoutPrompt: "Are you sure you want to logout?",
       confirm: "Confirm",
       cancel: "Cancel",
-      userinfo: "My Profile",
+      userInfo: "My Profile",
     },
     login: {
       userLogin: "User Login",
@@ -147,16 +157,26 @@ export const messages = {
       lang: "Language",
       darkMode: "Dark mode",
     },
-    userinfo: {
-      id: "ID",
-      username: "Username",
-      role: "User Group",
-      normalUser: "Users",
-      admin: "Administrators",
-      email: "E-mail",
-      score: "Score",
-      save: "Save",
-    },
+    userInfo: {
+      nav: {
+        basic: "Basic Information",
+        changePwd: "Change Password",
+      },
+      basic: {
+        id: "ID",
+        username: "Username",
+        role: "User Group",
+        normalUser: "Users",
+        admin: "Administrators",
+        email: "E-mail",
+        score: "Score",
+        save: "Save",
+      },
+      changePwd: {
+        originalPwd: "Original Password",
+        newPasswd: "New Password",
+      },
+   },
   },
   ja: {
     app: {
@@ -170,7 +190,7 @@ export const messages = {
       logoutPrompt: "确定要退出登录吗？",
       confirm: "确定",
       cancel: "取消",
-      userinfo: "个人资料",
+      userInfo: "个人资料",
     },
     login: {
       userLogin: "用户登录",
@@ -225,15 +245,25 @@ export const messages = {
       lang: "语言",
       darkMode: "深色模式",
     },
-    userinfo: {
-      id: "ID",
-      username: "用户名",
-      role: "用户组",
-      normalUser: "普通用户",
-      admin: "管理员",
-      email: "邮箱",
-      score: "积分",
-      save: "保存",
+    userInfo: {
+      nav: {
+        basic: "基本信息",
+        changePwd: "修改密码",
+      },
+      basic: {
+        id: "ID",
+        username: "用户名",
+        role: "用户组",
+        normalUser: "普通用户",
+        admin: "管理员",
+        email: "邮箱",
+        score: "积分",
+        save: "保存",
+      },
+      changePwd: {
+        originalPwd: "原密码",
+        newPasswd: "新密码",
+      },
     },
   },
 };

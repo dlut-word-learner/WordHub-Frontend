@@ -11,7 +11,7 @@
           loginStore.online ? loginStore.userVo.username : $t("app.loggedOut")
         }}
       </template>
-      <el-menu-item index="user-info">{{ $t("app.userinfo") }}</el-menu-item>
+      <el-menu-item index="user-info">{{ $t("app.userInfo") }}</el-menu-item>
       <el-menu-item @click="confirmVisible = true">
         {{ $t("app.logout") }}
       </el-menu-item>

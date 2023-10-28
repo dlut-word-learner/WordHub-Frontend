@@ -46,15 +46,16 @@ async function register() {
     ElMessage.info(t("register.inputPrompt"));
   }
 
-  if (checkPasswd()) return;
-  const { scryptSync, randomBytes } = await import("crypto");
-  const salt = randomBytes(32).toString("hex");
-  const hash = await scryptSync(form.password, salt, 64).toString("hex");
+  if (!checkPasswd()) return;
+  // const { scryptSync } = await import("node:crypto");
+  // const salt = randomBytes(32).toString("hex");
+  // const salt = "1".repeat(32);
+  // const hash = await scryptSync(form.password, salt, 64).toString("hex");
 
   await axiosInstance
     .post(
       "/user",
-      { username: form.username, password: hash, email: form.email },
+      { username: form.username, password: form.password, email: form.email },
       { headers: { "Content-Type": "multipart/form-data" } },
     )
     .then(() => {

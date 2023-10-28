@@ -15,4 +15,13 @@ export default defineConfig({
       dts: true,
     }),
   ],
+  server: {
+    hmr: true,
+    open: true,
+    cors: true,
+
+    proxy: {
+      '/session': 'http://localhost:8181/',
+    },
+  },
 })

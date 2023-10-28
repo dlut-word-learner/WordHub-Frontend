@@ -23,8 +23,6 @@ export const i18n = createI18n({
   messages,
 });
 
-export const axiosInstance = axios.create({
-  baseURL: "http://localhost:8181/",
-});
+export const axiosInstance = axios.create();
 
 app.use(router).use(pinia).use(i18n).mount("#app");
