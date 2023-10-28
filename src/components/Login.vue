@@ -54,7 +54,7 @@ async function login() {
     .post(
       "/api/session",
       { username: form.username, password: form.password },
-      { headers: { "Content-Type": "text/json; charset=UTF-8" } },
+      { headers: { "Content-Type": "application/json; charset=UTF-8" } },
     )
     .then((response) => {
       ElMessage.success(t("login.successPrompt"));
