@@ -46,14 +46,12 @@ function login() {
     return;
   }
 
-  const hash = sha3(form.password).toString();
+  form.password = sha3(form.password).toString();
 
   axios
-    .post(
-      "/api/session",
-      { username: form.username, password: hash },
-      { headers: { "Content-Type": "application/json; charset=UTF-8" } },
-    )
+    .post("/api/session", form, {
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+    })
     .then((response) => {
       ElMessage.success(t("login.successPrompt"));
       const userVo: UserVo = JSON.parse(response.data);
