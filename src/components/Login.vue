@@ -52,7 +52,7 @@ async function login() {
 
   axios
     .post(
-      "/session",
+      "/api/session",
       { username: form.username, password: form.password },
       { headers: { "Content-Type": "text/json; charset=UTF-8" } },
     )

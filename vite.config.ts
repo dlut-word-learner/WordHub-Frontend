@@ -21,7 +21,11 @@ export default defineConfig({
     cors: true,
 
     proxy: {
-      '/session': 'http://localhost:8181/',
+      '^/api/*': {
+        target: 'http://localhost:25564/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
 })

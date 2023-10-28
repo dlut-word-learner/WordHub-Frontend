@@ -30,8 +30,8 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useI18n } from "vue-i18n";
-import { axiosInstance } from "../main";
 import router from "../router";
+import axios from "axios";
 
 const form = reactive({
   username: "",
@@ -52,9 +52,9 @@ async function register() {
   // const salt = "1".repeat(32);
   // const hash = await scryptSync(form.password, salt, 64).toString("hex");
 
-  await axiosInstance
+  axios
     .post(
-      "/user",
+      "/api/users",
       { username: form.username, password: form.password, email: form.email },
       { headers: { "Content-Type": "multipart/form-data" } },
     )

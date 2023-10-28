@@ -86,7 +86,7 @@ export const messages = {
         newPasswd: "新密码",
       },
     },
- },
+  },
   en: {
     app: {
       login: "Login",
@@ -176,7 +176,7 @@ export const messages = {
         originalPwd: "Original Password",
         newPasswd: "New Password",
       },
-   },
+    },
   },
   ja: {
     app: {

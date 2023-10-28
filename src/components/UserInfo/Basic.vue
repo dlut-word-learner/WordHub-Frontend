@@ -16,7 +16,7 @@
       <el-form-item :label="$t('userInfo.basic.score')">
         <div>{{ loginStore.userVo.score }}</div>
       </el-form-item>
-   </el-form>
+    </el-form>
     <el-button type="primary" @click="saveUserInfo">
       {{ $t("userInfo.basic.save") }}
     </el-button>
