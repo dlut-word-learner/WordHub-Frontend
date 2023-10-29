@@ -43,6 +43,10 @@ const routes: Array<RouteRecordRaw> = [
         path: "change-avatar",
         component: () => import("../components/UserInfo/ChangeAvatar.vue"),
       },
+      {
+        path: "delete-user",
+        component: () => import("../components/UserInfo/DeleteUser.vue"),
+      },
     ],
   },
 ];

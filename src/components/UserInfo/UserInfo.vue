@@ -11,6 +11,9 @@
         <el-menu-item index="/user-info/change-avatar">
           <div class="navItem">{{ $t("userInfo.nav.changeAvatar") }}</div>
         </el-menu-item>
+        <el-menu-item index="/user-info/delete-user">
+          <div class="navItem">{{ $t("userInfo.nav.deleteUser") }}</div>
+        </el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="22">
