@@ -56,7 +56,7 @@ function login() {
     )
     .then((response) => {
       ElMessage.success(t("login.successPrompt"));
-      const userVo: UserVo = JSON.parse(response.data);
+      const userVo: UserVo = response.data;
       loginStore.userVo = userVo;
       loginStore.password = form.password;
       loginStore.online = true;
