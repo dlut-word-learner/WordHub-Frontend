@@ -59,7 +59,7 @@ const form = reactive({
   username: "",
   password: "",
   email: "",
-  avatar: new FormData(),
+  avatar: new Blob(),
 });
 
 const { t } = useI18n();
@@ -90,27 +90,21 @@ function register() {
 
   if (!checkPasswd()) return;
 
-  if (!isAvatarDef.value) {
-    cropper?.value?.getCropBlob((data: Blob) => {
-      form.avatar.append("avatar", window.URL.createObjectURL(data));
-    });
-  }
+  const formData = new FormData();
+  formData.append("username", form.username);
+  formData.append("password", sha3(form.password).toString());
+  formData.append("email", form.email);
 
-  const hash = sha3(form.password).toString();
+  cropper?.value?.getCropBlob((data: Blob) => {
+    form.avatar = data;
+  });
+
+  formData.append("avatar", form.avatar);
 
   axios
-    .post(
-      "/api/users",
-      {
-        username: form.username,
-        password: hash,
-        email: form.email,
-        avatar: form.avatar,
-      },
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      },
-    )
+    .post("/api/users", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
     .then(() => {
       ElMessage.success(t("register.successPrompt"));
       router.push("/");
