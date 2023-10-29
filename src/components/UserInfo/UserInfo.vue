@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="2">
-      <el-menu id="menu" default-active="1" :router="true">
+      <el-menu id="menu" default-active="/user-info/basic" :router="true">
         <el-menu-item index="/user-info/basic">
           <div class="navItem">{{ $t("userInfo.nav.basic") }}</div>
         </el-menu-item>
@@ -22,7 +22,11 @@
   </el-row>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import router from "../../router";
+
+router.push("/user-info/basic");
+</script>
 
 <style scoped>
 #menu {
