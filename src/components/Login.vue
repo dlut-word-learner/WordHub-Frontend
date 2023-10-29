@@ -59,7 +59,6 @@ function login() {
       const userVo: UserVo = response.data;
       loginStore.userVo = userVo;
       loginStore.password = form.password;
-      loginStore.online = true;
     })
     .catch((error) => {
       if (error.response) ElMessage.error(t("login.userErrPrompt"));

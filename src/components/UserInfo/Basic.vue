@@ -2,19 +2,21 @@
   <div id="body">
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userInfo.basic.id')">
-        <div>{{ loginStore.userVo.id }}</div>
+        <div>{{ loginStore.userVo?.id }}</div>
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.username')">
         <el-input v-model="form.username" />
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.role')">
-        <div>{{ userRole[loginStore.userVo.role] }}</div>
+        <div>
+          {{ loginStore.userVo ? userRole[loginStore.userVo.role] : "" }}
+        </div>
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.email')">
         <el-input type="email" v-model="form.email" />
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.score')">
-        <div>{{ loginStore.userVo.score }}</div>
+        <div>{{ loginStore.userVo?.score }}</div>
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="saveUserInfo">
@@ -49,8 +51,10 @@ axios
     ElMessage.error(t("userInfo.basic.errGetInfo"));
   });
 
-form.username = loginStore.userVo.username;
-form.email = loginStore.userVo.email;
+if (loginStore.userVo) {
+  form.username = loginStore.userVo.username;
+  form.email = loginStore.userVo.email;
+}
 
 function saveUserInfo() {
   if (form.username == "" || form.email == "") {

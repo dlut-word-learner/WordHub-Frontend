@@ -1,14 +1,14 @@
 <template>
   <el-menu class="menu" mode="horizontal" :router="true">
-    <el-sub-menu index="2" v-if="loginStore.online">
+    <el-sub-menu index="2" v-if="loginStore.userVo">
       <template #title>
         <el-avatar
           class="avatar"
           src="/default-avatar.png"
-          v-if="loginStore.online"
+          v-if="loginStore.userVo"
         />
         {{
-          loginStore.online ? loginStore.userVo.username : $t("app.loggedOut")
+          loginStore.userVo ? loginStore.userVo?.username : $t("app.loggedOut")
         }}
       </template>
       <el-menu-item index="/user-info">{{ $t("app.userInfo") }}</el-menu-item>
@@ -16,7 +16,7 @@
         {{ $t("app.logout") }}
       </el-menu-item>
     </el-sub-menu>
-    <el-menu-item index="/" v-if="!loginStore.online">
+    <el-menu-item index="/" v-if="!loginStore.userVo">
       {{ $t("app.login") }}
     </el-menu-item>
     <el-menu-item index="/dicts">{{ $t("app.dict") }}</el-menu-item>
@@ -51,8 +51,7 @@ const confirmVisible = ref(false);
 
 function logout() {
   confirmVisible.value = false;
-  loginStore.online = false;
-  loginStore.userVo = { id: "", username: "", email: "", score: 0, role: 0 };
+  loginStore.userVo = null;
   router.push("/");
 }
 

@@ -2,7 +2,7 @@
   <div id="body">
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userInfo.delete.username')">
-        <div>{{ loginStore.userVo.username }}</div>
+        <div>{{ loginStore.userVo?.username }}</div>
       </el-form-item>
       <el-form-item :label="$t('userInfo.delete.passwd1')">
         <el-input
