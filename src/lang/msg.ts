@@ -103,7 +103,8 @@ export const messages = {
         errPrompt: "保存失败，请检查网络是否正常",
       },
       avatar: {
-        original: "原头像",
+        errGetAvatar: "获取头像失败，请检查网络是否正常",
+        currAvatar: "当前头像",
         clickUpload: "点击上传新头像",
         save: "保存",
         successPrompt: "保存成功",
@@ -236,7 +237,8 @@ export const messages = {
         errPrompt: "Failed to save, please check your network status",
       },
       avatar: {
-        original: "Original Avatar",
+        errGetAvatar: "Failed to get avatar, please check your network status",
+        currAvatar: "Current Avatar",
         clickUpload: "Click to upload new avatar",
         save: "Save",
         successPrompt: "Saved successfully",
@@ -364,7 +366,8 @@ export const messages = {
         errPrompt: "保存失败，请检查网络是否正常",
       },
       avatar: {
-        original: "原头像",
+        errGetAvatar: "获取头像失败，请检查网络是否正常",
+        currAvatar: "当前头像",
         clickUpload: "点击上传新头像",
         save: "保存",
         successPrompt: "保存成功",

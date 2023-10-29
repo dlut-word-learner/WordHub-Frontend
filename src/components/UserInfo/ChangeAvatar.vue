@@ -1,8 +1,8 @@
 <template>
   <div id="body">
     <el-form label-position="left" label-width="50%">
-      <el-form-item :label="$t('userInfo.avatar.original')">
-        <el-avatar :size="200" :src="originalAvatar" />
+      <el-form-item :label="$t('userInfo.avatar.currAvatar')">
+        <el-avatar :size="200" :src="currAvatar" />
       </el-form-item>
       <label id="uploadBtn" for="uploads">
         {{ $t("userInfo.avatar.clickUpload") }}
@@ -32,7 +32,7 @@ import axios from "axios";
 import "vue-cropper/dist/index.css";
 import router from "../../router";
 
-const originalAvatar = ref("");
+const currAvatar = ref("");
 
 const option = reactive({
   img: "",
@@ -52,6 +52,16 @@ const option = reactive({
 const { t } = useI18n();
 const cropper = ref(null as VueCropper);
 const newAvatar = ref(new Blob());
+
+axios
+  .get("/api/users/profile/avatar")
+  .then((response) => {
+    currAvatar.value = window.URL.createObjectURL(response.data);
+  })
+  .catch((error) => {
+    console.log(error);
+    ElMessage.error(t("userInfo.avatar.errGetAvatar"));
+  });
 
 function uploadImg(event: any) {
   const file = event.target.files[0];
@@ -79,7 +89,7 @@ function saveAvatar() {
   });
 
   axios
-    .post("/api/profile/avatar", newAvatar.value, {
+    .post("/api/users/profile/avatar", newAvatar.value, {
       headers: { "Content-Type": "image/png" },
     })
     .then(() => {
