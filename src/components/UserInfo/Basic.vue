@@ -42,7 +42,7 @@ const form = reactive({
 });
 
 axios
-  .get("/api/users/profile")
+  .get("/api/users/" + loginStore.userVo?.id.toString() + "/profile")
   .then((response) => {
     loginStore.userVo = response.data;
   })
@@ -61,9 +61,8 @@ function saveUserInfo() {
     ElMessage.info(t("userInfo.basic.inputPrompt"));
     return;
   }
-
   axios
-    .post("/api/users/profile", form, {
+    .put("/api/users/" + loginStore.userVo?.id.toString() + "/profile", form, {
       headers: { "Content-Type": "application/json" },
     })
     .then(() => {

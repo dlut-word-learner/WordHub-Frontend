@@ -31,9 +31,10 @@ import { useI18n } from "vue-i18n";
 import axios from "axios";
 import "vue-cropper/dist/index.css";
 import router from "../../router";
+import { useLoginStore } from "../../store/loginStore";
 
 const currAvatar = ref("");
-
+const loginStore = useLoginStore();
 const option = reactive({
   img: "",
   size: 0,
@@ -54,8 +55,11 @@ const cropper = ref(null as VueCropper);
 const newAvatar = ref(new Blob());
 
 axios
-  .get("/api/users/profile/avatar")
+  .get("/api/users/" + loginStore.userVo?.id.toString() + "/profile/avatar", {
+    responseType: "blob",
+  })
   .then((response) => {
+    // const blob = new Blob([response.data], { type: 'image/png' });
     currAvatar.value = window.URL.createObjectURL(response.data);
   })
   .catch((error) => {
@@ -89,9 +93,13 @@ function saveAvatar() {
   });
 
   axios
-    .post("/api/users/profile/avatar", newAvatar.value, {
-      headers: { "Content-Type": "image/png" },
-    })
+    .post(
+      "/api/users/" + loginStore.userVo?.id.toString() + "/profile/avatar",
+      newAvatar.value,
+      {
+        headers: { "Content-Type": "image/png" },
+      },
+    )
     .then(() => {
       ElMessage.success(t("userInfo.avatar.successPrompt"));
       router.push("/");
