@@ -4,11 +4,19 @@
       <el-form-item :label="$t('userInfo.delete.username')">
         <div>{{ loginStore.userVo.username }}</div>
       </el-form-item>
-      <el-form-item :label="$t('userInfo.delete.pwd1')">
-        <el-input type="password" v-model="form.pwd1" :show-password="true" />
+      <el-form-item :label="$t('userInfo.delete.passwd1')">
+        <el-input
+          type="password"
+          v-model="form.passwd1"
+          :show-password="true"
+        />
       </el-form-item>
-      <el-form-item :label="$t('userInfo.delete.pwd2')">
-        <el-input type="password" v-model="form.pwd2" :show-password="true" />
+      <el-form-item :label="$t('userInfo.delete.passwd2')">
+        <el-input
+          type="password"
+          v-model="form.passwd2"
+          :show-password="true"
+        />
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="prepareDeleteUser">
@@ -43,8 +51,8 @@ import sha3 from "crypto-js/sha3";
 import router from "../../router";
 
 const form = reactive({
-  pwd1: "",
-  pwd2: "",
+  passwd1: "",
+  passwd2: "",
 });
 
 const confirmVisible = ref(false);
@@ -52,17 +60,17 @@ const loginStore = useLoginStore();
 const { t } = useI18n();
 
 function prepareDeleteUser() {
-  if (form.pwd1 == "" || form.pwd2 == "") {
+  if (form.passwd1 == "" || form.passwd2 == "") {
     ElMessage.info(t("userInfo.delete.inputPrompt"));
     return;
   }
 
-  if (form.pwd1 != form.pwd2) {
+  if (form.passwd1 != form.passwd2) {
     ElMessage.error(t("userInfo.delete.diffPrompt"));
     return;
   }
 
-  const hash = sha3(form.pwd1).toString();
+  const hash = sha3(form.passwd1).toString();
   if (hash != loginStore.password) {
     ElMessage.error(t("userInfo.delete.wrongPwdPrompt"));
     return;

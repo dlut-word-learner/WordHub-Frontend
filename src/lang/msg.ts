@@ -27,7 +27,9 @@ export const messages = {
     register: {
       userRegister: "用户注册",
       username: "用户名",
-      password: "密码",
+      passwd1: "密码",
+      passwd2: "确认密码",
+      diffPrompt: "两次密码不一致",
       passwdTip1: "1. 8-20 字符",
       passwdTip2: "2. 需同时包含字母和数字",
       inputPrompt: "请完整填写注册信息",
@@ -156,7 +158,9 @@ export const messages = {
     register: {
       userRegister: "User Register",
       username: "Username",
-      password: "Password",
+      passwd1: "Password",
+      passwd2: "Confirm Password",
+      diffPrompt: "The two passwords are inconsistent",
       passwdTip1: "1. 8-20 Characters",
       passwdTip2: "2. Both letters and digits are required",
       inputPrompt:
@@ -290,7 +294,9 @@ export const messages = {
     register: {
       userRegister: "用户注册",
       username: "用户名",
-      password: "密码",
+      passwd1: "密码",
+      passwd2: "确认密码",
+      diffPrompt: "两次密码不一致",
       passwdTip1: "1. 8-20 字符",
       passwdTip2: "2. 需同时包含字母和数字",
       inputPrompt: "请输入用户名和邮箱",

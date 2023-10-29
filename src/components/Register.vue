@@ -6,7 +6,7 @@
       <el-form-item :label="$t('register.username')">
         <el-input type="text" v-model="form.username" />
       </el-form-item>
-      <el-form-item :label="$t('register.password')">
+      <el-form-item :label="$t('register.passwd1')">
         <el-tooltip placement="top">
           <template #content>
             {{ $t("register.passwdTip1") }}<br />
@@ -14,10 +14,17 @@
           </template>
           <el-input
             type="password"
-            v-model="form.password"
+            v-model="form.passwd1"
             :show-password="true"
           />
         </el-tooltip>
+      </el-form-item>
+      <el-form-item :label="$t('register.passwd2')">
+        <el-input
+          type="password"
+          v-model="form.passwd2"
+          :show-password="true"
+        />
       </el-form-item>
       <el-form-item :label="$t('register.email')">
         <el-input type="email" v-model="form.email" />
@@ -57,7 +64,8 @@ import "vue-cropper/dist/index.css";
 
 const form = reactive({
   username: "",
-  password: "",
+  passwd1: "",
+  passwd2: "",
   email: "",
   avatar: new Blob(),
 });
@@ -83,16 +91,26 @@ const option = reactive({
 });
 
 function register() {
-  if (form.username == "" || form.password == "" || form.email == "") {
+  if (
+    form.username == "" ||
+    form.passwd1 == "" ||
+    form.passwd2 == "" ||
+    form.email == ""
+  ) {
     ElMessage.info(t("register.inputPrompt"));
     return;
   }
 
   if (!checkPasswd()) return;
 
+  if (form.passwd1 != form.passwd2) {
+    ElMessage.error(t("register.diffPrompt"));
+    return;
+  }
+
   const formData = new FormData();
   formData.append("username", form.username);
-  formData.append("password", sha3(form.password).toString());
+  formData.append("password", sha3(form.passwd1).toString());
   formData.append("email", form.email);
 
   cropper?.value?.getCropBlob((data: Blob) => {
@@ -117,10 +135,10 @@ function register() {
 
 function checkPasswd(): boolean {
   if (
-    form.password.length >= 8 &&
-    form.password.length <= 20 &&
-    form.password.match(/[a-zA-Z]/g) &&
-    form.password.match(/[0-9]/g)
+    form.passwd1.length >= 8 &&
+    form.passwd1.length <= 20 &&
+    form.passwd1.match(/[a-zA-Z]/g) &&
+    form.passwd1.match(/[0-9]/g)
   )
     return true;
 
