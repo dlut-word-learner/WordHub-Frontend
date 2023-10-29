@@ -51,7 +51,7 @@ const option = reactive({
 
 const { t } = useI18n();
 const cropper = ref(null as VueCropper);
-const newAvatar = new FormData();
+const newAvatar = ref(new Blob());
 
 function uploadImg(event: any) {
   const file = event.target.files[0];
@@ -75,12 +75,12 @@ function uploadImg(event: any) {
 
 function saveAvatar() {
   cropper?.value?.getCropBlob((data: Blob) => {
-    newAvatar.append("avatar", window.URL.createObjectURL(data));
+    newAvatar.value = data;
   });
 
   axios
-    .post("/api/profile/avatar", newAvatar, {
-      headers: { "Content-Type": "multipart/form-data" },
+    .post("/api/profile/avatar", newAvatar.value, {
+      headers: { "Content-Type": "image/png" },
     })
     .then(() => {
       ElMessage.success(t("userInfo.avatar.successPrompt"));
