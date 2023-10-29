@@ -27,7 +27,7 @@
 import { reactive } from "vue";
 import { UserVo, useLoginStore } from "../store/loginStore";
 import { useI18n } from "vue-i18n";
-import router from "../router/index";
+import router from "../router";
 import sha3 from "crypto-js/sha3";
 import axios from "axios";
 
@@ -56,6 +56,7 @@ function login() {
       ElMessage.success(t("login.successPrompt"));
       const userVo: UserVo = JSON.parse(response.data);
       loginStore.userVo = userVo;
+      loginStore.password = form.password;
       loginStore.online = true;
     })
     .catch((error) => {

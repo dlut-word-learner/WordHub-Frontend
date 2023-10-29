@@ -75,6 +75,7 @@ export const messages = {
       nav: {
         basic: "基本信息",
         changePwd: "修改密码",
+        changeAvatar: "修改头像",
       },
       basic: {
         id: "ID",
@@ -85,10 +86,26 @@ export const messages = {
         email: "邮箱",
         score: "积分",
         save: "保存",
+        inputPrompt: "请输入新用户名和邮箱",
+        successPrompt: "保存成功",
+        errPrompt: "保存失败，请检查网络是否正常",
       },
-      changePwd: {
+      pwd: {
         originalPwd: "原密码",
         newPasswd: "新密码",
+        save: "保存",
+        inputPrompt: "请输入原密码和新密码",
+        samePrompt: "新密码与原密码相同",
+        originalPwdPrompt: "原密码错误",
+        successPrompt: "保存成功",
+        errPrompt: "保存失败，请检查网络是否正常",
+      },
+      avatar: {
+        original: "原头像",
+        clickUpload: "点击上传新头像",
+        save: "保存",
+        successPrompt: "保存成功",
+        errPrompt: "保存失败，请检查网络是否正常",
       },
     },
   },
@@ -171,6 +188,7 @@ export const messages = {
       nav: {
         basic: "Basic Information",
         changePwd: "Change Password",
+        changeAvatar: "Change avatar",
       },
       basic: {
         id: "ID",
@@ -181,10 +199,27 @@ export const messages = {
         email: "E-mail",
         score: "Score",
         save: "Save",
+        inputPrompt: "Please input your new username and e-mail",
+        successPrompt: "Saved successfully",
+        errPrompt:
+          "Failed to save information, please check your network status",
       },
-      changePwd: {
+      pwd: {
         originalPwd: "Original Password",
         newPasswd: "New Password",
+        save: "Save",
+        inputPrompt: "Please input your original password and new password",
+        samePrompt: "The new password is same as the original password",
+        originalPwdPrompt: "Incorrect original password",
+        successPrompt: "Saved successfully",
+        errPrompt: "Failed to save, please check your network status",
+      },
+      avatar: {
+        original: "Original Avatar",
+        clickUpload: "Click to upload new avatar",
+        save: "Save",
+        successPrompt: "Saved successfully",
+        errPrompt: "Failed to save, please check your network status",
       },
     },
   },
@@ -264,6 +299,7 @@ export const messages = {
       nav: {
         basic: "基本信息",
         changePwd: "修改密码",
+        changeAvatar: "修改头像",
       },
       basic: {
         id: "ID",
@@ -274,10 +310,26 @@ export const messages = {
         email: "邮箱",
         score: "积分",
         save: "保存",
+        inputPrompt: "请输入新用户名和邮箱",
+        successPrompt: "保存成功",
+        errPrompt: "保存失败，请检查网络是否正常",
       },
-      changePwd: {
+      pwd: {
         originalPwd: "原密码",
         newPasswd: "新密码",
+        save: "保存",
+        inputPrompt: "请输入原密码和新密码",
+        samePrompt: "新密码与原密码相同",
+        originalPwdPrompt: "原密码错误",
+        successPrompt: "保存成功",
+        errPrompt: "保存失败，请检查网络是否正常",
+      },
+      avatar: {
+        original: "原头像",
+        clickUpload: "点击上传新头像",
+        save: "保存",
+        successPrompt: "保存成功",
+        errPrompt: "保存失败，请检查网络是否正常",
       },
     },
   },

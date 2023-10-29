@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Basic: typeof import('./src/components/UserInfo/Basic.vue')['default']
+    ChangeAvatar: typeof import('./src/components/UserInfo/ChangeAvatar.vue')['default']
     ChangePwd: typeof import('./src/components/UserInfo/ChangePwd.vue')['default']
     Dict: typeof import('./src/components/Dict.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
@@ -20,12 +21,14 @@ declare module 'vue' {
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElProgress: typeof import('element-plus/es')['ElProgress']
     ElResult: typeof import('element-plus/es')['ElResult']
+    ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']

@@ -39,6 +39,10 @@ const routes: Array<RouteRecordRaw> = [
         path: "change-pwd",
         component: () => import("../components/UserInfo/ChangePwd.vue"),
       },
+      {
+        path: "change-avatar",
+        component: () => import("../components/UserInfo/ChangeAvatar.vue"),
+      },
     ],
   },
 ];

@@ -11,7 +11,7 @@
           loginStore.online ? loginStore.userVo.username : $t("app.loggedOut")
         }}
       </template>
-      <el-menu-item index="user-info">{{ $t("app.userInfo") }}</el-menu-item>
+      <el-menu-item index="/user-info">{{ $t("app.userInfo") }}</el-menu-item>
       <el-menu-item @click="confirmVisible = true">
         {{ $t("app.logout") }}
       </el-menu-item>
@@ -19,9 +19,9 @@
     <el-menu-item index="/" v-if="!loginStore.online">
       {{ $t("app.login") }}
     </el-menu-item>
-    <el-menu-item index="dicts">{{ $t("app.dict") }}</el-menu-item>
-    <el-menu-item index="ui">{{ $t("app.ui") }}</el-menu-item>
-    <el-menu-item index="options">{{ $t("app.options") }}</el-menu-item>
+    <el-menu-item index="/dicts">{{ $t("app.dict") }}</el-menu-item>
+    <el-menu-item index="/ui">{{ $t("app.ui") }}</el-menu-item>
+    <el-menu-item index="/options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
   <el-dialog v-model="confirmVisible" :title="$t('app.prompt')" width="30%">
     <span>{{ $t("app.logoutPrompt") }}</span>
@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import router from "./router/index";
+import router from "./router";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { i18n } from "./main";

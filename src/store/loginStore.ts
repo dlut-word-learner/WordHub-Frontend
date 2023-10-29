@@ -20,10 +20,12 @@ export const useLoginStore = defineStore(
       role: ref(0),
     };
 
+    const password = ref("");
     const online = ref(false);
 
     return {
       userVo,
+      password,
       online,
     };
   },

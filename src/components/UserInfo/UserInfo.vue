@@ -1,17 +1,32 @@
 <template>
-  <el-col :span="3">
-    <el-menu default-active="1">
-      <el-menu-item index="/user-info/basic">
-        <div>{{ $t("userInfo.nav.basic") }}</div>
-      </el-menu-item>
-      <el-menu-item index="/user-info/change-pwd">
-        <div>{{ $t("userInfo.nav.changePwd") }}</div>
-      </el-menu-item>
-    </el-menu>
-  </el-col>
-  <router-view></router-view>
+  <el-row>
+    <el-col :span="2">
+      <el-menu id="menu" default-active="1" :router="true">
+        <el-menu-item index="/user-info/basic">
+          <div class="navItem">{{ $t("userInfo.nav.basic") }}</div>
+        </el-menu-item>
+        <el-menu-item index="/user-info/change-pwd">
+          <div class="navItem">{{ $t("userInfo.nav.changePwd") }}</div>
+        </el-menu-item>
+        <el-menu-item index="/user-info/change-avatar">
+          <div class="navItem">{{ $t("userInfo.nav.changeAvatar") }}</div>
+        </el-menu-item>
+      </el-menu>
+    </el-col>
+    <el-col :span="22">
+      <router-view></router-view>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped>
+#menu {
+  min-height: 100%;
+}
+
+.navItem {
+  margin: auto auto;
+}
+</style>
