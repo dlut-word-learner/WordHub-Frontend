@@ -42,7 +42,7 @@ const form = reactive({
 });
 
 axios
-  .get("/api/users/" + loginStore.userVo?.id.toString() + "/profile")
+  .get(`/api/users/${loginStore.userVo?.id}/profile`)
   .then((response) => {
     loginStore.userVo = response.data;
   })
@@ -62,7 +62,7 @@ function saveUserInfo() {
     return;
   }
   axios
-    .put("/api/users/" + loginStore.userVo?.id.toString() + "/profile", form, {
+    .put(`/api/users/${loginStore.userVo?.id}/profile`, form, {
       headers: { "Content-Type": "application/json" },
     })
     .then(() => {

@@ -27,11 +27,11 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { VueCropper } from "vue-cropper";
+import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
-import "vue-cropper/dist/index.css";
 import router from "../../router";
-import { useLoginStore } from "../../store/loginStore";
+import "vue-cropper/dist/index.css";
 
 const currAvatar = ref("");
 const loginStore = useLoginStore();
@@ -55,11 +55,10 @@ const cropper = ref(null as VueCropper);
 const newAvatar = ref(new Blob());
 
 axios
-  .get("/api/users/" + loginStore.userVo?.id.toString() + "/profile/avatar", {
+  .get(`/api/users/${loginStore.userVo?.id}/profile/avatar`, {
     responseType: "blob",
   })
   .then((response) => {
-    // const blob = new Blob([response.data], { type: 'image/png' });
     currAvatar.value = window.URL.createObjectURL(response.data);
   })
   .catch((error) => {
@@ -94,7 +93,7 @@ function saveAvatar() {
 
   axios
     .post(
-      "/api/users/" + loginStore.userVo?.id.toString() + "/profile/avatar",
+      `/api/users/${loginStore.userVo?.id}/profile/avatar`,
       newAvatar.value,
       {
         headers: { "Content-Type": "image/png" },
