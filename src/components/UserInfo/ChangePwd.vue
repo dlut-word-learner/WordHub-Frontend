@@ -8,10 +8,17 @@
           :show-password="true"
         />
       </el-form-item>
-      <el-form-item :label="$t('userInfo.pwd.newPasswd')">
+      <el-form-item :label="$t('userInfo.pwd.newPasswd1')">
         <el-input
           type="password"
-          v-model="form.newPasswd"
+          v-model="form.newPasswd1"
+          :show-password="true"
+        />
+      </el-form-item>
+      <el-form-item :label="$t('userInfo.pwd.newPasswd2')">
+        <el-input
+          type="password"
+          v-model="form.newPasswd2"
           :show-password="true"
         />
       </el-form-item>
@@ -32,7 +39,8 @@ import router from "../../router";
 
 const form = reactive({
   originalPwd: "",
-  newPasswd: "",
+  newPasswd1: "",
+  newPasswd2: "",
 });
 
 const loginStore = useLoginStore();
@@ -40,19 +48,28 @@ const loginStore = useLoginStore();
 const { t } = useI18n();
 
 function savePasswd() {
-  if (form.originalPwd == "" || form.newPasswd == "") {
+  if (
+    form.originalPwd == "" ||
+    form.newPasswd1 == "" ||
+    form.newPasswd2 == ""
+  ) {
     ElMessage.info(t("userInfo.pwd.inputPrompt"));
     return;
   }
 
-  if (form.originalPwd == form.newPasswd) {
+  if (form.originalPwd == form.newPasswd1) {
     ElMessage.error(t("userInfo.pwd.samePrompt"));
+    return;
+  }
+
+  if (form.newPasswd1 != form.newPasswd2) {
+    ElMessage.error(t("userInfo.pwd.diffPrompt"));
     return;
   }
 
   const passwdHash = reactive({
     original: sha3(form.originalPwd).toString(),
-    new: sha3(form.newPasswd).toString(),
+    new: sha3(form.newPasswd1).toString(),
   });
 
   if (passwdHash.original != loginStore.password) {
