@@ -79,6 +79,7 @@ export const messages = {
         deleteUser: "注销用户",
       },
       basic: {
+        errGetInfo: "获取用户信息失败，请检查网络是否正常",
         id: "ID",
         username: "用户名",
         role: "用户组",
@@ -209,6 +210,8 @@ export const messages = {
         deleteUser: "Delete User",
       },
       basic: {
+        errGetInfo:
+          "Failed to get user information, please check your network status",
         id: "ID",
         username: "Username",
         role: "User Group",
@@ -337,6 +340,7 @@ export const messages = {
         deleteUser: "注销用户",
       },
       basic: {
+        errGetInfo: "获取用户信息失败，请检查网络是否正常",
         id: "ID",
         username: "用户名",
         role: "用户组",

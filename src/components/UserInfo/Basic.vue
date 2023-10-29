@@ -29,7 +29,6 @@ import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
 import router from "../../router";
-import { onMounted } from "vue";
 
 const loginStore = useLoginStore();
 const { t } = useI18n();
@@ -40,10 +39,18 @@ const form = reactive({
   email: "",
 });
 
-onMounted(() => {
-  form.username = loginStore.userVo.username;
-  form.email = loginStore.userVo.email;
-});
+axios
+  .get("/api/users/profile")
+  .then((response) => {
+    loginStore.userVo = response.data;
+  })
+  .catch((error) => {
+    console.log(error);
+    ElMessage.error(t("userInfo.basic.errGetInfo"));
+  });
+
+form.username = loginStore.userVo.username;
+form.email = loginStore.userVo.email;
 
 function saveUserInfo() {
   if (form.username == "" || form.email == "") {
@@ -52,7 +59,7 @@ function saveUserInfo() {
   }
 
   axios
-    .post("/api/user/profile", form, {
+    .post("/api/users/profile", form, {
       headers: { "Content-Type": "application/json" },
     })
     .then(() => {
