@@ -50,17 +50,19 @@ function savePasswd() {
     return;
   }
 
-  form.originalPwd = sha3(form.originalPwd).toString();
-  if (form.originalPwd != loginStore.password) {
+  const passwdHash = reactive({
+    original: sha3(form.originalPwd).toString(),
+    new: sha3(form.newPasswd).toString(),
+  });
+
+  if (passwdHash.original != loginStore.password) {
     ElMessage.error(t("userInfo.pwd.originalPwdPrompt"));
     return;
   }
 
-  form.newPasswd = sha3(form.newPasswd).toString();
-
   // Password changing API is not yet defined
   axios
-    .post("/api/users/password", form.newPasswd, {
+    .post("/api/users/password", passwdHash.new, {
       headers: { "Content-Type": "application/json" },
     })
     .then(() => {

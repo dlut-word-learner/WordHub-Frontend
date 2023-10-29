@@ -96,12 +96,21 @@ function register() {
     });
   }
 
-  form.password = sha3(form.password).toString();
+  const hash = sha3(form.password).toString();
 
   axios
-    .post("/api/users", form, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+    .post(
+      "/api/users",
+      {
+        username: form.username,
+        password: hash,
+        email: form.email,
+        avatar: form.avatar,
+      },
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    )
     .then(() => {
       ElMessage.success(t("register.successPrompt"));
       router.push("/");
