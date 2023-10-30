@@ -45,8 +45,11 @@ export const messages = {
       errPrompt: "注册失败，请检查网络是否正常",
     },
     dict: {
-      English: "英语词典",
-      Japanese: "日语词典",
+      all: "全部词典",
+      en: "英语词典",
+      ja: "日语词典",
+      startLearn: "开始学习",
+      errGetDicts: "获取词典失败，请检查网络是否正常",
     },
     ui: {
       typingToStart: "键入以开始",
@@ -178,8 +181,12 @@ export const messages = {
       register: "Register",
     },
     dict: {
-      English: "English Dictionary",
-      Japanese: "Japanese Dictionary",
+      all: "All Dictionaries",
+      en: "English Dictionary",
+      ja: "Japanese Dictionary",
+      startLearn: "Start Learning",
+      errGetDicts:
+        "Failed to get dictionaries, please check you network status",
     },
     ui: {
       typingToStart: "Type to start",
@@ -315,8 +322,11 @@ export const messages = {
       errPrompt: "注册失败，请检查网络是否正常",
     },
     dict: {
-      English: "英语词典",
-      Japanese: "日语词典",
+      all: "全部词典",
+      en: "英语词典",
+      ja: "日语词典",
+      startLearn: "开始学习",
+      errGetDicts: "获取词典失败，请检查网络是否正常",
     },
     ui: {
       typingToStart: "键入以开始",
