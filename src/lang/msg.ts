@@ -182,8 +182,8 @@ export const messages = {
     },
     dict: {
       all: "All Dictionaries",
-      en: "English Dictionary",
-      ja: "Japanese Dictionary",
+      en: "English",
+      ja: "Japanese",
       startLearn: "Start Learning",
       errGetDicts:
         "Failed to get dictionaries, please check you network status",

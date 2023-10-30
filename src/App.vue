@@ -1,6 +1,6 @@
 <template>
-  <el-menu class="menu" mode="horizontal" :router="true">
-    <el-sub-menu index="2" v-if="loginStore.userVo">
+  <el-menu class="menu" mode="horizontal" default-active="/" :router="true">
+    <el-sub-menu index="/" v-if="loginStore.userVo">
       <template #title>
         <el-avatar
           class="avatar"
