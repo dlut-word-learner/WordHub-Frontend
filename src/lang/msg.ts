@@ -48,7 +48,8 @@ export const messages = {
       all: "全部词典",
       en: "英语词典",
       ja: "日语词典",
-      startLearn: "开始学习",
+      learn: "学习",
+      review: "复习",
       errGetDicts: "获取词典失败，请检查网络是否正常",
     },
     ui: {
@@ -184,7 +185,8 @@ export const messages = {
       all: "All Dictionaries",
       en: "English",
       ja: "Japanese",
-      startLearn: "Start Learning",
+      learn: "Learn",
+      review: "Review",
       errGetDicts:
         "Failed to get dictionaries, please check you network status",
     },
@@ -325,7 +327,8 @@ export const messages = {
       all: "全部词典",
       en: "英语词典",
       ja: "日语词典",
-      startLearn: "开始学习",
+      learn: "学习",
+      review: "复习",
       errGetDicts: "获取词典失败，请检查网络是否正常",
     },
     ui: {

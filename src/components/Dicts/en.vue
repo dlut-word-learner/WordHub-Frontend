@@ -7,7 +7,10 @@
           <div>{{ dict.lang }}</div>
         </div>
       </template>
-      <el-button class="button">{{ $t("dict.startLearn") }}</el-button>
+      <el-button @click="learn(dict.dictId)">{{ $t("dict.learn") }}</el-button>
+      <el-button @click="review(dict.dictId)">
+        {{ $t("dict.review") }}
+      </el-button>
     </el-card>
   </div>
 </template>
@@ -16,10 +19,13 @@
 import { Ref, ref } from "vue";
 import { DictVo } from "./common";
 import { useI18n } from "vue-i18n";
+import { DictAction, useDictStore } from "../../store/dictStore";
 import axios from "axios";
+import router from "../../router";
 
 const dicts: Ref<DictVo[] | null> = ref(null);
 const { t } = useI18n();
+const dictStore = useDictStore();
 
 axios
   .get("/dicts", {
@@ -34,6 +40,18 @@ axios
     console.log(error);
     ElMessage.error(t("dict.errGetDicts"));
   });
+
+function learn(dictId: number) {
+  dictStore.dictId = dictId;
+  dictStore.action = DictAction.Learn;
+  router.push("/ui");
+}
+
+function review(dictId: number) {
+  dictStore.dictId = dictId;
+  dictStore.action = DictAction.Review;
+  router.push("/ui");
+}
 </script>
 
 <style scoped>
