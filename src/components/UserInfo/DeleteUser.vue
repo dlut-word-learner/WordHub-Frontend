@@ -83,7 +83,7 @@ function deleteUser() {
   confirmVisible.value = false;
 
   axios
-    .delete("/api/users/")
+    .delete(`/api/users/${loginStore.userVo?.id}`)
     .then(() => {
       ElMessage.success(t("userInfo.delete.successPrompt"));
       router.push("/");

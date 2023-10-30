@@ -77,9 +77,8 @@ function savePasswd() {
     return;
   }
 
-  // Password changing API is not yet defined
   axios
-    .post("/api/users/password", passwdHash.new, {
+    .post(`/api/users/${loginStore.userVo?.id}/password`, passwdHash.new, {
       headers: { "Content-Type": "application/json" },
     })
     .then(() => {
