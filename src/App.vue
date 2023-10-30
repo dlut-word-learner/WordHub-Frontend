@@ -4,7 +4,7 @@
       <template #title>
         <el-avatar
           class="avatar"
-          src="/default-avatar.png"
+          :src="loginStore.avatar"
           v-if="loginStore.userVo"
         />
         {{
@@ -41,10 +41,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import router from "./router";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { i18n } from "./main";
+import router from "./router";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);

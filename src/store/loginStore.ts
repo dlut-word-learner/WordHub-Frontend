@@ -6,7 +6,7 @@ export interface UserVo {
   username: string;
   email: string;
   score: number;
-  role: number;
+  role: number; // 0 -> Users; 1 -> Administrators
 }
 
 export const useLoginStore = defineStore(
@@ -14,10 +14,12 @@ export const useLoginStore = defineStore(
   () => {
     const userVo: Ref<UserVo | null> = ref(null);
     const password = ref("");
+    const avatar = ref("");
 
     return {
       userVo,
       password,
+      avatar,
     };
   },
   {

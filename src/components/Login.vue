@@ -59,11 +59,26 @@ function login() {
       const userVo: UserVo = response.data;
       loginStore.userVo = userVo;
       loginStore.password = form.password;
+      getAvatar();
       router.push("/user-info");
     })
     .catch((error) => {
       if (error.response) ElMessage.error(t("login.userErrPrompt"));
       else ElMessage.error(t("login.networkErrPrompt"));
+    });
+}
+
+function getAvatar() {
+  axios
+    .get(`/api/users/${loginStore.userVo?.id}/profile/avatar`, {
+      responseType: "blob",
+    })
+    .then((response) => {
+      loginStore.avatar = window.URL.createObjectURL(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+      ElMessage.error(t("userInfo.avatar.errGetAvatar"));
     });
 }
 </script>
