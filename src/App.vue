@@ -52,6 +52,9 @@ const confirmVisible = ref(false);
 function logout() {
   confirmVisible.value = false;
   loginStore.userVo = null;
+  loginStore.password = "";
+  loginStore.avatar = "";
+  localStorage.removeItem("satoken");
   router.push("/");
 }
 
