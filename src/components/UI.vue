@@ -11,20 +11,20 @@
         <el-card
           id="prevWord"
           :body-style="{ padding: '0px' }"
-          v-if="prevWord.word != '' && optionsStore.showPrevNext"
+          v-if="prevWord && optionsStore.showPrevNext"
         >
           <template #header>
-            <div class="prevWordMain">{{ prevWord.word }}</div>
+            <div class="prevWordMain">{{ getWordMain(prevWord) }}</div>
           </template>
-          <div class="prevWordItem">{{ prevWord.phonetic }}</div>
+          <div class="prevWordItem">{{ getWordPhone(prevWord) }}</div>
           <div class="prevWordItem" v-if="!optionsStore.isMeaningHidden">
-            {{ prevWord.meaning }}
+            {{ prevWord.extension.meanings }}
           </div>
         </el-card>
         <div :class="{ shake: shake }">
           <el-card id="currWord" :body-style="{ padding: '0px' }">
             <template #header v-if="!optionsStore.isWordHidden">
-              <div class="currWordMain">{{ currWord.word }}</div>
+              <div class="currWordMain">{{ getWordMain(currWord) }}</div>
             </template>
             <template #header v-else>
               <div class="currWordMain">
@@ -32,7 +32,7 @@
               </div>
             </template>
             <div class="currWordItem">
-              {{ currWord.phonetic }}
+              {{ getWordPhone(currWord) }}
               <img
                 src="../assets/img/speaker.png"
                 class="speaker"
@@ -40,26 +40,26 @@
               />
             </div>
             <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
-              {{ currWord.meaning }}
+              {{ currWord?.extension.meanings }}
             </div>
           </el-card>
         </div>
         <el-card
           id="nextWord"
           :body-style="{ padding: '0px' }"
-          v-if="nextWord.word != '' && optionsStore.showPrevNext"
+          v-if="nextWord && optionsStore.showPrevNext"
         >
           <template #header v-if="!optionsStore.isWordHidden">
-            <div class="nextWordMain">{{ nextWord.word }}</div>
+            <div class="nextWordMain">{{ getWordMain(nextWord) }}</div>
           </template>
           <template #header v-else>
             <div class="nextWordMain">
               {{ "_ ".repeat(nextWord.word.length) }}
             </div>
           </template>
-          <div class="nextWordItem">{{ nextWord.phonetic }}</div>
+          <div class="nextWordItem">{{ getWordPhone(nextWord) }}</div>
           <div class="nextWordItem" v-if="!optionsStore.isMeaningHidden">
-            {{ nextWord.meaning }}
+            {{ nextWord.extension.meanings }}
           </div>
         </el-card>
       </div>
@@ -72,7 +72,7 @@
           @keypress="playTypingSound"
           @keydown="init"
           :class="{ shake: shake }"
-          :maxlength="currWord.word.length"
+          :maxlength="currWord?.wordName.length"
           :disabled="isFinished"
           :clearable="true"
         />
@@ -93,7 +93,7 @@
     <el-progress
       id="progressBar"
       :show-text="false"
-      :percentage="(currWordIndex / words.length) * 100"
+      :percentage="words ? (currWordIndex / words.length) * 100 : 0"
     />
     <div class="status-container">
       <table>
@@ -124,9 +124,13 @@
             </td>
             <td>
               {{
-                currWordIndex < words.length ? currWordIndex + 1 : currWordIndex
+                words
+                  ? currWordIndex < words.length
+                    ? currWordIndex + 1
+                    : currWordIndex
+                  : 0
               }}
-              / {{ words.length }}
+              / {{ words ? words.length : 0 }}
             </td>
             <td>
               {{
@@ -175,63 +179,27 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { Ref, ref, onMounted, watch } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
+import { DictAction, useDictStore } from "../store/dictStore";
 import { useOptionsStore } from "../store/optionsStore";
 import { useI18n } from "vue-i18n";
+import { WordVo } from "./Dicts/common";
+import axios from "axios";
 
 const { t } = useI18n();
+const dictStore = useDictStore();
 const optionsStore = useOptionsStore();
 
-const words = ref([
-  {
-    word: "apple",
-    phonetic: "AmE: [ˈæp(ə)l]",
-    sound: new Howl({ src: "src/assets/audio/apple-us.mp3" }),
-    meaning: "n. 苹果公司；【植】苹果；【植】苹果树",
-  },
-  {
-    word: "banana",
-    phonetic: "AmE: [bəˈnɑːnə]",
-    sound: new Howl({ src: "src/assets/audio/banana-us.mp3" }),
-    meaning: "n.【食】香蕉",
-  },
-  {
-    word: "cherry",
-    phonetic: "AmE: [ˈtʃɛri]",
-    sound: new Howl({ src: "src/assets/audio/cherry-us.mp3" }),
-    meaning: "n.【植】樱桃；adj. 樱桃色的",
-  },
-  {
-    word: "date",
-    phonetic: "AmE: [deɪt]",
-    sound: new Howl({ src: "src/assets/audio/date-us.mp3" }),
-    meaning: "n. 日期，约会；v. 过时，注明日期",
-  },
-]);
+const lang = dictStore.dictLang;
+const words: Ref<WordVo[] | null> = ref(null);
 const currWordIndex = ref(0);
 
-const prevWord = ref({
-  word: "",
-  phonetic: "",
-  sound: words.value[0].sound,
-  meaning: "",
-});
-const currWord = ref({
-  word: "",
-  phonetic: "",
-  sound: words.value[1].sound,
-  meaning: "",
-});
-const nextWord = ref({
-  word: "",
-  phonetic: "",
-  sound: words.value[2].sound,
-  meaning: "",
-});
-
+const prevWord: Ref<WordVo | null> = ref(null);
+const currWord: Ref<WordVo | null> = ref(null);
+const nextWord: Ref<WordVo | null> = ref(null);
 const hiddenWord = ref("");
 
 const tries = ref(0);
@@ -247,12 +215,36 @@ const confirmVisible = ref(false);
 const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
 const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
-const sounds = [correctSound, wrongSound, typingSound];
+const soundEffects = [correctSound, wrongSound, typingSound];
+const currWordSound: Ref<Howl | null> = ref(null);
+
+watch(dictStore, (dict) => {
+  const action = ref("");
+  switch (dict.action) {
+    case DictAction.Learn:
+      action.value = "learn";
+      break;
+    case DictAction.Review:
+      action.value = "review";
+      break;
+  }
+
+  axios
+    .get(`/api/dicts/${dict.dictId}/${action}`)
+    .then((response) => {
+      words.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      ElMessage.error(t("ui.errGetWords"));
+    });
+});
+
 watch(
   () => optionsStore.volume,
   (volume) => {
-    sounds.forEach((sound) => sound.volume(volume / 100));
-    words.value.forEach((word) => word.sound.volume(volume / 100));
+    soundEffects.forEach((sound) => sound.volume(volume / 100));
+    currWordSound.value?.volume(volume / 100);
   },
   { immediate: true },
 );
@@ -261,9 +253,11 @@ if (optionsStore.isWordHidden) {
   watch(
     userInput,
     (newUserInput) => {
-      hiddenWord.value =
-        newUserInput +
-        "_ ".repeat(currWord.value.word.length - newUserInput.length);
+      if (currWord.value) {
+        hiddenWord.value =
+          newUserInput +
+          "_ ".repeat(currWord.value.wordName.length - newUserInput.length);
+      }
     },
     { immediate: true },
   );
@@ -278,16 +272,69 @@ function init() {
 }
 
 function loadWord() {
-  const emptyWord = { word: "", phonetic: "" };
-  prevWord.value = words.value[currWordIndex.value - 1] || emptyWord;
+  if (!words.value) return;
+
+  prevWord.value = words.value[currWordIndex.value - 1];
   currWord.value = words.value[currWordIndex.value];
-  nextWord.value = words.value[currWordIndex.value + 1] || emptyWord;
+  nextWord.value = words.value[currWordIndex.value + 1];
+  currWordSound.value = new Howl({ src: "" });
+
+  axios
+    .get("https://dict.youdao.com/dictvoice", {
+      params: {
+        le: lang == "en" ? "eng" : "jap",
+        audio: getWordMain(currWord.value),
+      },
+    })
+    .then((response) => {
+      currWordSound.value = new Howl({ src: response.data });
+    })
+    .catch((error) => {
+      console.log(error);
+      ElMessage.error(t("ui.errGetSound"));
+    });
 
   userInput.value = "";
   isCorrect.value = false;
-  hiddenWord.value = "_ ".repeat(currWord.value.word.length);
+  hiddenWord.value = "_ ".repeat(currWord.value.wordName.length);
 
   playWordSound();
+}
+
+/**
+ * Get the main name of the word.
+ * English: return wordName
+ * Japanese: return notation excluding text in parentheses
+ */
+function getWordMain(word: WordVo | null): string {
+  if (!word) return "";
+
+  switch (lang) {
+    case "en":
+      return word.wordName;
+    case "ja":
+      return word.extension.notation.replace(/\([^)]*\)/, "");
+    default:
+      return "";
+  }
+}
+
+/**
+ * Get the pronunciation of the word.
+ * English: return usPhone (AmE) & ukPhone (BrE)
+ * Japanese: return text in parentheses in notation
+ */
+function getWordPhone(word: WordVo | null): string | undefined {
+  if (!word) return "";
+
+  switch (lang) {
+    case "en":
+      return `AmE: ${word.extension.usPhone} BrE: ${word.extension.ukPhone}`;
+    case "ja":
+      return word.extension.notation.match(/\([^)]*\)/)?.[0];
+    default:
+      return "";
+  }
 }
 
 function shakeWord() {
@@ -302,7 +349,7 @@ function promptGoToNextWord() {
 function goToNextWord() {
   tries.value++;
 
-  if (++currWordIndex.value < words.value.length) loadWord();
+  if (words.value && ++currWordIndex.value < words.value.length) loadWord();
   else finish();
 }
 
@@ -311,13 +358,13 @@ function playTypingSound() {
 }
 
 function playWordSound() {
-  if (optionsStore.isSoundEnabled) currWord.value.sound.play();
+  if (optionsStore.isSoundEnabled) currWordSound.value?.play();
 }
 
 function checkSpelling() {
-  if (userInput.value.length != currWord.value.word.length) return;
+  if (userInput.value.length != currWord.value?.wordName.length) return;
 
-  isCorrect.value = userInput.value.toLowerCase() === currWord.value.word;
+  isCorrect.value = userInput.value.toLowerCase() === currWord.value.wordName;
   if (isCorrect.value) {
     ElMessage({
       message: t("ui.correctSpelling"),

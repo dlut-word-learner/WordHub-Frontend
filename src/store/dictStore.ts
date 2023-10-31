@@ -9,12 +9,14 @@ export const enum DictAction {
 export const useDictStore = defineStore(
   "words",
   () => {
-    const dictId: Ref<number | null> = ref(null);
     const action: Ref<DictAction | null> = ref(null);
+    const dictId: Ref<number | null> = ref(null);
+    const dictLang = ref("");
 
     return {
-      dictId,
       action,
+      dictId,
+      dictLang,
     };
   },
   {

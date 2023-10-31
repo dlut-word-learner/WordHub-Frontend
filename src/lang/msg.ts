@@ -53,6 +53,8 @@ export const messages = {
       errGetDicts: "获取词典失败，请检查网络是否正常",
     },
     ui: {
+      errGetWords: "获取单词失败，请检查网络是否正常",
+      errGetSound: "获取单词发音失败，请检查网络是否正常",
       typingToStart: "键入以开始",
       goToNextWord: "下一个单词",
       prompt: "提示",
@@ -191,6 +193,9 @@ export const messages = {
         "Failed to get dictionaries, please check you network status",
     },
     ui: {
+      errGetWords: "Failed to get words, please check your network status",
+      errGetSound:
+        "Failed to get pronunciation of words, please check your network status",
       typingToStart: "Type to start",
       goToNextWord: "Next Word",
       prompt: "Prompt",
@@ -332,6 +337,8 @@ export const messages = {
       errGetDicts: "获取词典失败，请检查网络是否正常",
     },
     ui: {
+      errGetWords: "获取单词失败，请检查网络是否正常",
+      errGetSound: "获取单词发音失败，请检查网络是否正常",
       typingToStart: "键入以开始",
       goToNextWord: "下一个单词",
       prompt: "提示",

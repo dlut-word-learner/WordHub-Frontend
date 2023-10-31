@@ -42,14 +42,16 @@ axios
   });
 
 function learn(dictId: number) {
-  dictStore.dictId = dictId;
   dictStore.action = DictAction.Learn;
+  dictStore.dictId = dictId;
+  dictStore.dictLang = "en";
   router.push("/ui");
 }
 
 function review(dictId: number) {
-  dictStore.dictId = dictId;
   dictStore.action = DictAction.Review;
+  dictStore.dictId = dictId;
+  dictStore.dictLang = "en";
   router.push("/ui");
 }
 </script>
