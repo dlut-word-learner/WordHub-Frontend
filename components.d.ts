@@ -45,5 +45,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     UI: typeof import('./src/components/UI.vue')['default']
     UserInfo: typeof import('./src/components/UserInfo/UserInfo.vue')['default']
+    WordCard: typeof import('./src/components/WordCard.vue')['default']
   }
 }

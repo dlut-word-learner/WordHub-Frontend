@@ -8,62 +8,11 @@
     />
     <div class="word-container" v-if="!isFinished">
       <div class="words">
-        <el-card
-          id="prevWord"
-          :body-style="{ padding: '0px' }"
-          v-if="prevWord && optionsStore.showPrevNext"
-        >
-          <template #header>
-            <div class="prevWordMain">{{ getWordMain(prevWord) }}</div>
-          </template>
-          <div class="prevWordItem">{{ getWordPhone(prevWord) }}</div>
-          <div class="prevWordItem" v-if="!optionsStore.isMeaningHidden">
-            <div v-for="meaning in prevWord.extension.meanings">
-              {{ meaning }}
-            </div>
-          </div>
-        </el-card>
+        <WordCard id="prevWord" :isCurrWord="false" :word="prevWord" />
         <div :class="{ shake: shake }">
-          <el-card id="currWord" :body-style="{ padding: '0px' }">
-            <template #header v-if="!optionsStore.isWordHidden">
-              <div class="currWordMain">{{ getWordMain(currWord) }}</div>
-            </template>
-            <template #header v-else>
-              <div class="currWordMain">
-                {{ hiddenWord }}
-              </div>
-            </template>
-            <div class="currWordItem">
-              {{ getWordPhone(currWord) }}
-              <img
-                src="../assets/img/speaker.png"
-                class="speaker"
-                @click="playWordSound"
-              />
-            </div>
-            <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
-              {{ currWord?.extension.meanings }}
-            </div>
-          </el-card>
+          <WordCard :isCurrWord="true" :word="currWord" />
         </div>
-        <el-card
-          id="nextWord"
-          :body-style="{ padding: '0px' }"
-          v-if="nextWord && optionsStore.showPrevNext"
-        >
-          <template #header v-if="!optionsStore.isWordHidden">
-            <div class="nextWordMain">{{ getWordMain(nextWord) }}</div>
-          </template>
-          <template #header v-else>
-            <div class="nextWordMain">
-              {{ "_ ".repeat(nextWord.name.length) }}
-            </div>
-          </template>
-          <div class="nextWordItem">{{ getWordPhone(nextWord) }}</div>
-          <div class="nextWordItem" v-if="!optionsStore.isMeaningHidden">
-            {{ nextWord.extension.meanings }}
-          </div>
-        </el-card>
+        <WordCard id="nextWord" :isCurrWord="false" :word="nextWord" />
       </div>
       <div id="inputArea">
         <el-input
@@ -189,6 +138,8 @@ import { DictAction, useDictStore } from "../store/dictStore";
 import { useOptionsStore } from "../store/optionsStore";
 import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
+import { getWordMain, currWordSound, playWordSound } from "./WordCard";
+import WordCard from "./WordCard.vue";
 import axios from "axios";
 
 const { t } = useI18n();
@@ -218,7 +169,6 @@ const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
 const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const soundEffects = [correctSound, wrongSound, typingSound];
-const currWordSound: Ref<Howl | null> = ref(null);
 
 onMounted(async () => {
   const action = ref("");
@@ -276,7 +226,7 @@ function init() {
   if (!stopWatch.isRunning.value) stopWatch.start();
 }
 
-async function loadWord() {
+function loadWord() {
   if (!words.value) return;
 
   prevWord.value = words.value[currWordIndex.value - 1];
@@ -294,42 +244,6 @@ async function loadWord() {
   hiddenWord.value = "_ ".repeat(currWord.value.name.length);
 
   playWordSound();
-}
-
-/**
- * Get the main name of the word.
- * English: return name
- * Japanese: return notation excluding text in parentheses
- */
-function getWordMain(word: WordVo | null): string {
-  if (!word) return "";
-
-  switch (lang) {
-    case "en":
-      return word.name;
-    case "ja":
-      return word.extension.notation.replace(/\([^)]*\)/, "");
-    default:
-      return "";
-  }
-}
-
-/**
- * Get the pronunciation of the word.
- * English: return usphone (AmE) & ukphone (BrE)
- * Japanese: return text in parentheses in notation
- */
-function getWordPhone(word: WordVo | null): string | undefined {
-  if (!word) return "";
-
-  switch (lang) {
-    case "en":
-      return `AmE: ${word.extension.usphone} BrE: ${word.extension.ukphone}`;
-    case "ja":
-      return word.extension.notation.match(/\([^)]*\)/)?.[0];
-    default:
-      return "";
-  }
 }
 
 function shakeWord() {
@@ -350,10 +264,6 @@ function goToNextWord() {
 
 function playTypingSound() {
   if (optionsStore.isSoundEnabled) typingSound.play();
-}
-
-function playWordSound() {
-  if (optionsStore.isSoundEnabled) currWordSound.value?.play();
 }
 
 function checkSpelling() {
@@ -407,11 +317,6 @@ function finish() {
   margin-bottom: 1.5em;
 }
 
-.result {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 #nextWordButton,
 #progressBar {
   margin-top: 0.75em;
@@ -446,40 +351,12 @@ td {
   font-size: 1.5em;
 }
 
-#prevWord,
-#nextWord {
-  width: 320px;
-  margin: auto auto;
-}
-
 #prevWord {
   margin-bottom: 1em;
 }
 
 #nextWord {
   margin-top: 1em;
-}
-
-.currWordMain {
-  font-size: 3em;
-  font-weight: bold;
-}
-
-.prevWordMain,
-.nextWordMain,
-.currWordItem {
-  font-size: 1.5em;
-}
-
-.prevWordItem,
-.nextWordItem {
-  font-size: 0.9em;
-}
-
-.speaker {
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
 }
 
 .shake {
