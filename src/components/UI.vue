@@ -240,8 +240,6 @@ onMounted(() => {
       console.log(error);
       ElMessage.error(t("ui.errGetWords"));
     });
-  
-  
 });
 
 watch(
@@ -274,7 +272,7 @@ function init() {
 function loadWord() {
   console.log(words.value);
   if (words.value == null) return;
-  
+
   prevWord.value = words.value[currWordIndex.value - 1];
   currWord.value = words.value[currWordIndex.value];
   nextWord.value = words.value[currWordIndex.value + 1];
