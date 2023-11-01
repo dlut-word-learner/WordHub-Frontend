@@ -3,12 +3,12 @@
     <el-card class="dictCard" v-for="dict in dicts">
       <template #header>
         <div class="header">
-          <div>{{ dict.dictName }}</div>
-          <div>{{ dict.lang }}</div>
+          <div>{{ dict.name }}</div>
+          <div>{{ dict.language }}</div>
         </div>
       </template>
-      <el-button @click="learn(dict.dictId)">{{ $t("dict.learn") }}</el-button>
-      <el-button @click="review(dict.dictId)">
+      <el-button @click="learn(dict.id)">{{ $t("dict.learn") }}</el-button>
+      <el-button @click="review(dict.id)">
         {{ $t("dict.review") }}
       </el-button>
     </el-card>
@@ -28,7 +28,7 @@ const { t } = useI18n();
 const dictStore = useDictStore();
 
 axios
-  .get("/dicts")
+  .get("/api/dicts")
   .then((response) => {
     dicts.value = response.data;
   })
