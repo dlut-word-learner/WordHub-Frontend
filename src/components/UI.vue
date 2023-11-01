@@ -18,7 +18,9 @@
           </template>
           <div class="prevWordItem">{{ getWordPhone(prevWord) }}</div>
           <div class="prevWordItem" v-if="!optionsStore.isMeaningHidden">
-            {{ prevWord.extension.meanings }}
+            <div v-for="meaning in prevWord.extension.meanings">
+              {{ meaning }}
+            </div>
           </div>
         </el-card>
         <div :class="{ shake: shake }">
