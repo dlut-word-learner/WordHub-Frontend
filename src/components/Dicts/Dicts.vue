@@ -1,9 +1,13 @@
 <template>
   <el-row>
     <el-col :span="2">
-      <el-menu v-for="lang in langs" default-active="/dicts/all" :router="true">
-        <el-menu-item :index="`/dicts/${lang.abbr}`">
-          <div class="navItem">{{ $t(`dict.${lang.abbr}`) }}</div>
+      <el-menu
+        v-for="[_, abbr] in langs"
+        default-active="/dicts/all"
+        :router="true"
+      >
+        <el-menu-item :index="`/dicts/${abbr}`">
+          <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -23,7 +27,5 @@ router.push("/dicts/all");
 <style scoped>
 .navItem {
   margin: auto auto;
-  margin-top: 1em;
-  margin-bottom: 1em;
 }
 </style>

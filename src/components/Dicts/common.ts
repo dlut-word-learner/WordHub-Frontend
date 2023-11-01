@@ -20,8 +20,8 @@ export interface WordVo {
   };
 }
 
-export const langs: Lang[] = [
-  { fullName: "all", abbr: "all" },
-  { fullName: "English", abbr: "en" },
-  { fullName: "Japanese", abbr: "ja" },
-];
+export const langs = new Map([
+  ["all", "all"],
+  ["English", "en"],
+  ["Japanese", "ja"],
+]);
