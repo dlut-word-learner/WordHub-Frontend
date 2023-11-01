@@ -272,28 +272,18 @@ function init() {
   if (!stopWatch.isRunning.value) stopWatch.start();
 }
 
-function loadWord() {
+async function loadWord() {
   if (!words.value) return;
 
   prevWord.value = words.value[currWordIndex.value - 1];
   currWord.value = words.value[currWordIndex.value];
   nextWord.value = words.value[currWordIndex.value + 1];
-  currWordSound.value = new Howl({ src: "" });
-
-  axios
-    .get("https://dict.youdao.com/dictvoice", {
-      params: {
-        le: lang == "en" ? "eng" : "jap",
-        audio: getWordMain(currWord.value),
-      },
-    })
-    .then((response) => {
-      currWordSound.value = new Howl({ src: response.data });
-    })
-    .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("ui.errGetSound"));
-    });
+  currWordSound.value = new Howl({
+    src: `/dictYoudao/dictvoice?le=${
+      lang == "en" ? "eng" : "jap"
+    }&audio=${getWordMain(currWord.value)}`,
+    format: "mp3",
+  });
 
   userInput.value = "";
   isCorrect.value = false;
