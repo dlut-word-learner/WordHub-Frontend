@@ -5,6 +5,7 @@ import { i18n } from "../main";
 export const useOptionsStore = defineStore(
   "options",
   () => {
+    const wordsPerRound = ref(20);
     const autoNext = ref(true);
     const showPrevNext = ref(true);
     const isWordHidden = ref(false);
@@ -14,6 +15,7 @@ export const useOptionsStore = defineStore(
     const lang = ref(i18n.global.locale.value);
 
     return {
+      wordsPerRound,
       autoNext,
       showPrevNext,
       isWordHidden,

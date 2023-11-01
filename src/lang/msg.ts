@@ -70,6 +70,7 @@ export const messages = {
       finishPrompt: "恭喜，你已完成所有单词！",
     },
     options: {
+      wordsPerRound: "每轮单词数",
       autoNext: "拼写正确自动切换",
       showPrevNext: "显示上一个/下一个单词",
       hideWord: "隐藏单词",
@@ -213,6 +214,7 @@ export const messages = {
         "Congratulations, you have completed spelling all the words!",
     },
     options: {
+      wordsPerRound: "Number of words per round",
       autoNext: "Auto switching for correct spelling",
       showPrevNext: "Show previous/next word",
       hideWord: "Hide words",
@@ -359,6 +361,7 @@ export const messages = {
       finishPrompt: "おめでとうございます。すべての単語を完了しました！",
     },
     options: {
+      wordsPerRound: "1ラウンドあたりの単語数",
       autoNext: "正しいスペルで自動的に次に進む",
       showPrevNext: "前の/次の単語を表示",
       hideWord: "単語を非表示",

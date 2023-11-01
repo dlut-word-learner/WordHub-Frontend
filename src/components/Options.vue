@@ -1,6 +1,14 @@
 <template>
   <div id="options">
     <el-form label-position="left" label-width="50%">
+      <el-form-item :label="$t('options.wordsPerRound')">
+        <el-input-number
+          v-model="optionsStore.wordsPerRound"
+          :min="5"
+          :max="200"
+          :step="5"
+        />
+      </el-form-item>
       <el-form-item :label="$t('options.autoNext')">
         <el-switch v-model="optionsStore.autoNext" />
       </el-form-item>

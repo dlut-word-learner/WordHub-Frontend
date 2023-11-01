@@ -232,7 +232,11 @@ onMounted(async () => {
   }
 
   await axios
-    .get(`/api/dicts/${dictStore.id}/${action.value}`)
+    .get(`/api/dicts/${dictStore.id}/${action.value}`, {
+      params: {
+        num: optionsStore.wordsPerRound,
+      },
+    })
     .then((response) => {
       words.value = response.data;
     })
