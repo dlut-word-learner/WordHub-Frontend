@@ -54,7 +54,7 @@
           </template>
           <template #header v-else>
             <div class="nextWordMain">
-              {{ "_ ".repeat(nextWord.word.length) }}
+              {{ "_ ".repeat(nextWord.name.length) }}
             </div>
           </template>
           <div class="nextWordItem">{{ getWordPhone(nextWord) }}</div>
@@ -320,7 +320,7 @@ function getWordMain(word: WordVo | null): string {
 
 /**
  * Get the pronunciation of the word.
- * English: return usPhone (AmE) & ukPhone (BrE)
+ * English: return usphone (AmE) & ukphone (BrE)
  * Japanese: return text in parentheses in notation
  */
 function getWordPhone(word: WordVo | null): string | undefined {
@@ -328,7 +328,7 @@ function getWordPhone(word: WordVo | null): string | undefined {
 
   switch (lang) {
     case "en":
-      return `AmE: ${word.extension.usPhone} BrE: ${word.extension.ukPhone}`;
+      return `AmE: ${word.extension.usphone} BrE: ${word.extension.ukphone}`;
     case "ja":
       return word.extension.notation.match(/\([^)]*\)/)?.[0];
     default:

@@ -14,8 +14,8 @@ export interface WordVo {
   name: string;
   extension: {
     meanings: [string];
-    ukPhone: string;
-    usPhone: string;
+    ukphone: string;
+    usphone: string;
     notation: string;
   };
 }
