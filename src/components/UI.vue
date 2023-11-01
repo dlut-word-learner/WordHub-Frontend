@@ -72,7 +72,7 @@
           @keypress="playTypingSound"
           @keydown="init"
           :class="{ shake: shake }"
-          :maxlength="currWord?.wordName.length"
+          :maxlength="currWord?.name.length"
           :disabled="isFinished"
           :clearable="true"
         />
@@ -218,9 +218,10 @@ const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const soundEffects = [correctSound, wrongSound, typingSound];
 const currWordSound: Ref<Howl | null> = ref(null);
 
-watch(dictStore, (dict) => {
+onMounted(() =>{
+  console.log("获取单词数据");
   const action = ref("");
-  switch (dict.action) {
+  switch (dictStore.action) {
     case DictAction.Learn:
       action.value = "learn";
       break;
@@ -230,7 +231,7 @@ watch(dictStore, (dict) => {
   }
 
   axios
-    .get(`/api/dicts/${dict.dictId}/${action}`)
+    .get(`/api/dicts/${dictStore.dictId}/${action.value}`)
     .then((response) => {
       words.value = response.data;
     })
@@ -256,7 +257,7 @@ if (optionsStore.isWordHidden) {
       if (currWord.value) {
         hiddenWord.value =
           newUserInput +
-          "_ ".repeat(currWord.value.wordName.length - newUserInput.length);
+          "_ ".repeat(currWord.value.name.length - newUserInput.length);
       }
     },
     { immediate: true },
@@ -296,14 +297,14 @@ function loadWord() {
 
   userInput.value = "";
   isCorrect.value = false;
-  hiddenWord.value = "_ ".repeat(currWord.value.wordName.length);
+  hiddenWord.value = "_ ".repeat(currWord.value.name.length);
 
   playWordSound();
 }
 
 /**
  * Get the main name of the word.
- * English: return wordName
+ * English: return name
  * Japanese: return notation excluding text in parentheses
  */
 function getWordMain(word: WordVo | null): string {
@@ -311,7 +312,7 @@ function getWordMain(word: WordVo | null): string {
 
   switch (lang) {
     case "en":
-      return word.wordName;
+      return word.name;
     case "ja":
       return word.extension.notation.replace(/\([^)]*\)/, "");
     default:
@@ -362,9 +363,9 @@ function playWordSound() {
 }
 
 function checkSpelling() {
-  if (userInput.value.length != currWord.value?.wordName.length) return;
+  if (userInput.value.length != currWord.value?.name.length) return;
 
-  isCorrect.value = userInput.value.toLowerCase() === currWord.value.wordName;
+  isCorrect.value = userInput.value.toLowerCase() === currWord.value.name;
   if (isCorrect.value) {
     ElMessage({
       message: t("ui.correctSpelling"),
