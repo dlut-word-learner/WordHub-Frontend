@@ -15,23 +15,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/dicts",
     name: "Dicts",
     component: () => import("../components/Dicts/Dicts.vue"),
-    children: [
-      {
-        path: "all",
-        name: "All",
-        component: () => import("../components/Dicts/all.vue"),
-      },
-      {
-        path: "en",
-        name: "English",
-        component: () => import("../components/Dicts/en.vue"),
-      },
-      {
-        path: "ja",
-        name: "Japanese",
-        component: () => import("../components/Dicts/ja.vue"),
-      },
-    ],
   },
   {
     path: "/ui",
