@@ -28,7 +28,7 @@ const { t } = useI18n();
 const dictStore = useDictStore();
 
 axios
-  .get("/dicts", {
+  .get("/api/dicts", {
     params: {
       lang: "English",
     },
