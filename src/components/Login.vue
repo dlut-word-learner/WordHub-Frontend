@@ -3,7 +3,7 @@
   <div id="body">
     <img src="/wordhub.png" width="100" height="100" />
     <h2>{{ $t("login.userLogin") }}</h2>
-    <el-form label-width="80px">
+    <el-form label-width="auto">
       <el-form-item :label="$t('login.username')">
         <el-input type="text" id="username" v-model="form.username" />
       </el-form-item>
