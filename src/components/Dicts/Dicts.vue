@@ -23,5 +23,7 @@ router.push("/dicts/all");
 <style scoped>
 .navItem {
   margin: auto auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 </style>
