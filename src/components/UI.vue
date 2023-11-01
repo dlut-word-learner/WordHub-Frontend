@@ -221,7 +221,6 @@ const soundEffects = [correctSound, wrongSound, typingSound];
 const currWordSound: Ref<Howl | null> = ref(null);
 
 onMounted(() => {
-  console.log("获取单词数据");
   const action = ref("");
   switch (dictStore.action) {
     case DictAction.Learn:
@@ -236,12 +235,14 @@ onMounted(() => {
     .get(`/api/dicts/${dictStore.id}/${action.value}`)
     .then((response) => {
       words.value = response.data;
-      loadWord();
     })
     .catch((error) => {
       console.log(error);
       ElMessage.error(t("ui.errGetWords"));
+      return;
     });
+
+  loadWord();
 });
 
 watch(
@@ -272,8 +273,7 @@ function init() {
 }
 
 function loadWord() {
-  console.log(words.value);
-  if (words.value == null) return;
+  if (!words.value) return;
 
   prevWord.value = words.value[currWordIndex.value - 1];
   currWord.value = words.value[currWordIndex.value];
