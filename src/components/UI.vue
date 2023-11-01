@@ -220,7 +220,7 @@ const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const soundEffects = [correctSound, wrongSound, typingSound];
 const currWordSound: Ref<Howl | null> = ref(null);
 
-onMounted(() => {
+onMounted(async () => {
   const action = ref("");
   switch (dictStore.action) {
     case DictAction.Learn:
@@ -231,7 +231,7 @@ onMounted(() => {
       break;
   }
 
-  axios
+  await axios
     .get(`/api/dicts/${dictStore.id}/${action.value}`)
     .then((response) => {
       words.value = response.data;
