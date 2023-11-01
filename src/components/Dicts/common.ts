@@ -4,14 +4,14 @@ export interface Lang {
 }
 
 export interface DictVo {
-  dictId: number;
-  lang: string;
-  dictName: string;
+  id: number;
+  language: string;
+  name: string;
 }
 
 export interface WordVo {
-  wordId: number;
-  wordName: string;
+  id: number;
+  name: string;
   extension: {
     meanings: [string];
     ukPhone: string;
