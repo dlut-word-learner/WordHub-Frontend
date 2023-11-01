@@ -10,13 +10,13 @@ export const useDictStore = defineStore(
   "words",
   () => {
     const action: Ref<DictAction | null> = ref(null);
-    const dictId: Ref<number | null> = ref(null);
-    const dictLang = ref("");
+    const id: Ref<number | null> = ref(null);
+    const lang = ref("");
 
     return {
       action,
-      dictId,
-      dictLang,
+      id,
+      lang,
     };
   },
   {

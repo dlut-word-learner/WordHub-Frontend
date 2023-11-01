@@ -193,7 +193,7 @@ const { t } = useI18n();
 const dictStore = useDictStore();
 const optionsStore = useOptionsStore();
 
-const lang = dictStore.dictLang;
+const lang = dictStore.lang;
 const words: Ref<WordVo[] | null> = ref(null);
 const currWordIndex = ref(0);
 
@@ -231,7 +231,7 @@ onMounted(() => {
   }
 
   axios
-    .get(`/api/dicts/${dictStore.dictId}/${action.value}`)
+    .get(`/api/dicts/${dictStore.id}/${action.value}`)
     .then((response) => {
       words.value = response.data;
       loadWord();

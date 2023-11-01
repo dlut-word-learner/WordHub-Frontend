@@ -38,13 +38,13 @@ axios
   });
 
 function learn(dictId: number) {
-  dictStore.dictId = dictId;
+  dictStore.id = dictId;
   dictStore.action = DictAction.Learn;
   router.push("/ui");
 }
 
 function review(dictId: number) {
-  dictStore.dictId = dictId;
+  dictStore.id = dictId;
   dictStore.action = DictAction.Review;
   router.push("/ui");
 }

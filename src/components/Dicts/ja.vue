@@ -43,15 +43,15 @@ axios
 
 function learn(dictId: number) {
   dictStore.action = DictAction.Learn;
-  dictStore.dictId = dictId;
-  dictStore.dictLang = "ja";
+  dictStore.id = dictId;
+  dictStore.lang = "ja";
   router.push("/ui");
 }
 
 function review(dictId: number) {
   dictStore.action = DictAction.Review;
-  dictStore.dictId = dictId;
-  dictStore.dictLang = "ja";
+  dictStore.id = dictId;
+  dictStore.lang = "ja";
   router.push("/ui");
 }
 </script>
