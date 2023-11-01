@@ -60,7 +60,7 @@ function login() {
       loginStore.userVo = userVo;
       loginStore.password = form.password;
       getAvatar();
-      router.push("/user-info");
+      router.push("/dicts");
     })
     .catch((error) => {
       if (error.response) ElMessage.error(t("login.userErrPrompt"));
