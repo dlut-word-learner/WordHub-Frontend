@@ -9,7 +9,11 @@
     </el-col>
     <el-col :span="24 - navSpan">
       <div id="body">
-        <el-card class="dictCard" v-for="dict in dicts" v-show="curLang=='all'||langs.get(dict.language)==curLang">
+        <el-card
+          class="dictCard"
+          v-for="dict in dicts"
+          v-show="curLang == 'all' || langs.get(dict.language) == curLang"
+        >
           <template #header>
             <div class="header">
               <div>{{ dict.name }}</div>
@@ -37,7 +41,7 @@ const dicts: Ref<DictVo[]> = ref([]);
 const { t } = useI18n();
 const dictStore = useDictStore();
 const navSpan = ref(0);
-const curLang: Ref<string> = ref('all');
+const curLang: Ref<string> = ref("all");
 
 switch (i18n.global.locale.value) {
   case "zh_cn":
@@ -50,14 +54,14 @@ switch (i18n.global.locale.value) {
     break;
 }
 
-function onSelectLang(index: string, _indexPath, _routeResult){
+function onSelectLang(index: string, _indexPath, _routeResult) {
   curLang.value = index;
 }
 
 function learn(dict: DictVo) {
   dictStore.action = DictAction.Learn;
   dictStore.id = dict.id;
-  if(langs.has(dict.language))
+  if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
   console.log("dict's language: " + langs.get(dict.language));
   router.push("/ui");
@@ -70,18 +74,17 @@ function review(dict: DictVo) {
   router.push("/ui");
 }
 
-onMounted(()=>{
+onMounted(() => {
   axios
-  .get("/api/dicts")
-  .then((response) => {
-    dicts.value = response.data;
-  })
-  .catch((error) => {
-    console.log(error);
-    ElMessage.error(t("dict.errGetDicts"));
-  });
+    .get("/api/dicts")
+    .then((response) => {
+      dicts.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      ElMessage.error(t("dict.errGetDicts"));
+    });
 });
-
 </script>
 
 <style scoped>

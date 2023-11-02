@@ -1,40 +1,33 @@
 <template>
-  <el-card id="currWord" :body-style="{ padding: '0px' }" v-if="isCurrWord">
+  <el-card
+    id="currWord"
+    :body-style="{ padding: '0px' }"
+    v-if="isCurrWord || (!isCurrWord && word && optionsStore.showPrevNext)"
+  >
     <template #header v-if="!optionsStore.isWordHidden">
-      <div class="currWordMain">{{ getWordMain(word) }}</div>
+      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
+        {{ getWordMain(word) }}
+      </div>
     </template>
     <template #header v-else>
-      <div class="currWordMain">
+      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
         {{ hiddenWord }}
       </div>
     </template>
-    <div class="currWordItem">
+    <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
       {{ getWordPhone(word) }}
       <img
         src="../assets/img/speaker.png"
         class="speaker"
         @click="playWordSound"
+        v-if="isCurrWord"
       />
     </div>
-    <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
+    <div
+      :class="{ currWordItem: isCurrWord, adjItem: !isCurrWord }"
+      v-if="!optionsStore.isMeaningHidden"
+    >
       <div v-for="meaning in word?.extension.meanings">
-        {{ meaning }}
-      </div>
-    </div>
-  </el-card>
-
-  <el-card
-    id="adjWord"
-    :body-style="{ padding: '0px' }"
-    v-else
-    v-if="word && optionsStore.showPrevNext"
-  >
-    <template #header>
-      <div class="adjWordMain">{{ getWordMain(word) }}</div>
-    </template>
-    <div class="adjWordItem">{{ getWordPhone(word) }}</div>
-    <div class="adjWordItem" v-if="!optionsStore.isMeaningHidden">
-      <div v-for="meaning in word.extension.meanings">
         {{ meaning }}
       </div>
     </div>
