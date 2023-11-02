@@ -13,7 +13,7 @@ export interface WordVo {
   id: number;
   name: string;
   extension: {
-    meanings: [string];
+    meanings: string[];
     ukphone: string;
     usphone: string;
     notation: string;
