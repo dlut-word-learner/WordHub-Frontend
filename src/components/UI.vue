@@ -4,9 +4,9 @@
       :title="$t('ui.typingToStart')"
       :center="true"
       :show-icon="true"
-      v-if="!stopWatch.isRunning.value && !isFinished"
+      v-if="!stopWatch.isRunning.value && !isAllFinished"
     />
-    <div class="word-container" v-if="!isFinished">
+    <div class="word-container" v-if="!isAllFinished">
       <div class="words">
         <WordCard id="prevWord" :isCurrWord="false" :word="prevWord" />
         <div :class="{ shake: shake }">
@@ -24,12 +24,12 @@
           @keydown="init"
           :class="{ shake: shake }"
           :maxlength="currWord?.name.length"
-          :disabled="isFinished"
+          :disabled="isAllFinished"
           :clearable="true"
         />
       </div>
     </div>
-    <div v-if="isFinished">
+    <div v-else>
       <el-result icon="success" :title="$t('ui.finishPrompt')"> </el-result>
     </div>
     <el-button
@@ -37,7 +37,7 @@
       type="primary"
       @click="promptGoToNextWord"
       :disabled="!stopWatch.isRunning"
-      v-if="!isFinished"
+      v-if="!isAllFinished"
     >
       {{ $t("ui.goToNextWord") }}
     </el-button>
@@ -159,7 +159,7 @@ const tries = ref(0);
 const skips = ref(0);
 const userInput = ref("");
 const isCorrect = ref(false);
-const isFinished = ref(false);
+const isAllFinished = ref(false);
 const shake = ref(false);
 const stopWatch = useStopwatch(0, false);
 
@@ -294,7 +294,7 @@ function checkSpelling() {
 }
 
 function finish() {
-  isFinished.value = true;
+  isAllFinished.value = true;
   stopWatch.pause();
 }
 </script>
