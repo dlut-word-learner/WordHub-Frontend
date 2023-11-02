@@ -139,7 +139,7 @@ onBeforeMount(async () => {
   await axios
     .get(`/api/dicts/${dictStore.id}/${action.value}`, {
       params: {
-        num: optionsStore.wordsPerRound,
+        num: optionsStore.qwertyWordsPerRound,
       },
     })
     .then((response) => {

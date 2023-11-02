@@ -1,25 +1,24 @@
 <template>
   <div id="options">
     <el-form label-position="left" label-width="50%">
-      <el-form-item :label="$t('options.wordsPerRound')">
+      <el-form-item :label="$t('options.learnWordsPerRound')">
         <el-input-number
-          v-model="optionsStore.wordsPerRound"
+          v-model="optionsStore.learnWordsPerRound"
           :min="5"
           :max="200"
           :step="5"
         />
       </el-form-item>
-      <el-form-item :label="$t('options.autoNext')">
-        <el-switch v-model="optionsStore.autoNext" />
+      <el-form-item :label="$t('options.reviewWordsPerRound')">
+        <el-input-number
+          v-model="optionsStore.reviewWordsPerRound"
+          :min="5"
+          :max="200"
+          :step="5"
+        />
       </el-form-item>
       <el-form-item :label="$t('options.showPrevNext')">
         <el-switch v-model="optionsStore.showPrevNext" />
-      </el-form-item>
-      <el-form-item :label="$t('options.hideWord')">
-        <el-switch v-model="optionsStore.isWordHidden" />
-      </el-form-item>
-      <el-form-item :label="$t('options.hideMeaning')">
-        <el-switch v-model="optionsStore.isMeaningHidden" />
       </el-form-item>
       <el-divider />
       <el-form-item :label="$t('options.enableSound')">
@@ -44,6 +43,25 @@
       </el-form-item>
       <el-form-item :label="$t('options.darkMode')">
         <el-switch v-model="isDark"></el-switch>
+      </el-form-item>
+      <el-divider />
+      <el-form-item :label="$t('options.qwertyOnly')"> </el-form-item>
+      <el-form-item :label="$t('options.qwertyWordsPerRound')">
+        <el-input-number
+          v-model="optionsStore.qwertyWordsPerRound"
+          :min="5"
+          :max="200"
+          :step="5"
+        />
+      </el-form-item>
+      <el-form-item :label="$t('options.autoNext')">
+        <el-switch v-model="optionsStore.autoNext" />
+      </el-form-item>
+      <el-form-item :label="$t('options.hideWord')">
+        <el-switch v-model="optionsStore.isWordHidden" />
+      </el-form-item>
+      <el-form-item :label="$t('options.hideMeaning')">
+        <el-switch v-model="optionsStore.isMeaningHidden" />
       </el-form-item>
     </el-form>
   </div>
