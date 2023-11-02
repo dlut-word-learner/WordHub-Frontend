@@ -15,7 +15,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
       dts: true,
     }),
-    mockDevServerPlugin(),
+    mockDevServerPlugin({
+      // exclude: ["mock/**"],
+    }),
   ],
   server: {
     proxy: {
