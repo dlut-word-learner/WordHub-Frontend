@@ -8,18 +8,17 @@
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words">
-        <WordCard id="prevWord" :isCurrWord="false" :word="prevWord" />
+        <WordCard id="prevWord" :word="prevWord" />
         <div :class="{ shake: shake }">
-          <WordCard :isCurrWord="true" :word="currWord" />
+          <WordCard :word="currWord" :user-input="userInput" @done="inputDone"/>
         </div>
-        <WordCard id="nextWord" :isCurrWord="false" :word="nextWord" />
+        <WordCard id="nextWord" :word="nextWord" :user-input="''"/>
       </div>
       <div id="inputArea">
         <el-input
           id="userInputBox"
           size="large"
           v-model="userInput"
-          @input="checkSpelling"
           @keypress="playTypingSound"
           @keydown="init"
           :class="{ shake: shake }"
@@ -153,12 +152,12 @@ const currWordIndex = ref(0);
 const prevWord: Ref<WordVo | null> = ref(null);
 const currWord: Ref<WordVo | null> = ref(null);
 const nextWord: Ref<WordVo | null> = ref(null);
-const hiddenWord = ref("");
 
 const tries = ref(0);
 const skips = ref(0);
 const userInput = ref("");
-const isCorrect = ref(false);
+// 当前单词已经正确，等待按下“下一个”
+const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
 const stopWatch = useStopwatch(0, false);
@@ -208,20 +207,6 @@ watch(
   { immediate: true },
 );
 
-if (optionsStore.isWordHidden) {
-  watch(
-    userInput,
-    (newUserInput) => {
-      if (currWord.value) {
-        hiddenWord.value =
-          newUserInput +
-          "_ ".repeat(currWord.value.name.length - newUserInput.length);
-      }
-    },
-    { immediate: true },
-  );
-}
-
 function init() {
   if (!stopWatch.isRunning.value) stopWatch.start();
 }
@@ -240,8 +225,6 @@ function loadWord() {
   });
 
   userInput.value = "";
-  isCorrect.value = false;
-  hiddenWord.value = "_ ".repeat(currWord.value.name.length);
 
   playWordSound();
 }
@@ -252,7 +235,7 @@ function shakeWord() {
 }
 
 function promptGoToNextWord() {
-  if (!isCorrect.value) confirmVisible.value = true;
+  isCurrCorrect.value ? goToNextWord() : confirmVisible.value = true;
 }
 
 function goToNextWord() {
@@ -266,11 +249,9 @@ function playTypingSound() {
   if (optionsStore.isSoundEnabled) typingSound.play();
 }
 
-function checkSpelling() {
-  if (userInput.value.length != currWord.value?.name.length) return;
-
-  isCorrect.value = userInput.value.toLowerCase() === currWord.value.name;
-  if (isCorrect.value) {
+function inputDone(isCorrect: boolean) {
+  console.log("onInputDone: " + isCorrect);
+  if (isCorrect) {
     ElMessage({
       message: t("ui.correctSpelling"),
       duration: 500,
@@ -279,6 +260,7 @@ function checkSpelling() {
 
     if (optionsStore.isSoundEnabled) correctSound.play();
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
+    else isCurrCorrect.value=true;
   } else {
     ElMessage({
       message: t("ui.wrongSpelling"),

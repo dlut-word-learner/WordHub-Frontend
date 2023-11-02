@@ -1,14 +1,14 @@
 <template>
-  <el-card id="currWord" :body-style="{ padding: '0px' }" v-if="isCurrWord">
-    <template #header v-if="!optionsStore.isWordHidden">
-      <div class="currWordMain">{{ getWordMain(word) }}</div>
+  <el-card id="word" :body-style="{ padding: '0px' }" v-if="word">
+    <template #header v-if="userInput==undefined || !optionsStore.isWordHidden">
+      <div class="wordMain">{{ getWordMain(word) }}</div>
     </template>
     <template #header v-else>
-      <div class="currWordMain">
+      <div class="wordMain">
         {{ hiddenWord }}
       </div>
     </template>
-    <div class="currWordItem">
+    <div class="wordItem">
       {{ getWordPhone(word) }}
       <img
         src="../assets/img/speaker.png"
@@ -16,17 +16,16 @@
         @click="playWordSound"
       />
     </div>
-    <div class="currWordItem" v-if="!optionsStore.isMeaningHidden">
+    <div class="wordItem" v-if="!optionsStore.isMeaningHidden">
       <div v-for="meaning in word?.extension.meanings">
         {{ meaning }}
       </div>
     </div>
   </el-card>
 
-  <el-card
+  <!-- <el-card
     id="adjWord"
     :body-style="{ padding: '0px' }"
-    v-else
     v-if="word && optionsStore.showPrevNext"
   >
     <template #header>
@@ -38,20 +37,43 @@
         {{ meaning }}
       </div>
     </div>
-  </el-card>
+  </el-card> -->
 </template>
 
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
 import { getWordMain, getWordPhone, playWordSound } from "./WordCard";
-
+import { ref, watch } from "vue";
+const hiddenWord = ref("");
 const optionsStore = useOptionsStore();
 
-defineProps<{
-  isCurrWord: boolean;
+const props = defineProps<{
   word: WordVo | null;
+  // 如果是后面的词则为""，如果是前面的词则为undefined
+  userInput?: string;
 }>();
+
+const emits = defineEmits<{
+  (e: 'done', correct: boolean): void
+}>()
+
+watch(()=>props.userInput, (newInput, _oldInput)=>{
+  if(newInput==undefined || props.word == null)return ;
+  if(optionsStore.isWordHidden){
+    hiddenWord.value =
+      newInput + "_ ".repeat(props.word.name.length - newInput.length);
+  }
+  
+  if (newInput.length == props.word.name.length){
+    console.log(`word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${newInput.toLowerCase()===props.word.name}`);
+    emits('done', newInput.toLowerCase() === props.word.name);
+  }
+},
+{
+  immediate: true
+});
+
 </script>
 
 <style scoped>
@@ -60,13 +82,13 @@ defineProps<{
   margin: auto auto;
 }
 
-.currWordMain {
+.wordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
 .adjWordMain,
-.currWordItem {
+.wordItem {
   font-size: 1.5em;
 }
 
