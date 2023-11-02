@@ -40,7 +40,6 @@ import { WordVo } from "./Dicts/common";
 import {
   getWordMain,
   getWordPhone,
-  playWordSound,
   getHiddenWord,
 } from "./WordCard";
 import { watch } from "vue";
