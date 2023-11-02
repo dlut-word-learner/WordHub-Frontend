@@ -47,6 +47,41 @@ const enWords: WordVo[] = [
   },
 ];
 
+const jaWords: WordVo[] = [
+  {
+    id: 1,
+    name: "norikae",
+    extension: {
+      meanings: ["n. transfer (trains, buses, etc.)"],
+      ukphone: "",
+      usphone: "",
+      notation: "乗り換え(のりかえ)",
+    },
+  },
+  {
+    id: 2,
+    name: "tokushoku",
+    extension: {
+      meanings: ["n. characteristic, feature"],
+      ukphone: "",
+      usphone: "",
+      notation: "特色(とくしょく)",
+    },
+  },
+  {
+    id: 3,
+    name: "hazureru",
+    extension: {
+      meanings: [
+        "v. to be disconnected, to get out of place, to be off, to be out",
+      ],
+      ukphone: "",
+      usphone: "",
+      notation: "外れる(はずれる)",
+    },
+  },
+];
+
 export default defineMock([
   {
     url: "/api/dicts",
@@ -63,5 +98,13 @@ export default defineMock([
     enabled: true,
     type: "json",
     body: enWords,
+  },
+  {
+    url: "/api/dicts/2/learn",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: jaWords,
   },
 ]);
