@@ -12,7 +12,7 @@
         <el-card
           class="dictCard"
           v-for="dict in dicts"
-          v-show="curLang == 'all' || langs.get(dict.language) == curLang"
+          v-show="currLang == 'all' || langs.get(dict.language) == currLang"
         >
           <template #header>
             <div class="header">
@@ -34,14 +34,27 @@ import { Ref, ref } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
 import { DictAction, useDictStore } from "../../store/dictStore";
+import { onMounted } from "vue";
 import axios from "axios";
 import router from "../../router";
-import { onMounted } from "vue";
+
 const dicts: Ref<DictVo[]> = ref([]);
-const { t } = useI18n();
 const dictStore = useDictStore();
 const navSpan = ref(0);
-const curLang: Ref<string> = ref("all");
+const currLang: Ref<string> = ref("all");
+const { t } = useI18n();
+
+onMounted(() => {
+  axios
+    .get("/api/dicts")
+    .then((response) => {
+      dicts.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      ElMessage.error(t("dict.errGetDicts"));
+    });
+});
 
 switch (i18n.global.locale.value) {
   case "zh_cn":
@@ -55,7 +68,7 @@ switch (i18n.global.locale.value) {
 }
 
 function onSelectLang(index: string, _indexPath, _routeResult) {
-  curLang.value = index;
+  currLang.value = index;
 }
 
 function learn(dict: DictVo) {
@@ -63,34 +76,25 @@ function learn(dict: DictVo) {
   dictStore.id = dict.id;
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
-  console.log("dict's language: " + langs.get(dict.language));
+
   router.push("/learn");
 }
 
 function review(dict: DictVo) {
   dictStore.action = DictAction.Review;
   dictStore.id = dict.id;
-  dictStore.lang = langs[dict.language];
+  if (langs.has(dict.language))
+    dictStore.lang = langs.get(dict.language) as string;
+
   router.push("/learn");
 }
-
-onMounted(() => {
-  axios
-    .get("/api/dicts")
-    .then((response) => {
-      dicts.value = response.data;
-    })
-    .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("dict.errGetDicts"));
-    });
-});
 </script>
 
 <style scoped>
 .navItem {
   margin: auto auto;
 }
+
 #body {
   margin-left: 2em;
   margin-right: 2em;
