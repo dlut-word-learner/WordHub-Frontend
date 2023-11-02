@@ -49,7 +49,7 @@ import router from "./router";
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);
 
-function logout() {
+function logout(): void {
   confirmVisible.value = false;
   loginStore.userVo = null;
   loginStore.password = "";

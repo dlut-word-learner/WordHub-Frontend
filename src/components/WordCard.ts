@@ -44,7 +44,7 @@ export function getWordPhone(word: WordVo | null): string | undefined {
   }
 }
 
-export function playWordSound() {
+export function playWordSound(): void {
   if (optionsStore.isSoundEnabled) currWordSound.value?.play();
 }
 

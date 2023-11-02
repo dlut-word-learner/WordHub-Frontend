@@ -47,7 +47,7 @@ const loginStore = useLoginStore();
 
 const { t } = useI18n();
 
-function savePasswd() {
+function savePasswd(): void {
   if (
     form.originalPwd == "" ||
     form.newPasswd1 == "" ||

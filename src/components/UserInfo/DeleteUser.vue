@@ -59,7 +59,7 @@ const confirmVisible = ref(false);
 const loginStore = useLoginStore();
 const { t } = useI18n();
 
-function prepareDeleteUser() {
+function prepareDeleteUser(): void {
   if (form.passwd1 == "" || form.passwd2 == "") {
     ElMessage.info(t("userInfo.delete.inputPrompt"));
     return;
@@ -79,7 +79,7 @@ function prepareDeleteUser() {
   confirmVisible.value = true;
 }
 
-function deleteUser() {
+function deleteUser(): void {
   confirmVisible.value = false;
 
   axios

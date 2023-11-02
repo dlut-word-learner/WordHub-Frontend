@@ -158,11 +158,11 @@ watch(
   { immediate: true },
 );
 
-function init() {
+function init(): void {
   if (!stopWatch.isRunning.value) stopWatch.start();
 }
 
-function loadWord() {
+function loadWord(): void {
   if (!words.value) return;
 
   prevWord.value = words.value[currWordIndex.value - 1];
@@ -176,31 +176,30 @@ function loadWord() {
   });
 
   userInput.value = "";
-
   playWordSound();
 }
 
-function shakeWord() {
+function shakeWord(): void {
   shake.value = true;
   setTimeout(() => (shake.value = false), 400);
 }
 
-function promptGoToNextWord() {
+function promptGoToNextWord(): void {
   isCurrCorrect.value ? goToNextWord() : (confirmVisible.value = true);
 }
 
-function goToNextWord() {
+function goToNextWord(): void {
   tries.value++;
 
   if (words.value && ++currWordIndex.value < words.value.length) loadWord();
   else finish();
 }
 
-function playTypingSound() {
+function playTypingSound(): void {
   if (optionsStore.isSoundEnabled) typingSound.play();
 }
 
-function inputDone(isCorrect: boolean) {
+function inputDone(isCorrect: boolean): void {
   if (isCorrect) {
     ElMessage({
       message: t("learn.correctSpelling"),
@@ -226,7 +225,7 @@ function inputDone(isCorrect: boolean) {
   }
 }
 
-function finish() {
+function finish(): void {
   isAllFinished.value = true;
   stopWatch.pause();
 }

@@ -40,7 +40,7 @@ const form = reactive({
 
 const loginStore = useLoginStore();
 
-function login() {
+function login(): void {
   if (form.username == "" || form.password == "") {
     ElMessage.info(t("login.inputPrompt"));
     return;
@@ -68,7 +68,7 @@ function login() {
     });
 }
 
-function getAvatar() {
+function getAvatar(): void {
   axios
     .get(`/api/users/${loginStore.userVo?.id}/profile/avatar`, {
       responseType: "blob",

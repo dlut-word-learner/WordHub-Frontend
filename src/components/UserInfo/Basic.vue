@@ -56,7 +56,7 @@ if (loginStore.userVo) {
   form.email = loginStore.userVo.email;
 }
 
-function saveUserInfo() {
+function saveUserInfo(): void {
   if (form.username == "" || form.email == "") {
     ElMessage.info(t("userInfo.basic.inputPrompt"));
     return;

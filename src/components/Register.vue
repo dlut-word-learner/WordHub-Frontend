@@ -90,7 +90,7 @@ const option = reactive({
   fixedNumber: [1, 1],
 });
 
-function register() {
+function register(): void {
   if (
     form.username == "" ||
     form.passwd1 == "" ||
@@ -146,7 +146,7 @@ function checkPasswd(): boolean {
   return false;
 }
 
-function uploadImg(event: any) {
+function uploadImg(event: any): void {
   const file = event.target.files[0];
   if (
     !/\.(bmp|gif|jpg|jpeg|png|BMP|GIF|JPG|JPEG|PNG)$/.test(event.target.value)

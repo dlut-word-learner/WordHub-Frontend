@@ -67,11 +67,11 @@ switch (i18n.global.locale.value) {
     break;
 }
 
-function onSelectLang(index: string, _indexPath, _routeResult) {
+function onSelectLang(index: string, _indexPath, _routeResult): void {
   currLang.value = index;
 }
 
-function learn(dict: DictVo) {
+function learn(dict: DictVo): void {
   dictStore.action = DictAction.Learn;
   dictStore.id = dict.id;
   if (langs.has(dict.language))
@@ -80,7 +80,7 @@ function learn(dict: DictVo) {
   router.push("/learn");
 }
 
-function review(dict: DictVo) {
+function review(dict: DictVo): void {
   dictStore.action = DictAction.Review;
   dictStore.id = dict.id;
   if (langs.has(dict.language))

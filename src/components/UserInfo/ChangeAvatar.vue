@@ -53,7 +53,7 @@ const { t } = useI18n();
 const cropper = ref(null as VueCropper);
 const newAvatar = ref(new Blob());
 
-function uploadImg(event: any) {
+function uploadImg(event: any): void {
   const file = event.target.files[0];
   if (
     !/\.(bmp|gif|jpg|jpeg|png|BMP|GIF|JPG|JPEG|PNG)$/.test(event.target.value)
@@ -73,7 +73,7 @@ function uploadImg(event: any) {
   ElMessage.success(t("register.avatarUploadSuccess"));
 }
 
-function saveAvatar() {
+function saveAvatar(): void {
   cropper?.value?.getCropBlob((data: Blob) => {
     newAvatar.value = data;
   });
