@@ -10,7 +10,12 @@
       <div class="words">
         <WordCard id="prevWord" :word="prevWord" />
         <div :class="{ shake: shake }">
-          <WordCard :word="currWord" :userInput="userInput" @done="inputDone" />
+          <WordCard
+            :word="currWord"
+            :isCurrWord="true"
+            :userInput="userInput"
+            @done="inputDone"
+          />
         </div>
         <WordCard id="nextWord" :word="nextWord" :userInput="''" />
       </div>

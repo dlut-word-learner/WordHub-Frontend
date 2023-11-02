@@ -47,20 +47,22 @@ import { watch } from "vue";
 const optionsStore = useOptionsStore();
 
 /**
+ * @param isCurrWord - true if the word is current,
+ *                   false or undefined if the word is previous/next.
+ *
  * @param userInput - undefined if the word is previous,
  *                   the user input if the word is current,
  *                   "" if the word is next.
  */
 const props = defineProps<{
   word?: WordVo;
+  isCurrWord?: boolean;
   userInput?: string;
 }>();
 
 const emits = defineEmits<{
   (event: "done", isCorrect: boolean): void;
 }>();
-
-const isCurrWord = props.userInput != undefined && props.userInput != "";
 
 watch(
   () => props.userInput,
