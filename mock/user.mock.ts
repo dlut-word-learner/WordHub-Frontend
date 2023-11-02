@@ -15,6 +15,15 @@ export default defineMock([
     status: 200,
     enabled: true,
     type: "json",
-    body: user,
+    response(req, res){
+      const {username} = req.body;
+      res.end(JSON.stringify({
+        id: 1,
+        username: username,
+        email: "123@456.com",
+        score: 0,
+        role: 0
+      } as UserVo))
+    }
   },
 ]);
