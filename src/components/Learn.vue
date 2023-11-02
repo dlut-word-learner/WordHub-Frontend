@@ -10,9 +10,13 @@
       <div class="words">
         <WordCard id="prevWord" :word="prevWord" />
         <div :class="{ shake: shake }">
-          <WordCard :word="currWord" :user-input="userInput" @done="inputDone"/>
+          <WordCard
+            :word="currWord"
+            :user-input="userInput"
+            @done="inputDone"
+          />
         </div>
-        <WordCard id="nextWord" :word="nextWord" :user-input="''"/>
+        <WordCard id="nextWord" :word="nextWord" :user-input="''" />
       </div>
       <div id="inputArea">
         <el-input
@@ -236,7 +240,7 @@ function shakeWord() {
 }
 
 function promptGoToNextWord() {
-  isCurrCorrect.value ? goToNextWord() : confirmVisible.value = true;
+  isCurrCorrect.value ? goToNextWord() : (confirmVisible.value = true);
 }
 
 function goToNextWord() {
@@ -261,8 +265,8 @@ function inputDone(isCorrect: boolean) {
 
     if (optionsStore.isSoundEnabled) correctSound.play();
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
-    else isCurrCorrect.value=true;
-  } else {  
+    else isCurrCorrect.value = true;
+  } else {
     ElMessage({
       message: t("learn.wrongSpelling"),
       duration: 500,

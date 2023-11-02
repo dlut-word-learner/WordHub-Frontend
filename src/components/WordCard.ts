@@ -48,6 +48,6 @@ export function playWordSound() {
   if (optionsStore.isSoundEnabled) currWordSound.value?.play();
 }
 
-export function getHiddenWord(word: WordVo, input: string): string{
+export function getHiddenWord(word: WordVo, input: string): string {
   return input + "_ ".repeat(word.name.length - input.length);
 }

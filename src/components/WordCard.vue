@@ -1,7 +1,10 @@
 <template>
   <el-card id="word" :body-style="{ padding: '0px' }" v-if="word">
     <template #header>
-      <div class="wordMain" v-if="userInput==undefined || !optionsStore.isWordHidden">
+      <div
+        class="wordMain"
+        v-if="userInput == undefined || !optionsStore.isWordHidden"
+      >
         {{ getWordMain(word) }}
       </div>
       <div class="wordMain" v-else>
@@ -10,11 +13,12 @@
     </template>
     <div class="wordItem">
       {{ getWordPhone(word) }}
-      <img
+      <!--<img
         src="../assets/img/speaker.png"
         class="speaker"
         @click="playWordSound"
-      />
+        v-if="isCurrWord"
+      />-->
     </div>
     <div class="wordItem" v-if="!optionsStore.isMeaningHidden">
       <div v-for="meaning in word?.extension.meanings">
@@ -43,7 +47,12 @@
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
-import { getWordMain, getWordPhone, playWordSound, getHiddenWord } from "./WordCard";
+import {
+  getWordMain,
+  getWordPhone,
+  playWordSound,
+  getHiddenWord,
+} from "./WordCard";
 import { watch } from "vue";
 const optionsStore = useOptionsStore();
 
@@ -53,20 +62,27 @@ const props = defineProps<{
   userInput?: string;
 }>();
 const emits = defineEmits<{
-  (e: 'done', correct: boolean): void
-}>()
+  (e: "done", correct: boolean): void;
+}>();
 
-watch(()=>props.userInput, (newInput, _oldInput)=>{
-  if(newInput==undefined || props.word == null)return ;
-  
-  if (newInput.length == props.word.name.length){
-    console.log(`word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${newInput.toLowerCase()===props.word.name}`);
-    emits('done', newInput.toLowerCase() === props.word.name);
-  }
-},
-{
-  immediate: true
-});
+watch(
+  () => props.userInput,
+  (newInput, _oldInput) => {
+    if (newInput == undefined || props.word == null) return;
+
+    if (newInput.length == props.word.name.length) {
+      console.log(
+        `word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${
+          newInput.toLowerCase() === props.word.name
+        }`,
+      );
+      emits("done", newInput.toLowerCase() === props.word.name);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <style scoped>

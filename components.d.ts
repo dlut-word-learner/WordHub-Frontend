@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    All: typeof import('./src/components/Dicts/all.vue')['default']
     Basic: typeof import('./src/components/UserInfo/Basic.vue')['default']
     ChangeAvatar: typeof import('./src/components/UserInfo/ChangeAvatar.vue')['default']
     ChangePwd: typeof import('./src/components/UserInfo/ChangePwd.vue')['default']
@@ -36,8 +35,6 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    En: typeof import('./src/components/Dicts/en.vue')['default']
-    Ja: typeof import('./src/components/Dicts/ja.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
     Options: typeof import('./src/components/Options.vue')['default']
     Register: typeof import('./src/components/Register.vue')['default']
