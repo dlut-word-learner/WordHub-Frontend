@@ -58,12 +58,12 @@ onMounted(() => {
 
 switch (i18n.global.locale.value) {
   case "zh_cn":
+  case "en":
     navSpan.value = 2;
     break;
 
-  case "en":
   case "ja":
-    navSpan.value = 3;
+    navSpan.value = 2;
     break;
 }
 
