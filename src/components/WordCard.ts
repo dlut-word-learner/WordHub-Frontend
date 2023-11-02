@@ -47,3 +47,7 @@ export function getWordPhone(word: WordVo | null): string | undefined {
 export function playWordSound() {
   if (optionsStore.isSoundEnabled) currWordSound.value?.play();
 }
+
+export function getHiddenWord(word: WordVo, input: string): string{
+  return input + "_ ".repeat(word.name.length - input.length);
+}

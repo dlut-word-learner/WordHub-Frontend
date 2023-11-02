@@ -129,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, onMounted, watch } from "vue";
+import { Ref, ref, watch } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -140,6 +140,7 @@ import { WordVo } from "./Dicts/common";
 import { getWordMain, currWordSound, playWordSound } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import axios from "axios";
+import { onBeforeMount } from "vue";
 
 const { t } = useI18n();
 const dictStore = useDictStore();
@@ -149,9 +150,9 @@ const lang = dictStore.lang;
 const words: Ref<WordVo[] | null> = ref(null);
 const currWordIndex = ref(0);
 
-const prevWord: Ref<WordVo | null> = ref(null);
-const currWord: Ref<WordVo | null> = ref(null);
-const nextWord: Ref<WordVo | null> = ref(null);
+const prevWord: Ref<WordVo | undefined> = ref(undefined);
+const currWord: Ref<WordVo | undefined> = ref(undefined);
+const nextWord: Ref<WordVo | undefined> = ref(undefined);
 
 const tries = ref(0);
 const skips = ref(0);
@@ -169,7 +170,7 @@ const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const soundEffects = [correctSound, wrongSound, typingSound];
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const action = ref("");
   switch (dictStore.action) {
     case DictAction.Learn:

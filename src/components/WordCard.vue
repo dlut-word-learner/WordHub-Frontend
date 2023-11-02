@@ -1,11 +1,11 @@
 <template>
   <el-card id="word" :body-style="{ padding: '0px' }" v-if="word">
-    <template #header v-if="userInput==undefined || !optionsStore.isWordHidden">
-      <div class="wordMain">{{ getWordMain(word) }}</div>
-    </template>
-    <template #header v-else>
-      <div class="wordMain">
-        {{ hiddenWord }}
+    <template #header>
+      <div class="wordMain" v-if="userInput==undefined || !optionsStore.isWordHidden">
+        {{ getWordMain(word) }}
+      </div>
+      <div class="wordMain" v-else>
+        {{ getHiddenWord(word, userInput) }}
       </div>
     </template>
     <div class="wordItem">
@@ -43,27 +43,21 @@
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
-import { getWordMain, getWordPhone, playWordSound } from "./WordCard";
-import { ref, watch } from "vue";
-const hiddenWord = ref("");
+import { getWordMain, getWordPhone, playWordSound, getHiddenWord } from "./WordCard";
+import { watch } from "vue";
 const optionsStore = useOptionsStore();
 
 const props = defineProps<{
-  word: WordVo | null;
+  word?: WordVo;
   // 如果是后面的词则为""，如果是前面的词则为undefined
   userInput?: string;
 }>();
-
 const emits = defineEmits<{
   (e: 'done', correct: boolean): void
 }>()
 
 watch(()=>props.userInput, (newInput, _oldInput)=>{
   if(newInput==undefined || props.word == null)return ;
-  if(optionsStore.isWordHidden){
-    hiddenWord.value =
-      newInput + "_ ".repeat(props.word.name.length - newInput.length);
-  }
   
   if (newInput.length == props.word.name.length){
     console.log(`word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${newInput.toLowerCase()===props.word.name}`);
@@ -73,7 +67,6 @@ watch(()=>props.userInput, (newInput, _oldInput)=>{
 {
   immediate: true
 });
-
 </script>
 
 <style scoped>
