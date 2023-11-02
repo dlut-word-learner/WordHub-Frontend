@@ -1,7 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
-
 import {UserVo} from '../src/store/loginStore';
-// import avatar from './assets/avatar.png';
 const user:UserVo ={
     id: 1,
     username: 'testUser',
@@ -18,5 +16,5 @@ export default defineMock([
     enabled: true,
     type: 'json',
     body: user
-  },
+  }
 ])
