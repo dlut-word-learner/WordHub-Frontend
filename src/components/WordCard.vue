@@ -7,7 +7,13 @@
   >
     <template #header>
       <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
-        <div v-if="userInput == undefined || !optionsStore.isWordHidden">
+        <div
+          v-if="
+            userInput == undefined ||
+            !optionsStore.isWordHidden ||
+            checkSpelling(userInput, word.name)
+          "
+        >
           {{ getWordMain(word) }}
         </div>
         <div v-else>
@@ -44,6 +50,7 @@ import {
   getHiddenWord,
 } from "./WordCard";
 import { watch } from "vue";
+
 const optionsStore = useOptionsStore();
 
 /**
@@ -75,13 +82,17 @@ watch(
       //     newInput.toLowerCase() === props.word.name
       //   }`,
       // );
-      emits("done", newInput.toLowerCase() === props.word.name);
+      emits("done", checkSpelling(newInput, props.word.name));
     }
   },
   {
     immediate: true,
   },
 );
+
+function checkSpelling(input: string, wordName: string): boolean {
+  return input.toLowerCase() === wordName;
+}
 </script>
 
 <style scoped>

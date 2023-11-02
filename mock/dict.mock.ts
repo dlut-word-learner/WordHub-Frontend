@@ -55,7 +55,7 @@ const jaWords: WordVo[] = [
       meanings: ["n. transfer (trains, buses, etc.)"],
       ukphone: "",
       usphone: "",
-      notation: "乗り換え(のりかえ)",
+      notation: "乗(の)り換(か)え",
     },
   },
   {
@@ -77,7 +77,7 @@ const jaWords: WordVo[] = [
       ],
       ukphone: "",
       usphone: "",
-      notation: "外れる(はずれる)",
+      notation: "外(はず)れる",
     },
   },
 ];
