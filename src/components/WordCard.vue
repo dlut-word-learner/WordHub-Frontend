@@ -3,7 +3,7 @@
     id="word"
     :class="{ adjWord: !isCurrWord }"
     :body-style="{ padding: '0px' }"
-    v-if="word"
+    v-if="word && (isCurrWord || (!isCurrWord && optionsStore.showPrevNext))"
   >
     <template #header>
       <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
