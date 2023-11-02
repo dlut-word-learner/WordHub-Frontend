@@ -1,8 +1,8 @@
 <template>
   <el-row>
     <el-col :span="navSpan">
-      <el-menu v-for="[_, abbr] in langs" @select="onSelectLang">
-        <el-menu-item :index="abbr">
+      <el-menu id="menu" @select="onSelectLang">
+        <el-menu-item v-for="[_, abbr] in langs" :index="abbr">
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
@@ -101,6 +101,9 @@ function review(dict: DictVo): void {
   margin-top: 2em;
 }
 
+#menu {
+  min-height: 100%;
+}
 .header {
   display: flex;
   justify-content: space-between;
