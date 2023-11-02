@@ -246,42 +246,6 @@ function loadWord() {
   playWordSound();
 }
 
-/**
- * Get the main name of the word.
- * English: return name
- * Japanese: return notation excluding text in parentheses
- */
-function getWordMain(word: WordVo | null): string {
-  if (!word) return "";
-  
-  switch (lang) {
-    case "en":
-      return word.name;
-    case "ja":
-      return word.extension.notation.replace(/\([^)]*\)/, "");
-    default:
-      return "";
-  }
-}
-
-/**
- * Get the pronunciation of the word.
- * English: return usphone (AmE) & ukphone (BrE)
- * Japanese: return text in parentheses in notation
- */
-function getWordPhone(word: WordVo | null): string | undefined {
-  if (!word) return "";
-
-  switch (lang) {
-    case "en":
-      return `AmE: ${word.extension.usphone} BrE: ${word.extension.ukphone}`;
-    case "ja":
-      return word.extension.notation.match(/\([^)]*\)/)?.[0];
-    default:
-      return "";
-  }
-}
-
 function shakeWord() {
   shake.value = true;
   setTimeout(() => (shake.value = false), 400);
