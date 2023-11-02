@@ -35,12 +35,12 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    Learn: typeof import('./src/components/Learn.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
     Options: typeof import('./src/components/Options.vue')['default']
     Register: typeof import('./src/components/Register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    UI: typeof import('./src/components/UI.vue')['default']
     UserInfo: typeof import('./src/components/UserInfo/UserInfo.vue')['default']
     WordCard: typeof import('./src/components/WordCard.vue')['default']
   }

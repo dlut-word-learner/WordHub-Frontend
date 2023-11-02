@@ -1,47 +1,37 @@
 <template>
-  <el-card id="word" :body-style="{ padding: '0px' }" v-if="word">
+  <el-card
+    id="word"
+    :class="{ adjWord: !isCurrWord }"
+    :body-style="{ padding: '0px' }"
+    v-if="word"
+  >
     <template #header>
-      <div
-        class="wordMain"
-        v-if="userInput == undefined || !optionsStore.isWordHidden"
-      >
-        {{ getWordMain(word) }}
-      </div>
-      <div class="wordMain" v-else>
-        {{ getHiddenWord(word, userInput) }}
+      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
+        <div v-if="userInput == undefined || !optionsStore.isWordHidden">
+          {{ getWordMain(word) }}
+        </div>
+        <div v-else>
+          {{ getHiddenWord(word, userInput) }}
+        </div>
       </div>
     </template>
-    <div class="wordItem">
-      {{ getWordPhone(word) }}
-      <!--<img
-        src="../assets/img/speaker.png"
-        class="speaker"
-        @click="playWordSound"
-        v-if="isCurrWord"
-      />-->
-    </div>
-    <div class="wordItem" v-if="!optionsStore.isMeaningHidden">
-      <div v-for="meaning in word?.extension.meanings">
-        {{ meaning }}
+    <div :class="{ currWordItem: isCurrWord, adjWordItem: !isCurrWord }">
+      <div>
+        {{ getWordPhone(word) }}
+        <img
+          src="../assets/img/speaker.png"
+          class="speaker"
+          @click="playWordSound"
+          v-if="isCurrWord"
+        />
+      </div>
+      <div v-if="!optionsStore.isMeaningHidden">
+        <div v-for="meaning in word.extension.meanings">
+          {{ meaning }}
+        </div>
       </div>
     </div>
   </el-card>
-
-  <!-- <el-card
-    id="adjWord"
-    :body-style="{ padding: '0px' }"
-    v-if="word && optionsStore.showPrevNext"
-  >
-    <template #header>
-      <div class="adjWordMain">{{ getWordMain(word) }}</div>
-    </template>
-    <div class="adjWordItem">{{ getWordPhone(word) }}</div>
-    <div class="adjWordItem" v-if="!optionsStore.isMeaningHidden">
-      <div v-for="meaning in word.extension.meanings">
-        {{ meaning }}
-      </div>
-    </div>
-  </el-card> -->
 </template>
 
 <script setup lang="ts">
@@ -56,26 +46,33 @@ import {
 import { watch } from "vue";
 const optionsStore = useOptionsStore();
 
+/**
+ * @param userInput - undefined if the word is previous,
+ *                   the user input if the word is current,
+ *                   "" if the word is next.
+ */
 const props = defineProps<{
   word?: WordVo;
-  // 如果是后面的词则为""，如果是前面的词则为undefined
   userInput?: string;
 }>();
+
 const emits = defineEmits<{
-  (e: "done", correct: boolean): void;
+  (event: "done", isCorrect: boolean): void;
 }>();
+
+const isCurrWord = props.userInput != undefined && props.userInput != "";
 
 watch(
   () => props.userInput,
-  (newInput, _oldInput) => {
-    if (newInput == undefined || props.word == null) return;
+  (newInput) => {
+    if (newInput == undefined || !props.word) return;
 
     if (newInput.length == props.word.name.length) {
-      console.log(
-        `word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${
-          newInput.toLowerCase() === props.word.name
-        }`,
-      );
+      // console.log(
+      //   `word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${
+      //     newInput.toLowerCase() === props.word.name
+      //   }`,
+      // );
       emits("done", newInput.toLowerCase() === props.word.name);
     }
   },
@@ -86,18 +83,18 @@ watch(
 </script>
 
 <style scoped>
-#adjWord {
+.adjWord {
   width: 320px;
   margin: auto auto;
 }
 
-.wordMain {
+.currWordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
 .adjWordMain,
-.wordItem {
+.currWordItem {
   font-size: 1.5em;
 }
 

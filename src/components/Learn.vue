@@ -10,13 +10,9 @@
       <div class="words">
         <WordCard id="prevWord" :word="prevWord" />
         <div :class="{ shake: shake }">
-          <WordCard
-            :word="currWord"
-            :user-input="userInput"
-            @done="inputDone"
-          />
+          <WordCard :word="currWord" :userInput="userInput" @done="inputDone" />
         </div>
-        <WordCard id="nextWord" :word="nextWord" :user-input="''" />
+        <WordCard id="nextWord" :word="nextWord" :userInput="''" />
       </div>
       <div id="inputArea">
         <el-input
@@ -133,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, watch } from "vue";
+import { Ref, ref, watch, onBeforeMount } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -144,7 +140,6 @@ import { WordVo } from "./Dicts/common";
 import { getWordMain, currWordSound, playWordSound } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import axios from "axios";
-import { onBeforeMount } from "vue";
 
 const { t } = useI18n();
 const dictStore = useDictStore();
@@ -161,7 +156,8 @@ const nextWord: Ref<WordVo | undefined> = ref(undefined);
 const tries = ref(0);
 const skips = ref(0);
 const userInput = ref("");
-// 当前单词已经正确，等待按下“下一个”
+
+// The spelling of current word is correct, waiting for "Next Word" button to be pressed
 const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
@@ -255,7 +251,6 @@ function playTypingSound() {
 }
 
 function inputDone(isCorrect: boolean) {
-  console.log("onInputDone: " + isCorrect);
   if (isCorrect) {
     ElMessage({
       message: t("learn.correctSpelling"),
@@ -264,6 +259,7 @@ function inputDone(isCorrect: boolean) {
     });
 
     if (optionsStore.isSoundEnabled) correctSound.play();
+
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
     else isCurrCorrect.value = true;
   } else {
