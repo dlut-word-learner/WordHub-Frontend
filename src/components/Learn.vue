@@ -45,65 +45,14 @@
       :show-text="false"
       :percentage="words ? (currWordIndex / words.length) * 100 : 0"
     />
-    <div class="status-container">
-      <table>
-        <thead>
-          <tr>
-            <th>{{ $t("learn.elapsedTime") }}</th>
-            <th>{{ $t("learn.progress") }}</th>
-            <th>{{ $t("learn.speed") }}</th>
-            <th>{{ $t("learn.accuracy") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              {{
-                stopWatch.hours.value < 10
-                  ? "0" + stopWatch.hours.value
-                  : stopWatch.hours.value
-              }}:{{
-                stopWatch.minutes.value < 10
-                  ? "0" + stopWatch.minutes.value
-                  : stopWatch.minutes.value
-              }}:{{
-                stopWatch.seconds.value < 10
-                  ? "0" + stopWatch.seconds.value
-                  : stopWatch.seconds.value
-              }}
-            </td>
-            <td>
-              {{
-                words
-                  ? currWordIndex < words.length
-                    ? currWordIndex + 1
-                    : currWordIndex
-                  : 0
-              }}
-              / {{ words ? words.length : 0 }}
-            </td>
-            <td>
-              {{
-                (
-                  (currWordIndex - skips) /
-                  (stopWatch.hours.value * 60 +
-                    stopWatch.minutes.value +
-                    stopWatch.seconds.value / 60)
-                ).toFixed(0)
-              }}
-              WPM
-            </td>
-            <td>
-              {{
-                currWordIndex - skips > tries
-                  ? "100.00"
-                  : (((currWordIndex - skips) / tries) * 100).toFixed(2)
-              }}
-              %
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="stats-container">
+      <Stats
+        :stopWatch="stopWatch"
+        :words="words"
+        :currWordIndex="currWordIndex"
+        :tries="tries"
+        :skips="skips"
+      />
     </div>
     <el-dialog v-model="confirmVisible" :title="$t('learn.prompt')" width="30%">
       <span>{{ $t("learn.promptGoToNextWord") }}</span>
@@ -139,6 +88,7 @@ import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
 import { getWordMain, currWordSound, playWordSound } from "./WordCard";
 import WordCard from "./WordCard.vue";
+import Stats from "./Stats.vue";
 import axios from "axios";
 
 const { t } = useI18n();
@@ -312,26 +262,8 @@ function finish() {
   margin: auto auto;
 }
 
-.status-container {
+.stats-container {
   margin-top: 10px;
-}
-
-table {
-  width: 100%;
-}
-
-th,
-td {
-  padding: 0.5em;
-  width: 25%;
-}
-
-th {
-  border-bottom: 1px solid #ddd;
-}
-
-td {
-  font-size: 1.5em;
 }
 
 #prevWord {
