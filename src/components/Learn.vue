@@ -1,45 +1,48 @@
 <template>
   <div class="word-spelling-app">
     <el-alert
-      :title="$t('ui.typingToStart')"
+      :title="$t('learn.typingToStart')"
       :center="true"
       :show-icon="true"
-      v-if="!stopWatch.isRunning.value && !isFinished"
+      v-if="!stopWatch.isRunning.value && !isAllFinished"
     />
-    <div class="word-container" v-if="!isFinished">
+    <div class="word-container" v-if="!isAllFinished">
       <div class="words">
-        <WordCard id="prevWord" :isCurrWord="false" :word="prevWord" />
+        <WordCard id="prevWord" :word="prevWord" />
         <div :class="{ shake: shake }">
-          <WordCard :isCurrWord="true" :word="currWord" />
+          <WordCard
+            :word="currWord"
+            :user-input="userInput"
+            @done="inputDone"
+          />
         </div>
-        <WordCard id="nextWord" :isCurrWord="false" :word="nextWord" />
+        <WordCard id="nextWord" :word="nextWord" :user-input="''" />
       </div>
       <div id="inputArea">
         <el-input
           id="userInputBox"
           size="large"
           v-model="userInput"
-          @input="checkSpelling"
           @keypress="playTypingSound"
           @keydown="init"
           :class="{ shake: shake }"
           :maxlength="currWord?.name.length"
-          :disabled="isFinished"
+          :disabled="isAllFinished"
           :clearable="true"
         />
       </div>
     </div>
-    <div v-if="isFinished">
-      <el-result icon="success" :title="$t('ui.finishPrompt')"> </el-result>
+    <div v-else>
+      <el-result icon="success" :title="$t('learn.finishPrompt')"> </el-result>
     </div>
     <el-button
       id="nextWordButton"
       type="primary"
       @click="promptGoToNextWord"
       :disabled="!stopWatch.isRunning"
-      v-if="!isFinished"
+      v-if="!isAllFinished"
     >
-      {{ $t("ui.goToNextWord") }}
+      {{ $t("learn.goToNextWord") }}
     </el-button>
     <el-progress
       id="progressBar"
@@ -50,10 +53,10 @@
       <table>
         <thead>
           <tr>
-            <th>{{ $t("ui.elapsedTime") }}</th>
-            <th>{{ $t("ui.progress") }}</th>
-            <th>{{ $t("ui.speed") }}</th>
-            <th>{{ $t("ui.accuracy") }}</th>
+            <th>{{ $t("learn.elapsedTime") }}</th>
+            <th>{{ $t("learn.progress") }}</th>
+            <th>{{ $t("learn.speed") }}</th>
+            <th>{{ $t("learn.accuracy") }}</th>
           </tr>
         </thead>
         <tbody>
@@ -106,12 +109,12 @@
         </tbody>
       </table>
     </div>
-    <el-dialog v-model="confirmVisible" :title="$t('ui.prompt')" width="30%">
-      <span>{{ $t("ui.promptGoToNextWord") }}</span>
+    <el-dialog v-model="confirmVisible" :title="$t('learn.prompt')" width="30%">
+      <span>{{ $t("learn.promptGoToNextWord") }}</span>
       <template #footer>
         <span>
           <el-button @click="confirmVisible = false">
-            {{ $t("ui.cancel") }}
+            {{ $t("learn.cancel") }}
           </el-button>
           <el-button
             type="primary"
@@ -121,7 +124,7 @@
               goToNextWord();
             "
           >
-            {{ $t("ui.confirm") }}
+            {{ $t("learn.confirm") }}
           </el-button>
         </span>
       </template>
@@ -130,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, onMounted, watch } from "vue";
+import { Ref, ref, watch } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -141,6 +144,7 @@ import { WordVo } from "./Dicts/common";
 import { getWordMain, currWordSound, playWordSound } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import axios from "axios";
+import { onBeforeMount } from "vue";
 
 const { t } = useI18n();
 const dictStore = useDictStore();
@@ -150,16 +154,16 @@ const lang = dictStore.lang;
 const words: Ref<WordVo[] | null> = ref(null);
 const currWordIndex = ref(0);
 
-const prevWord: Ref<WordVo | null> = ref(null);
-const currWord: Ref<WordVo | null> = ref(null);
-const nextWord: Ref<WordVo | null> = ref(null);
-const hiddenWord = ref("");
+const prevWord: Ref<WordVo | undefined> = ref(undefined);
+const currWord: Ref<WordVo | undefined> = ref(undefined);
+const nextWord: Ref<WordVo | undefined> = ref(undefined);
 
 const tries = ref(0);
 const skips = ref(0);
 const userInput = ref("");
-const isCorrect = ref(false);
-const isFinished = ref(false);
+// 当前单词已经正确，等待按下“下一个”
+const isCurrCorrect = ref(false);
+const isAllFinished = ref(false);
 const shake = ref(false);
 const stopWatch = useStopwatch(0, false);
 
@@ -170,7 +174,7 @@ const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
 const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const soundEffects = [correctSound, wrongSound, typingSound];
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const action = ref("");
   switch (dictStore.action) {
     case DictAction.Learn:
@@ -192,7 +196,7 @@ onMounted(async () => {
     })
     .catch((error) => {
       console.log(error);
-      ElMessage.error(t("ui.errGetWords"));
+      ElMessage.error(t("learn.errGetWords"));
       return;
     });
 
@@ -207,20 +211,6 @@ watch(
   },
   { immediate: true },
 );
-
-if (optionsStore.isWordHidden) {
-  watch(
-    userInput,
-    (newUserInput) => {
-      if (currWord.value) {
-        hiddenWord.value =
-          newUserInput +
-          "_ ".repeat(currWord.value.name.length - newUserInput.length);
-      }
-    },
-    { immediate: true },
-  );
-}
 
 function init() {
   if (!stopWatch.isRunning.value) stopWatch.start();
@@ -240,8 +230,6 @@ function loadWord() {
   });
 
   userInput.value = "";
-  isCorrect.value = false;
-  hiddenWord.value = "_ ".repeat(currWord.value.name.length);
 
   playWordSound();
 }
@@ -252,7 +240,7 @@ function shakeWord() {
 }
 
 function promptGoToNextWord() {
-  if (!isCorrect.value) confirmVisible.value = true;
+  isCurrCorrect.value ? goToNextWord() : (confirmVisible.value = true);
 }
 
 function goToNextWord() {
@@ -266,22 +254,21 @@ function playTypingSound() {
   if (optionsStore.isSoundEnabled) typingSound.play();
 }
 
-function checkSpelling() {
-  if (userInput.value.length != currWord.value?.name.length) return;
-
-  isCorrect.value = userInput.value.toLowerCase() === currWord.value.name;
-  if (isCorrect.value) {
+function inputDone(isCorrect: boolean) {
+  console.log("onInputDone: " + isCorrect);
+  if (isCorrect) {
     ElMessage({
-      message: t("ui.correctSpelling"),
+      message: t("learn.correctSpelling"),
       duration: 500,
       type: "success",
     });
 
     if (optionsStore.isSoundEnabled) correctSound.play();
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
+    else isCurrCorrect.value = true;
   } else {
     ElMessage({
-      message: t("ui.wrongSpelling"),
+      message: t("learn.wrongSpelling"),
       duration: 500,
       type: "error",
     });
@@ -294,7 +281,7 @@ function checkSpelling() {
 }
 
 function finish() {
-  isFinished.value = true;
+  isAllFinished.value = true;
   stopWatch.pause();
 }
 </script>

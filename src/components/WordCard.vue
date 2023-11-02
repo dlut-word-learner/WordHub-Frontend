@@ -1,50 +1,88 @@
 <template>
-  <el-card
-    id="currWord"
-    :body-style="{ padding: '0px' }"
-    v-if="isCurrWord || (!isCurrWord && word && optionsStore.showPrevNext)"
-  >
-    <template #header v-if="!optionsStore.isWordHidden">
-      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
+  <el-card id="word" :body-style="{ padding: '0px' }" v-if="word">
+    <template #header>
+      <div
+        class="wordMain"
+        v-if="userInput == undefined || !optionsStore.isWordHidden"
+      >
         {{ getWordMain(word) }}
       </div>
-    </template>
-    <template #header v-else>
-      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
-        {{ hiddenWord }}
+      <div class="wordMain" v-else>
+        {{ getHiddenWord(word, userInput) }}
       </div>
     </template>
-    <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
+    <div class="wordItem">
       {{ getWordPhone(word) }}
-      <img
+      <!--<img
         src="../assets/img/speaker.png"
         class="speaker"
         @click="playWordSound"
         v-if="isCurrWord"
-      />
+      />-->
     </div>
-    <div
-      :class="{ currWordItem: isCurrWord, adjItem: !isCurrWord }"
-      v-if="!optionsStore.isMeaningHidden"
-    >
+    <div class="wordItem" v-if="!optionsStore.isMeaningHidden">
       <div v-for="meaning in word?.extension.meanings">
         {{ meaning }}
       </div>
     </div>
   </el-card>
+
+  <!-- <el-card
+    id="adjWord"
+    :body-style="{ padding: '0px' }"
+    v-if="word && optionsStore.showPrevNext"
+  >
+    <template #header>
+      <div class="adjWordMain">{{ getWordMain(word) }}</div>
+    </template>
+    <div class="adjWordItem">{{ getWordPhone(word) }}</div>
+    <div class="adjWordItem" v-if="!optionsStore.isMeaningHidden">
+      <div v-for="meaning in word.extension.meanings">
+        {{ meaning }}
+      </div>
+    </div>
+  </el-card> -->
 </template>
 
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
-import { getWordMain, getWordPhone, playWordSound } from "./WordCard";
-
+import {
+  getWordMain,
+  getWordPhone,
+  playWordSound,
+  getHiddenWord,
+} from "./WordCard";
+import { watch } from "vue";
 const optionsStore = useOptionsStore();
 
-defineProps<{
-  isCurrWord: boolean;
-  word: WordVo | null;
+const props = defineProps<{
+  word?: WordVo;
+  // 如果是后面的词则为""，如果是前面的词则为undefined
+  userInput?: string;
 }>();
+const emits = defineEmits<{
+  (e: "done", correct: boolean): void;
+}>();
+
+watch(
+  () => props.userInput,
+  (newInput, _oldInput) => {
+    if (newInput == undefined || props.word == null) return;
+
+    if (newInput.length == props.word.name.length) {
+      console.log(
+        `word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${
+          newInput.toLowerCase() === props.word.name
+        }`,
+      );
+      emits("done", newInput.toLowerCase() === props.word.name);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <style scoped>
@@ -53,13 +91,13 @@ defineProps<{
   margin: auto auto;
 }
 
-.currWordMain {
+.wordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
 .adjWordMain,
-.currWordItem {
+.wordItem {
   font-size: 1.5em;
 }
 

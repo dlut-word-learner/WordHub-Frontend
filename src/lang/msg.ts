@@ -4,7 +4,7 @@ export const messages = {
       login: "登录",
       logout: "退出登录",
       dict: "词典",
-      ui: "UI",
+      learn: "学习",
       options: "选项",
       loggedOut: "未登录",
       prompt: "提示",
@@ -52,7 +52,7 @@ export const messages = {
       review: "复习",
       errGetDicts: "获取词典失败，请检查网络是否正常",
     },
-    ui: {
+    learn: {
       errGetWords: "获取单词失败，请检查网络是否正常",
       errGetSound: "获取单词发音失败，请检查网络是否正常",
       typingToStart: "键入以开始",
@@ -144,7 +144,7 @@ export const messages = {
       login: "Login",
       logout: "Logout",
       dict: "Dictionary",
-      ui: "UI",
+      learn: "Learn",
       options: "Options",
       loggedOut: "Logged out",
       prompt: "Prompt",
@@ -193,7 +193,7 @@ export const messages = {
       errGetDicts:
         "Failed to get dictionaries, please check you network status",
     },
-    ui: {
+    learn: {
       errGetWords: "Failed to get words, please check your network status",
       errGetSound:
         "Failed to get pronunciation of words, please check your network status",
@@ -290,7 +290,7 @@ export const messages = {
       login: "ログイン",
       logout: "ログアウト",
       dict: "辞書",
-      ui: "UI",
+      learn: "学習",
       options: "オプション",
       loggedOut: "ログアウトしています",
       prompt: "プロンプト",
@@ -340,7 +340,7 @@ export const messages = {
       errGetDicts:
         "辞書の取得に失敗しました。ネットワークが正常かどうかを確認してください",
     },
-    ui: {
+    learn: {
       errGetWords:
         "単語の取得に失敗しました。ネットワークが正常かどうかを確認してください",
       errGetSound:
