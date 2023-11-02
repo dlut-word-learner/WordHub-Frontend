@@ -25,6 +25,6 @@
     "allowJs": true,
     "noImplicitAny": false,
   },
-  "include": ["src/**/*.ts", "**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/*.ts", "mock/assets/*.png"],
+  "include": ["src/**/*.ts", "**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/*.mock.ts", "mock/assets/*.png"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }
