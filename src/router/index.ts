@@ -17,9 +17,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../components/Dicts/Dicts.vue"),
   },
   {
-    path: "/ui",
-    name: "UI",
-    component: () => import("../components/UI.vue"),
+    path: "/learn",
+    name: "Learn",
+    component: () => import("../components/Learn.vue"),
   },
   {
     path: "/options",

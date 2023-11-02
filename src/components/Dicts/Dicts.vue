@@ -60,14 +60,14 @@ function learn(dict: DictVo) {
   if(langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
   console.log("dict's language: " + langs.get(dict.language));
-  router.push("/ui");
+  router.push("/learn");
 }
 
 function review(dict: DictVo) {
   dictStore.action = DictAction.Review;
   dictStore.id = dict.id;
   dictStore.lang = langs[dict.language];
-  router.push("/ui");
+  router.push("/learn");
 }
 
 onMounted(()=>{

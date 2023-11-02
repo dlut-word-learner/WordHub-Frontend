@@ -20,7 +20,7 @@
       {{ $t("app.login") }}
     </el-menu-item>
     <el-menu-item index="/dicts">{{ $t("app.dict") }}</el-menu-item>
-    <el-menu-item index="/ui">{{ $t("app.ui") }}</el-menu-item>
+    <el-menu-item index="/learn">{{ $t("app.learn") }}</el-menu-item>
     <el-menu-item index="/options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
   <el-dialog v-model="confirmVisible" :title="$t('app.prompt')" width="30%">

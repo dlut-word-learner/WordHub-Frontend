@@ -1,7 +1,7 @@
 <template>
   <div class="word-spelling-app">
     <el-alert
-      :title="$t('ui.typingToStart')"
+      :title="$t('learn.typingToStart')"
       :center="true"
       :show-icon="true"
       v-if="!stopWatch.isRunning.value && !isAllFinished"
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div v-else>
-      <el-result icon="success" :title="$t('ui.finishPrompt')"> </el-result>
+      <el-result icon="success" :title="$t('learn.finishPrompt')"> </el-result>
     </div>
     <el-button
       id="nextWordButton"
@@ -38,7 +38,7 @@
       :disabled="!stopWatch.isRunning"
       v-if="!isAllFinished"
     >
-      {{ $t("ui.goToNextWord") }}
+      {{ $t("learn.goToNextWord") }}
     </el-button>
     <el-progress
       id="progressBar"
@@ -49,10 +49,10 @@
       <table>
         <thead>
           <tr>
-            <th>{{ $t("ui.elapsedTime") }}</th>
-            <th>{{ $t("ui.progress") }}</th>
-            <th>{{ $t("ui.speed") }}</th>
-            <th>{{ $t("ui.accuracy") }}</th>
+            <th>{{ $t("learn.elapsedTime") }}</th>
+            <th>{{ $t("learn.progress") }}</th>
+            <th>{{ $t("learn.speed") }}</th>
+            <th>{{ $t("learn.accuracy") }}</th>
           </tr>
         </thead>
         <tbody>
@@ -105,12 +105,12 @@
         </tbody>
       </table>
     </div>
-    <el-dialog v-model="confirmVisible" :title="$t('ui.prompt')" width="30%">
-      <span>{{ $t("ui.promptGoToNextWord") }}</span>
+    <el-dialog v-model="confirmVisible" :title="$t('learn.prompt')" width="30%">
+      <span>{{ $t("learn.promptGoToNextWord") }}</span>
       <template #footer>
         <span>
           <el-button @click="confirmVisible = false">
-            {{ $t("ui.cancel") }}
+            {{ $t("learn.cancel") }}
           </el-button>
           <el-button
             type="primary"
@@ -120,7 +120,7 @@
               goToNextWord();
             "
           >
-            {{ $t("ui.confirm") }}
+            {{ $t("learn.confirm") }}
           </el-button>
         </span>
       </template>
@@ -192,7 +192,7 @@ onBeforeMount(async () => {
     })
     .catch((error) => {
       console.log(error);
-      ElMessage.error(t("ui.errGetWords"));
+      ElMessage.error(t("learn.errGetWords"));
       return;
     });
 
@@ -254,7 +254,7 @@ function inputDone(isCorrect: boolean) {
   console.log("onInputDone: " + isCorrect);
   if (isCorrect) {
     ElMessage({
-      message: t("ui.correctSpelling"),
+      message: t("learn.correctSpelling"),
       duration: 500,
       type: "success",
     });
@@ -262,9 +262,9 @@ function inputDone(isCorrect: boolean) {
     if (optionsStore.isSoundEnabled) correctSound.play();
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
     else isCurrCorrect.value=true;
-  } else {
+  } else {  
     ElMessage({
-      message: t("ui.wrongSpelling"),
+      message: t("learn.wrongSpelling"),
       duration: 500,
       type: "error",
     });
