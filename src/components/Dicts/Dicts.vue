@@ -19,9 +19,9 @@
             </template>
             <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
             <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
-            <el-button @click="qwertyMode(dict)">{{
-              $t("dict.qwertyMode")
-            }}</el-button>
+            <el-button @click="qwertyMode(dict)">
+              {{ $t("dict.qwertyMode") }}
+            </el-button>
           </el-card>
         </el-col>
       </el-row>
@@ -42,7 +42,7 @@ import { DictVo, langs } from "./common";
 import { Ref, ref } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
-import { DictAction, useDictStore } from "../../store/dictStore";
+import { useDictStore } from "../../store/dictStore";
 import { onMounted } from "vue";
 import axios from "axios";
 import router from "../../router";
@@ -85,7 +85,6 @@ function onSelectLang(index: string, _indexPath, _routeResult): void {
 }
 
 function learn(dict: DictVo): void {
-  dictStore.action = DictAction.Learn;
   dictStore.id = dict.id;
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
@@ -94,7 +93,6 @@ function learn(dict: DictVo): void {
 }
 
 function review(dict: DictVo): void {
-  dictStore.action = DictAction.Review;
   dictStore.id = dict.id;
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
@@ -103,7 +101,6 @@ function review(dict: DictVo): void {
 }
 
 function qwertyMode(dict: DictVo): void {
-  dictStore.action = DictAction.QwertyMode;
   dictStore.id = dict.id;
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;

@@ -55,7 +55,7 @@ export const messages = {
       qwertyMode: "Qwerty 模式",
       errGetDicts: "获取词典失败，请检查网络是否正常",
     },
-    learn: {
+    qwerty: {
       errGetWords: "获取单词失败，请检查网络是否正常",
       errGetSound: "获取单词发音失败，请检查网络是否正常",
       typingToStart: "键入以开始",
@@ -202,7 +202,7 @@ export const messages = {
       errGetDicts:
         "Failed to get dictionaries, please check you network status",
     },
-    learn: {
+    qwerty: {
       errGetWords: "Failed to get words, please check your network status",
       errGetSound:
         "Failed to get pronunciation of words, please check your network status",
@@ -355,7 +355,7 @@ export const messages = {
       errGetDicts:
         "辞書の取得に失敗しました。ネットワークが正常かどうかを確認してください",
     },
-    learn: {
+    qwerty: {
       errGetWords:
         "単語の取得に失敗しました。ネットワークが正常かどうかを確認してください",
       errGetSound:

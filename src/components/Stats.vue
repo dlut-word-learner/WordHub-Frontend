@@ -2,10 +2,10 @@
   <table>
     <thead>
       <tr>
-        <th>{{ $t("learn.elapsedTime") }}</th>
-        <th>{{ $t("learn.progress") }}</th>
-        <th>{{ $t("learn.speed") }}</th>
-        <th>{{ $t("learn.accuracy") }}</th>
+        <th>{{ $t("qwerty.elapsedTime") }}</th>
+        <th>{{ $t("qwerty.progress") }}</th>
+        <th>{{ $t("qwerty.speed") }}</th>
+        <th>{{ $t("qwerty.accuracy") }}</th>
       </tr>
     </thead>
     <tbody>

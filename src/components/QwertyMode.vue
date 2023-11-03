@@ -1,7 +1,7 @@
 <template>
   <div class="word-spelling-app">
     <el-alert
-      :title="$t('learn.typingToStart')"
+      :title="$t('qwerty.typingToStart')"
       :center="true"
       :show-icon="true"
       v-if="!stopWatch.isRunning.value && !isAllFinished"
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div v-else>
-      <el-result icon="success" :title="$t('learn.finishPrompt')"> </el-result>
+      <el-result icon="success" :title="$t('qwerty.finishPrompt')"> </el-result>
     </div>
     <el-button
       id="nextWordButton"
@@ -43,7 +43,7 @@
       :disabled="!stopWatch.isRunning"
       v-if="!isAllFinished"
     >
-      {{ $t("learn.goToNextWord") }}
+      {{ $t("qwerty.goToNextWord") }}
     </el-button>
     <el-progress
       id="progressBar"
@@ -59,12 +59,12 @@
         :skips="skips"
       />
     </div>
-    <el-dialog v-model="confirmVisible" :title="$t('learn.prompt')" width="30%">
-      <span>{{ $t("learn.promptGoToNextWord") }}</span>
+    <el-dialog v-model="confirmVisible" :title="$t('qwerty.prompt')" width="30%">
+      <span>{{ $t("qwerty.promptGoToNextWord") }}</span>
       <template #footer>
         <span>
           <el-button @click="confirmVisible = false">
-            {{ $t("learn.cancel") }}
+            {{ $t("qwerty.cancel") }}
           </el-button>
           <el-button
             type="primary"
@@ -74,7 +74,7 @@
               goToNextWord();
             "
           >
-            {{ $t("learn.confirm") }}
+            {{ $t("qwerty.confirm") }}
           </el-button>
         </span>
       </template>
@@ -87,7 +87,7 @@ import { Ref, ref, watch, onBeforeMount } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
-import { DictAction, useDictStore } from "../store/dictStore";
+import { useDictStore } from "../store/dictStore";
 import { useOptionsStore } from "../store/optionsStore";
 import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
@@ -126,18 +126,10 @@ const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
 const soundEffects = [correctSound, wrongSound, typingSound];
 
 onBeforeMount(async () => {
-  const action = ref("");
-  switch (dictStore.action) {
-    case DictAction.Learn:
-      action.value = "learn";
-      break;
-    case DictAction.Review:
-      action.value = "review";
-      break;
-  }
+  // API tailored for Qwerty mode?
 
   await axios
-    .get(`/api/dicts/${dictStore.id}/${action.value}`, {
+    .get(`/api/dicts/${dictStore.id}/learn`, {
       params: {
         num: optionsStore.qwertyWordsPerRound,
       },
@@ -147,7 +139,7 @@ onBeforeMount(async () => {
     })
     .catch((error) => {
       console.log(error);
-      ElMessage.error(t("learn.errGetWords"));
+      ElMessage.error(t("qwerty.errGetWords"));
       return;
     });
 
@@ -207,7 +199,7 @@ function playTypingSound(): void {
 function inputDone(isCorrect: boolean): void {
   if (isCorrect) {
     ElMessage({
-      message: t("learn.correctSpelling"),
+      message: t("qwerty.correctSpelling"),
       duration: 500,
       type: "success",
     });
@@ -218,7 +210,7 @@ function inputDone(isCorrect: boolean): void {
     else isCurrCorrect.value = true;
   } else {
     ElMessage({
-      message: t("learn.wrongSpelling"),
+      message: t("qwerty.wrongSpelling"),
       duration: 500,
       type: "error",
     });
