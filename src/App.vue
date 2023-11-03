@@ -1,5 +1,5 @@
 <template>
-  <el-menu class="menu" mode="horizontal" default-active="/" :router="true">
+  <el-menu class="menu" mode="horizontal" :default-active="$route.path" router>
     <el-sub-menu index="/" v-if="loginStore.userVo">
       <template #title>
         <el-avatar
