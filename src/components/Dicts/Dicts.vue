@@ -1,14 +1,13 @@
 <template>
   <el-container>
-    <el-aside width="200px">
+    <el-aside :width="`${sideWidth}px`">
       <el-menu id="menu" @select="onSelectLang">
         <el-menu-item v-for="[_, abbr] in langs" :index="abbr">
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
     </el-aside>
-    <el-main :span="24 - navSpan">
-      <!-- <div id="body"> -->
+    <el-main>
       <el-row class="dictRow">
         <el-col v-for="dict in displayedDicts()" :span="8">
           <el-card class="dictCard">
@@ -25,13 +24,12 @@
       </el-row>
       <el-footer id="footer">
         <el-pagination
-          v-model:current-page="currentPage"
+          v-model:current-page="currPage"
           :page-size="pageSize"
           :total="selectedDicts().length"
           hide-on-single-page
         />
       </el-footer>
-      <!-- </div> -->
     </el-main>
   </el-container>
 </template>
@@ -45,14 +43,14 @@ import { DictAction, useDictStore } from "../../store/dictStore";
 import { onMounted } from "vue";
 import axios from "axios";
 import router from "../../router";
-// import { computed } from "vue";
 
 const dicts: Ref<DictVo[]> = ref([]);
 const dictStore = useDictStore();
-const navSpan = ref(0);
+const sideWidth = ref(0);
 const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
-const currentPage = ref(1);
+
+const currPage = ref(1);
 const pageSize = ref(12);
 
 onMounted(() => {
@@ -69,12 +67,13 @@ onMounted(() => {
 
 switch (i18n.global.locale.value) {
   case "zh_cn":
-    navSpan.value = 2;
+    sideWidth.value = 120;
     break;
-
   case "en":
+    sideWidth.value = 160;
+    break;
   case "ja":
-    navSpan.value = 3;
+    sideWidth.value = 140;
     break;
 }
 
@@ -99,13 +98,15 @@ function review(dict: DictVo): void {
 
   router.push("/learn");
 }
+
 function selectedDicts(): DictVo[] {
   return dicts.value.filter(
     (x) => currLang.value == "all" || currLang.value == langs.get(x.language),
   );
 }
+
 function displayedDicts(): DictVo[] {
-  const start = (currentPage.value - 1) * pageSize.value;
+  const start = (currPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
   return selectedDicts().slice(start, end);
 }
@@ -131,6 +132,6 @@ function displayedDicts(): DictVo[] {
 }
 
 #footer {
-  height: 30px;
+  height: 20px;
 }
 </style>
