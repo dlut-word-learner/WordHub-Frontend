@@ -22,6 +22,7 @@ declare module "vue" {
     ElContainer: (typeof import("element-plus/es"))["ElContainer"];
     ElDialog: (typeof import("element-plus/es"))["ElDialog"];
     ElDivider: (typeof import("element-plus/es"))["ElDivider"];
+    ElFooter: (typeof import("element-plus/es"))["ElFooter"];
     ElForm: (typeof import("element-plus/es"))["ElForm"];
     ElFormItem: (typeof import("element-plus/es"))["ElFormItem"];
     ElHeader: (typeof import("element-plus/es"))["ElHeader"];
@@ -31,6 +32,7 @@ declare module "vue" {
     ElMenu: (typeof import("element-plus/es"))["ElMenu"];
     ElMenuItem: (typeof import("element-plus/es"))["ElMenuItem"];
     ElOption: (typeof import("element-plus/es"))["ElOption"];
+    ElPagination: (typeof import("element-plus/es"))["ElPagination"];
     ElProgress: (typeof import("element-plus/es"))["ElProgress"];
     ElResult: (typeof import("element-plus/es"))["ElResult"];
     ElRow: (typeof import("element-plus/es"))["ElRow"];

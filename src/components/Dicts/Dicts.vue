@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside :span="navSpan">
+    <el-aside width="200px">
       <el-menu id="menu" @select="onSelectLang">
         <el-menu-item v-for="[_, abbr] in langs" :index="abbr">
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
@@ -9,8 +9,8 @@
     </el-aside>
     <el-main :span="24 - navSpan">
       <!-- <div id="body"> -->
-      <el-row>
-        <el-col v-for="dict in displayedDicts()" :span="12">
+      <el-row class="dictRow">
+        <el-col v-for="dict in displayedDicts()" :span="8">
           <el-card class="dictCard">
             <template #header>
               <div class="header">
@@ -23,7 +23,7 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-footer>
+      <el-footer id="footer">
         <el-pagination
           v-model:current-page="currentPage"
           :page-size="pageSize"
@@ -53,7 +53,7 @@ const navSpan = ref(0);
 const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
 const currentPage = ref(1);
-const pageSize = ref(8);
+const pageSize = ref(12);
 
 onMounted(() => {
   axios
@@ -116,9 +116,21 @@ function displayedDicts(): DictVo[] {
   margin: auto auto;
 }
 
+#menu {
+  min-height: 100%;
+}
 .dictCard {
-  width: 480px;
+  width: 400px;
   margin-top: 1em;
   margin-bottom: 1em;
+}
+
+.dictRow {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+#footer {
+  height: 30px;
 }
 </style>
