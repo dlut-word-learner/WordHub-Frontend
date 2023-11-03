@@ -13,13 +13,17 @@ const dicts: DictVo[] = [
     language: "Japanese",
     name: "Japanese Test Dict",
   },
-].concat(Mock.mock({
-  'array|20': [{
-    'id|+1': 1,
-    'language': "English",
-    'name': "Random Test Dict @id (Don't click)",
-  }]
-}).array);
+].concat(
+  Mock.mock({
+    "array|20": [
+      {
+        "id|+1": 1,
+        language: "English",
+        name: "Random Test Dict @id (Don't click)",
+      },
+    ],
+  }).array,
+);
 
 const enWords: WordVo[] = [
   {

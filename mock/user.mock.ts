@@ -8,15 +8,15 @@ export default defineMock([
     status: 200,
     enabled: true,
     type: "json",
-    body({body}){
-      const {username} = body;
+    body({ body }) {
+      const { username } = body;
       return {
         id: 1,
         username: username,
         email: "123@456.com",
         score: 0,
-        role: 0
-      } as UserVo
-    }
-  }
+        role: 0,
+      } as UserVo;
+    },
+  },
 ]);

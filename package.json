@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "format": "prettier --write {src,mock}/"
+    "format": "prettier --write ./**/*.{ts,vue,css,html}"
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",
