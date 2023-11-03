@@ -1,3 +1,4 @@
+import Mock from "mockjs";
 import { defineMock } from "vite-plugin-mock-dev-server";
 import { DictVo, WordVo } from "../src/components/Dicts/common";
 
@@ -12,7 +13,13 @@ const dicts: DictVo[] = [
     language: "Japanese",
     name: "Japanese Test Dict",
   },
-];
+].concat(Mock.mock({
+  'array|20': [{
+    'id|+1': 1,
+    'language': "English",
+    'name': "Random Test Dict @id (Don't click)",
+  }]
+}).array);
 
 const enWords: WordVo[] = [
   {
