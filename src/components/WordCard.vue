@@ -32,7 +32,7 @@
         />
       </div>
       <div v-if="!optionsStore.isMeaningHidden">
-        <div v-for="meaning in word.extension.meanings">
+        <div class="meaning" v-for="meaning in word.extension.meanings">
           {{ meaning }}
         </div>
       </div>
@@ -113,6 +113,11 @@ function checkSpelling(input: string, wordName: string): boolean {
 
 .adjWordItem {
   font-size: 0.9em;
+}
+
+.meaning {
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 .speaker {

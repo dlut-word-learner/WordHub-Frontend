@@ -21,7 +21,6 @@
       </div>
       <div id="inputArea">
         <el-input
-          id="userInputBox"
           size="large"
           v-model="userInput"
           @keypress="playTypingSound"
@@ -37,7 +36,6 @@
       <el-result icon="success" :title="$t('qwerty.finishPrompt')"> </el-result>
     </div>
     <el-button
-      id="nextWordButton"
       type="primary"
       @click="promptGoToNextWord"
       :disabled="!stopWatch.isRunning"
@@ -232,12 +230,12 @@ function finish(): void {
 .word-spelling-app {
   text-align: center;
   margin: auto 3em;
-  margin-top: 2em;
+  margin-top: 1em;
   font-family: Arial, sans-serif;
 }
 
 .word-container {
-  margin: 20px;
+  margin: 1em;
 }
 
 .words {
@@ -246,10 +244,8 @@ function finish(): void {
   margin-bottom: 1.5em;
 }
 
-#nextWordButton,
 #progressBar {
-  margin-top: 0.75em;
-  margin-bottom: 0.75em;
+  margin-top: 1em;
 }
 
 #inputArea {
@@ -259,7 +255,7 @@ function finish(): void {
 }
 
 .stats-container {
-  margin-top: 10px;
+  margin-top: 1em;
 }
 
 #prevWord {
