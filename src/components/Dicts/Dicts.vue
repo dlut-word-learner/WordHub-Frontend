@@ -19,6 +19,9 @@
             </template>
             <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
             <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
+            <el-button @click="qwertyMode(dict)">{{
+              $t("dict.qwertyMode")
+            }}</el-button>
           </el-card>
         </el-col>
       </el-row>
@@ -96,7 +99,16 @@ function review(dict: DictVo): void {
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
 
-  router.push("/learn");
+  router.push("/review");
+}
+
+function qwertyMode(dict: DictVo): void {
+  dictStore.action = DictAction.QwertyMode;
+  dictStore.id = dict.id;
+  if (langs.has(dict.language))
+    dictStore.lang = langs.get(dict.language) as string;
+
+  router.push("/qwerty-mode");
 }
 
 function selectedDicts(): DictVo[] {

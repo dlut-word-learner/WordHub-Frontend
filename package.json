@@ -13,7 +13,7 @@
     "@vueuse/core": "^10.5.0",
     "axios": "^1.6.0",
     "crypto-js": "^4.2.0",
-    "element-plus": "^2.4.1",
+    "element-plus": "^2.4.2",
     "howler": "^2.2.4",
     "node.js": "0.0.1-security",
     "pinia": "^2.1.7",

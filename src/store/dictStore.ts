@@ -4,6 +4,7 @@ import { Ref, ref } from "vue";
 export const enum DictAction {
   Learn,
   Review,
+  QwertyMode,
 }
 
 export const useDictStore = defineStore(

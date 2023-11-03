@@ -22,6 +22,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../components/Learn.vue"),
   },
   {
+    path: "/review",
+    name: "Review",
+    component: () => import("../components/Review.vue"),
+  },
+  {
+    path: "/qwerty-mode",
+    name: "QwertyMode",
+    component: () => import("../components/QwertyMode.vue"),
+  },
+  {
     path: "/options",
     name: "Options",
     component: () => import("../components/Options.vue"),
