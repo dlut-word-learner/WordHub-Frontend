@@ -9,20 +9,28 @@
     </el-aside>
     <el-main :span="24 - navSpan">
       <!-- <div id="body"> -->
-      <el-card
-        class="dictCard"
-        v-for="dict in dicts"
-        v-show="currLang == 'all' || langs.get(dict.language) == currLang"
-      >
-        <template #header>
-          <div class="header">
-            <div>{{ dict.name }}</div>
-            <div>{{ dict.language }}</div>
-          </div>
-        </template>
-        <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
-        <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
-      </el-card>
+      <el-row>
+        <el-col v-for="dict in displayedDicts()" :span="12">
+          <el-card class="dictCard">
+            <template #header>
+              <div class="header">
+                <div>{{ dict.name }}</div>
+                <div>{{ dict.language }}</div>
+              </div>
+            </template>
+            <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
+            <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-footer>
+        <el-pagination
+          v-model:current-page="currentPage"
+          :page-size="pageSize"
+          :total="selectedDicts().length"
+          hide-on-single-page
+        />
+      </el-footer>
       <!-- </div> -->
     </el-main>
   </el-container>
@@ -37,12 +45,15 @@ import { DictAction, useDictStore } from "../../store/dictStore";
 import { onMounted } from "vue";
 import axios from "axios";
 import router from "../../router";
+// import { computed } from "vue";
 
 const dicts: Ref<DictVo[]> = ref([]);
 const dictStore = useDictStore();
 const navSpan = ref(0);
 const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
+const currentPage = ref(1);
+const pageSize = ref(8);
 
 onMounted(() => {
   axios
@@ -87,6 +98,16 @@ function review(dict: DictVo): void {
     dictStore.lang = langs.get(dict.language) as string;
 
   router.push("/learn");
+}
+function selectedDicts(): DictVo[] {
+  return dicts.value.filter(
+    (x) => currLang.value == "all" || currLang.value == langs.get(x.language),
+  );
+}
+function displayedDicts(): DictVo[] {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return selectedDicts().slice(start, end);
 }
 </script>
 
