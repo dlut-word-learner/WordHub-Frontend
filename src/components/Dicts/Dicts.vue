@@ -1,31 +1,31 @@
 <template>
-  <el-row>
-    <el-col :span="navSpan">
+  <el-container>
+    <el-aside :span="navSpan">
       <el-menu id="menu" @select="onSelectLang">
         <el-menu-item v-for="[_, abbr] in langs" :index="abbr">
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
-    </el-col>
-    <el-col :span="24 - navSpan">
-      <div id="body">
-        <el-card
-          class="dictCard"
-          v-for="dict in dicts"
-          v-show="currLang == 'all' || langs.get(dict.language) == currLang"
-        >
-          <template #header>
-            <div class="header">
-              <div>{{ dict.name }}</div>
-              <div>{{ dict.language }}</div>
-            </div>
-          </template>
-          <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
-          <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
-        </el-card>
-      </div>
-    </el-col>
-  </el-row>
+    </el-aside>
+    <el-main :span="24 - navSpan">
+      <!-- <div id="body"> -->
+      <el-card
+        class="dictCard"
+        v-for="dict in dicts"
+        v-show="currLang == 'all' || langs.get(dict.language) == currLang"
+      >
+        <template #header>
+          <div class="header">
+            <div>{{ dict.name }}</div>
+            <div>{{ dict.language }}</div>
+          </div>
+        </template>
+        <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
+        <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
+      </el-card>
+      <!-- </div> -->
+    </el-main>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -93,21 +93,6 @@ function review(dict: DictVo): void {
 <style scoped>
 .navItem {
   margin: auto auto;
-}
-
-#body {
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-top: 2em;
-}
-
-#menu {
-  min-height: 100%;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .dictCard {
