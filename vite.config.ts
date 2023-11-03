@@ -1,9 +1,9 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-import mockDevServerPlugin from "vite-plugin-mock-dev-server";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import mockDevServerPlugin from 'vite-plugin-mock-dev-server' 
 
 export default defineConfig({
   plugins: [
@@ -21,16 +21,16 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "^/api/*": {
-        target: "http://127.0.0.1:25564/",
+      '^/api/*': {
+        target: 'http://127.0.0.1:25564/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      "/dictYoudao": {
-        target: "https://dict.youdao.com",
+      '/dictYoudao': {
+        target: 'https://dict.youdao.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/dictYoudao/, ""),
-      },
+        rewrite: (path) => path.replace(/^\/dictYoudao/, ''),
+      }
     },
   },
-});
+})
