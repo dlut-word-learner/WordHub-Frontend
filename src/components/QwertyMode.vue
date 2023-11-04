@@ -14,8 +14,9 @@
             :word="currWord"
             :emphasized="true"
             :userInput="userInput"
+            :sound="currWordSound"
             @done="inputDone"
-            v-if="currWord"
+            v-if="currWord && currWordSound"
           />
         </div>
         <WordCard
@@ -30,7 +31,7 @@
           size="large"
           v-model="userInput"
           @keypress="playTypingSound"
-          @keydown="init"
+          @keydown="startTiming"
           :class="{ shake: shake }"
           :maxlength="currWord?.name.length"
           :disabled="isAllFinished"
@@ -92,14 +93,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
 import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
-import { getWordMain, currWordSound, playWordSound } from "./WordCard";
+import { getWordMain } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
@@ -140,7 +141,16 @@ const confirmVisible = ref(false);
 const correctSound = new Howl({ src: correctSoundRes });
 const wrongSound = new Howl({ src: wrongSoundRes });
 const typingSound = new Howl({ src: typingSoundRes });
-const soundEffects = [correctSound, wrongSound, typingSound];
+// const soundEffects = [correctSound, wrongSound, typingSound];
+const currWordSound = computed(() => {
+  if (!currWord.value) return undefined;
+  return new Howl({
+    src: `/dictYoudao/dictvoice?le=${
+      props.lang == "en" ? "eng" : "jap"
+    }&audio=${getWordMain(currWord.value)}`,
+    format: "mp3",
+  });
+});
 
 const initData = async () => {
   await axios
@@ -151,8 +161,6 @@ const initData = async () => {
     })
     .then((response) => {
       words.value = response.data;
-      console.log(words.value);
-      loadWord();
     })
     .catch((error) => {
       console.log(error);
@@ -162,30 +170,8 @@ const initData = async () => {
 };
 initData();
 
-watch(
-  () => optionsStore.volume,
-  (volume) => {
-    soundEffects.forEach((sound) => sound.volume(volume / 100));
-    currWordSound.value?.volume(volume / 100);
-  },
-  { immediate: true },
-);
-
-function init(): void {
+function startTiming(): void {
   if (!stopWatch.isRunning.value) stopWatch.start();
-}
-
-function loadWord(): void {
-  if (!words.value || !currWord.value) return;
-  currWordSound.value = new Howl({
-    src: `/dictYoudao/dictvoice?le=${
-      props.lang == "en" ? "eng" : "jap"
-    }&audio=${getWordMain(currWord.value)}`,
-    format: "mp3",
-  });
-
-  userInput.value = "";
-  playWordSound();
 }
 
 function shakeWord(): void {
@@ -200,7 +186,8 @@ function promptGoToNextWord(): void {
 function goToNextWord(): void {
   tries.value++;
 
-  if (words.value && ++currWordIndex.value < words.value.length) loadWord();
+  if (words.value && ++currWordIndex.value < words.value.length)
+    userInput.value = "";
   else finish();
 }
 
