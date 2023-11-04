@@ -8,16 +8,17 @@
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words">
-        <WordCard id="prevWord" :word="prevWord" />
+        <WordCard id="prevWord" :word="prevWord" v-if="prevWord"/>
         <div :class="{ shake: shake }">
           <WordCard
             :word="currWord"
             :isCurrWord="true"
             :userInput="userInput"
             @done="inputDone"
+            v-if="currWord"
           />
         </div>
-        <WordCard id="nextWord" :word="nextWord" :userInput="''" />
+        <WordCard id="nextWord" :word="nextWord" :userInput="''" v-if="nextWord"/>
       </div>
       <div id="inputArea">
         <el-input
@@ -55,6 +56,7 @@
         :currWordIndex="currWordIndex"
         :tries="tries"
         :skips="skips"
+        v-if="words"
       />
     </div>
     <el-dialog v-model="confirmVisible" :title="$t('qwerty.prompt')" width="30%">
@@ -81,11 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, watch, onBeforeMount } from "vue";
+import { ref, watch, computed } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
-import { useDictStore } from "../store/dictStore";
 import { useOptionsStore } from "../store/optionsStore";
 import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
@@ -93,18 +94,21 @@ import { getWordMain, currWordSound, playWordSound } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
+import router from "../router";
+import correctSoundRes from "../assets/audio/correct.wav"
+import typingSoundRes from "../assets/audio/typing.wav"
+import wrongSoundRes from "../assets/audio/wrong.wav"
+
+const props = defineProps<{lang: string, dictId: any, num: any}>();
 
 const { t } = useI18n();
-const dictStore = useDictStore();
 const optionsStore = useOptionsStore();
-
-const lang = dictStore.lang;
-const words: Ref<WordVo[] | null> = ref(null);
+const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
 
-const prevWord: Ref<WordVo | undefined> = ref(undefined);
-const currWord: Ref<WordVo | undefined> = ref(undefined);
-const nextWord: Ref<WordVo | undefined> = ref(undefined);
+const prevWord = computed(()=>{return words.value?.[currWordIndex.value-1];});
+const currWord = computed(()=>{return words.value?.[currWordIndex.value];});
+const nextWord = computed(()=>{return words.value?.[currWordIndex.value+1];});
 
 const tries = ref(0);
 const skips = ref(0);
@@ -118,31 +122,30 @@ const stopWatch = useStopwatch(0, false);
 
 const confirmVisible = ref(false);
 
-const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
-const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
-const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
+const correctSound = new Howl({ src: correctSoundRes });
+const wrongSound = new Howl({ src: wrongSoundRes });
+const typingSound = new Howl({ src: typingSoundRes });
 const soundEffects = [correctSound, wrongSound, typingSound];
 
-onBeforeMount(async () => {
-  // API tailored for Qwerty mode?
-
+const initData = async ()=>{
   await axios
-    .get(`/api/dicts/${dictStore.id}/learn`, {
+    .get(`/api/dicts/${props.dictId}/learn`, {
       params: {
-        num: optionsStore.qwertyWordsPerRound,
+        num: props.num,
       },
     })
     .then((response) => {
       words.value = response.data;
+      console.log(words.value);
+      loadWord();
     })
     .catch((error) => {
       console.log(error);
       ElMessage.error(t("qwerty.errGetWords"));
-      return;
+      setTimeout(router.back,5000);
     });
-
-  loadWord();
-});
+};
+initData();
 
 watch(
   () => optionsStore.volume,
@@ -158,14 +161,10 @@ function init(): void {
 }
 
 function loadWord(): void {
-  if (!words.value) return;
-
-  prevWord.value = words.value[currWordIndex.value - 1];
-  currWord.value = words.value[currWordIndex.value];
-  nextWord.value = words.value[currWordIndex.value + 1];
+  if (!words.value||!currWord.value) return;
   currWordSound.value = new Howl({
     src: `/dictYoudao/dictvoice?le=${
-      lang == "en" ? "eng" : "jap"
+      props.lang == "en" ? "eng" : "jap"
     }&audio=${getWordMain(currWord.value)}`,
     format: "mp3",
   });
