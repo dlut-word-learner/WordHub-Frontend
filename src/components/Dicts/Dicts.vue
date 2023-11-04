@@ -108,8 +108,11 @@ function qwertyMode(dict: DictVo): void {
     dictStore.lang = langs.get(dict.language) as string;
   router.push({
     name: "QwertyMode",
-    params: { lang: langs.get(dict.language) as string, dictId: dict.id },
-    query: { num: optionsStore.qwertyWordsPerRound },
+    query: {
+      lang: langs.get(dict.language) as string,
+      dictId: dict.id,
+      num: optionsStore.qwertyWordsPerRound,
+    },
   });
 }
 

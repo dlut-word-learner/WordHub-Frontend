@@ -27,12 +27,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../components/Review.vue"),
   },
   {
-    path: "/qwerty-mode/:lang/:dictId",
+    path: "/qwerty-mode",
     name: "QwertyMode",
     component: () => import("../components/QwertyMode.vue"),
     props: (router) => ({
-      lang: router.params.lang,
-      dictId: router.params.dictId,
+      lang: router.query.lang,
+      dictId: router.query.dictId,
       num: router.query.num,
     }),
   },
