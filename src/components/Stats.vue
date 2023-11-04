@@ -12,17 +12,17 @@
       <tr>
         <td>
           {{
-            stopWatch.hours.value < 10
-              ? "0" + stopWatch.hours.value
-              : stopWatch.hours.value
+            stopwatch.hours.value < 10
+              ? "0" + stopwatch.hours.value
+              : stopwatch.hours.value
           }}:{{
-            stopWatch.minutes.value < 10
-              ? "0" + stopWatch.minutes.value
-              : stopWatch.minutes.value
+            stopwatch.minutes.value < 10
+              ? "0" + stopwatch.minutes.value
+              : stopwatch.minutes.value
           }}:{{
-            stopWatch.seconds.value < 10
-              ? "0" + stopWatch.seconds.value
-              : stopWatch.seconds.value
+            stopwatch.seconds.value < 10
+              ? "0" + stopwatch.seconds.value
+              : stopwatch.seconds.value
           }}
         </td>
         <td>
@@ -39,9 +39,9 @@
           {{
             (
               (currWordIndex - skips) /
-              (stopWatch.hours.value * 60 +
-                stopWatch.minutes.value +
-                stopWatch.seconds.value / 60)
+              (stopwatch.hours.value * 60 +
+                stopwatch.minutes.value +
+                stopwatch.seconds.value / 60)
             ).toFixed(0)
           }}
           WPM
@@ -64,7 +64,7 @@ import { WordVo } from "./Dicts/common";
 import { ResUseStopwatch } from "vue-timer-hook";
 
 defineProps<{
-  stopWatch: ResUseStopwatch;
+  stopwatch: ResUseStopwatch;
   words: WordVo[] | null;
   currWordIndex: number;
   tries: number;

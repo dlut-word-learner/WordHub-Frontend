@@ -4,7 +4,7 @@
       :title="$t('qwerty.typingToStart')"
       :center="true"
       :show-icon="true"
-      v-if="!stopWatch.isRunning.value && !isAllFinished"
+      v-if="!stopwatch.isRunning.value && !isAllFinished"
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words">
@@ -47,7 +47,7 @@
     <el-button
       type="primary"
       @click="promptGoToNextWord"
-      :disabled="!stopWatch.isRunning"
+      :disabled="!stopwatch.isRunning"
       v-if="!isAllFinished"
     >
       {{ $t("qwerty.goToNextWord") }}
@@ -59,7 +59,7 @@
     />
     <div class="stats-container">
       <Stats
-        :stopWatch="stopWatch"
+        :stopwatch="stopwatch"
         :words="words"
         :currWordIndex="currWordIndex"
         :tries="tries"
@@ -140,7 +140,7 @@ const userInput = ref("");
 const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
-const stopWatch = useStopwatch(0, false);
+const stopwatch = useStopwatch(0, false);
 
 const confirmVisible = ref(false);
 
@@ -179,11 +179,11 @@ const initData = async () => {
 initData();
 
 onDeactivated(() => {
-  stopWatch.pause();
+  stopwatch.pause();
 });
 
 function startTiming(): void {
-  if (!stopWatch.isRunning.value) stopWatch.start();
+  if (!stopwatch.isRunning.value) stopwatch.start();
 }
 
 function shakeWord(): void {
@@ -235,7 +235,7 @@ function inputDone(isCorrect: boolean): void {
 
 function finish(): void {
   isAllFinished.value = true;
-  stopWatch.pause();
+  stopwatch.pause();
 }
 </script>
 
