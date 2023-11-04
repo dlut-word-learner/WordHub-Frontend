@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 
 export const enum Task {
   Learn,

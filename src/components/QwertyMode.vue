@@ -95,11 +95,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from "vue";
+import { ref, computed, onDeactivated } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
+import { Task, useTaskStore } from "../store/taskStore";
 import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
@@ -110,10 +111,7 @@ import router from "../router";
 import correctSoundRes from "../assets/audio/correct.wav";
 import typingSoundRes from "../assets/audio/typing.wav";
 import wrongSoundRes from "../assets/audio/wrong.wav";
-import { Task, useTaskStore } from "../store/taskStore";
-import { onActivated } from "vue";
-import { onDeactivated } from "vue";
-import { onMounted } from "vue";
+
 const props = defineProps<{ lang: string; dictId: any; num: any }>();
 
 const { t } = useI18n();
@@ -125,9 +123,11 @@ const currWordIndex = ref(0);
 const prevWord = computed(() => {
   return words.value?.[currWordIndex.value - 1];
 });
+
 const currWord = computed(() => {
   return words.value?.[currWordIndex.value];
 });
+
 const nextWord = computed(() => {
   return words.value?.[currWordIndex.value + 1];
 });
@@ -147,7 +147,7 @@ const confirmVisible = ref(false);
 const correctSound = new Howl({ src: correctSoundRes });
 const wrongSound = new Howl({ src: wrongSoundRes });
 const typingSound = new Howl({ src: typingSoundRes });
-// const soundEffects = [correctSound, wrongSound, typingSound];
+
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
   return new Howl({
@@ -177,6 +177,10 @@ const initData = async () => {
     });
 };
 initData();
+
+onDeactivated(() => {
+  stopWatch.pause();
+});
 
 function startTiming(): void {
   if (!stopWatch.isRunning.value) stopWatch.start();
@@ -233,17 +237,6 @@ function finish(): void {
   isAllFinished.value = true;
   stopWatch.pause();
 }
-onUnmounted(() => {
-  console.log("unmounted");
-});
-
-onActivated(() => {
-  console.log("onActivated");
-});
-
-onDeactivated(() => {
-  console.log("onDeactivated");
-});
 </script>
 
 <style scoped>
