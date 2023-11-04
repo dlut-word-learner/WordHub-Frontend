@@ -13,16 +13,16 @@
             checkSpelling(userInput, word.name)
           "
         >
-          {{ getWordMain(word) }}
+          {{ getWordMain(word, lang) }}
         </div>
         <div v-else>
-          {{ getHiddenWord(word, userInput) }}
+          {{ getHiddenWord(word, userInput, lang) }}
         </div>
       </div>
     </template>
     <div :class="{ emWordItem: emphasized, wordItem: !emphasized }">
       <div>
-        {{ getWordPhone(word) }}
+        {{ getWordPhone(word, lang) }}
         <img
           src="../assets/img/speaker.png"
           class="speaker"
@@ -57,6 +57,7 @@ const optionsStore = useOptionsStore();
  */
 const props = defineProps<{
   word: WordVo;
+  lang: string;
   sound?: Howl;
   emphasized?: boolean;
   userInput?: string;

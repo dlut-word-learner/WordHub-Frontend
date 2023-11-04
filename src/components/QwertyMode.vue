@@ -8,13 +8,14 @@
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words">
-        <WordCard id="prevWord" :word="prevWord" v-if="prevWord" />
+        <WordCard id="prevWord" :word="prevWord" v-if="prevWord" :lang="lang" />
         <div :class="{ shake: shake }">
           <WordCard
             :word="currWord"
             :emphasized="true"
             :userInput="userInput"
             :sound="currWordSound"
+            :lang="lang"
             @done="inputDone"
             v-if="currWord && currWordSound"
           />
@@ -23,6 +24,7 @@
           id="nextWord"
           :word="nextWord"
           :userInput="''"
+          :lang="lang"
           v-if="nextWord"
         />
       </div>
@@ -147,7 +149,7 @@ const currWordSound = computed(() => {
   return new Howl({
     src: `/dictYoudao/dictvoice?le=${
       props.lang == "en" ? "eng" : "jap"
-    }&audio=${getWordMain(currWord.value)}`,
+    }&audio=${getWordMain(currWord.value, props.lang)}`,
     format: "mp3",
   });
 });
