@@ -1,5 +1,10 @@
 <template>
-  <el-menu class="menu" mode="horizontal" :default-active="$route.path" router>
+  <el-menu
+    class="menu"
+    mode="horizontal"
+    :default-active="$route.fullPath"
+    router
+  >
     <el-sub-menu index="/" v-if="loginStore.userVo">
       <template #title>
         <el-avatar
@@ -20,9 +25,19 @@
       {{ $t("app.login") }}
     </el-menu-item>
     <el-menu-item index="/dicts">{{ $t("app.dict") }}</el-menu-item>
-    <el-menu-item index="/learn">{{ $t("app.learn") }}</el-menu-item>
-    <el-menu-item index="/review">{{ $t("app.review") }}</el-menu-item>
-    <el-menu-item index="/qwerty-mode">{{ $t("app.qwertyMode") }}</el-menu-item>
+    <el-menu-item :index="taskStore.url" v-if="taskStore.type == Task.Learn">{{
+      $t("app.learn")
+    }}</el-menu-item>
+    <el-menu-item
+      :index="taskStore.url"
+      v-else-if="taskStore.type == Task.Review"
+      >{{ $t("app.review") }}</el-menu-item
+    >
+    <el-menu-item
+      :index="taskStore.url"
+      v-else-if="taskStore.type == Task.QwertyMode"
+      >{{ $t("app.qwertyMode") }}</el-menu-item
+    >
     <el-menu-item index="/options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
   <el-dialog v-model="confirmVisible" :title="$t('app.prompt')" width="30%">
@@ -38,7 +53,11 @@
       </span>
     </template>
   </el-dialog>
-  <router-view></router-view>
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
 </template>
 
 <script setup lang="ts">
@@ -47,9 +66,11 @@ import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { i18n } from "./main";
 import router from "./router";
+import { Task, useTaskStore } from "./store/taskStore";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);
+const taskStore = useTaskStore();
 
 function logout(): void {
   confirmVisible.value = false;

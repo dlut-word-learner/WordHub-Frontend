@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onUnmounted } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -110,11 +110,15 @@ import router from "../router";
 import correctSoundRes from "../assets/audio/correct.wav";
 import typingSoundRes from "../assets/audio/typing.wav";
 import wrongSoundRes from "../assets/audio/wrong.wav";
-
+import { Task, useTaskStore } from "../store/taskStore";
+import { onActivated } from "vue";
+import { onDeactivated } from "vue";
+import { onMounted } from "vue";
 const props = defineProps<{ lang: string; dictId: any; num: any }>();
 
 const { t } = useI18n();
 const optionsStore = useOptionsStore();
+const taskStore = useTaskStore();
 const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
 
@@ -163,11 +167,13 @@ const initData = async () => {
     })
     .then((response) => {
       words.value = response.data;
+      taskStore.type = Task.QwertyMode;
+      taskStore.url = router.currentRoute.value.fullPath;
     })
     .catch((error) => {
       console.log(error);
       ElMessage.error(t("qwerty.errGetWords"));
-      setTimeout(router.back, 5000);
+      router.back();
     });
 };
 initData();
@@ -227,6 +233,17 @@ function finish(): void {
   isAllFinished.value = true;
   stopWatch.pause();
 }
+onUnmounted(() => {
+  console.log("unmounted");
+});
+
+onActivated(() => {
+  console.log("onActivated");
+});
+
+onDeactivated(() => {
+  console.log("onDeactivated");
+});
 </script>
 
 <style scoped>

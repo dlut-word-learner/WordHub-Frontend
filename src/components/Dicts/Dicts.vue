@@ -42,14 +42,12 @@ import { DictVo, langs } from "./common";
 import { Ref, ref } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
-import { useDictStore } from "../../store/dictStore";
 import { onMounted } from "vue";
 import axios from "axios";
 import router from "../../router";
 import { useOptionsStore } from "../../store/optionsStore";
 
 const dicts: Ref<DictVo[]> = ref([]);
-const dictStore = useDictStore();
 const optionsStore = useOptionsStore();
 const sideWidth = ref(0);
 const currLang: Ref<string> = ref("all");
@@ -87,25 +85,14 @@ function onSelectLang(index: string, _indexPath, _routeResult): void {
 }
 
 function learn(dict: DictVo): void {
-  dictStore.id = dict.id;
-  if (langs.has(dict.language))
-    dictStore.lang = langs.get(dict.language) as string;
-
   router.push("/learn");
 }
 
 function review(dict: DictVo): void {
-  dictStore.id = dict.id;
-  if (langs.has(dict.language))
-    dictStore.lang = langs.get(dict.language) as string;
-
   router.push("/review");
 }
 
 function qwertyMode(dict: DictVo): void {
-  dictStore.id = dict.id;
-  if (langs.has(dict.language))
-    dictStore.lang = langs.get(dict.language) as string;
   router.push({
     name: "QwertyMode",
     query: {
