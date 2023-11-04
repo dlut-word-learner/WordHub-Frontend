@@ -48,8 +48,10 @@ import { watch } from "vue";
 const optionsStore = useOptionsStore();
 
 /**
- * @param isCurrWord - true if the word is current,
- *                   false or undefined if the word is previous/next.
+ * @param sound - sound of the word, which can be played
+ *                when sound is enabled
+ *
+ * @param lang - language of the word
  *
  * @param userInput - undefined if the word is previous,
  *                   the user input if the word is current,
