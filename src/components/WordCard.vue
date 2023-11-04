@@ -119,4 +119,8 @@ function checkSpelling(input: string, wordName: string): boolean {
   height: 1em;
   vertical-align: middle;
 }
+
+img:hover {
+  cursor: pointer;
+}
 </style>
