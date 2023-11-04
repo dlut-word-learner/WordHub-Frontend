@@ -24,6 +24,9 @@
     /* Allow JavaScript */
     "allowJs": true,
     "noImplicitAny": false,
+
+    /* Volar support*/
+    "types": ["element-plus/global"]
   },
   "include": ["src/**/*.ts", "**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/*.mock.ts", "mock/assets/*.png"],
   "references": [{ "path": "./tsconfig.node.json" }],
