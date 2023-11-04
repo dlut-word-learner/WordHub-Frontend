@@ -43,16 +43,17 @@ import { Ref, ref } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
 import { onMounted } from "vue";
+import { useOptionsStore } from "../../store/optionsStore";
 import axios from "axios";
 import router from "../../router";
-import { useOptionsStore } from "../../store/optionsStore";
+
+const optionsStore = useOptionsStore();
 
 const dicts: Ref<DictVo[]> = ref([]);
-const optionsStore = useOptionsStore();
-const sideWidth = ref(0);
 const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
 
+const sideWidth = ref(0);
 const currPage = ref(1);
 const pageSize = ref(12);
 
@@ -85,11 +86,25 @@ function onSelectLang(index: string, _indexPath, _routeResult): void {
 }
 
 function learn(dict: DictVo): void {
-  router.push("/learn");
+  router.push({
+    name: "Learn",
+    query: {
+      lang: langs.get(dict.language) as string,
+      dictId: dict.id,
+      num: optionsStore.learnWordsPerRound,
+    },
+  });
 }
 
 function review(dict: DictVo): void {
-  router.push("/review");
+  router.push({
+    name: "Review",
+    query: {
+      lang: langs.get(dict.language) as string,
+      dictId: dict.id,
+      num: optionsStore.reviewWordsPerRound,
+    },
+  });
 }
 
 function qwertyMode(dict: DictVo): void {
