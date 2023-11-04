@@ -8,23 +8,32 @@
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words">
-        <WordCard id="prevWord" :word="prevWord" />
+        <WordCard id="prevWord" :word="prevWord" v-if="prevWord" :lang="lang" />
         <div :class="{ shake: shake }">
           <WordCard
             :word="currWord"
-            :isCurrWord="true"
+            :emphasized="true"
             :userInput="userInput"
+            :sound="currWordSound"
+            :lang="lang"
             @done="inputDone"
+            v-if="currWord && currWordSound"
           />
         </div>
-        <WordCard id="nextWord" :word="nextWord" :userInput="''" />
+        <WordCard
+          id="nextWord"
+          :word="nextWord"
+          :userInput="''"
+          :lang="lang"
+          v-if="nextWord"
+        />
       </div>
       <div id="inputArea">
         <el-input
           size="large"
           v-model="userInput"
           @keypress="playTypingSound"
-          @keydown="init"
+          @keydown="startTiming"
           :class="{ shake: shake }"
           :maxlength="currWord?.name.length"
           :disabled="isAllFinished"
@@ -55,9 +64,14 @@
         :currWordIndex="currWordIndex"
         :tries="tries"
         :skips="skips"
+        v-if="words"
       />
     </div>
-    <el-dialog v-model="confirmVisible" :title="$t('qwerty.prompt')" width="30%">
+    <el-dialog
+      v-model="confirmVisible"
+      :title="$t('qwerty.prompt')"
+      width="30%"
+    >
       <span>{{ $t("qwerty.promptGoToNextWord") }}</span>
       <template #footer>
         <span>
@@ -81,30 +95,38 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, watch, onBeforeMount } from "vue";
+import { ref, computed } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
-import { useDictStore } from "../store/dictStore";
 import { useOptionsStore } from "../store/optionsStore";
 import { useI18n } from "vue-i18n";
 import { WordVo } from "./Dicts/common";
-import { getWordMain, currWordSound, playWordSound } from "./WordCard";
+import { getWordMain } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
+import router from "../router";
+import correctSoundRes from "../assets/audio/correct.wav";
+import typingSoundRes from "../assets/audio/typing.wav";
+import wrongSoundRes from "../assets/audio/wrong.wav";
+
+const props = defineProps<{ lang: string; dictId: any; num: any }>();
 
 const { t } = useI18n();
-const dictStore = useDictStore();
 const optionsStore = useOptionsStore();
-
-const lang = dictStore.lang;
-const words: Ref<WordVo[] | null> = ref(null);
+const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
 
-const prevWord: Ref<WordVo | undefined> = ref(undefined);
-const currWord: Ref<WordVo | undefined> = ref(undefined);
-const nextWord: Ref<WordVo | undefined> = ref(undefined);
+const prevWord = computed(() => {
+  return words.value?.[currWordIndex.value - 1];
+});
+const currWord = computed(() => {
+  return words.value?.[currWordIndex.value];
+});
+const nextWord = computed(() => {
+  return words.value?.[currWordIndex.value + 1];
+});
 
 const tries = ref(0);
 const skips = ref(0);
@@ -118,18 +140,25 @@ const stopWatch = useStopwatch(0, false);
 
 const confirmVisible = ref(false);
 
-const correctSound = new Howl({ src: "src/assets/audio/correct.wav" });
-const wrongSound = new Howl({ src: "src/assets/audio/wrong.wav" });
-const typingSound = new Howl({ src: "src/assets/audio/typing.wav" });
-const soundEffects = [correctSound, wrongSound, typingSound];
+const correctSound = new Howl({ src: correctSoundRes });
+const wrongSound = new Howl({ src: wrongSoundRes });
+const typingSound = new Howl({ src: typingSoundRes });
+// const soundEffects = [correctSound, wrongSound, typingSound];
+const currWordSound = computed(() => {
+  if (!currWord.value) return undefined;
+  return new Howl({
+    src: `/dictYoudao/dictvoice?le=${
+      props.lang == "en" ? "eng" : "jap"
+    }&audio=${getWordMain(currWord.value, props.lang)}`,
+    format: "mp3",
+  });
+});
 
-onBeforeMount(async () => {
-  // API tailored for Qwerty mode?
-
+const initData = async () => {
   await axios
-    .get(`/api/dicts/${dictStore.id}/learn`, {
+    .get(`/api/dicts/${props.dictId}/learn`, {
       params: {
-        num: optionsStore.qwertyWordsPerRound,
+        num: props.num,
       },
     })
     .then((response) => {
@@ -138,40 +167,13 @@ onBeforeMount(async () => {
     .catch((error) => {
       console.log(error);
       ElMessage.error(t("qwerty.errGetWords"));
-      return;
+      setTimeout(router.back, 5000);
     });
+};
+initData();
 
-  loadWord();
-});
-
-watch(
-  () => optionsStore.volume,
-  (volume) => {
-    soundEffects.forEach((sound) => sound.volume(volume / 100));
-    currWordSound.value?.volume(volume / 100);
-  },
-  { immediate: true },
-);
-
-function init(): void {
+function startTiming(): void {
   if (!stopWatch.isRunning.value) stopWatch.start();
-}
-
-function loadWord(): void {
-  if (!words.value) return;
-
-  prevWord.value = words.value[currWordIndex.value - 1];
-  currWord.value = words.value[currWordIndex.value];
-  nextWord.value = words.value[currWordIndex.value + 1];
-  currWordSound.value = new Howl({
-    src: `/dictYoudao/dictvoice?le=${
-      lang == "en" ? "eng" : "jap"
-    }&audio=${getWordMain(currWord.value)}`,
-    format: "mp3",
-  });
-
-  userInput.value = "";
-  playWordSound();
 }
 
 function shakeWord(): void {
@@ -186,7 +188,8 @@ function promptGoToNextWord(): void {
 function goToNextWord(): void {
   tries.value++;
 
-  if (words.value && ++currWordIndex.value < words.value.length) loadWord();
+  if (words.value && ++currWordIndex.value < words.value.length)
+    userInput.value = "";
   else finish();
 }
 

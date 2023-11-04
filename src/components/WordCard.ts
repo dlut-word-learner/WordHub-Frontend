@@ -1,23 +1,15 @@
 import { WordVo } from "./Dicts/common";
-import { useDictStore } from "../store/dictStore";
-import { useOptionsStore } from "../store/optionsStore";
-import { Ref, ref } from "vue";
 import { isKana, isKatakana, toHiragana, toKatakana, toKana } from "wanakana";
-
-const dictStore = useDictStore();
-const optionsStore = useOptionsStore();
-
-export const currWordSound: Ref<Howl | null> = ref(null);
 
 /**
  * Get the main name of the word.
  * English: return name
  * Japanese: return notation excluding text in parentheses
  */
-export function getWordMain(word: WordVo | null): string {
+export function getWordMain(word: WordVo | null, lang: string): string {
   if (!word) return "";
 
-  switch (dictStore.lang) {
+  switch (lang) {
     case "en":
       return word.name;
     case "ja":
@@ -32,10 +24,13 @@ export function getWordMain(word: WordVo | null): string {
  * English: return usphone (AmE) & ukphone (BrE)
  * Japanese: return text in parentheses in notation
  */
-export function getWordPhone(word: WordVo | null): string | undefined {
+export function getWordPhone(
+  word: WordVo | null,
+  lang: string,
+): string | undefined {
   if (!word) return "";
 
-  switch (dictStore.lang) {
+  switch (lang) {
     case "en":
       return `AmE: ${word.extension.usphone} BrE: ${word.extension.ukphone}`;
     case "ja":
@@ -45,12 +40,12 @@ export function getWordPhone(word: WordVo | null): string | undefined {
   }
 }
 
-export function playWordSound(): void {
-  if (optionsStore.isSoundEnabled) currWordSound.value?.play();
-}
-
-export function getHiddenWord(word: WordVo, input: string): string {
-  switch (dictStore.lang) {
+export function getHiddenWord(
+  word: WordVo,
+  input: string,
+  lang: string,
+): string {
+  switch (lang) {
     case "en":
       return input + "_ ".repeat(word.name.length - input.length);
     case "ja":

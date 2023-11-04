@@ -1,12 +1,11 @@
 <template>
   <el-card
     id="word"
-    :class="{ adjWord: !isCurrWord }"
+    :class="{ word: !emphasized }"
     :body-style="{ padding: '0px' }"
-    v-if="word && (isCurrWord || (!isCurrWord && optionsStore.showPrevNext))"
   >
     <template #header>
-      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
+      <div :class="{ emWordMain: emphasized, wordMain: !emphasized }">
         <div
           v-if="
             userInput == undefined ||
@@ -14,21 +13,21 @@
             checkSpelling(userInput, word.name)
           "
         >
-          {{ getWordMain(word) }}
+          {{ getWordMain(word, lang) }}
         </div>
         <div v-else>
-          {{ getHiddenWord(word, userInput) }}
+          {{ getHiddenWord(word, userInput, lang) }}
         </div>
       </div>
     </template>
-    <div :class="{ currWordItem: isCurrWord, adjWordItem: !isCurrWord }">
+    <div :class="{ emWordItem: emphasized, wordItem: !emphasized }">
       <div>
-        {{ getWordPhone(word) }}
+        {{ getWordPhone(word, lang) }}
         <img
           src="../assets/img/speaker.png"
           class="speaker"
-          @click="playWordSound"
-          v-if="isCurrWord"
+          @click="sound?.play()"
+          v-if="optionsStore.isSoundEnabled && sound"
         />
       </div>
       <div v-if="!optionsStore.isMeaningHidden">
@@ -43,12 +42,7 @@
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
-import {
-  getWordMain,
-  getWordPhone,
-  playWordSound,
-  getHiddenWord,
-} from "./WordCard";
+import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
 
 const optionsStore = useOptionsStore();
@@ -62,8 +56,10 @@ const optionsStore = useOptionsStore();
  *                   "" if the word is next.
  */
 const props = defineProps<{
-  word?: WordVo;
-  isCurrWord?: boolean;
+  word: WordVo;
+  lang: string;
+  sound?: Howl;
+  emphasized?: boolean;
   userInput?: string;
 }>();
 
@@ -96,22 +92,22 @@ function checkSpelling(input: string, wordName: string): boolean {
 </script>
 
 <style scoped>
-.adjWord {
+.word {
   width: 320px;
   margin: auto auto;
 }
 
-.currWordMain {
+.emWordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
-.adjWordMain,
-.currWordItem {
+.wordMain,
+.emWordItem {
   font-size: 1.5em;
 }
 
-.adjWordItem {
+.wordItem {
   font-size: 0.9em;
 }
 
