@@ -46,9 +46,11 @@ import { useDictStore } from "../../store/dictStore";
 import { onMounted } from "vue";
 import axios from "axios";
 import router from "../../router";
+import { useOptionsStore } from "../../store/optionsStore";
 
 const dicts: Ref<DictVo[]> = ref([]);
 const dictStore = useDictStore();
+const optionsStore = useOptionsStore();
 const sideWidth = ref(0);
 const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
@@ -104,8 +106,7 @@ function qwertyMode(dict: DictVo): void {
   dictStore.id = dict.id;
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
-
-  router.push("/qwerty-mode");
+  router.push({name: 'QwertyMode', params: {lang: langs.get(dict.language) as string, dictId: dict.id }, query: {num: optionsStore.qwertyWordsPerRound}});
 }
 
 function selectedDicts(): DictVo[] {
