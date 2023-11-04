@@ -7,26 +7,25 @@
       v-if="!stopwatch.isRunning.value && !isAllFinished"
     />
     <div class="word-container" v-if="!isAllFinished">
-      <div class="words">
-        <WordCard id="prevWord" :word="prevWord" v-if="prevWord" :lang="lang" />
-        <div :class="{ shake: shake }">
+      <div class="words" v-if="words">
+        <TransitionGroup name="visibleWordCards">
           <WordCard
-            :word="currWord"
-            :emphasized="true"
-            :userInput="userInput"
-            :sound="currWordSound"
+            v-for="index in visibleWordIndex"
+            :key="index"
+            :word="words?.[index]"
+            :emphasized="isCurrWord(index)"
+            :userInput="
+              isCurrWord(index)
+                ? userInput
+                : index > currWordIndex
+                ? ''
+                : undefined
+            "
+            :sound="isCurrWord(index) ? currWordSound : undefined"
             :lang="lang"
             @done="inputDone"
-            v-if="currWord && currWordSound"
           />
-        </div>
-        <WordCard
-          id="nextWord"
-          :word="nextWord"
-          :userInput="''"
-          :lang="lang"
-          v-if="nextWord"
-        />
+        </TransitionGroup>
       </div>
       <div id="inputArea">
         <el-input
@@ -119,18 +118,14 @@ const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
 const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
-
-const prevWord = computed(() => {
-  return words.value?.[currWordIndex.value - 1];
-});
+const visibleWordIndex = ref([0, 1]);
 
 const currWord = computed(() => {
   return words.value?.[currWordIndex.value];
 });
-
-const nextWord = computed(() => {
-  return words.value?.[currWordIndex.value + 1];
-});
+const isCurrWord = (index: number) => {
+  return index == currWordIndex.value;
+};
 
 const tries = ref(0);
 const skips = ref(0);
@@ -195,12 +190,18 @@ function promptGoToNextWord(): void {
   isCurrCorrect.value ? goToNextWord() : (confirmVisible.value = true);
 }
 
+// TODO: 优化代码
 function goToNextWord(): void {
   tries.value++;
 
-  if (words.value && ++currWordIndex.value < words.value.length)
+  if (words.value && currWordIndex.value + 1 < words.value.length) {
+    if (currWordIndex.value != 0) visibleWordIndex.value?.shift();
+    currWordIndex.value++;
+    if (currWordIndex.value + 1 < words.value.length)
+      visibleWordIndex.value?.push(currWordIndex.value + 1);
+    console.log(currWordIndex.value);
     userInput.value = "";
-  else finish();
+  } else finish();
 }
 
 function playTypingSound(): void {
@@ -305,5 +306,18 @@ function finish(): void {
   60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.visibleWordCards-move .visibleWordCards-enter-active,
+.visibleWordCards-leave-active {
+  transition: all 0.5s ease;
+}
+.visibleWordCards-enter-from,
+.visibleWordCards-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.visibleWordCards-leave-active {
+  position: absolute;
 }
 </style>
