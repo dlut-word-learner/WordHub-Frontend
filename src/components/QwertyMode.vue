@@ -8,8 +8,9 @@
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words" v-if="words">
-        <TransitionGroup name="visibleWordCards" mode="out-in">
+        <TransitionGroup name="visibleWordCards">
           <WordCard
+            class="word-card"
             v-for="index in visibleWordIndex"
             :key="index"
             :word="words?.[index]"
@@ -272,7 +273,8 @@ function finish(): void {
   margin-top: 1em;
 }
 
-#prevWord {
+.word-card {
+  margin-top: 1em;
   margin-bottom: 1em;
 }
 
@@ -308,17 +310,50 @@ function finish(): void {
   }
 }
 
-.visible-wordcards-move,
-.visibleWordCards-enter-active,
+/* .visibleWordCards-move,
+
 .visibleWordCards-leave-active {
-  transition: translateY(20px) 0.5s ease-out;
-}
+  transition: all 3s ease-out;
+  
+} */
 .visibleWordCards-enter-from,
 .visibleWordCards-leave-to {
   opacity: 0;
-  transform: translateY(30px);
+  scale: 0.01;
+}
+
+.visibleWordCards-move {
+  transition: all 0.5s ease;
+}
+
+.visibleWordCards-leave-active {
+  transition: all 0.2s ease;
+}
+
+.visibleWordCards-enter-active {
+  transition: all 0.5s ease;
+}
+
+.visibleWordCards-enter-from {
+  transform: translateY(50px);
+}
+
+.visibleWordCards-leave-to {
+  transform: translateY(-100px);
 }
 .visibleWordCards-leave-active {
   position: absolute;
 }
+/* .visibleWordCards-leave-to {
+  transform: translateY(30px) 5s;
+} */
+/* 
+.visibleWordCards-enter-from,
+.visibleWordCards-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translateY(-30px) 3s;
+}
+.visibleWordCards-leave-active {
+  position: absolute;
+} */
 </style>
