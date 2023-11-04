@@ -1,11 +1,11 @@
 <template>
   <el-card
     id="word"
-    :class="{ adjWord: !isCurrWord }"
+    :class="{ word: !emphasized }"
     :body-style="{ padding: '0px' }"
   >
     <template #header>
-      <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
+      <div :class="{ emWordMain: emphasized, wordMain: !emphasized }">
         <div
           v-if="
             userInput == undefined ||
@@ -20,14 +20,14 @@
         </div>
       </div>
     </template>
-    <div :class="{ currWordItem: isCurrWord, adjWordItem: !isCurrWord }">
+    <div :class="{ emWordItem: emphasized, wordItem: !emphasized }">
       <div>
         {{ getWordPhone(word) }}
         <img
           src="../assets/img/speaker.png"
           class="speaker"
           @click="playWordSound"
-          v-if="isCurrWord"
+          v-if="emphasized"
         />
       </div>
       <div v-if="!optionsStore.isMeaningHidden">
@@ -62,7 +62,7 @@ const optionsStore = useOptionsStore();
  */
 const props = defineProps<{
   word: WordVo;
-  isCurrWord?: boolean;
+  emphasized?: boolean;
   userInput?: string;
 }>();
 
@@ -95,22 +95,22 @@ function checkSpelling(input: string, wordName: string): boolean {
 </script>
 
 <style scoped>
-.adjWord {
+.word {
   width: 320px;
   margin: auto auto;
 }
 
-.currWordMain {
+.emWordMain {
   font-size: 3em;
   font-weight: bold;
 }
 
-.adjWordMain,
-.currWordItem {
+.wordMain,
+.emWordItem {
   font-size: 1.5em;
 }
 
-.adjWordItem {
+.wordItem {
   font-size: 0.9em;
 }
 

@@ -12,7 +12,7 @@
         <div :class="{ shake: shake }">
           <WordCard
             :word="currWord"
-            :isCurrWord="true"
+            :emphasized="true"
             :userInput="userInput"
             @done="inputDone"
             v-if="currWord"
