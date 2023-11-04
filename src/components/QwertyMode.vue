@@ -8,7 +8,7 @@
     />
     <div class="word-container" v-if="!isAllFinished">
       <div class="words" v-if="words">
-        <TransitionGroup name="visibleWordCards">
+        <TransitionGroup name="visibleWordCards" mode="out-in">
           <WordCard
             v-for="index in visibleWordIndex"
             :key="index"
@@ -308,14 +308,15 @@ function finish(): void {
   }
 }
 
-.visibleWordCards-move .visibleWordCards-enter-active,
+.visible-wordcards-move,
+.visibleWordCards-enter-active,
 .visibleWordCards-leave-active {
-  transition: all 0.5s ease;
+  transition: translateY(20px) 0.5s ease-out;
 }
 .visibleWordCards-enter-from,
 .visibleWordCards-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateY(30px);
 }
 .visibleWordCards-leave-active {
   position: absolute;
