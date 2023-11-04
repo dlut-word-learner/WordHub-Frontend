@@ -26,8 +26,8 @@
         <img
           src="../assets/img/speaker.png"
           class="speaker"
-          @click="playWordSound"
-          v-if="emphasized"
+          @click="sound?.play()"
+          v-if="optionsStore.isSoundEnabled && sound"
         />
       </div>
       <div v-if="!optionsStore.isMeaningHidden">
@@ -42,12 +42,7 @@
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
-import {
-  getWordMain,
-  getWordPhone,
-  playWordSound,
-  getHiddenWord,
-} from "./WordCard";
+import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
 
 const optionsStore = useOptionsStore();
@@ -62,6 +57,7 @@ const optionsStore = useOptionsStore();
  */
 const props = defineProps<{
   word: WordVo;
+  sound?: Howl;
   emphasized?: boolean;
   userInput?: string;
 }>();

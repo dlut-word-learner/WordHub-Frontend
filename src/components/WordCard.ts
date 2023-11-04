@@ -7,8 +7,6 @@ import { isKana, isKatakana, toHiragana, toKatakana, toKana } from "wanakana";
 const dictStore = useDictStore();
 const optionsStore = useOptionsStore();
 
-export const currWordSound: Ref<Howl | null> = ref(null);
-
 /**
  * Get the main name of the word.
  * English: return name
@@ -43,10 +41,6 @@ export function getWordPhone(word: WordVo | null): string | undefined {
     default:
       return "";
   }
-}
-
-export function playWordSound(): void {
-  if (optionsStore.isSoundEnabled) currWordSound.value?.play();
 }
 
 export function getHiddenWord(word: WordVo, input: string): string {
