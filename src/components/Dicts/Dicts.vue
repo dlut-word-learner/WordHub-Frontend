@@ -106,7 +106,11 @@ function qwertyMode(dict: DictVo): void {
   dictStore.id = dict.id;
   if (langs.has(dict.language))
     dictStore.lang = langs.get(dict.language) as string;
-  router.push({name: 'QwertyMode', params: {lang: langs.get(dict.language) as string, dictId: dict.id }, query: {num: optionsStore.qwertyWordsPerRound}});
+  router.push({
+    name: "QwertyMode",
+    params: { lang: langs.get(dict.language) as string, dictId: dict.id },
+    query: { num: optionsStore.qwertyWordsPerRound },
+  });
 }
 
 function selectedDicts(): DictVo[] {

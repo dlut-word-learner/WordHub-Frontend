@@ -30,10 +30,10 @@ const routes: Array<RouteRecordRaw> = [
     path: "/qwerty-mode/:lang/:dictId",
     name: "QwertyMode",
     component: () => import("../components/QwertyMode.vue"),
-    props: router => ({
+    props: (router) => ({
       lang: router.params.lang,
       dictId: router.params.dictId,
-      num: router.query.num
+      num: router.query.num,
     }),
   },
   {
