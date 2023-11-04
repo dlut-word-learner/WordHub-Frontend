@@ -3,7 +3,6 @@
     id="word"
     :class="{ adjWord: !isCurrWord }"
     :body-style="{ padding: '0px' }"
-    v-if="word && (isCurrWord || (!isCurrWord && optionsStore.showPrevNext))"
   >
     <template #header>
       <div :class="{ currWordMain: isCurrWord, adjWordMain: !isCurrWord }">
@@ -62,7 +61,7 @@ const optionsStore = useOptionsStore();
  *                   "" if the word is next.
  */
 const props = defineProps<{
-  word?: WordVo;
+  word: WordVo;
   isCurrWord?: boolean;
   userInput?: string;
 }>();
