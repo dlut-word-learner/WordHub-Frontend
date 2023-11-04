@@ -47,21 +47,17 @@ import { watch } from "vue";
 
 const optionsStore = useOptionsStore();
 
-/**
- * @param sound - sound of the word, which can be played
- *                when sound is enabled
- *
- * @param lang - language of the word
- *
- * @param userInput - undefined if the word is previous,
- *                   the user input if the word is current,
- *                   "" if the word is next.
- */
 const props = defineProps<{
   word: WordVo;
+  /** language of the word */
   lang: string;
+  /** sound of the word, which can be played when sound is enabled */
   sound?: Howl;
+
   emphasized?: boolean;
+  /** undefined if the word is previous,<br/>
+   *  the user input if the word is current,<br/>
+   *  "" if the word is next. */
   userInput?: string;
 }>();
 
