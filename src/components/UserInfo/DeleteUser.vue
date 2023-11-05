@@ -19,31 +19,14 @@
         />
       </el-form-item>
     </el-form>
-    <el-button type="primary" @click="prepareDeleteUser">
+    <el-button type="primary" @click="deleteUser">
       {{ $t("userInfo.delete.delete") }}
     </el-button>
-    <el-dialog
-      v-model="confirmVisible"
-      :title="$t('userInfo.delete.prompt')"
-      width="30%"
-    >
-      <span>{{ $t("userInfo.delete.deletePrompt") }}</span>
-      <template #footer>
-        <span>
-          <el-button @click="confirmVisible = false">
-            {{ $t("userInfo.delete.cancel") }}
-          </el-button>
-          <el-button type="primary" @click="deleteUser">
-            {{ $t("userInfo.delete.confirm") }}
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
@@ -55,11 +38,10 @@ const form = reactive({
   passwd2: "",
 });
 
-const confirmVisible = ref(false);
 const loginStore = useLoginStore();
 const { t } = useI18n();
 
-function prepareDeleteUser(): void {
+function deleteUser(): void {
   if (form.passwd1 == "" || form.passwd2 == "") {
     ElMessage.info(t("userInfo.delete.inputPrompt"));
     return;
@@ -76,21 +58,28 @@ function prepareDeleteUser(): void {
     return;
   }
 
-  confirmVisible.value = true;
-}
-
-function deleteUser(): void {
-  confirmVisible.value = false;
-
-  axios
-    .delete(`/api/users/${loginStore.userVo?.id}`)
+  ElMessageBox.confirm(
+    t("userInfo.delete.deletePrompt"),
+    t("userInfo.delete.prompt"),
+    {
+      confirmButtonText: t("userInfo.delete.confirm"),
+      cancelButtonText: t("userInfo.delete.cancel"),
+    },
+  )
     .then(() => {
-      ElMessage.success(t("userInfo.delete.successPrompt"));
-      router.push("/");
+      axios
+        .delete(`/api/users/${loginStore.userVo?.id}`)
+        .then(() => {
+          ElMessage.success(t("userInfo.delete.successPrompt"));
+          router.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+          ElMessage.error(t("userInfo.delete.errPrompt"));
+        });
     })
-    .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("userInfo.delete.errPrompt"));
+    .catch(() => {
+      return;
     });
 }
 </script>

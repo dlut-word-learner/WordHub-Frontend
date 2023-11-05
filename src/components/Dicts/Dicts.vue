@@ -99,16 +99,14 @@ function tryTask(dict: DictVo, task: Task): void {
       distinguishCancelAndClose: true,
       confirmButtonText: t("dict.startNewTask"),
       cancelButtonText: t("dict.continueCurrTask"),
-    }).then((data) => {
-      switch (data) {
-        case "confirm":
-          startNewTask(dict, task);
-          break;
-        case "cancel":
-          continueCurrTask();
-          break;
-      }
-    });
+    })
+      .then(() => {
+        console.log("confirm");
+        startNewTask(dict, task);
+      })
+      .catch((data) => {
+        if (data == "cancel") continueCurrTask();
+      });
   } else startNewTask(dict, task);
 }
 

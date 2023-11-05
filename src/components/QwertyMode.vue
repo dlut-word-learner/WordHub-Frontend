@@ -71,30 +71,6 @@
         v-if="words"
       />
     </div>
-    <el-dialog
-      v-model="confirmVisible"
-      :title="$t('qwerty.prompt')"
-      width="30%"
-    >
-      <span>{{ $t("qwerty.promptGoToNextWord") }}</span>
-      <template #footer>
-        <span>
-          <el-button @click="confirmVisible = false">
-            {{ $t("qwerty.cancel") }}
-          </el-button>
-          <el-button
-            type="primary"
-            @click="
-              confirmVisible = false;
-              skips++;
-              goToNextWord();
-            "
-          >
-            {{ $t("qwerty.confirm") }}
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -141,8 +117,6 @@ const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
 const stopwatch = useStopwatch(0, false);
-
-const confirmVisible = ref(false);
 
 const correctSound = new Howl({ src: correctSoundRes });
 const wrongSound = new Howl({ src: wrongSoundRes });
@@ -194,16 +168,27 @@ function shakeWord(): void {
 }
 
 function promptGoToNextWord(): void {
-  isCurrCorrect.value ? goToNextWord() : (confirmVisible.value = true);
+  if (!isCurrCorrect.value) {
+    ElMessageBox.confirm(t("qwerty.promptGoToNextWord"), t("qwerty.prompt"), {
+      confirmButtonText: t("qwerty.confirm"),
+      cancelButtonText: t("qwerty.cancel"),
+    })
+      .then((data) => {
+        if (data == "confirm") skips.value++;
+      })
+      .catch(() => {
+        return;
+      });
+  } else goToNextWord();
 }
 
-// TODO: 优化代码
 function goToNextWord(): void {
   tries.value++;
 
   if (words.value && currWordIndex.value + 1 < words.value.length) {
     if (currWordIndex.value != 0) visibleWordIndex.value?.shift();
     currWordIndex.value++;
+
     if (currWordIndex.value + 1 < words.value.length)
       visibleWordIndex.value?.push(currWordIndex.value + 1);
 

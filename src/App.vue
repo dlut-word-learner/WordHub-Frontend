@@ -17,7 +17,7 @@
         }}
       </template>
       <el-menu-item index="/user-info">{{ $t("app.userInfo") }}</el-menu-item>
-      <el-menu-item @click="confirmVisible = true">
+      <el-menu-item @click="logout">
         {{ $t("app.logout") }}
       </el-menu-item>
     </el-sub-menu>
@@ -40,19 +40,6 @@
     >
     <el-menu-item index="/options">{{ $t("app.options") }}</el-menu-item>
   </el-menu>
-  <el-dialog v-model="confirmVisible" :title="$t('app.prompt')" width="30%">
-    <span>{{ $t("app.logoutPrompt") }}</span>
-    <template #footer>
-      <span>
-        <el-button @click="confirmVisible = false">
-          {{ $t("app.cancel") }}
-        </el-button>
-        <el-button type="primary" @click="logout">
-          {{ $t("app.confirm") }}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
   <router-view v-slot="{ Component }">
     <keep-alive :exclude="excludeCache">
       <component :is="Component" />
@@ -61,25 +48,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { i18n } from "./main";
+import { useI18n } from "vue-i18n";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { Task, useTaskStore } from "./store/taskStore";
 import { excludeCache } from "./components/Dicts/common";
 import router from "./router";
 
+const { t } = useI18n();
 const loginStore = useLoginStore();
-const confirmVisible = ref(false);
 const taskStore = useTaskStore();
 
 function logout(): void {
-  confirmVisible.value = false;
-  loginStore.userVo = null;
-  loginStore.password = "";
-  loginStore.avatar = "";
-  localStorage.removeItem("satoken");
-  router.push("/");
+  ElMessageBox.confirm(t("app.logoutPrompt"), t("app.prompt"), {
+    confirmButtonText: t("app.confirm"),
+    cancelButtonText: t("app.cancel"),
+  }).then((data) => {
+    if (data == "confirm") {
+      loginStore.userVo = null;
+      loginStore.password = "";
+      loginStore.avatar = "";
+      localStorage.removeItem("satoken");
+      router.push("/");
+    }
+  }).catch(() => { return; });
 }
 
 const optionsStore = useOptionsStore();
