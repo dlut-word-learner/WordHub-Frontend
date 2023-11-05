@@ -10,7 +10,7 @@
           v-if="
             userInput == undefined ||
             !optionsStore.isWordHidden ||
-            checkSpelling(userInput, word.name)
+            checkSpelling(userInput, word.name, lang)
           "
         >
           {{ getWordMain(word, lang) }}
@@ -44,13 +44,14 @@ import { useOptionsStore } from "../store/optionsStore";
 import { WordVo } from "./Dicts/common";
 import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
+import { Lang } from "./Dicts/common";
 
 const optionsStore = useOptionsStore();
 
 const props = defineProps<{
   word: WordVo;
   /** language of the word */
-  lang: string;
+  lang: Lang;
   /** sound of the word, which can be played when sound is enabled */
   sound?: Howl;
 
@@ -76,7 +77,7 @@ watch(
       //     newInput.toLowerCase() === props.word.name
       //   }`,
       // );
-      emits("done", checkSpelling(newInput, props.word.name));
+      emits("done", checkSpelling(newInput, props.word.name, props.lang));
     }
   },
   {
@@ -94,7 +95,9 @@ watch(
   },
 );
 
-function checkSpelling(input: string, wordName: string): boolean {
+function checkSpelling(input: string, wordName: string, lang: Lang): boolean {
+  switch (lang) {
+  }
   return input.toLowerCase() === wordName;
 }
 </script>

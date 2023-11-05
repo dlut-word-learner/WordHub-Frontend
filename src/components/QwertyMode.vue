@@ -106,7 +106,7 @@ import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
 import { Task, useTaskStore } from "../store/taskStore";
 import { useI18n } from "vue-i18n";
-import { WordVo, excludeCache } from "./Dicts/common";
+import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
@@ -116,7 +116,7 @@ import correctSoundRes from "../assets/audio/correct.wav";
 import typingSoundRes from "../assets/audio/typing.wav";
 import wrongSoundRes from "../assets/audio/wrong.wav";
 
-const props = defineProps<{ lang: string; dictId: any; num: any }>();
+const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
 const { t } = useI18n();
 const optionsStore = useOptionsStore();
@@ -152,7 +152,7 @@ const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
   return new Howl({
     src: `/dictYoudao/dictvoice?le=${
-      props.lang == "en" ? "eng" : "jap"
+      props.lang == Lang.English ? "eng" : "jap"
     }&audio=${getWordMain(currWord.value, props.lang)}`,
     format: "mp3",
   });

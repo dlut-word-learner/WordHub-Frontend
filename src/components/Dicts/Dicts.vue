@@ -5,7 +5,7 @@
         <el-menu-item :index="'all'">
           <div class="navItem">{{ $t(`dict.all`) }}</div>
         </el-menu-item>
-        <el-menu-item v-for="[_, abbr] in langs" :index="abbr">
+        <el-menu-item v-for="abbr in Object.values(Lang)" :index="abbr">
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { DictVo, excludeCache, langs } from "./common";
+import { DictVo, excludeCache, Lang } from "./common";
 import { Ref, ref, onMounted } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
@@ -136,7 +136,7 @@ function startNewTask(dict: DictVo, task: Task): void {
   router.push({
     name: Task[task],
     query: {
-      lang: langs.get(dict.language) as string,
+      lang: Lang[dict.language],
       dictId: dict.id,
       num: wordsPerRound.value,
     },
@@ -145,7 +145,7 @@ function startNewTask(dict: DictVo, task: Task): void {
 
 function selectedDicts(): DictVo[] {
   return dicts.value.filter(
-    (x) => currLang.value == "all" || currLang.value == langs.get(x.language),
+    (x) => currLang.value == "all" || currLang.value == Lang[x.language],
   );
 }
 

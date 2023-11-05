@@ -1,10 +1,5 @@
 import { ref } from "vue";
 
-export interface Lang {
-  fullName: string;
-  abbr: string;
-}
-
 export interface DictVo {
   id: number;
   language: string;
@@ -22,9 +17,9 @@ export interface WordVo {
   };
 }
 
-export const langs = new Map([
-  ["English", "en"],
-  ["Japanese", "ja"],
-]);
+export enum Lang {
+  English = "en",
+  Japanese = "ja",
+}
 
 export const excludeCache = ref("");

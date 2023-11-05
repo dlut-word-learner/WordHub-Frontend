@@ -1,4 +1,4 @@
-import { WordVo } from "./Dicts/common";
+import { Lang, WordVo } from "./Dicts/common";
 import { isKana, isKatakana, toHiragana, toKatakana, toKana } from "wanakana";
 
 /**
@@ -6,13 +6,13 @@ import { isKana, isKatakana, toHiragana, toKatakana, toKana } from "wanakana";
  * English: return name
  * Japanese: return notation excluding text in parentheses
  */
-export function getWordMain(word: WordVo | null, lang: string): string {
+export function getWordMain(word: WordVo | null, lang: Lang): string {
   if (!word) return "";
 
   switch (lang) {
-    case "en":
+    case Lang.English:
       return word.name;
-    case "ja":
+    case Lang.Japanese:
       return word.extension.notation.replace(/\([^)]*\)/g, "");
     default:
       return "";
@@ -26,29 +26,25 @@ export function getWordMain(word: WordVo | null, lang: string): string {
  */
 export function getWordPhone(
   word: WordVo | null,
-  lang: string,
+  lang: Lang,
 ): string | undefined {
   if (!word) return "";
 
   switch (lang) {
-    case "en":
+    case Lang.English:
       return `AmE: ${word.extension.usphone} BrE: ${word.extension.ukphone}`;
-    case "ja":
+    case Lang.Japanese:
       return isKana(word.extension.notation) ? "" : toKana(word.name);
     default:
       return "";
   }
 }
 
-export function getHiddenWord(
-  word: WordVo,
-  input: string,
-  lang: string,
-): string {
+export function getHiddenWord(word: WordVo, input: string, lang: Lang): string {
   switch (lang) {
-    case "en":
+    case Lang.English:
       return input + "_ ".repeat(word.name.length - input.length);
-    case "ja":
+    case Lang.Japanese:
       return isKatakana(word.extension.notation)
         ? toKatakana(input)
         : toHiragana(input) +
