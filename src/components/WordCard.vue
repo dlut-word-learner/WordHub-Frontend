@@ -1,7 +1,7 @@
 <template>
   <el-card
-    id="word"
-    :class="{ word: !emphasized }"
+    class="word-card"
+    :class="{ emWord: emphasized, unEmWord: !emphasized }"
     :body-style="{ padding: '0px' }"
   >
     <template #header>
@@ -90,9 +90,17 @@ function checkSpelling(input: string, wordName: string): boolean {
 </script>
 
 <style scoped>
-.word {
-  width: 320px;
-  margin: auto auto;
+.word-card {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+.emWord {
+  width: 850px;
+}
+.unEmWord {
+  width: 700px;
 }
 
 .emWordMain {

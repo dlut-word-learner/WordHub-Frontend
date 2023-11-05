@@ -10,7 +10,7 @@
       <div class="words" v-if="words">
         <TransitionGroup name="visibleWordCards">
           <WordCard
-            class="word-card"
+            class="word-card-instance"
             v-for="index in visibleWordIndex"
             :key="index"
             :word="words?.[index]"
@@ -251,12 +251,14 @@ function finish(): void {
 
 .word-container {
   margin: 1em;
+  width: 100%;
+  text-align: center;
 }
 
 .words {
-  width: 640px;
-  margin: auto auto;
-  margin-bottom: 1.5em;
+  /* margin-bottom: 1.5em; */
+  width: 100%;
+  text-align: center;
 }
 
 #progressBar {
@@ -273,9 +275,10 @@ function finish(): void {
   margin-top: 1em;
 }
 
-.word-card {
+.word-card-instance {
   margin-top: 1em;
   margin-bottom: 1em;
+  display: inline-block;
 }
 
 #nextWord {
@@ -319,27 +322,21 @@ function finish(): void {
 .visibleWordCards-enter-from,
 .visibleWordCards-leave-to {
   opacity: 0;
-  scale: 0.01;
+  scale: 0.1;
 }
 
-.visibleWordCards-move {
-  transition: all 0.5s ease;
-}
-
-.visibleWordCards-leave-active {
-  transition: all 0.2s ease;
-}
-
+.visibleWordCards-move,
+.visibleWordCards-leave-active,
 .visibleWordCards-enter-active {
   transition: all 0.5s ease;
 }
 
 .visibleWordCards-enter-from {
-  transform: translateY(50px);
+  transform: translateY(200px);
 }
 
 .visibleWordCards-leave-to {
-  transform: translateY(-100px);
+  transform: translateY(-200px);
 }
 .visibleWordCards-leave-active {
   position: absolute;
