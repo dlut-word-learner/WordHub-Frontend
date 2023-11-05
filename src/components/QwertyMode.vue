@@ -36,7 +36,7 @@
         <el-input
           size="large"
           v-model="userInput"
-          @keypress="typingSound.play"
+          @keypress="typingSound.play()"
           @keydown="startTiming"
           :class="{ shake: shake }"
           :maxlength="currWord?.name.length"
