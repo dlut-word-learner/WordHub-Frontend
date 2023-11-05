@@ -21,7 +21,6 @@ export interface WordVo {
 }
 
 export const langs = new Map([
-  ["all", "all"],
   ["English", "en"],
   ["Japanese", "ja"],
 ]);

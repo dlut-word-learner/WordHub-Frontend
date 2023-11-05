@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <el-aside :width="`${sideWidth}px`">
-      <el-menu id="menu" @select="onSelectLang">
+      <el-menu id="menu" @select="onSelectLang" default-active="all">
+        <el-menu-item :index="'all'">
+          <div class="navItem">{{ $t(`dict.all`) }}</div>
+        </el-menu-item>
         <el-menu-item v-for="[_, abbr] in langs" :index="abbr">
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
