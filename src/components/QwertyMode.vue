@@ -206,9 +206,13 @@ function goToNextWord(): void {
     currWordIndex.value++;
     if (currWordIndex.value + 1 < words.value.length)
       visibleWordIndex.value?.push(currWordIndex.value + 1);
-    console.log(currWordIndex.value);
+
     userInput.value = "";
-  } else finish();
+  } else {
+    currWordIndex.value++;
+    visibleWordIndex.value = [];
+    finish();
+  }
 }
 
 function inputDone(isCorrect: boolean): void {
@@ -246,7 +250,7 @@ function finish(): void {
 <style scoped>
 .word-spelling-app {
   text-align: center;
-  margin: 20px 0;
+  margin: 20px 30px;
   font-family: Arial, sans-serif;
 }
 
