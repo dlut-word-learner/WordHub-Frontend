@@ -11,6 +11,7 @@
         <TransitionGroup name="visibleWordCards">
           <WordCard
             class="word-card-instance"
+            :class="{'pre-word-card': isCurrWord(index+1), 'next-word-card':isCurrWord(index-1)}"
             v-for="index in visibleWordIndex"
             :key="index"
             :word="words?.[index]"
@@ -264,11 +265,22 @@ function finish(): void {
   display: flex;
   justify-content: center;
   align-items: center;
+  perspective: 800px;
 }
 
 .word-card-instance {
   margin: 10px;
   display: inline-block;
+  transform-origin: center center 20px;
+  transform-style: preserve-3d;
+}
+
+.pre-word-card{
+  transform: rotateY(-5deg);
+}
+
+.next-word-card{
+  transform: rotateY(5deg);
 }
 
 #progressBar {
