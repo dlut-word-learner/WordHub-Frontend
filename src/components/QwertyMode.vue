@@ -7,26 +7,26 @@
       v-if="!stopwatch.isRunning.value && !isAllFinished"
     />
     <div class="word-container" v-if="!isAllFinished">
-      <div class="words">
-        <WordCard id="prevWord" :word="prevWord" v-if="prevWord" :lang="lang" />
-        <div :class="{ shake: shake }">
+      <div class="words" v-if="words">
+        <TransitionGroup name="visibleWordCards">
           <WordCard
-            :word="currWord"
-            :emphasized="true"
-            :userInput="userInput"
-            :sound="currWordSound"
+            class="word-card-instance"
+            v-for="index in visibleWordIndex"
+            :key="index"
+            :word="words?.[index]"
+            :emphasized="isCurrWord(index)"
+            :userInput="
+              isCurrWord(index)
+                ? userInput
+                : index > currWordIndex
+                ? ''
+                : undefined
+            "
+            :sound="isCurrWord(index) ? currWordSound : undefined"
             :lang="lang"
             @done="inputDone"
-            v-if="currWord && currWordSound"
           />
-        </div>
-        <WordCard
-          id="nextWord"
-          :word="nextWord"
-          :userInput="''"
-          :lang="lang"
-          v-if="nextWord"
-        />
+        </TransitionGroup>
       </div>
       <div id="inputArea">
         <el-input
@@ -119,18 +119,14 @@ const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
 const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
-
-const prevWord = computed(() => {
-  return words.value?.[currWordIndex.value - 1];
-});
+const visibleWordIndex = ref([0, 1]);
 
 const currWord = computed(() => {
   return words.value?.[currWordIndex.value];
 });
-
-const nextWord = computed(() => {
-  return words.value?.[currWordIndex.value + 1];
-});
+const isCurrWord = (index: number) => {
+  return index == currWordIndex.value;
+};
 
 const tries = ref(0);
 const skips = ref(0);
@@ -195,12 +191,18 @@ function promptGoToNextWord(): void {
   isCurrCorrect.value ? goToNextWord() : (confirmVisible.value = true);
 }
 
+// TODO: 优化代码
 function goToNextWord(): void {
   tries.value++;
 
-  if (words.value && ++currWordIndex.value < words.value.length)
+  if (words.value && currWordIndex.value + 1 < words.value.length) {
+    if (currWordIndex.value != 0) visibleWordIndex.value?.shift();
+    currWordIndex.value++;
+    if (currWordIndex.value + 1 < words.value.length)
+      visibleWordIndex.value?.push(currWordIndex.value + 1);
+    console.log(currWordIndex.value);
     userInput.value = "";
-  else finish();
+  } else finish();
 }
 
 function playTypingSound(): void {
@@ -249,12 +251,22 @@ function finish(): void {
 
 .word-container {
   margin: 1em;
+  width: 100%;
+  text-align: center;
 }
 
 .words {
-  width: 640px;
-  margin: auto auto;
-  margin-bottom: 1.5em;
+  /* margin-bottom: 1.5em; */
+  width: 100%;
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.word-card-instance {
+  margin: 10px;
+  display: inline-block;
 }
 
 #progressBar {
@@ -268,14 +280,6 @@ function finish(): void {
 }
 
 .stats-container {
-  margin-top: 1em;
-}
-
-#prevWord {
-  margin-bottom: 1em;
-}
-
-#nextWord {
   margin-top: 1em;
 }
 
@@ -305,5 +309,27 @@ function finish(): void {
   60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+/* .visibleWordCards-move,
+
+.visibleWordCards-leave-active {
+  transition: all 3s ease-out;
+  
+} */
+.visibleWordCards-enter-from,
+.visibleWordCards-leave-to {
+  opacity: 0;
+  scale: 0.1;
+}
+
+.visibleWordCards-move,
+.visibleWordCards-leave-active,
+.visibleWordCards-enter-active {
+  transition: all 0.5s ease;
+}
+
+.visibleWordCards-leave-active {
+  position: absolute;
 }
 </style>

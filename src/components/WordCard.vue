@@ -1,11 +1,11 @@
 <template>
   <el-card
-    id="word"
-    :class="{ word: !emphasized }"
+    class="word-card"
+    :class="{ emWord: emphasized, unEmWord: !emphasized }"
     :body-style="{ padding: '0px' }"
   >
     <template #header>
-      <div :class="{ emWordMain: emphasized, wordMain: !emphasized }">
+      <div class="wordMain">
         <div
           v-if="
             userInput == undefined ||
@@ -20,7 +20,7 @@
         </div>
       </div>
     </template>
-    <div :class="{ emWordItem: emphasized, wordItem: !emphasized }">
+    <div class="wordItem">
       <div>
         {{ getWordPhone(word, lang) }}
         <img
@@ -90,23 +90,22 @@ function checkSpelling(input: string, wordName: string): boolean {
 </script>
 
 <style scoped>
-.word {
-  width: 320px;
-  margin: auto auto;
+.word-card {
+  padding: 1.5em 2em;
+  transition: all 0.5s ease;
+}
+.emWord {
+  width: 40%;
+  min-height: 400px;
+}
+.unEmWord {
+  width: 30%;
+  min-height: 300px;
 }
 
-.emWordMain {
-  font-size: 3em;
+.wordMain {
+  font-size: 2em;
   font-weight: bold;
-}
-
-.wordMain,
-.emWordItem {
-  font-size: 1.5em;
-}
-
-.wordItem {
-  font-size: 0.9em;
 }
 
 .meaning {
@@ -114,9 +113,17 @@ function checkSpelling(input: string, wordName: string): boolean {
   margin-right: 1em;
 }
 
+.wordItem {
+  font-size: 1.5em;
+}
+
 .speaker {
   width: 1em;
   height: 1em;
   vertical-align: middle;
+}
+
+img:hover {
+  cursor: pointer;
 }
 </style>

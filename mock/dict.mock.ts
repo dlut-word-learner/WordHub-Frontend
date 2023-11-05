@@ -56,6 +56,116 @@ const enWords: WordVo[] = [
       notation: "",
     },
   },
+  {
+    id: 3781,
+    name: "unique",
+    extension: {
+      notation: "",
+      ukphone: "ju'niːk",
+      usphone: "jʊˈniːk",
+      meanings: ["a. 惟一的,独一无二的"],
+    },
+  },
+  {
+    id: 3194,
+    name: "sickness",
+    extension: {
+      notation: "",
+      ukphone: "'sɪknɪs",
+      usphone: "ˈsɪknɪs",
+      meanings: ["n. 疾病,（想）呕吐"],
+    },
+  },
+  {
+    id: 1515,
+    name: "find",
+    extension: {
+      notation: "",
+      ukphone: "faɪnd",
+      usphone: "faɪnd",
+      meanings: ["(found, found) vt. 找到，发现，感到"],
+    },
+  },
+  {
+    id: 3313,
+    name: "sound",
+    extension: {
+      notation: "",
+      ukphone: "saʊnd",
+      usphone: "saʊnd",
+      meanings: ["vi.听起来,发出声音n.声音"],
+    },
+  },
+  {
+    id: 2133,
+    name: "local",
+    extension: {
+      notation: "",
+      ukphone: "'ləʊk(ə)l",
+      usphone: "ˈləʊk(ə)l",
+      meanings: ["a. 当地的；地方的"],
+    },
+  },
+  {
+    id: 2669,
+    name: "plus",
+    extension: {
+      notation: "",
+      ukphone: "plʌs",
+      usphone: "plʌs",
+      meanings: ["prep.加，加上"],
+    },
+  },
+  {
+    id: 320,
+    name: "analyze",
+    extension: {
+      notation: "",
+      ukphone: "'ænəlaɪz",
+      usphone: "`ænl,aɪz",
+      meanings: ["v. 分析"],
+    },
+  },
+  {
+    id: 568,
+    name: "benefit",
+    extension: {
+      notation: "",
+      ukphone: "'benɪfɪt",
+      usphone: "ˈbenɪfɪt",
+      meanings: ["n. / v.优势,益处,使…受益"],
+    },
+  },
+  {
+    id: 3511,
+    name: "systematic",
+    extension: {
+      notation: "",
+      ukphone: "ˌsɪstə'mætɪk",
+      usphone: "sɪstəˈmætɪk",
+      meanings: ["a.系统的,有条理的"],
+    },
+  },
+  {
+    id: 2240,
+    name: "method",
+    extension: {
+      notation: "",
+      ukphone: "'meθəd",
+      usphone: "ˈmeθəd",
+      meanings: ["n. 方法，办法"],
+    },
+  },
+  {
+    id: 4002,
+    name: "worm",
+    extension: {
+      notation: "",
+      ukphone: "wɜːm",
+      usphone: "wɜːm",
+      meanings: ["n. 软体虫,蠕虫(尤指蚯蚓)"],
+    },
+  },
 ];
 
 const jaWords: WordVo[] = [
