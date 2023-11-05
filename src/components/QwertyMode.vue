@@ -36,7 +36,7 @@
         <el-input
           size="large"
           v-model="userInput"
-          @keypress="playTypingSound"
+          @keypress="typingSound.play"
           @keydown="startTiming"
           :class="{ shake: shake }"
           :maxlength="currWord?.name.length"
@@ -211,10 +211,6 @@ function goToNextWord(): void {
   } else finish();
 }
 
-function playTypingSound(): void {
-  if (optionsStore.isSoundEnabled) typingSound.play();
-}
-
 function inputDone(isCorrect: boolean): void {
   if (isCorrect) {
     ElMessage({
@@ -223,7 +219,7 @@ function inputDone(isCorrect: boolean): void {
       type: "success",
     });
 
-    if (optionsStore.isSoundEnabled) correctSound.play();
+    correctSound.play();
 
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
     else isCurrCorrect.value = true;
@@ -235,7 +231,7 @@ function inputDone(isCorrect: boolean): void {
     });
 
     shakeWord();
-    if (optionsStore.isSoundEnabled) wrongSound.play();
+    wrongSound.play();
     tries.value++;
     userInput.value = "";
   }

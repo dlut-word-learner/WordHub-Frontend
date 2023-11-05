@@ -20,12 +20,13 @@ export const useOptionsStore = defineStore(
     const volume = ref(50);
     const lang = ref(i18n.global.locale.value);
 
-    watch(
-      () => volume.value,
-      (newValue) => {
-        Howler.volume(newValue / 100);
-      },
-    );
+    watch(volume, (newValue) => {
+      Howler.volume(newValue / 100);
+    });
+
+    watch(isSoundEnabled, (newValue) => {
+      Howler.mute(!newValue);
+    });
     return {
       learnWordsPerRound,
       reviewWordsPerRound,
