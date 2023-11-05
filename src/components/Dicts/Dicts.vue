@@ -41,25 +41,12 @@
         />
       </el-footer>
     </el-main>
-    <el-dialog v-model="confirmVisible" :title="$t('dict.prompt')" width="30%">
-      <span>{{ $t("dict.currTaskPrompt") }}</span>
-      <template #footer>
-        <span>
-          <el-button @click="startNewTask">
-            {{ $t("dict.startNewTask") }}
-          </el-button>
-          <el-button type="primary" @click="continueCurrTask">
-            {{ $t("dict.continueCurrTask") }}
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
   </el-container>
 </template>
 
 <script setup lang="ts">
 import { DictVo, excludeCache, langs } from "./common";
-import { Ref, ref, reactive, onMounted } from "vue";
+import { Ref, ref, onMounted } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
 import { useOptionsStore } from "../../store/optionsStore";
@@ -77,14 +64,6 @@ const { t } = useI18n();
 const sideWidth = ref(0);
 const currPage = ref(1);
 const pageSize = ref(12);
-const confirmVisible = ref(false);
-
-interface NewTask {
-  dict?: DictVo;
-  task?: Task;
-}
-
-const newTask: NewTask = reactive({});
 
 onMounted(() => {
   axios
@@ -115,26 +94,34 @@ function onSelectLang(index: string, _indexPath, _routeResult): void {
 }
 
 function tryTask(dict: DictVo, task: Task): void {
-  newTask.dict = dict;
-  newTask.task = task;
-
-  if (taskStore.type != Task.None) confirmVisible.value = true;
-  else startNewTask();
+  if (taskStore.type != Task.None) {
+    ElMessageBox.confirm(t("dict.currTaskPrompt"), t("dict.prompt"), {
+      distinguishCancelAndClose: true,
+      confirmButtonText: t("dict.startNewTask"),
+      cancelButtonText: t("dict.continueCurrTask"),
+    }).then((data) => {
+      switch (data) {
+        case "confirm":
+          startNewTask(dict, task);
+          break;
+        case "cancel":
+          continueCurrTask();
+          break;
+      }
+    });
+  } else startNewTask(dict, task);
 }
 
 function continueCurrTask(): void {
-  confirmVisible.value = false;
-  router.push(taskStore.url);
+  if (taskStore.url != "") router.push(taskStore.url);
+  else console.error("No current task running.");
 }
 
-function startNewTask(): void {
-  if (newTask.dict == undefined || newTask.task == undefined) return;
-
-  confirmVisible.value = false;
+function startNewTask(dict: DictVo, task: Task): void {
   excludeCache.value = Task[taskStore.type];
   const wordsPerRound = ref(0);
 
-  switch (newTask.task) {
+  switch (task) {
     case Task.Learn:
       wordsPerRound.value = optionsStore.learnWordsPerRound;
       break;
@@ -147,10 +134,10 @@ function startNewTask(): void {
   }
 
   router.push({
-    name: Task[newTask.task],
+    name: Task[task],
     query: {
-      lang: langs.get(newTask.dict.language) as string,
-      dictId: newTask.dict.id,
+      lang: langs.get(dict.language) as string,
+      dictId: dict.id,
       num: wordsPerRound.value,
     },
   });
