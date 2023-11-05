@@ -11,7 +11,10 @@
         <TransitionGroup name="visibleWordCards">
           <WordCard
             class="word-card-instance"
-            :class="{'pre-word-card': isCurrWord(index+1), 'next-word-card':isCurrWord(index-1)}"
+            :class="{
+              'pre-word-card': isCurrWord(index + 1),
+              'next-word-card': isCurrWord(index - 1),
+            }"
             v-for="index in visibleWordIndex"
             :key="index"
             :word="words?.[index]"
@@ -247,14 +250,13 @@ function finish(): void {
 <style scoped>
 .word-spelling-app {
   text-align: center;
-  margin: auto 3em;
-  margin-top: 1em;
+  margin: 20px 0;
   font-family: Arial, sans-serif;
 }
 
 .word-container {
-  margin: 1em;
-  width: 100%;
+  margin: 20px;
+  width: 98%;
   text-align: center;
 }
 
@@ -265,7 +267,7 @@ function finish(): void {
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 800px;
+  perspective: 600px;
 }
 
 .word-card-instance {
@@ -275,11 +277,11 @@ function finish(): void {
   transform-style: preserve-3d;
 }
 
-.pre-word-card{
+.pre-word-card {
   transform: rotateY(-5deg);
 }
 
-.next-word-card{
+.next-word-card {
   transform: rotateY(5deg);
 }
 

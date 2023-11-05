@@ -84,6 +84,16 @@ watch(
   },
 );
 
+watch(
+  () => props.sound,
+  (newSound) => {
+    if (newSound) newSound.play();
+  },
+  {
+    immediate: true,
+  },
+);
+
 function checkSpelling(input: string, wordName: string): boolean {
   return input.toLowerCase() === wordName;
 }
@@ -91,20 +101,20 @@ function checkSpelling(input: string, wordName: string): boolean {
 
 <style scoped>
 .word-card {
-  padding: 1.5em 2em;
+  padding: 10px;
   transition: all 0.5s ease;
 }
 .emWord {
-  width: 40%;
+  width: 39%;
   min-height: 400px;
 }
 .unEmWord {
-  width: 30%;
-  min-height: 300px;
+  width: 29%;
+  min-height: 350px;
 }
 
 .wordMain {
-  font-size: 2em;
+  font-size: 48px;
   font-weight: bold;
 }
 
@@ -114,6 +124,7 @@ function checkSpelling(input: string, wordName: string): boolean {
 }
 
 .wordItem {
+  margin: 15px;
   font-size: 1.5em;
 }
 
