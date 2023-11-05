@@ -258,7 +258,15 @@ function finish(): void {
 .words {
   /* margin-bottom: 1.5em; */
   width: 100%;
-  text-align: center;
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.word-card-instance {
+  margin: 10px;
+  display: inline-block;
 }
 
 #progressBar {
@@ -272,16 +280,6 @@ function finish(): void {
 }
 
 .stats-container {
-  margin-top: 1em;
-}
-
-.word-card-instance {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  display: inline-block;
-}
-
-#nextWord {
   margin-top: 1em;
 }
 
@@ -331,26 +329,7 @@ function finish(): void {
   transition: all 0.5s ease;
 }
 
-.visibleWordCards-enter-from {
-  transform: translateY(200px);
-}
-
-.visibleWordCards-leave-to {
-  transform: translateY(-200px);
-}
 .visibleWordCards-leave-active {
   position: absolute;
 }
-/* .visibleWordCards-leave-to {
-  transform: translateY(30px) 5s;
-} */
-/* 
-.visibleWordCards-enter-from,
-.visibleWordCards-leave-to {
-  opacity: 0;
-  transform: scaleY(0.01) translateY(-30px) 3s;
-}
-.visibleWordCards-leave-active {
-  position: absolute;
-} */
 </style>
