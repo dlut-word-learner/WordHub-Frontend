@@ -54,6 +54,10 @@ export const messages = {
       review: "复习",
       qwertyMode: "Qwerty 模式",
       errGetDicts: "获取词典失败，请检查网络是否正常",
+      prompt: "提示",
+      currTaskPrompt: "有学习任务正在进行，您想要如何处理？",
+      continueCurrTask: "继续之前的学习任务",
+      startNewTask: "开始新的学习任务",
     },
     qwerty: {
       errGetWords: "获取单词失败，请检查网络是否正常",
@@ -201,6 +205,11 @@ export const messages = {
       qwertyMode: "Qwerty Mode",
       errGetDicts:
         "Failed to get dictionaries, please check you network status",
+      prompt: "Prompt",
+      currTaskPrompt:
+        "There is a learning task in progress. How do you want to handle it?",
+      continueCurrTask: "Continue current learning task",
+      startNewTask: "Start a new learning task",
     },
     qwerty: {
       errGetWords: "Failed to get words, please check your network status",
@@ -354,6 +363,10 @@ export const messages = {
       qwertyMode: "Qwerty モード",
       errGetDicts:
         "辞書の取得に失敗しました。ネットワークが正常かどうかを確認してください",
+      prompt: "プロンプト",
+      currTaskPrompt: "学習タスクが進行中です。どのように処理しますか？",
+      continueCurrTask: "前回の学習タスクを続ける",
+      startNewTask: "新しい学習タスクを始める",
     },
     qwerty: {
       errGetWords:

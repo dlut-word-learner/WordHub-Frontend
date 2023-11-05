@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 export interface Lang {
   fullName: string;
   abbr: string;
@@ -24,3 +26,5 @@ export const langs = new Map([
   ["English", "en"],
   ["Japanese", "ja"],
 ]);
+
+export const excludeCache = ref("");

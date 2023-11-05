@@ -20,9 +20,13 @@
                 <div>{{ dict.language }}</div>
               </div>
             </template>
-            <el-button @click="learn(dict)">{{ $t("dict.learn") }}</el-button>
-            <el-button @click="review(dict)">{{ $t("dict.review") }}</el-button>
-            <el-button @click="qwertyMode(dict)">
+            <el-button @click="tryTask(dict, Task.Learn)">
+              {{ $t("dict.learn") }}
+            </el-button>
+            <el-button @click="tryTask(dict, Task.Review)">
+              {{ $t("dict.review") }}
+            </el-button>
+            <el-button @click="tryTask(dict, Task.QwertyMode)">
               {{ $t("dict.qwertyMode") }}
             </el-button>
           </el-card>
@@ -37,20 +41,34 @@
         />
       </el-footer>
     </el-main>
+    <el-dialog v-model="confirmVisible" :title="$t('dict.prompt')" width="30%">
+      <span>{{ $t("dict.currTaskPrompt") }}</span>
+      <template #footer>
+        <span>
+          <el-button @click="startNewTask">
+            {{ $t("dict.startNewTask") }}
+          </el-button>
+          <el-button type="primary" @click="continueCurrTask">
+            {{ $t("dict.continueCurrTask") }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </el-container>
 </template>
 
 <script setup lang="ts">
-import { DictVo, langs } from "./common";
-import { Ref, ref } from "vue";
+import { DictVo, excludeCache, langs } from "./common";
+import { Ref, ref, reactive, onMounted } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
-import { onMounted } from "vue";
 import { useOptionsStore } from "../../store/optionsStore";
+import { Task, useTaskStore } from "../../store/taskStore";
 import axios from "axios";
 import router from "../../router";
 
 const optionsStore = useOptionsStore();
+const taskStore = useTaskStore();
 
 const dicts: Ref<DictVo[]> = ref([]);
 const currLang: Ref<string> = ref("all");
@@ -59,6 +77,14 @@ const { t } = useI18n();
 const sideWidth = ref(0);
 const currPage = ref(1);
 const pageSize = ref(12);
+const confirmVisible = ref(false);
+
+interface NewTask {
+  dict?: DictVo;
+  task?: Task;
+}
+
+const newTask: NewTask = reactive({});
 
 onMounted(() => {
   axios
@@ -88,35 +114,44 @@ function onSelectLang(index: string, _indexPath, _routeResult): void {
   currLang.value = index;
 }
 
-function learn(dict: DictVo): void {
-  router.push({
-    name: "Learn",
-    query: {
-      lang: langs.get(dict.language) as string,
-      dictId: dict.id,
-      num: optionsStore.learnWordsPerRound,
-    },
-  });
+function tryTask(dict: DictVo, task: Task): void {
+  newTask.dict = dict;
+  newTask.task = task;
+
+  if (taskStore.type != Task.None) confirmVisible.value = true;
+  else startNewTask();
 }
 
-function review(dict: DictVo): void {
-  router.push({
-    name: "Review",
-    query: {
-      lang: langs.get(dict.language) as string,
-      dictId: dict.id,
-      num: optionsStore.reviewWordsPerRound,
-    },
-  });
+function continueCurrTask(): void {
+  confirmVisible.value = false;
+  router.push(taskStore.url);
 }
 
-function qwertyMode(dict: DictVo): void {
+function startNewTask(): void {
+  if (newTask.dict == undefined || newTask.task == undefined) return;
+
+  confirmVisible.value = false;
+  excludeCache.value = Task[taskStore.type];
+  const wordsPerRound = ref(0);
+
+  switch (newTask.task) {
+    case Task.Learn:
+      wordsPerRound.value = optionsStore.learnWordsPerRound;
+      break;
+    case Task.Review:
+      wordsPerRound.value = optionsStore.reviewWordsPerRound;
+      break;
+    case Task.QwertyMode:
+      wordsPerRound.value = optionsStore.qwertyWordsPerRound;
+      break;
+  }
+
   router.push({
-    name: "QwertyMode",
+    name: Task[newTask.task],
     query: {
-      lang: langs.get(dict.language) as string,
-      dictId: dict.id,
-      num: optionsStore.qwertyWordsPerRound,
+      lang: langs.get(newTask.dict.language) as string,
+      dictId: newTask.dict.id,
+      num: wordsPerRound.value,
     },
   });
 }

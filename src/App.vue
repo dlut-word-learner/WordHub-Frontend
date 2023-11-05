@@ -25,9 +25,9 @@
       {{ $t("app.login") }}
     </el-menu-item>
     <el-menu-item index="/dicts">{{ $t("app.dict") }}</el-menu-item>
-    <el-menu-item :index="taskStore.url" v-if="taskStore.type == Task.Learn">{{
-      $t("app.learn")
-    }}</el-menu-item>
+    <el-menu-item :index="taskStore.url" v-if="taskStore.type == Task.Learn">
+      {{ $t("app.learn") }}
+    </el-menu-item>
     <el-menu-item
       :index="taskStore.url"
       v-else-if="taskStore.type == Task.Review"
@@ -54,7 +54,7 @@
     </template>
   </el-dialog>
   <router-view v-slot="{ Component }">
-    <keep-alive>
+    <keep-alive :exclude="excludeCache">
       <component :is="Component" />
     </keep-alive>
   </router-view>
@@ -62,11 +62,12 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import { i18n } from "./main";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
-import { i18n } from "./main";
-import router from "./router";
 import { Task, useTaskStore } from "./store/taskStore";
+import { excludeCache } from "./components/Dicts/common";
+import router from "./router";
 
 const loginStore = useLoginStore();
 const confirmVisible = ref(false);

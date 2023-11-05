@@ -102,7 +102,7 @@ import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
 import { Task, useTaskStore } from "../store/taskStore";
 import { useI18n } from "vue-i18n";
-import { WordVo } from "./Dicts/common";
+import { WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
@@ -155,6 +155,8 @@ const currWordSound = computed(() => {
 });
 
 const initData = async () => {
+  excludeCache.value = "";
+
   await axios
     .get(`/api/dicts/${props.dictId}/learn`, {
       params: {

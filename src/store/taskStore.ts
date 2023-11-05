@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const enum Task {
+export enum Task {
   Learn,
   Review,
   QwertyMode,
