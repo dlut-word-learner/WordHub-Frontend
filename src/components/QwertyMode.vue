@@ -1,58 +1,54 @@
 <template>
-  <div class="word-spelling-app">
-    <el-alert
-      :title="$t('qwerty.typingToStart')"
-      :center="true"
-      :show-icon="true"
-      v-if="!stopwatch.isRunning.value && !isAllFinished"
-    />
-    <div class="word-container" v-if="!isAllFinished">
-      <div class="words" v-if="words">
-        <TransitionGroup name="visibleWordCards">
-          <WordCard
-            class="word-card-instance"
-            :class="{
-              'pre-word-card': isCurrWord(index + 1),
-              'next-word-card': isCurrWord(index - 1),
-            }"
-            v-for="index in visibleWordIndex"
-            :key="index"
-            :word="words?.[index]"
-            :emphasized="isCurrWord(index)"
-            :userInput="
-              isCurrWord(index)
-                ? userInput
-                : index > currWordIndex
-                ? ''
-                : undefined
-            "
-            :sound="isCurrWord(index) ? currWordSound : undefined"
-            :lang="lang"
-            @done="inputDone"
-          />
-        </TransitionGroup>
-      </div>
-      <div id="inputArea">
-        <el-input
-          size="large"
-          v-model="userInput"
-          @keypress="typingSound.play()"
-          @keydown="startTiming"
-          :class="{ shake: shake }"
-          :disabled="isAllFinished"
-          :clearable="true"
+  <el-alert
+    :title="$t('qwerty.typingToStart')"
+    :center="true"
+    :show-icon="true"
+    v-if="!stopwatch.isRunning.value && !isAllFinished"
+  />
+  <div class="word-spelling-app" v-if="!isAllFinished">
+    <div class="words" v-if="words">
+      <TransitionGroup name="visibleWordCards">
+        <WordCard
+          class="word-card-instance"
+          :class="{
+            'pre-word-card': isCurrWord(index + 1),
+            'next-word-card': isCurrWord(index - 1),
+          }"
+          v-for="index in visibleWordIndex"
+          :key="index"
+          :word="words?.[index]"
+          :emphasized="isCurrWord(index)"
+          :userInput="
+            isCurrWord(index)
+              ? userInput
+              : index > currWordIndex
+              ? ''
+              : undefined
+          "
+          :sound="isCurrWord(index) ? currWordSound : undefined"
+          :lang="lang"
+          @done="inputDone"
         />
-        <!-- :maxlength="currWord?.name.length" -->
-      </div>
+      </TransitionGroup>
     </div>
-    <div v-else>
-      <el-result icon="success" :title="$t('qwerty.finishPrompt')"> </el-result>
+    <div id="inputArea">
+      <el-input
+        size="large"
+        v-model="userInput"
+        @keypress="typingSound.play()"
+        @keydown="startTiming"
+        :class="{ shake: shake }"
+        :disabled="isAllFinished"
+        :clearable="true"
+      />
+      <!-- :maxlength="currWord?.name.length" -->
     </div>
     <el-button
       type="primary"
       @click="promptGoToNextWord"
       :disabled="!stopwatch.isRunning"
       v-if="!isAllFinished"
+      id="nextWordButton"
     >
       {{ $t("qwerty.goToNextWord") }}
     </el-button>
@@ -61,17 +57,19 @@
       :show-text="false"
       :percentage="words ? (currWordIndex / words.length) * 100 : 0"
     />
-    <div class="stats-container">
-      <Stats
-        :stopwatch="stopwatch"
-        :words="words"
-        :currWordIndex="currWordIndex"
-        :tries="tries"
-        :skips="skips"
-        v-if="words"
-      />
-    </div>
   </div>
+  <div id="result" v-else>
+    <el-result icon="success" :title="$t('qwerty.finishPrompt')"></el-result>
+  </div>
+  <Stats
+    id="stats"
+    :stopwatch="stopwatch"
+    :words="words"
+    :currWordIndex="currWordIndex"
+    :tries="tries"
+    :skips="skips"
+    v-if="words"
+  />
 </template>
 
 <script setup lang="ts">
@@ -234,21 +232,31 @@ function finish(): void {
 
 <style scoped>
 .word-spelling-app {
-  text-align: center;
-  margin: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  height: 80%;
+  margin: 2%;
+  padding: 20px;
+  gap: 2%;
   font-family: Arial, sans-serif;
 }
 
 .word-container {
-  margin: 20px;
+  margin: 5px 30px;
   width: 98%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
 }
 
 .words {
-  /* margin-bottom: 1.5em; */
+  margin-bottom: 2%;
   width: 100%;
-  height: 550px;
+  min-height: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -256,7 +264,7 @@ function finish(): void {
 }
 
 .word-card-instance {
-  margin: 10px;
+  margin: 0.5% 1%;
   display: inline-block;
   transform-origin: center center 20px;
   transform-style: preserve-3d;
@@ -271,17 +279,36 @@ function finish(): void {
 }
 
 #progressBar {
-  margin-top: 1em;
+  width: 96%;
+  margin: 10px;
 }
 
 #inputArea {
-  width: 25em;
-  text-align: center;
-  margin: auto auto;
+  width: 30%;
 }
 
-.stats-container {
-  margin-top: 1em;
+#stats {
+  position: fixed;
+  bottom: 20px;
+  height: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  background-color: white;
+  border-radius: 20px;
+  margin: 10px 10px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+#result {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+#nextWordButton {
+  width: 10%;
 }
 
 .shake {
@@ -312,12 +339,6 @@ function finish(): void {
   }
 }
 
-/* .visibleWordCards-move,
-
-.visibleWordCards-leave-active {
-  transition: all 3s ease-out;
-  
-} */
 .visibleWordCards-enter-from,
 .visibleWordCards-leave-to {
   opacity: 0;

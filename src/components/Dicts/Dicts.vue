@@ -1,17 +1,21 @@
 <template>
-  <el-container>
+  <el-container id="selectDictContainer">
     <el-aside :width="sideWidth">
-      <el-menu id="menu" @select="onSelectLang" default-active="all">
-        <el-menu-item :index="'all'">
+      <el-menu @select="onSelectLang" default-active="all">
+        <el-menu-item :index="'all'" class="menu-item">
           <div class="navItem">{{ $t(`dict.all`) }}</div>
         </el-menu-item>
-        <el-menu-item v-for="abbr in Object.values(Lang)" :index="abbr">
+        <el-menu-item
+          v-for="abbr in Object.values(Lang)"
+          :index="abbr"
+          class="menu-item"
+        >
           <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
     </el-aside>
-    <el-main>
-      <el-row class="dictRow">
+    <el-main class="dictsMain">
+      <el-row class="dictRow" :gutter="10">
         <el-col v-for="dict in displayedDicts()" :span="8">
           <el-card class="dictCard">
             <template #header>
@@ -41,6 +45,7 @@
           :page-size="pageSize"
           :total="selectedDicts().length"
           hide-on-single-page
+          id="pagination"
         />
       </el-footer>
     </el-main>
@@ -156,22 +161,28 @@ function displayedDicts(): DictVo[] {
 </script>
 
 <style scoped>
+#selectDictContainer {
+  height: 100%;
+  padding: 0;
+}
+
 .navItem {
   margin: auto auto;
 }
 
-#menu {
-  min-height: 100%;
-}
 .dictCard {
-  width: 90%;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  /* width: 95%; */
+  margin: 5px;
+}
+
+.menu-item {
+  height: 80px;
 }
 
 .dictRow {
-  margin-left: 2em;
-  margin-right: 2em;
+  min-height: 90%;
+  overflow: hidden;
+  margin: 10px 20px;
 }
 
 .taskButton {
@@ -179,6 +190,21 @@ function displayedDicts(): DictVo[] {
 }
 
 #footer {
-  height: 20px;
+  position: sticky;
+  bottom: 20px;
+  background-color: white;
+  height: 35px;
+  border-radius: 15px;
+  margin: 10px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+#pagination {
+  line-height: 35px;
+}
+
+.dictsMain {
+  padding: 20px;
+  height: 100%;
 }
 </style>
