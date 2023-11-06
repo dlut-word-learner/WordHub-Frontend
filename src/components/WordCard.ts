@@ -48,7 +48,13 @@ export function getHiddenWord(word: WordVo, input: string, lang: Lang): string {
       return isKatakana(word.extension.notation)
         ? toKatakana(input)
         : toHiragana(input) +
-            "__".repeat(toKana(word.name).length - toKana(input).length);
+            "__".repeat(
+              toKana(word.name).length -
+                toKana(input)
+                  .split("")
+                  .filter((x) => isKana(x))
+                  .join("").length,
+            );
     default:
       return "";
   }

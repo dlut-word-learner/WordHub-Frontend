@@ -39,10 +39,10 @@
           @keypress="typingSound.play()"
           @keydown="startTiming"
           :class="{ shake: shake }"
-          :maxlength="currWord?.name.length"
           :disabled="isAllFinished"
           :clearable="true"
         />
+        <!-- :maxlength="currWord?.name.length" -->
       </div>
     </div>
     <div v-else>

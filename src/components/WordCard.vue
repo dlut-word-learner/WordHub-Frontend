@@ -10,7 +10,7 @@
           v-if="
             userInput == undefined ||
             !optionsStore.isWordHidden ||
-            checkSpelling(userInput, word.name, lang)
+            checkSpelling(userInput, word.name)
           "
         >
           {{ getWordMain(word, lang) }}
@@ -45,6 +45,7 @@ import { WordVo } from "./Dicts/common";
 import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
 import { Lang } from "./Dicts/common";
+import { isRomaji, isKana, toKana } from "wanakana";
 
 const optionsStore = useOptionsStore();
 
@@ -70,14 +71,36 @@ watch(
   () => props.userInput,
   (newInput) => {
     if (newInput == undefined || !props.word) return;
-
-    if (newInput.length == props.word.name.length) {
-      // console.log(
-      //   `word input done: ${newInput.toLowerCase()} === ${props.word.name}: ${
-      //     newInput.toLowerCase() === props.word.name
-      //   }`,
-      // );
-      emits("done", checkSpelling(newInput, props.word.name, props.lang));
+    switch (props.lang) {
+      case Lang.English:
+        if (newInput.length == props.word.name.length)
+          emits("done", checkSpelling(newInput, props.word.name));
+        break;
+      case Lang.Japanese:
+        console.debug(
+          `${newInput} isRomaji: ${isRomaji(newInput)}, ${toKana(newInput)
+            .split("")
+            .filter((x) => isKana(x))
+            .join("")}: ${
+            toKana(newInput)
+              .split("")
+              .filter((x) => isKana(x))
+              .join("").length
+          }, ${toKana(props.word.name)}: ${toKana(props.word.name).length}`,
+        );
+        if (isRomaji(newInput)) {
+          if (
+            toKana(newInput)
+              .split("")
+              .filter((x) => isKana(x))
+              .join("").length == toKana(props.word.name).length
+          ) {
+            emits("done", checkSpelling(newInput, props.word.name));
+          }
+        } else {
+          if (newInput.length == props.word.name.length)
+            emits("done", checkSpelling(newInput, props.word.name));
+        }
     }
   },
   {
@@ -95,9 +118,7 @@ watch(
   },
 );
 
-function checkSpelling(input: string, wordName: string, lang: Lang): boolean {
-  switch (lang) {
-  }
+function checkSpelling(input: string, wordName: string): boolean {
   return input.toLowerCase() === wordName;
 }
 </script>
