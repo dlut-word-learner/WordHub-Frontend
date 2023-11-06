@@ -65,15 +65,19 @@ function logout(): void {
   ElMessageBox.confirm(t("app.logoutPrompt"), t("app.prompt"), {
     confirmButtonText: t("app.confirm"),
     cancelButtonText: t("app.cancel"),
-  }).then((data) => {
-    if (data == "confirm") {
-      loginStore.userVo = null;
-      loginStore.password = "";
-      loginStore.avatar = "";
-      localStorage.removeItem("satoken");
-      router.push("/");
-    }
-  }).catch(() => { return; });
+  })
+    .then((data) => {
+      if (data == "confirm") {
+        loginStore.userVo = null;
+        loginStore.password = "";
+        loginStore.avatar = "";
+        localStorage.removeItem("satoken");
+        router.push("/");
+      }
+    })
+    .catch(() => {
+      return;
+    });
 }
 
 const optionsStore = useOptionsStore();

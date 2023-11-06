@@ -45,7 +45,7 @@ import { WordVo } from "./Dicts/common";
 import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
 import { Lang } from "./Dicts/common";
-import { isRomaji, isKana, toKana } from "wanakana";
+import { isKana, toKana } from "wanakana";
 
 const optionsStore = useOptionsStore();
 
@@ -77,30 +77,16 @@ watch(
           emits("done", checkSpelling(newInput, props.word.name));
         break;
       case Lang.Japanese:
-        console.debug(
-          `${newInput} isRomaji: ${isRomaji(newInput)}, ${toKana(newInput)
-            .split("")
-            .filter((x) => isKana(x))
-            .join("")}: ${
-            toKana(newInput)
-              .split("")
-              .filter((x) => isKana(x))
-              .join("").length
-          }, ${toKana(props.word.name)}: ${toKana(props.word.name).length}`,
-        );
-        if (isRomaji(newInput)) {
+        if (isKana(toKana(newInput))) {
           if (
             toKana(newInput)
               .split("")
               .filter((x) => isKana(x))
               .join("").length == toKana(props.word.name).length
-          ) {
+          )
             emits("done", checkSpelling(newInput, props.word.name));
-          }
-        } else {
-          if (newInput.length == props.word.name.length)
-            emits("done", checkSpelling(newInput, props.word.name));
-        }
+        } else if (newInput.length == props.word.name.length)
+          emits("done", checkSpelling(newInput, props.word.name));
     }
   },
   {
