@@ -163,7 +163,7 @@ function displayedDicts(): DictVo[] {
   min-height: 100%;
 }
 .dictCard {
-  width: 400px;
+  width: 90%;
   margin-top: 1em;
   margin-bottom: 1em;
 }
