@@ -201,6 +201,18 @@ const jaWords: WordVo[] = [
       notation: "外(はず)れる",
     },
   },
+  {
+    id: 3,
+    name: "himitsu",
+    extension: {
+      meanings: [
+        "n. secret",
+      ],
+      ukphone: "",
+      usphone: "",
+      notation: "秘密(ひみつ)",
+    },
+  },
 ];
 
 export default defineMock([
