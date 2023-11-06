@@ -20,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/learn",
     name: "Learn",
     component: () => import("../components/Learn.vue"),
+    props: (router) => ({
+      lang: router.query.lang,
+      dictId: router.query.dictId,
+      num: router.query.num,
+    }),
   },
   {
     path: "/review",

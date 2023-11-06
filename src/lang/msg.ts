@@ -59,6 +59,9 @@ export const messages = {
       continueCurrTask: "继续之前的学习任务",
       startNewTask: "开始新的学习任务",
     },
+    learn: {
+      showAns: "显示答案",
+    },
     qwerty: {
       errGetWords: "获取单词失败，请检查网络是否正常",
       errGetSound: "获取单词发音失败，请检查网络是否正常",
@@ -210,6 +213,9 @@ export const messages = {
         "There is a learning task in progress. How do you want to handle it?",
       continueCurrTask: "Continue current learning task",
       startNewTask: "Start a new learning task",
+    },
+    learn: {
+      showAns: "显示答案",
     },
     qwerty: {
       errGetWords: "Failed to get words, please check your network status",
@@ -367,6 +373,9 @@ export const messages = {
       currTaskPrompt: "学習タスクが進行中です。どのように処理しますか？",
       continueCurrTask: "前回のタスクを続ける",
       startNewTask: "新しいタスクを始める",
+    },
+    learn: {
+      showAns: "回答を表示する",
     },
     qwerty: {
       errGetWords:
