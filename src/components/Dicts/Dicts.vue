@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside :width="`${sideWidth}px`">
+    <el-aside :width="sideWidth">
       <el-menu id="menu" @select="onSelectLang" default-active="all">
         <el-menu-item :index="'all'">
           <div class="navItem">{{ $t(`dict.all`) }}</div>
@@ -26,7 +26,10 @@
             <el-button @click="tryTask(dict, Task.Review)" class="taskButton">
               {{ $t("dict.review") }}
             </el-button>
-            <el-button @click="tryTask(dict, Task.QwertyMode)" class="taskButton">
+            <el-button
+              @click="tryTask(dict, Task.QwertyMode)"
+              class="taskButton"
+            >
               {{ $t("dict.qwertyMode") }}
             </el-button>
           </el-card>
@@ -46,7 +49,7 @@
 
 <script setup lang="ts">
 import { DictVo, excludeCache, Lang } from "./common";
-import { Ref, ref, onMounted } from "vue";
+import { Ref, ref, onMounted, computed } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
 import { useOptionsStore } from "../../store/optionsStore";
@@ -61,7 +64,6 @@ const dicts: Ref<DictVo[]> = ref([]);
 const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
 
-const sideWidth = ref(0);
 const currPage = ref(1);
 const pageSize = ref(12);
 
@@ -77,17 +79,16 @@ onMounted(() => {
     });
 });
 
-switch (i18n.global.locale.value) {
-  case "zh_cn":
-    sideWidth.value = 120;
-    break;
-  case "en":
-    sideWidth.value = 160;
-    break;
-  case "ja":
-    sideWidth.value = 140;
-    break;
-}
+const sideWidth = computed(() => {
+  switch (i18n.global.locale.value) {
+    case "zh_cn":
+      return "120px";
+    case "en":
+      return "160px";
+    case "ja":
+      return "140px";
+  }
+});
 
 function onSelectLang(index: string, _indexPath, _routeResult): void {
   currLang.value = index;
@@ -173,7 +174,7 @@ function displayedDicts(): DictVo[] {
   margin-right: 2em;
 }
 
-.taskButton{
+.taskButton {
   margin: 5px;
 }
 
