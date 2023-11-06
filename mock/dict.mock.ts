@@ -48,11 +48,11 @@ const enWords: WordVo[] = [
   },
   {
     id: 3,
-    name: "explosive",
+    name: "technologically",
     extension: {
-      meanings: ["adj. 易爆炸的；易爆发的", "n. 炸药；爆炸物"],
-      ukphone: "/ɪkˈspləʊsɪv/",
-      usphone: "/ɪkˈsploʊsɪv/",
+      meanings: ["adv. 技术上地"],
+      ukphone: "/ˌteknəˈlɒdʒɪkli/",
+      usphone: "/ˌteknəˈlɑːdʒɪkli/",
       notation: "",
     },
   },

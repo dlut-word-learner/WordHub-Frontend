@@ -5,7 +5,7 @@
     :body-style="{ padding: '0px' }"
   >
     <template #header>
-      <div class="wordMain">
+      <div :class="{ emWordMain: emphasized, unEmWordMain: !emphasized }">
         <div
           v-if="
             userInput == undefined ||
@@ -20,7 +20,7 @@
         </div>
       </div>
     </template>
-    <div class="wordItem">
+    <div :class="{ emWordItem: emphasized, unEmWordItem: !emphasized }">
       <div>
         {{ getWordPhone(word, lang) }}
         <img
@@ -31,7 +31,7 @@
         />
       </div>
       <div v-if="!optionsStore.isMeaningHidden">
-        <div class="meaning" v-for="meaning in word.extension.meanings">
+        <div v-for="meaning in word.extension.meanings">
           {{ meaning }}
         </div>
       </div>
@@ -110,27 +110,51 @@ function checkSpelling(input: string, wordName: string): boolean {
   transition: all 0.5s ease;
 }
 .emWord {
-  width: 39%;
+  width: 41%;
   min-height: 400px;
 }
 .unEmWord {
-  width: 29%;
+  width: 27%;
   min-height: 350px;
 }
 
-.wordMain {
-  font-size: 48px;
+.emWordMain {
+  font-size: 40px;
   font-weight: bold;
+  animation: zoom-in 0.5s ease;
 }
 
-.meaning {
-  margin-left: 1em;
-  margin-right: 1em;
+.unEmWordMain {
+  font-size: 26px;
+  animation: zoom-out 0.5s ease;
 }
 
-.wordItem {
-  margin: 15px;
-  font-size: 1.5em;
+.emWordItem {
+  margin-top: 15px;
+  font-size: 26px;
+}
+
+.unEmWordItem {
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+@keyframes zoom-in {
+  0% {
+    font-size: 26px;
+  }
+  100% {
+    font-size: 40px;
+  }
+}
+
+@keyframes zoom-out {
+  0% {
+    font-size: 40px;
+  }
+  100% {
+    font-size: 26px;
+  }
 }
 
 .speaker {
