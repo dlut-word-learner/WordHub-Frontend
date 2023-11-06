@@ -53,7 +53,11 @@ export function getHiddenWord(word: WordVo, input: string, lang: Lang): string {
                 toKana(input)
                   .split("")
                   .filter((x) => isKana(x))
-                  .join("").length,
+                  .join("").length -
+                toKana(input)
+                  .split("")
+                  .filter((x) => !isKana(x))
+                  .join("").length / 3,
             );
     default:
       return "";

@@ -205,9 +205,7 @@ const jaWords: WordVo[] = [
     id: 3,
     name: "himitsu",
     extension: {
-      meanings: [
-        "n. secret",
-      ],
+      meanings: ["n. secret"],
       ukphone: "",
       usphone: "",
       notation: "秘密(ひみつ)",

@@ -78,12 +78,7 @@ watch(
         break;
       case Lang.Japanese:
         if (isKana(toKana(newInput))) {
-          if (
-            toKana(newInput)
-              .split("")
-              .filter((x) => isKana(x))
-              .join("").length == toKana(props.word.name).length
-          )
+          if (toKana(newInput).length == toKana(props.word.name).length)
             emits("done", checkSpelling(newInput, props.word.name));
         } else if (newInput.length == props.word.name.length)
           emits("done", checkSpelling(newInput, props.word.name));
