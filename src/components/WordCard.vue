@@ -9,7 +9,7 @@
         <div
           v-if="
             userInput == undefined ||
-            !optionsStore.isWordHidden ||
+            (showMain != undefined ? showMain : !optionsStore.isWordHidden) ||
             checkSpelling(userInput, word.name)
           "
         >
@@ -21,7 +21,7 @@
       </div>
     </template>
     <div :class="{ emWordItem: emphasized, unEmWordItem: !emphasized }">
-      <div>
+      <div v-if="showPhone">
         {{ getWordPhone(word, lang) }}
         <img
           src="../assets/img/speaker.png"
@@ -30,8 +30,12 @@
           v-if="optionsStore.isSoundEnabled && sound"
         />
       </div>
-      <div v-if="!optionsStore.isMeaningHidden">
-        <div v-for="meaning in word.extension.meanings">
+      <div
+        v-if="
+          showMeaning != undefined ? showMeaning : !optionsStore.isMeaningHidden
+        "
+      >
+        <div class="meaning" v-for="meaning in word.extension.meanings">
           {{ meaning }}
         </div>
       </div>
@@ -41,10 +45,9 @@
 
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
-import { WordVo } from "./Dicts/common";
+import { WordVo, Lang } from "./Dicts/common";
 import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
-import { Lang } from "./Dicts/common";
 import { isKana, toKana } from "wanakana";
 
 const optionsStore = useOptionsStore();
@@ -55,6 +58,11 @@ const props = defineProps<{
   lang: Lang;
   /** sound of the word, which can be played when sound is enabled */
   sound?: Howl;
+
+  showMain?: boolean;
+  showMeaning?: boolean;
+  showPhone?: boolean;
+  showInitial?: boolean;
 
   emphasized?: boolean;
   /** undefined if the word is previous,<br/>
