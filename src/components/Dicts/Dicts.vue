@@ -20,13 +20,13 @@
                 <div>{{ dict.language }}</div>
               </div>
             </template>
-            <el-button @click="tryTask(dict, Task.Learn)">
+            <el-button @click="tryTask(dict, Task.Learn)" class="taskButton">
               {{ $t("dict.learn") }}
             </el-button>
-            <el-button @click="tryTask(dict, Task.Review)">
+            <el-button @click="tryTask(dict, Task.Review)" class="taskButton">
               {{ $t("dict.review") }}
             </el-button>
-            <el-button @click="tryTask(dict, Task.QwertyMode)">
+            <el-button @click="tryTask(dict, Task.QwertyMode)" class="taskButton">
               {{ $t("dict.qwertyMode") }}
             </el-button>
           </el-card>
@@ -171,6 +171,10 @@ function displayedDicts(): DictVo[] {
 .dictRow {
   margin-left: 2em;
   margin-right: 2em;
+}
+
+.taskButton{
+  margin: 5px;
 }
 
 #footer {
