@@ -365,8 +365,8 @@ export const messages = {
         "辞書の取得に失敗しました。ネットワークが正常かどうかを確認してください",
       prompt: "プロンプト",
       currTaskPrompt: "学習タスクが進行中です。どのように処理しますか？",
-      continueCurrTask: "前回の学習タスクを続ける",
-      startNewTask: "新しい学習タスクを始める",
+      continueCurrTask: "前回のタスクを続ける",
+      startNewTask: "新しいタスクを始める",
     },
     qwerty: {
       errGetWords:
