@@ -6,29 +6,43 @@
     <div class="d"></div>
     <div class="e"></div>
 
-    <div id="body" type="flex">
-      <img src="/wordhub.png" width="100" height="100" />
-      <h2 class="f">{{ $t("login.userLogin") }}</h2>
-      <el-form label-width="auto">
-        <el-form-item :label="$t('login.username')">
-          <el-input type="text" id="username" v-model="form.username" />
-        </el-form-item>
-        <el-form-item :label="$t('login.password')">
-          <el-input
-            type="password"
-            id="password"
-            v-model="form.password"
-            :show-password="true"
-          />
-        </el-form-item>
-      </el-form>
-      <el-button type="primary" @click="login">{{
-        $t("login.login")
-      }}</el-button>
-      <el-button @click="router.push('/register')">
-        {{ $t("login.register") }}
-      </el-button>
-    </div>
+    <el-container id="body">
+      <el-header>
+        <img src="/wordhub.png" width="100" height="100" class="logo" />
+      </el-header>
+      <el-main>
+        <h2 class="f">{{ $t("login.userLogin") }}</h2>
+      </el-main>
+      <el-main>
+        <el-form label-width="auto">
+          <el-form-item :label="$t('login.username')" size="large">
+            <el-input
+              type="text"
+              id="username"
+              v-model="form.username"
+              size="large"
+            />
+          </el-form-item>
+          <el-form-item :label="$t('login.password')" size="large">
+            <el-input
+              type="password"
+              id="password"
+              v-model="form.password"
+              :show-password="true"
+              size="large"
+            />
+          </el-form-item>
+        </el-form>
+      </el-main>
+      <el-main>
+        <el-button type="primary" @click="login" size="large">{{
+          $t("login.login")
+        }}</el-button>
+        <el-button @click="router.push('/register')" size="large">
+          {{ $t("login.register") }}
+        </el-button>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
@@ -94,21 +108,26 @@ function getAvatar(): void {
 
 <style scoped>
 #body {
-  width: 400px;
-  margin: 200px auto;
+  margin: 400px 100px;
+  padding: 25%;
 }
+
 .a {
-  position: relative;
-  top: 100px;
-  width: 1000px;
-  height: 600px;
-  border: 10px solid white;
-  background-image: url("163727-15190294471b41.jpg");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 700px;
+  margin: auto auto;
+  /* border: 10px solid white; */
+  /* background-image: url("163727-15190294471b41.jpg"); */
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  z-index: 997;
 }
 
 .b,
@@ -116,14 +135,25 @@ function getAvatar(): void {
 .d,
 .e {
   position: absolute;
-  width: 500px;
-  height: 600px;
-  background-image: url("163727-15190294471b41.jpg");
-  background-color: #409eff;
+  width: 45%;
+  height: 700px;
+  background-image: linear-gradient(
+    180deg,
+    rgb(207, 252, 231),
+    rgb(206, 229, 253)
+  );
   filter: drop-shadow(4px 4px 12px rgb(0, 0, 0));
   background-size: cover;
   opacity: 0.6;
-  transition: 1.5s;
+  transition: all 1.5s ease;
+  z-index: 997;
+}
+
+html.dark .b,
+html.dark .c,
+html.dark .d,
+html.dark .e {
+  background-image: linear-gradient(180deg, rgb(92, 44, 169), rgb(60, 44, 79));
 }
 
 .b {
@@ -167,14 +197,14 @@ function getAvatar(): void {
 }
 
 .a:hover div {
-  opacity: 1;
+  opacity: 0.9;
 }
 
 .f {
   opacity: 0;
   font: 900 50px "";
   letter-spacing: 10px;
-  color: #909399;
+  color: #73767a;
   transition: 1.5s;
 }
 

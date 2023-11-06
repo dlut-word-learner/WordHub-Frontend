@@ -51,13 +51,15 @@
       </el-menu>
     </el-header>
     <el-main class="appMain">
-      <transition>
-        <router-view v-slot="{ Component }">
-          <keep-alive :exclude="excludeCache">
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
-      </transition>
+      <router-view v-slot="{ Component }">
+        <keep-alive :exclude="excludeCache">
+          <transition name="globalAnimation" mode="out-in">
+            <div :key="$route.path" style="height: 100%">
+              <component :is="Component" />
+            </div>
+          </transition>
+        </keep-alive>
+      </router-view>
     </el-main>
   </el-container>
 </template>
@@ -127,14 +129,16 @@ watch(
   height: 100%;
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: all 0.5s ease;
+.globalAnimation-enter-from,
+.globalAnimation-leave-to {
+  opacity: 0;
 }
 
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+.globalAnimation-move,
+.globalAnimation-leave-active,
+.globalAnimation-enter-active {
+  transition: all 0.15s ease;
+  /* transition-delay: 0.2s; */
 }
 
 .appMain {

@@ -1,6 +1,6 @@
 <template>
   <el-container id="selectDictContainer">
-    <el-aside :width="sideWidth">
+    <el-aside :width="sideWidth" class="elAside">
       <el-menu
         @select="onSelectLang"
         default-active="all"
@@ -185,10 +185,18 @@ function displayedDicts(): DictVo[] {
   transition: all 0.2s ease;
 }
 
-.dictCard:hover {
-  scale: 1.02;
+html.dark .dictCard {
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.72);
 }
 
+.dictCard:hover {
+  scale: 1.02;
+  filter: brightness(105%) grayscale(10%);
+}
+
+html.dark .dictCard:hover {
+  filter: brightness(110%) saturate(120%);
+}
 .dictCard1 {
   background-image: -moz-linear-gradient(
     180deg,
