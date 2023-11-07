@@ -350,4 +350,57 @@ html.dark #footer {
   scale: 0.3;
   z-index: -1;
 }
+.taskButton {
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            text-decoration: none;
+            /* font-family: sans-serif;
+            font-weight: 600;
+            font-size: 2em; */
+            padding: 0.75em 1em;
+            color: #409EFF;
+            border: 0.15em solid #409EFF;
+            /* border-radius: 2em; */
+            transition: 1s;
+            box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .taskButton:before,
+        .taskButton:after {
+            content: "";
+            position: absolute;
+            top: -1.5em;
+            z-index: -1;
+            width: 200%;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 40%;
+            background-color: #409EFF;
+            transition: 1s;
+        }
+
+        .taskButton:before {
+            left: -80%;
+            transform: translate3d(0, 5em, 0) rotate(-340deg);
+        }
+
+        .taskButton:after {
+            right: -80%;
+            transform: translate3d(0, 5em, 0) rotate(390deg);
+        }
+
+        .taskButton:hover,
+        .taskButton:focus {
+            color: white;
+        }
+
+        .taskButton:hover:before,
+        .taskButton:hover:after,
+        .taskButton:focus:before,
+        .taskButton:focus:after {
+            transform: none;
+            background-color: #409EFF;
+        } 
 </style>
