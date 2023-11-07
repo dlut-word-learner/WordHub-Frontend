@@ -56,10 +56,9 @@
       <!-- See https://router.vuejs.org/zh/guide/migration/#-router-view-%E3%80%81-keep-alive-%E5%92%8C-transition- -->
       <router-view v-slot="{ Component }">
         <transition name="globalAnimation" mode="out-in">
+          <!-- appear -->
           <keep-alive :exclude="excludeCache">
-            <div :key="$route.path" style="height: 100%">
-              <component :is="Component" />
-            </div>
+            <component :is="Component" :key="$route.name"/>
           </keep-alive>
         </transition>
       </router-view>
@@ -145,6 +144,10 @@ watch(
   /* transition-delay: 0.2s; */
 }
 
+/* .globalAnimation-leave-active{
+  position: absolute;
+  z-index: -1;
+} */
 .appMain {
   padding: 0;
 }

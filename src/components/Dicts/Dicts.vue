@@ -66,7 +66,6 @@
       </el-footer>
     </el-main>
   </el-container>
-  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
@@ -98,7 +97,7 @@ onMounted(() => {
       dicts.value = response.data;
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       ElMessage.error(t("dict.errGetDicts"));
     });
 });
@@ -158,7 +157,6 @@ function startNewTask(dict: DictVo, task: Task): void {
   const index = historyStore.recentlyUsedDicts.indexOf(dict.name);
   if (index !== -1) historyStore.recentlyUsedDicts.splice(index, 1);
   historyStore.recentlyUsedDicts.unshift(dict.name);
-  console.log(historyStore.recentlyUsedDicts);
   router.push({
     name: Task[task],
     query: {
