@@ -82,6 +82,7 @@ export const messages = {
       correctSpelling: "拼写正确！",
       wrongSpelling: "拼写错误，请继续尝试。",
       finishPrompt: "恭喜，你已完成所有单词！",
+      goBack: "返回主菜单",
     },
     stats: {
       elapsedTime: "用时",
@@ -252,6 +253,7 @@ export const messages = {
       wrongSpelling: "Spelling error, please continue to try.",
       finishPrompt:
         "Congratulations, you have completed spelling all the words!",
+      goBack: "Back",
     },
     stats: {
       elapsedTime: "Elapsed Time",
@@ -423,6 +425,7 @@ export const messages = {
       correctSpelling: "スペルが正しいです！",
       wrongSpelling: "スペルが間違っています。続けて試してください。",
       finishPrompt: "おめでとうございます。すべての単語を完了しました！",
+      goBack: "ホームページに戻る",
     },
     stats: {
       elapsedTime: "経過時間",

@@ -50,11 +50,14 @@
               :class="{ shake: shake }"
               :disabled="isAllFinished"
               :clearable="true"
+              autofocus
+              @keypress.enter="promptGoToNextWord"
             />
             <!-- :maxlength="currWord?.name.length" -->
           </el-main>
           <el-main>
             <el-button
+              size="large"
               type="primary"
               @click="promptGoToNextWord"
               :disabled="!stopwatch.isRunning"
@@ -71,13 +74,21 @@
             />
           </el-main>
         </el-container>
-        <el-container class="result" v-else>
+        <el-container class="result" direction="vertical" v-else>
           <el-main>
             <el-result
               icon="success"
               :title="$t('qwerty.finishPrompt')"
             ></el-result>
           </el-main>
+          <el-button
+            type="primary"
+            @click="goBack"
+            size="large"
+            id="goBackButton"
+          >
+            {{ $t("qwerty.goBack") }}
+          </el-button>
         </el-container>
       </Transition>
     </el-main>
@@ -194,13 +205,17 @@ function shakeWord(): void {
 }
 
 function promptGoToNextWord(): void {
+  if (isAllFinished.value) return;
   if (!isCurrCorrect.value) {
     ElMessageBox.confirm(t("qwerty.promptGoToNextWord"), t("qwerty.prompt"), {
       confirmButtonText: t("qwerty.confirm"),
       cancelButtonText: t("qwerty.cancel"),
     })
       .then((data) => {
-        if (data == "confirm") skips.value++;
+        if (data == "confirm") {
+          skips.value++;
+          goToNextWord();
+        }
       })
       .catch(() => {
         return;
@@ -209,6 +224,7 @@ function promptGoToNextWord(): void {
 }
 
 function goToNextWord(): void {
+  isCurrCorrect.value = false;
   tries.value++;
 
   if (words.value && currWordIndex.value + 1 < words.value.length) {
@@ -236,8 +252,10 @@ function inputDone(isCorrect: boolean): void {
 
     correctSound.play();
 
-    if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
-    else isCurrCorrect.value = true;
+    if (optionsStore.autoNext) {
+      isCurrCorrect.value = true;
+      setTimeout(goToNextWord, 500);
+    } else isCurrCorrect.value = true;
   } else {
     ElMessage({
       message: t("qwerty.wrongSpelling"),
@@ -255,6 +273,11 @@ function inputDone(isCorrect: boolean): void {
 function finish(): void {
   isAllFinished.value = true;
   stopwatch.pause();
+}
+
+function goBack(): void {
+  taskStore.type = Task.None;
+  router.push("/dicts");
 }
 </script>
 
@@ -344,6 +367,7 @@ function finish(): void {
 .result {
   margin-top: 15%;
   transition: all 0.5s ease;
+  align-items: center;
   /* transition-delay: 200ms; */
   /* position: fixed;
   left: 50%;

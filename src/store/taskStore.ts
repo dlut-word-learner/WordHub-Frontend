@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export enum Task {
   Learn,
@@ -13,7 +13,9 @@ export const useTaskStore = defineStore(
   () => {
     const type = ref(Task.None);
     const url = ref("");
-
+    watch(type, (newType) => {
+      if (newType == Task.None) url.value = "";
+    });
     return {
       type,
       url,
