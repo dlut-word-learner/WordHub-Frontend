@@ -1,50 +1,63 @@
 <template>
   <el-container id="selectDictContainer">
     <el-aside :width="sideWidth">
-      <el-menu @select="onSelectLang" default-active="all">
+      <el-menu
+        @select="onSelectLang"
+        default-active="all"
+        :background-color="'rgba(255,255,255,0)'"
+      >
         <el-menu-item :index="'all'" class="menu-item">
-          <div class="navItem">{{ $t(`dict.all`) }}</div>
+          <div>{{ $t(`dict.all`) }}</div>
         </el-menu-item>
         <el-menu-item
           v-for="abbr in Object.values(Lang)"
           :index="abbr"
           class="menu-item"
         >
-          <div class="navItem">{{ $t(`dict.${abbr}`) }}</div>
+          <div>{{ $t(`dict.${abbr}`) }}</div>
         </el-menu-item>
       </el-menu>
     </el-aside>
     <el-main class="dictsMain">
       <el-row class="dictRow" :gutter="10">
-        <el-col v-for="dict in displayedDicts()" :span="8">
-          <el-card class="dictCard">
-            <template #header>
-              <div class="header">
-                <div>{{ dict.name }}</div>
-                <div>{{ dict.language }}</div>
-              </div>
-            </template>
-            <el-button @click="tryTask(dict, Task.Learn)" class="taskButton">
-              {{ $t("dict.learn") }}
-            </el-button>
-            <el-button @click="tryTask(dict, Task.Review)" class="taskButton">
-              {{ $t("dict.review") }}
-            </el-button>
-            <el-button
-              @click="tryTask(dict, Task.QwertyMode)"
-              class="taskButton"
+        <TransitionGroup name="dictsTrans">
+          <el-col
+            v-for="(dict, index) in displayedDicts()"
+            :key="dict.id"
+            :span="8"
+          >
+            <el-card
+              class="dictCard"
+              :class="{ dictCard1: index % 2 == 0, dictCard2: index % 2 == 1 }"
             >
-              {{ $t("dict.qwertyMode") }}
-            </el-button>
-          </el-card>
-        </el-col>
+              <template #header>
+                <div>
+                  <div class="dictName">{{ dict.name }}</div>
+                  <div class="dictLang">{{ dict.language }}</div>
+                </div>
+              </template>
+              <el-button @click="tryTask(dict, Task.Learn)" class="taskButton">
+                {{ $t("dict.learn") }}
+              </el-button>
+              <el-button @click="tryTask(dict, Task.Review)" class="taskButton">
+                {{ $t("dict.review") }}
+              </el-button>
+              <el-button
+                @click="tryTask(dict, Task.QwertyMode)"
+                class="taskButton"
+              >
+                {{ $t("dict.qwertyMode") }}
+              </el-button>
+            </el-card>
+          </el-col>
+        </TransitionGroup>
       </el-row>
       <el-footer id="footer">
         <el-pagination
           v-model:current-page="currPage"
           :page-size="pageSize"
           :total="selectedDicts().length"
-          hide-on-single-page
+          :background="true"
           id="pagination"
         />
       </el-footer>
@@ -166,16 +179,96 @@ function displayedDicts(): DictVo[] {
   padding: 0;
 }
 
-.navItem {
-  margin: auto auto;
+.dictCard {
+  margin: 4%;
+  border-radius: 12px;
 }
 
-.dictCard {
-  /* width: 95%; */
-  margin: 5px;
+.dictCard:hover {
+  scale: 1.02;
+}
+
+.dictCard1 {
+  background-image: -moz-linear-gradient(
+    180deg,
+    rgba(207, 252, 231, 0.97),
+    rgba(206, 229, 253, 0.97)
+  );
+  background-image: -webkit-linear-gradient(
+    180deg,
+    rgba(207, 252, 231, 0.97),
+    rgba(206, 229, 253, 0.97)
+  );
+  background-image: linear-gradient(
+    180deg,
+    rgba(207, 252, 231, 0.97),
+    rgba(206, 229, 253, 0.97)
+  );
+}
+
+.dictCard2 {
+  background-image: -moz-linear-gradient(
+    45deg,
+    rgba(206, 227, 253, 0.97),
+    rgba(206, 245, 253, 0.97)
+  );
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(206, 227, 253, 0.97),
+    rgba(206, 245, 253, 0.97)
+  );
+  background-image: linear-gradient(
+    45deg,
+    rgba(206, 227, 253, 0.97),
+    rgba(206, 245, 253, 0.97)
+  );
+}
+
+html.dark .dictCard1 {
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgb(4, 0, 77),
+    rgba(92, 44, 169, 0.9)
+  );
+  background-image: -webkit-linear-gradient(
+    135deg,
+    rgb(4, 0, 77),
+    rgba(92, 44, 169, 0.9)
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgb(4, 0, 77),
+    rgba(92, 44, 169, 0.9)
+  );
+  /* backdrop-filter: grayscale(30%); */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+html.dark .dictCard2 {
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(92, 44, 169, 0.9),
+    rgba(60, 44, 79, 0.9)
+  );
+  background-image: -webkit-linear-gradient(
+    135deg,
+    rgba(92, 44, 169, 0.9),
+    rgba(60, 44, 79, 0.9)
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(92, 44, 169, 0.9),
+    rgba(60, 44, 79, 0.9)
+  );
+  /* backdrop-filter: grayscale(30%); */
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .menu-item {
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0);
   height: 80px;
 }
 
@@ -185,26 +278,71 @@ function displayedDicts(): DictVo[] {
   margin: 10px 20px;
 }
 
+.dictName {
+  font-size: 20px;
+}
+
+.dictLang {
+  font-size: 18px;
+}
+
 .taskButton {
+  min-width: 80px;
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
   margin: 5px;
+  backdrop-filter: blur(5px);
+}
+
+html.dark .taskButton {
+  background-color: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(5px);
 }
 
 #footer {
   position: sticky;
   bottom: 20px;
-  background-color: white;
-  height: 35px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px) grayscale(50%);
+  height: 50px;
   border-radius: 15px;
-  margin: 10px;
+  margin: 3px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
+}
+
+html.dark #footer {
+  background-color: rgba(41, 50, 54, 0.1);
+}
+
+#footer:hover {
+  scale: 1.01;
+  transition: all 0.5s ease;
 }
 
 #pagination {
-  line-height: 35px;
+  line-height: 50px;
 }
 
 .dictsMain {
-  padding: 20px;
-  height: 100%;
+  padding: 10px 50px;
+  /* height: 100%; */
+}
+
+.dictsTrans-enter-from,
+.dictsTrans-leave-to {
+  opacity: 0;
+  scale: 0.5;
+}
+
+.dictsTrans-move {
+  transition: all 0.2s ease;
+}
+.dictsTrans-leave-active {
+  transition: all 0.2s ease;
+}
+.dictsTrans-enter-active {
+  transition: all 0.2s ease;
+  /* transition-delay: 0.2s; */
 }
 </style>

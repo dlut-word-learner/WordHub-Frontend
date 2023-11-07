@@ -1,6 +1,6 @@
 <template>
   <el-container class="appContainer">
-    <el-header>
+    <el-header id="header">
       <el-menu
         class="menu"
         mode="horizontal"
@@ -51,11 +51,13 @@
       </el-menu>
     </el-header>
     <el-main class="appMain">
-      <router-view v-slot="{ Component }">
-        <keep-alive :exclude="excludeCache">
-          <component :is="Component" />
-        </keep-alive>
-      </router-view>
+      <transition>
+        <router-view v-slot="{ Component }">
+          <keep-alive :exclude="excludeCache">
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
+      </transition>
     </el-main>
   </el-container>
 </template>
@@ -104,8 +106,16 @@ watch(
 </script>
 
 <style scoped>
+#header {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 .menu {
-  min-width: 640px;
+  width: 100%;
+  /* background-color: #f2f6fc; */
+  z-index: 999;
+  box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.05);
 }
 
 .avatar {
@@ -115,6 +125,16 @@ watch(
 .appContainer {
   padding: 0;
   height: 100%;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 .appMain {

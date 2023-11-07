@@ -1,75 +1,98 @@
 <template>
-  <el-alert
-    :title="$t('qwerty.typingToStart')"
-    :center="true"
-    :show-icon="true"
-    v-if="!stopwatch.isRunning.value && !isAllFinished"
-  />
-  <div class="word-spelling-app" v-if="!isAllFinished">
-    <div class="words" v-if="words">
-      <TransitionGroup name="visibleWordCards">
-        <WordCard
-          class="word-card-instance"
-          :class="{
-            'pre-word-card': isCurrWord(index + 1),
-            'next-word-card': isCurrWord(index - 1),
-          }"
-          v-for="index in visibleWordIndex"
-          :key="index"
-          :word="words?.[index]"
-          :emphasized="isCurrWord(index)"
-          :userInput="
-            isCurrWord(index)
-              ? userInput
-              : index > currWordIndex
-              ? ''
-              : undefined
-          "
-          :sound="isCurrWord(index) ? currWordSound : undefined"
-          :lang="lang"
-          @done="inputDone"
+  <el-container>
+    <el-collapse-transition>
+      <el-header
+        class="header"
+        v-show="!stopwatch.isRunning.value && !isAllFinished"
+      >
+        <el-alert
+          :title="$t('qwerty.typingToStart')"
+          :center="true"
+          :show-icon="true"
         />
-      </TransitionGroup>
-    </div>
-    <div id="inputArea">
-      <el-input
-        size="large"
-        v-model="userInput"
-        @keypress="typingSound.play()"
-        @keydown="startTiming"
-        :class="{ shake: shake }"
-        :disabled="isAllFinished"
-        :clearable="true"
+      </el-header>
+    </el-collapse-transition>
+    <el-main>
+      <Transition>
+        <el-container class="word-spelling-app" v-if="!isAllFinished">
+          <el-main class="words" v-if="words">
+            <TransitionGroup name="visibleWordCards">
+              <WordCard
+                class="word-card-instance"
+                :class="{
+                  'pre-word-card': isCurrWord(index + 1),
+                  'next-word-card': isCurrWord(index - 1),
+                  shake: shake && isCurrWord(index),
+                }"
+                v-for="index in visibleWordIndex"
+                :key="index"
+                :word="words?.[index]"
+                :emphasized="isCurrWord(index)"
+                :userInput="
+                  isCurrWord(index)
+                    ? userInput
+                    : index > currWordIndex
+                    ? ''
+                    : undefined
+                "
+                :sound="isCurrWord(index) ? currWordSound : undefined"
+                :lang="lang"
+                @done="inputDone"
+              />
+            </TransitionGroup>
+          </el-main>
+          <el-main id="inputArea">
+            <el-input
+              size="large"
+              v-model="userInput"
+              @keypress="typingSound.play()"
+              @keydown="startTiming"
+              :class="{ shake: shake }"
+              :disabled="isAllFinished"
+              :clearable="true"
+            />
+            <!-- :maxlength="currWord?.name.length" -->
+          </el-main>
+          <el-main>
+            <el-button
+              type="primary"
+              @click="promptGoToNextWord"
+              :disabled="!stopwatch.isRunning"
+              v-if="!isAllFinished"
+              id="nextWordButton"
+            >
+              {{ $t("qwerty.goToNextWord") }}
+            </el-button>
+          </el-main>
+          <el-main id="progressBar">
+            <el-progress
+              :show-text="false"
+              :percentage="words ? (currWordIndex / words.length) * 100 : 0"
+            />
+          </el-main>
+        </el-container>
+        <el-container class="result" v-else>
+          <el-main>
+            <el-result
+              icon="success"
+              :title="$t('qwerty.finishPrompt')"
+            ></el-result>
+          </el-main>
+        </el-container>
+      </Transition>
+    </el-main>
+    <el-footer class="statsFooter">
+      <Stats
+        class="stats"
+        :stopwatch="stopwatch"
+        :words="words"
+        :currWordIndex="currWordIndex"
+        :tries="tries"
+        :skips="skips"
+        v-if="words"
       />
-      <!-- :maxlength="currWord?.name.length" -->
-    </div>
-    <el-button
-      type="primary"
-      @click="promptGoToNextWord"
-      :disabled="!stopwatch.isRunning"
-      v-if="!isAllFinished"
-      id="nextWordButton"
-    >
-      {{ $t("qwerty.goToNextWord") }}
-    </el-button>
-    <el-progress
-      id="progressBar"
-      :show-text="false"
-      :percentage="words ? (currWordIndex / words.length) * 100 : 0"
-    />
-  </div>
-  <div id="result" v-else>
-    <el-result icon="success" :title="$t('qwerty.finishPrompt')"></el-result>
-  </div>
-  <Stats
-    id="stats"
-    :stopwatch="stopwatch"
-    :words="words"
-    :currWordIndex="currWordIndex"
-    :tries="tries"
-    :skips="skips"
-    v-if="words"
-  />
+    </el-footer>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -97,7 +120,7 @@ const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
 const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
-const visibleWordIndex = ref([0, 1]);
+const visibleWordIndex = ref<number[]>([]);
 
 const currWord = computed(() => {
   return words.value?.[currWordIndex.value];
@@ -143,6 +166,11 @@ const initData = async () => {
       words.value = response.data;
       taskStore.type = Task.QwertyMode;
       taskStore.url = router.currentRoute.value.fullPath;
+      if (!words.value) return;
+      if (words.value.length >= 1)
+        setTimeout(() => visibleWordIndex.value.push(0), 100);
+      if (words.value.length >= 2)
+        setTimeout(() => visibleWordIndex.value.push(1), 200);
     })
     .catch((error) => {
       console.log(error);
@@ -232,15 +260,19 @@ function finish(): void {
 
 <style scoped>
 .word-spelling-app {
-  display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
   height: 80%;
-  margin: 2%;
-  padding: 20px;
   gap: 2%;
   font-family: Arial, sans-serif;
+  transition: all 0.5s ease;
+}
+
+.header {
+  z-index: 998;
+  position: absolute;
+  width: 100%;
 }
 
 .word-container {
@@ -256,7 +288,7 @@ function finish(): void {
 .words {
   margin-bottom: 2%;
   width: 100%;
-  min-height: 65%;
+  min-height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -268,6 +300,9 @@ function finish(): void {
   display: inline-block;
   transform-origin: center center 20px;
   transform-style: preserve-3d;
+}
+.word-card-instance:hover {
+  scale: 1.05;
 }
 
 .pre-word-card {
@@ -284,31 +319,39 @@ function finish(): void {
 }
 
 #inputArea {
-  width: 30%;
+  width: 50%;
+  /* min-width: 30%;
+  max-width: 50%; */
+  padding: 0 20px;
 }
 
-#stats {
-  position: fixed;
-  bottom: 20px;
-  height: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  background-color: white;
+.statsFooter {
+  transition: all 0.5s ease;
+}
+
+.stats {
+  /* background-color: #fafafa; */
   border-radius: 20px;
-  margin: 10px 10px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
 }
 
-#result {
-  position: fixed;
+.stats:hover {
+  scale: 1.01;
+  transition: all 0.2s ease;
+}
+
+.result {
+  transition: all 0.5s ease;
+  transition-delay: 200ms;
+  /* position: fixed;
   left: 50%;
   top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%); */
 }
 
 #nextWordButton {
-  width: 10%;
+  min-width: 120px;
 }
 
 .shake {
@@ -337,6 +380,17 @@ function finish(): void {
   60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.v-move,
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 .visibleWordCards-enter-from,

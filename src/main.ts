@@ -1,5 +1,6 @@
 import App from "./App.vue";
 import router from "./router";
+import ElementPlus from "element-plus";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -22,4 +23,4 @@ export const i18n = createI18n({
   messages,
 });
 
-app.use(router).use(pinia).use(i18n).mount("#app");
+app.use(router).use(ElementPlus).use(pinia).use(i18n).mount("#app");
