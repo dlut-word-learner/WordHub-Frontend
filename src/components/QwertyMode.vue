@@ -407,5 +407,6 @@ function finish(): void {
 
 .visibleWordCards-leave-active {
   position: absolute;
+  z-index: -1;
 }
 </style>

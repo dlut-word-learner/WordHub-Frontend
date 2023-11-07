@@ -182,6 +182,7 @@ function displayedDicts(): DictVo[] {
 .dictCard {
   margin: 4%;
   border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
 .dictCard:hover {
@@ -240,9 +241,6 @@ html.dark .dictCard1 {
     rgb(4, 0, 77),
     rgba(92, 44, 169, 0.9)
   );
-  /* backdrop-filter: grayscale(30%); */
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 html.dark .dictCard2 {
@@ -261,9 +259,6 @@ html.dark .dictCard2 {
     rgba(92, 44, 169, 0.9),
     rgba(60, 44, 79, 0.9)
   );
-  /* backdrop-filter: grayscale(30%); */
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 .menu-item {
@@ -335,14 +330,14 @@ html.dark #footer {
   scale: 0.5;
 }
 
-.dictsTrans-move {
-  transition: all 0.2s ease;
-}
-.dictsTrans-leave-active {
-  transition: all 0.2s ease;
-}
+.dictsTrans-move,
+.dictsTrans-leave-active,
 .dictsTrans-enter-active {
   transition: all 0.2s ease;
   /* transition-delay: 0.2s; */
+}
+.dictsTrans-leave-active {
+  position: absolute;
+  z-index: -1;
 }
 </style>
