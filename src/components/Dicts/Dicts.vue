@@ -97,62 +97,110 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-import { UserVo, useLoginStore } from "../store/loginStore";
+import { DictVo, excludeCache, Lang } from "./common";
+import { Ref, ref, onMounted, computed } from "vue";
+import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
-import router from "../router";
-import sha3 from "crypto-js/sha3";
+import { useOptionsStore } from "../../store/optionsStore";
+import { Task, useTaskStore } from "../../store/taskStore";
 import axios from "axios";
+import router from "../../router";
 
+const optionsStore = useOptionsStore();
+const taskStore = useTaskStore();
+
+const dicts: Ref<DictVo[]> = ref([]);
+const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
 
-const form = reactive({
-  username: "",
-  password: "",
-});
+const currPage = ref(1);
+const pageSize = ref(12);
 
-const loginStore = useLoginStore();
-
-function login(): void {
-  if (form.username == "" || form.password == "") {
-    ElMessage.info(t("login.inputPrompt"));
-    return;
-  }
-
-  const hash = sha3(form.password).toString();
-
+onMounted(() => {
   axios
-    .post(
-      "/api/session",
-      { username: form.username, password: hash },
-      { headers: { "Content-Type": "application/json; charset=UTF-8" } },
-    )
+    .get("/api/dicts")
     .then((response) => {
-      ElMessage.success(t("login.successPrompt"));
-      const userVo: UserVo = response.data;
-      loginStore.userVo = userVo;
-      loginStore.password = form.password;
-      getAvatar();
-      router.push("/dicts");
-    })
-    .catch((error) => {
-      if (error.response) ElMessage.error(t("login.userErrPrompt"));
-      else ElMessage.error(t("login.networkErrPrompt"));
-    });
-}
-
-function getAvatar(): void {
-  axios
-    .get(`/api/users/${loginStore.userVo?.id}/profile/avatar`, {
-      responseType: "blob",
-    })
-    .then((response) => {
-      loginStore.avatar = window.URL.createObjectURL(response.data);
+      dicts.value = response.data;
     })
     .catch((error) => {
       console.log(error);
-      ElMessage.error(t("userInfo.avatar.errGetAvatar"));
+      ElMessage.error(t("dict.errGetDicts"));
     });
+});
+
+const sideWidth = computed(() => {
+  switch (i18n.global.locale.value) {
+    case "zh_cn":
+      return "120px";
+    case "en":
+      return "160px";
+    case "ja":
+      return "140px";
+  }
+});
+
+function onSelectLang(index: string, _indexPath, _routeResult): void {
+  currLang.value = index;
+}
+
+function tryTask(dict: DictVo, task: Task): void {
+  if (taskStore.type != Task.None) {
+    ElMessageBox.confirm(t("dict.currTaskPrompt"), t("dict.prompt"), {
+      distinguishCancelAndClose: true,
+      confirmButtonText: t("dict.startNewTask"),
+      cancelButtonText: t("dict.continueCurrTask"),
+    })
+      .then(() => {
+        console.log("confirm");
+        startNewTask(dict, task);
+      })
+      .catch((data) => {
+        if (data == "cancel") continueCurrTask();
+      });
+  } else startNewTask(dict, task);
+}
+
+function continueCurrTask(): void {
+  if (taskStore.url != "") router.push(taskStore.url);
+  else console.error("No current task running.");
+}
+
+function startNewTask(dict: DictVo, task: Task): void {
+  excludeCache.value = Task[taskStore.type];
+  const wordsPerRound = ref(0);
+
+  switch (task) {
+    case Task.Learn:
+      wordsPerRound.value = optionsStore.learnWordsPerRound;
+      break;
+    case Task.Review:
+      wordsPerRound.value = optionsStore.reviewWordsPerRound;
+      break;
+    case Task.QwertyMode:
+      wordsPerRound.value = optionsStore.qwertyWordsPerRound;
+      break;
+  }
+
+  router.push({
+    name: Task[task],
+    query: {
+      lang: Lang[dict.language],
+      dictId: dict.id,
+      num: wordsPerRound.value,
+    },
+  });
+}
+
+function selectedDicts(): DictVo[] {
+  return dicts.value.filter(
+    (x) => currLang.value == "all" || currLang.value == Lang[x.language],
+  );
+}
+
+function displayedDicts(): DictVo[] {
+  const start = (currPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return selectedDicts().slice(start, end);
 }
 </script>
 
@@ -261,6 +309,7 @@ html.dark .dictCard2 {
 .dictRow {
   min-height: 90%;
   overflow: hidden;
+  margin: 10px 20px;
 }
 
 .dictName {
@@ -333,47 +382,56 @@ html.dark #footer {
   z-index: -1;
 }
 
-.d {
-  right: 0;
-  clip-path: polygon(0% 0%, 40% 100%, 100% 100%, 100% 0%);
-  background-position: 800px 0;
+html.dark .taskButton {
+  background-color: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(5px);
 }
 
-.e {
-  right: 0;
-  clip-path: polygon(20% 0%, 0% 100%, 100% 100%, 100% 0%);
-  background-position: 800px 0;
+
+#footer {
+  position: sticky;
+  bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px) grayscale(50%);
+  height: 50px;
+  border-radius: 15px;
+  margin: 3px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
 }
 
-.a:hover .b {
-  left: -200px;
+html.dark #footer {
+  background-color: rgba(41, 50, 54, 0.1);
 }
 
-.a:hover .c {
-  left: -150px;
+#footer:hover {
+  scale: 1.01;
+  transition: all 0.5s ease;
 }
 
-.a:hover .d {
-  right: -140px;
+#pagination {
+  line-height: 50px;
 }
 
-.a:hover .e {
-  right: -220px;
+.dictsMain {
+  padding: 10px 50px;
+  /* height: 100%; */
 }
 
-.a:hover div {
-  opacity: 1;
-}
-
-.f {
+.dictsTrans-enter-from,
+.dictsTrans-leave-to {
   opacity: 0;
-  font: 900 50px "";
-  letter-spacing: 10px;
-  color: #87e0cc;
-  transition: 1.5s;
+  scale: 0.5;
 }
 
-.a:hover .f {
-  opacity: 1;
+.dictsTrans-move,
+.dictsTrans-leave-active,
+.dictsTrans-enter-active {
+  transition: all 0.2s ease;
+  /* transition-delay: 0.2s; */
+}
+.dictsTrans-leave-active {
+  position: absolute;
+  z-index: -1;
 }
 </style>
