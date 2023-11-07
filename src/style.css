@@ -10,8 +10,13 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.dark {
-  background: #242424;
+html {
+  transition: background-color 0.5s ease;
+}
+
+html.dark {
+  background-color: #242424;
+  transition: background-color 0.5s ease;
 }
 
 html,
@@ -28,4 +33,5 @@ body {
   margin: 0 auto;
   text-align: center;
   height: 100%;
+  transition: background-color 0.5s ease;
 }

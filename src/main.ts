@@ -10,7 +10,7 @@ import { useDark } from "@vueuse/core";
 import "./style.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 
-export const isDark = useDark();
+export const isDark = useDark({ disableTransition: false });
 
 const app = createApp(App);
 const pinia = createPinia().use(piniaPluginPersistedstate);
