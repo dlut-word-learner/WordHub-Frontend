@@ -23,4 +23,8 @@ export const i18n = createI18n({
   messages,
 });
 
+const style = document.createElement("style");
+style.setAttribute("data-animation", "");
+document.head.appendChild(style);
+
 app.use(router).use(ElementPlus).use(pinia).use(i18n).mount("#app");

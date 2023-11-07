@@ -41,6 +41,9 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item :label="$t('options.enableAnimation')">
+        <el-switch v-model="optionsStore.isAnimationEnabled"></el-switch>
+      </el-form-item>
       <el-form-item :label="$t('options.darkMode')">
         <el-switch v-model="isDark"></el-switch>
       </el-form-item>
