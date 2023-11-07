@@ -1,5 +1,5 @@
 <template>
-  <div id="body">
+  <div>
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userInfo.pwd.originalPwd')">
         <el-input
@@ -92,10 +92,4 @@ function savePasswd(): void {
 }
 </script>
 
-<style scoped>
-#body {
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-top: 2em;
-}
-</style>
+<style scoped></style>

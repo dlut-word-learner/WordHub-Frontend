@@ -1,5 +1,5 @@
 <template>
-  <div id="body">
+  <div>
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userInfo.delete.username')">
         <div>{{ loginStore.userVo?.username }}</div>
@@ -84,10 +84,4 @@ function deleteUser(): void {
 }
 </script>
 
-<style scoped>
-#body {
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-top: 2em;
-}
-</style>
+<style scoped></style>

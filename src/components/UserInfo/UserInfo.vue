@@ -17,7 +17,7 @@
       </el-menu>
     </el-aside>
     <el-main>
-      <router-view></router-view>
+      <router-view id="main"></router-view>
     </el-main>
   </el-container>
 </template>
@@ -48,5 +48,9 @@ router.push("/user-info/basic");
 
 .navItem {
   margin: auto auto;
+}
+
+#main {
+  max-width: 600px;
 }
 </style>

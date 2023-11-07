@@ -1,5 +1,5 @@
 <template>
-  <div id="body">
+  <div>
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userInfo.basic.id')">
         <div>{{ loginStore.userVo?.id }}</div>
@@ -18,10 +18,12 @@
       <el-form-item :label="$t('userInfo.basic.score')">
         <div>{{ loginStore.userVo?.score }}</div>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="saveUserInfo">
+          {{ $t("userInfo.basic.save") }}
+        </el-button>
+      </el-form-item>
     </el-form>
-    <el-button type="primary" @click="saveUserInfo">
-      {{ $t("userInfo.basic.save") }}
-    </el-button>
   </div>
 </template>
 
@@ -76,10 +78,4 @@ function saveUserInfo(): void {
 }
 </script>
 
-<style scoped>
-#body {
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-top: 2em;
-}
-</style>
+<style scoped></style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="body">
+  <div>
     <el-form label-position="left" label-width="50%">
       <el-form-item :label="$t('userInfo.avatar.currAvatar')">
         <el-avatar :size="200" :src="loginStore.avatar" />
@@ -98,12 +98,6 @@ function saveAvatar(): void {
 </script>
 
 <style scoped>
-#body {
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-top: 2em;
-}
-
 #cropper {
   width: 300px;
   height: 300px;
