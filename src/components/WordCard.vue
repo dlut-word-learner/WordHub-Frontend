@@ -9,7 +9,7 @@
         <div
           v-if="
             userInput == undefined ||
-            (showMain != undefined ? showMain : !optionsStore.isWordHidden) ||
+            (hideMain != undefined ? hideMain[1] : !optionsStore.isWordHidden) ||
             checkSpelling(userInput, word.name)
           "
         >
@@ -21,7 +21,7 @@
       </div>
     </template>
     <div :class="{ emWordItem: emphasized, unEmWordItem: !emphasized }">
-      <div v-if="showPhone">
+      <div v-if="hidePhone?.[1] != true">
         {{ getWordPhone(word, lang) }}
         <img
           src="../assets/img/speaker.png"
@@ -32,7 +32,7 @@
       </div>
       <div
         v-if="
-          showMeaning != undefined ? showMeaning : !optionsStore.isMeaningHidden
+          hideMeaning != undefined ? hideMeaning : !optionsStore.isMeaningHidden
         "
       >
         <div class="meaning" v-for="meaning in word.extension.meanings">
@@ -59,10 +59,11 @@ const props = defineProps<{
   /** sound of the word, which can be played when sound is enabled */
   sound?: Howl;
 
-  showMain?: boolean;
-  showMeaning?: boolean;
-  showPhone?: boolean;
-  showInitial?: boolean;
+  /** Use tuple to avoid fallback to false instead of undefined */
+  hideMain?: [any, boolean];
+  hideMeaning?: [any, boolean];
+  hidePhone?: [any, boolean];
+  showInitial?: [any, boolean];
 
   emphasized?: boolean;
   /** undefined if the word is previous,<br/>
