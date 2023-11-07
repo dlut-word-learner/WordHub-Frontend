@@ -117,7 +117,7 @@ watch(
 }
 .menu {
   width: 100%;
-  /* background-color: #f2f6fc; */
+  /* background-color: #ecf5ff; */
   z-index: 999;
   box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s ease;

@@ -8,7 +8,13 @@
 
     <el-container id="body">
       <el-header>
-        <img src="/wordhub.png" width="100" height="100" class="logo" />
+        <img
+          alt="WordHub"
+          src="/wordhub.png"
+          width="100"
+          height="100"
+          class="logo"
+        />
       </el-header>
       <el-main>
         <h2 class="f">{{ $t("login.userLogin") }}</h2>

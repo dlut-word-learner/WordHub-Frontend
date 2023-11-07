@@ -9,7 +9,9 @@
         <div
           v-if="
             userInput == undefined ||
-            (hideMain != undefined ? hideMain[1] : !optionsStore.isWordHidden) ||
+            (hideMain != undefined
+              ? hideMain[1]
+              : !optionsStore.isWordHidden) ||
             checkSpelling(userInput, word.name)
           "
         >
@@ -24,6 +26,7 @@
       <div v-if="hidePhone?.[1] != true">
         {{ getWordPhone(word, lang) }}
         <img
+          alt="speak"
           src="../assets/img/speaker.png"
           class="speaker"
           @click="sound?.play()"
@@ -117,7 +120,12 @@ function checkSpelling(input: string, wordName: string): boolean {
 .word-card {
   padding: 10px;
   transition: all 0.5s ease;
+  /* background-color: #d9ecff; */
 }
+html.dark .word-card {
+  /* background-color: #1c1c1c; */
+}
+
 .emWord {
   width: 41%;
   min-height: 400px;

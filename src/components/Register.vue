@@ -1,6 +1,6 @@
 <template>
   <div id="body">
-    <img src="/wordhub.png" width="100" height="100" />
+    <img alt="WordHub" src="/wordhub.png" width="100" height="100" />
     <h2>{{ $t("register.userRegister") }}</h2>
     <el-form label-width="auto">
       <el-form-item :label="$t('register.username')">
