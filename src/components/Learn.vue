@@ -53,6 +53,7 @@
         v-if="words && isVisited(currWordIndex) && tries < 3"
       />
       <el-button
+        size="large"
         type="primary"
         @click="showAns"
         v-else-if="words && isAnsButtonShown"
@@ -60,14 +61,14 @@
         {{ $t("learn.showAns") }}
       </el-button>
       <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
-        <el-button type="primary" @click="finishWord(true)">
+        <el-button size="large" type="primary" @click="finishWord(true)">
           {{ $t("learn.know") }}
         </el-button>
-        <el-button @click="finishWord(false)">
+        <el-button size="large" @click="finishWord(false)">
           {{ $t("learn.dontknow") }}
         </el-button>
       </div>
-      <el-button type="primary" @click="finishWord(false)" v-if="tries >= 3">
+      <el-button size="large" type="primary" @click="finishWord(false)" v-if="tries >= 3">
         {{ $t("learn.tryAgain") }}
       </el-button>
     </div>
