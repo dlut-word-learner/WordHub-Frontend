@@ -58,13 +58,13 @@ export function getHiddenWord(
               : word.name.length - input.length,
           )
         );
-      else return input + "_ ".repeat(word.name.length - input.length);
+      else return input + "_ ".repeat(Math.max(0, word.name.length - input.length));
 
     case Lang.Japanese:
       return isKatakana(word.extension.notation)
         ? toKatakana(input)
         : toHiragana(input) +
-            "__".repeat(
+            "__".repeat(Math.max(0,
               toKana(word.name).length -
                 toKana(input)
                   .split("")
@@ -74,7 +74,7 @@ export function getHiddenWord(
                   .split("")
                   .filter((x) => !isKana(x))
                   .join("").length /
-                  3,
+                  3),
             );
     default:
       return "";
