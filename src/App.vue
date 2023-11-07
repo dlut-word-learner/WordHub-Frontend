@@ -20,9 +20,9 @@
                 : $t("app.loggedOut")
             }}
           </template>
-          <el-menu-item index="/user-info">{{
-            $t("app.userInfo")
-          }}</el-menu-item>
+          <el-menu-item index="/user-info">
+            {{ $t("app.userInfo") }}
+          </el-menu-item>
           <el-menu-item @click="logout">
             {{ $t("app.logout") }}
           </el-menu-item>
@@ -40,13 +40,15 @@
         <el-menu-item
           :index="taskStore.url"
           v-else-if="taskStore.type == Task.Review"
-          >{{ $t("app.review") }}</el-menu-item
         >
+          {{ $t("app.review") }}
+        </el-menu-item>
         <el-menu-item
           :index="taskStore.url"
           v-else-if="taskStore.type == Task.QwertyMode"
-          >{{ $t("app.qwertyMode") }}</el-menu-item
         >
+          {{ $t("app.qwertyMode") }}
+        </el-menu-item>
         <el-menu-item index="/options">{{ $t("app.options") }}</el-menu-item>
       </el-menu>
     </el-header>

@@ -73,11 +73,13 @@ export const messages = {
       promptGoToNextWord: "当前单词尚未拼写正确，确定要切换到下一个单词吗？",
       correctSpelling: "拼写正确！",
       wrongSpelling: "拼写错误，请继续尝试。",
+      finishPrompt: "恭喜，你已完成所有单词！",
+    },
+    stats: {
       elapsedTime: "用时",
       progress: "进度",
       speed: "速度",
       accuracy: "正确率",
-      finishPrompt: "恭喜，你已完成所有单词！",
     },
     options: {
       learnWordsPerRound: "每轮学习单词数",
@@ -230,12 +232,14 @@ export const messages = {
         "The current word is not yet spelled correctly. Are you sure you want to switch to the next word?",
       correctSpelling: "Correct!",
       wrongSpelling: "Spelling error, please continue to try.",
+      finishPrompt:
+        "Congratulations, you have completed spelling all the words!",
+    },
+    stats: {
       elapsedTime: "Elapsed Time",
       progress: "Progress",
       speed: "Speed",
       accuracy: "Accuracy",
-      finishPrompt:
-        "Congratulations, you have completed spelling all the words!",
     },
     options: {
       learnWordsPerRound: "Number of words to learn per round",
@@ -391,11 +395,13 @@ export const messages = {
         "現在の単語が正しくスペルされていません。次の単語に切り替えますか？",
       correctSpelling: "スペルが正しいです！",
       wrongSpelling: "スペルが間違っています。続けて試してください。",
+      finishPrompt: "おめでとうございます。すべての単語を完了しました！",
+    },
+    stats: {
       elapsedTime: "経過時間",
       progress: "進捗",
       speed: "速度",
       accuracy: "正確性",
-      finishPrompt: "おめでとうございます。すべての単語を完了しました！",
     },
     options: {
       learnWordsPerRound: "1 ラウンドあたりに学習する単語数",
