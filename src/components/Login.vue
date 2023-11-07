@@ -123,7 +123,7 @@ function getAvatar(): void {
   /* border: 10px solid white; */
   /* background-image: url("163727-15190294471b41.jpg"); */
   background-size: cover;
-  display: flex;
+  display: inline-block;
   justify-content: center;
   align-items: center;
   overflow: hidden;
