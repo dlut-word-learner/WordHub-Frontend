@@ -64,36 +64,6 @@
     </el-main>
   </el-container>
   <router-view></router-view>
-  <div class="a">
-    <div class="b"></div>
-    <div class="c"></div>
-    <div class="d"></div>
-    <div class="e"></div>
-
-    <div id="body" type="flex">
-      <img src="/wordhub.png" width="100" height="100" />
-      <h2 class="f">{{ $t("login.userLogin") }}</h2>
-      <el-form label-width="auto">
-        <el-form-item :label="$t('login.username')">
-          <el-input type="text" id="username" v-model="form.username" />
-        </el-form-item>
-        <el-form-item :label="$t('login.password')">
-          <el-input
-            type="password"
-            id="password"
-            v-model="form.password"
-            :show-password="true"
-          />
-        </el-form-item>
-      </el-form>
-      <el-button type="primary" @click="login">{{
-        $t("login.login")
-      }}</el-button>
-      <el-button @click="router.push('/register')">
-        {{ $t("login.register") }}
-      </el-button>
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">

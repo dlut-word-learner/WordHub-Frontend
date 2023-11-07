@@ -108,8 +108,7 @@ function getAvatar(): void {
 
 <style scoped>
 #body {
-  margin: 400px 100px;
-  padding: 25%;
+  padding: 8% 30%;
 }
 
 .a {
