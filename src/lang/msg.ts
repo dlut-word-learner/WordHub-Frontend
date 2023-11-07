@@ -94,6 +94,7 @@ export const messages = {
       volume: "音量",
       lang: "语言",
       darkMode: "深色模式",
+      enableAnimation: "启用动画",
     },
     userInfo: {
       nav: {
@@ -253,6 +254,7 @@ export const messages = {
       volume: "Volume",
       lang: "Language",
       darkMode: "Dark mode",
+      enableAnimation: "Enable animation",
     },
     userInfo: {
       nav: {
@@ -414,6 +416,7 @@ export const messages = {
       volume: "音量",
       lang: "言語",
       darkMode: "ダークモード",
+      enableAnimation: "アニメーションを有効にする",
     },
     userInfo: {
       nav: {

@@ -357,7 +357,6 @@ html.dark .taskButton {
   backdrop-filter: blur(5px);
 }
 
-
 #footer {
   position: sticky;
   bottom: 20px;
