@@ -52,6 +52,7 @@
               :clearable="true"
               autofocus
               @keypress.enter="promptGoToNextWord"
+              ref="userInputRef"
             />
             <!-- :maxlength="currWord?.name.length" -->
           </el-main>
@@ -74,7 +75,7 @@
             />
           </el-main>
         </el-container>
-        <el-container class="result" direction="vertical" v-else>
+        <el-container class="result" direction="vertical" @keypress.enter="goBack" v-else>
           <el-main>
             <el-result
               icon="success"
@@ -107,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onDeactivated } from "vue";
+import { ref, computed, onDeactivated, nextTick } from "vue";
 import { ElButton } from "element-plus";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
@@ -123,6 +124,8 @@ import router from "../router";
 import correctSoundRes from "../assets/audio/correct.wav";
 import typingSoundRes from "../assets/audio/typing.wav";
 import wrongSoundRes from "../assets/audio/wrong.wav";
+import { onActivated } from "vue";
+import { Ref } from "vue";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
@@ -149,7 +152,7 @@ const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
 const stopwatch = useStopwatch(0, false);
-
+const userInputRef: Ref<HTMLInputElement | null> = ref(null);
 const correctSound = new Howl({ src: correctSoundRes });
 const wrongSound = new Howl({ src: wrongSoundRes });
 const typingSound = new Howl({ src: typingSoundRes });
@@ -194,6 +197,12 @@ initData();
 onDeactivated(() => {
   stopwatch.pause();
 });
+
+onActivated(()=> {
+  nextTick(()=>{
+    userInputRef.value?.focus();
+  })
+})
 
 function startTiming(): void {
   if (!stopwatch.isRunning.value) stopwatch.start();
