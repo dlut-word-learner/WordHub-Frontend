@@ -63,113 +63,96 @@
       </el-footer>
     </el-main>
   </el-container>
+  <router-view></router-view>
+  <div class="a">
+    <div class="b"></div>
+    <div class="c"></div>
+    <div class="d"></div>
+    <div class="e"></div>
+
+    <div id="body" type="flex">
+      <img src="/wordhub.png" width="100" height="100" />
+      <h2 class="f">{{ $t("login.userLogin") }}</h2>
+      <el-form label-width="auto">
+        <el-form-item :label="$t('login.username')">
+          <el-input type="text" id="username" v-model="form.username" />
+        </el-form-item>
+        <el-form-item :label="$t('login.password')">
+          <el-input
+            type="password"
+            id="password"
+            v-model="form.password"
+            :show-password="true"
+          />
+        </el-form-item>
+      </el-form>
+      <el-button type="primary" @click="login">{{
+        $t("login.login")
+      }}</el-button>
+      <el-button @click="router.push('/register')">
+        {{ $t("login.register") }}
+      </el-button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { DictVo, excludeCache, Lang } from "./common";
-import { Ref, ref, onMounted, computed } from "vue";
-import { i18n } from "../../main";
+import { reactive } from "vue";
+import { UserVo, useLoginStore } from "../store/loginStore";
 import { useI18n } from "vue-i18n";
-import { useOptionsStore } from "../../store/optionsStore";
-import { Task, useTaskStore } from "../../store/taskStore";
+import router from "../router";
+import sha3 from "crypto-js/sha3";
 import axios from "axios";
-import router from "../../router";
 
-const optionsStore = useOptionsStore();
-const taskStore = useTaskStore();
-
-const dicts: Ref<DictVo[]> = ref([]);
-const currLang: Ref<string> = ref("all");
 const { t } = useI18n();
 
-const currPage = ref(1);
-const pageSize = ref(12);
+const form = reactive({
+  username: "",
+  password: "",
+});
 
-onMounted(() => {
+const loginStore = useLoginStore();
+
+function login(): void {
+  if (form.username == "" || form.password == "") {
+    ElMessage.info(t("login.inputPrompt"));
+    return;
+  }
+
+  const hash = sha3(form.password).toString();
+
   axios
-    .get("/api/dicts")
+    .post(
+      "/api/session",
+      { username: form.username, password: hash },
+      { headers: { "Content-Type": "application/json; charset=UTF-8" } },
+    )
     .then((response) => {
-      dicts.value = response.data;
+      ElMessage.success(t("login.successPrompt"));
+      const userVo: UserVo = response.data;
+      loginStore.userVo = userVo;
+      loginStore.password = form.password;
+      getAvatar();
+      router.push("/dicts");
+    })
+    .catch((error) => {
+      if (error.response) ElMessage.error(t("login.userErrPrompt"));
+      else ElMessage.error(t("login.networkErrPrompt"));
+    });
+}
+
+function getAvatar(): void {
+  axios
+    .get(`/api/users/${loginStore.userVo?.id}/profile/avatar`, {
+      responseType: "blob",
+    })
+    .then((response) => {
+      loginStore.avatar = window.URL.createObjectURL(response.data);
     })
     .catch((error) => {
       console.log(error);
-      ElMessage.error(t("dict.errGetDicts"));
+      ElMessage.error(t("userInfo.avatar.errGetAvatar"));
     });
-});
-
-const sideWidth = computed(() => {
-  switch (i18n.global.locale.value) {
-    case "zh_cn":
-      return "120px";
-    case "en":
-      return "160px";
-    case "ja":
-      return "140px";
-  }
-});
-
-function onSelectLang(index: string, _indexPath, _routeResult): void {
-  currLang.value = index;
-}
-
-function tryTask(dict: DictVo, task: Task): void {
-  if (taskStore.type != Task.None) {
-    ElMessageBox.confirm(t("dict.currTaskPrompt"), t("dict.prompt"), {
-      distinguishCancelAndClose: true,
-      confirmButtonText: t("dict.startNewTask"),
-      cancelButtonText: t("dict.continueCurrTask"),
-    })
-      .then(() => {
-        console.log("confirm");
-        startNewTask(dict, task);
-      })
-      .catch((data) => {
-        if (data == "cancel") continueCurrTask();
-      });
-  } else startNewTask(dict, task);
-}
-
-function continueCurrTask(): void {
-  if (taskStore.url != "") router.push(taskStore.url);
-  else console.error("No current task running.");
-}
-
-function startNewTask(dict: DictVo, task: Task): void {
-  excludeCache.value = Task[taskStore.type];
-  const wordsPerRound = ref(0);
-
-  switch (task) {
-    case Task.Learn:
-      wordsPerRound.value = optionsStore.learnWordsPerRound;
-      break;
-    case Task.Review:
-      wordsPerRound.value = optionsStore.reviewWordsPerRound;
-      break;
-    case Task.QwertyMode:
-      wordsPerRound.value = optionsStore.qwertyWordsPerRound;
-      break;
-  }
-
-  router.push({
-    name: Task[task],
-    query: {
-      lang: Lang[dict.language],
-      dictId: dict.id,
-      num: wordsPerRound.value,
-    },
-  });
-}
-
-function selectedDicts(): DictVo[] {
-  return dicts.value.filter(
-    (x) => currLang.value == "all" || currLang.value == Lang[x.language],
-  );
-}
-
-function displayedDicts(): DictVo[] {
-  const start = (currPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return selectedDicts().slice(start, end);
 }
 </script>
 
@@ -278,7 +261,6 @@ html.dark .dictCard2 {
 .dictRow {
   min-height: 90%;
   overflow: hidden;
-  margin: 10px 20px;
 }
 
 .dictName {
@@ -350,57 +332,48 @@ html.dark #footer {
   scale: 0.3;
   z-index: -1;
 }
-.taskButton {
-            display: inline-block;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            text-decoration: none;
-            /* font-family: sans-serif;
-            font-weight: 600;
-            font-size: 2em; */
-            padding: 0.75em 1em;
-            color: #409EFF;
-            /* border: 0.15em solid #409EFF; */
-            /* border-radius: 2em; */
-            transition: 1s;
-            box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
-        }
 
-        .taskButton:before,
-        .taskButton:after {
-            content: "";
-            position: absolute;
-            top: -1.5em;
-            z-index: -1;
-            width: 200%;
-            aspect-ratio: 1;
-            border: none;
-            border-radius: 40%;
-            background-color: #409EFF;
-            transition: 1s;
-        }
+.d {
+  right: 0;
+  clip-path: polygon(0% 0%, 40% 100%, 100% 100%, 100% 0%);
+  background-position: 800px 0;
+}
 
-        .taskButton:before {
-            left: -80%;
-            transform: translate3d(0, 5em, 0) rotate(-340deg);
-        }
+.e {
+  right: 0;
+  clip-path: polygon(20% 0%, 0% 100%, 100% 100%, 100% 0%);
+  background-position: 800px 0;
+}
 
-        .taskButton:after {
-            right: -80%;
-            transform: translate3d(0, 5em, 0) rotate(390deg);
-        }
+.a:hover .b {
+  left: -200px;
+}
 
-        .taskButton:hover,
-        .taskButton:focus {
-            color: white;
-        }
+.a:hover .c {
+  left: -150px;
+}
 
-        .taskButton:hover:before,
-        .taskButton:hover:after,
-        .taskButton:focus:before,
-        .taskButton:focus:after {
-            transform: none;
-            background-color: #409EFF;
-        } 
+.a:hover .d {
+  right: -140px;
+}
+
+.a:hover .e {
+  right: -220px;
+}
+
+.a:hover div {
+  opacity: 1;
+}
+
+.f {
+  opacity: 0;
+  font: 900 50px "";
+  letter-spacing: 10px;
+  color: #87e0cc;
+  transition: 1.5s;
+}
+
+.a:hover .f {
+  opacity: 1;
+}
 </style>
