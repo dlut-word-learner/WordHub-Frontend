@@ -13,7 +13,7 @@
       </el-header>
     </el-collapse-transition>
     <el-main>
-      <Transition>
+      <Transition mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
           <el-main class="words" v-if="words">
             <TransitionGroup name="visibleWordCards">
@@ -342,8 +342,9 @@ function finish(): void {
 }
 
 .result {
+  margin-top: 15%;
   transition: all 0.5s ease;
-  transition-delay: 200ms;
+  /* transition-delay: 200ms; */
   /* position: fixed;
   left: 50%;
   top: 50%;
@@ -388,8 +389,12 @@ function finish(): void {
   transition: all 0.2s ease;
 }
 
-.v-enter-from,
+.v-enter-from {
+  opacity: 0;
+}
+
 .v-leave-to {
+  transform: translateY(-300px);
   opacity: 0;
 }
 
