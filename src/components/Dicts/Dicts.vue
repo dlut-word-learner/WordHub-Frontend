@@ -2,10 +2,13 @@
   <el-container id="selectDictContainer">
     <el-aside :width="sideWidth" class="elAside">
       <el-menu
-        @select="onSelectLang"
+        @select="onSelectDictsCategory"
         default-active="all"
         :background-color="'rgba(255,255,255,0)'"
       >
+        <el-menu-item :index="'recentlyUsed'" class="menu-item">
+          <div>{{ $t(`dict.recentlyUsed`) }}</div>
+        </el-menu-item>
         <el-menu-item :index="'all'" class="menu-item">
           <div>{{ $t(`dict.all`) }}</div>
         </el-menu-item>
@@ -22,7 +25,7 @@
       <el-row class="dictRow" :gutter="10">
         <TransitionGroup name="dictsTrans">
           <el-col
-            v-for="(dict, index) in displayedDicts()"
+            v-for="(dict, index) in displayedDicts"
             :key="dict.id"
             :span="8"
           >
@@ -56,7 +59,7 @@
         <el-pagination
           v-model:current-page="currPage"
           :page-size="pageSize"
-          :total="selectedDicts().length"
+          :total="selectedDicts.length"
           :background="true"
           id="pagination"
         />
@@ -67,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { DictVo, excludeCache, Lang } from "./common";
+import { DictVo, excludeCache, Lang, sortWithIntersection } from "./common";
 import { Ref, ref, onMounted, computed } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
@@ -75,12 +78,14 @@ import { useOptionsStore } from "../../store/optionsStore";
 import { Task, useTaskStore } from "../../store/taskStore";
 import axios from "axios";
 import router from "../../router";
+import { useHistoryStore } from "../../store/historyStore";
 
 const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
+const historyStore = useHistoryStore();
 
 const dicts: Ref<DictVo[]> = ref([]);
-const currLang: Ref<string> = ref("all");
+const currCate: Ref<string> = ref("all");
 const { t } = useI18n();
 
 const currPage = ref(1);
@@ -109,8 +114,8 @@ const sideWidth = computed(() => {
   }
 });
 
-function onSelectLang(index: string, _indexPath, _routeResult): void {
-  currLang.value = index;
+function onSelectDictsCategory(index: string, _indexPath, _routeResult): void {
+  currCate.value = index;
 }
 
 function tryTask(dict: DictVo, task: Task): void {
@@ -150,7 +155,10 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-
+  const index = historyStore.recentlyUsedDicts.indexOf(dict.name);
+  if (index !== -1) historyStore.recentlyUsedDicts.splice(index, 1);
+  historyStore.recentlyUsedDicts.unshift(dict.name);
+  console.log(historyStore.recentlyUsedDicts);
   router.push({
     name: Task[task],
     query: {
@@ -161,17 +169,23 @@ function startNewTask(dict: DictVo, task: Task): void {
   });
 }
 
-function selectedDicts(): DictVo[] {
-  return dicts.value.filter(
-    (x) => currLang.value == "all" || currLang.value == Lang[x.language],
-  );
-}
+const selectedDicts = computed(() =>
+  sortWithIntersection(
+    dicts.value.filter((x) => {
+      if (currCate.value == "recentlyUsed") {
+        return historyStore.recentlyUsedDicts.includes(x.name);
+      } else
+        return currCate.value == "all" || currCate.value == Lang[x.language];
+    }),
+    historyStore.recentlyUsedDicts,
+  ),
+);
 
-function displayedDicts(): DictVo[] {
+const displayedDicts = computed(() => {
   const start = (currPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return selectedDicts().slice(start, end);
-}
+  return selectedDicts.value.slice(start, end);
+});
 </script>
 
 <style scoped>
