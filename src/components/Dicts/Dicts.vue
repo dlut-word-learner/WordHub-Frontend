@@ -338,6 +338,8 @@ html.dark #footer {
 }
 .dictsTrans-leave-active {
   position: absolute;
+  opacity: 0;
+  scale: 0.3;
   z-index: -1;
 }
 </style>
