@@ -62,6 +62,13 @@ export const messages = {
     },
     learn: {
       showAns: "显示答案",
+      know: "认识",
+      dontknow: "不认识",
+      correctSpelling: "拼写正确！",
+      wrongSpelling: "拼写错误，请继续尝试。",
+      errUploadRec: "上传学习记录失败，请检查网络是否正常",
+      tryAgain: "稍后再试",
+      finishPrompt: "恭喜，你已学完所有单词！",
     },
     qwerty: {
       errGetWords: "获取单词失败，请检查网络是否正常",
@@ -219,7 +226,16 @@ export const messages = {
       startNewTask: "Start a new learning task",
     },
     learn: {
-      showAns: "显示答案",
+      showAns: "Show Answer",
+      know: "Know",
+      dontknow: "Don't Know",
+      errUploadRec:
+        "Failed to upload learning records, please check your network status",
+      correctSpelling: "Correct!",
+      wrongSpelling: "Spelling error, please continue to try.",
+      tryAgain: "Try again later",
+      finishPrompt:
+        "Congratulations, you have completed learning all the words!",
     },
     qwerty: {
       errGetWords: "Failed to get words, please check your network status",
@@ -383,6 +399,14 @@ export const messages = {
     },
     learn: {
       showAns: "回答を表示する",
+      know: "知っている",
+      dontknow: "知らない",
+      correctSpelling: "スペルが正しいです！",
+      wrongSpelling: "スペルが間違っています。続けて試してください。",
+      errUploadRec:
+        "学習記録のアップロードに失敗しました。ネットワークが正常かどうかを確認してください",
+      tryAgain: "後でもう一度試してください",
+      finishPrompt: "おめでとうございます。すべての単語の学習を完了しました！",
     },
     qwerty: {
       errGetWords:

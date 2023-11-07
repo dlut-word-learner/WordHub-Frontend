@@ -11,20 +11,22 @@
           v-for="index in visibleWordIndex"
           :key="index"
           :word="words?.[index]"
-          :showMain="
-            (showMain && !isVisited(index)) || (tries >= 3 && isVisited(index))
-          "
-          :showMeaning="
-            (showMeaning && isCurrWord(index)) ||
-            index < currWordIndex ||
-            isVisited(index)
-          "
-          :showPhone="
-            (showPhone && isCurrWord(index)) ||
-            index < currWordIndex ||
-            isVisited(index)
-          "
-          :showInitial="showInitial"
+          :isMainShown="[
+            0,
+            !isVisited(index) ||
+              (isCurrWord(index) && isVisited(index) && tries >= 3),
+          ]"
+          :isMeaningShown="[
+            0,
+            isVisited(index) ||
+              (isCurrWord(index) && isMeaningShown) ||
+              index < currWordIndex,
+          ]"
+          :isPhoneShown="[
+            0,
+            (isPhoneShown && isCurrWord(index)) || index < currWordIndex,
+          ]"
+          :isInitialShown="[0, isCurrWord(index) && isInitialShown]"
           :emphasized="isCurrWord(index)"
           :sound="isCurrWord(index) ? currWordSound : undefined"
           :lang="lang"
@@ -46,17 +48,18 @@
         @keypress="typingSound.play()"
         :class="{ shake: shake }"
         :disabled="isAllFinished"
+        :maxlength="currWord?.name.length"
         :clearable="true"
         v-if="words && isVisited(currWordIndex) && tries < 3"
       />
       <el-button
         type="primary"
         @click="showAns"
-        v-else-if="words && showAnsButton"
+        v-else-if="words && isAnsButtonShown"
       >
         {{ $t("learn.showAns") }}
       </el-button>
-      <div v-if="showMeaning && words && !isVisited(currWordIndex)">
+      <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
         <el-button type="primary" @click="finishWord(true)">
           {{ $t("learn.know") }}
         </el-button>
@@ -64,6 +67,9 @@
           {{ $t("learn.dontknow") }}
         </el-button>
       </div>
+      <el-button type="primary" @click="finishWord(false)" v-if="tries >= 3">
+        {{ $t("learn.tryAgain") }}
+      </el-button>
     </div>
   </div>
   <div v-else>
@@ -105,11 +111,10 @@ const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
 
-const showAnsButton = ref(true);
-const showMain = ref(true);
-const showMeaning = ref(false);
-const showPhone = ref(false);
-const showInitial = ref<boolean>();
+const isAnsButtonShown = ref(true);
+const isMeaningShown = ref(false);
+const isPhoneShown = ref(false);
+const isInitialShown = ref(false);
 
 const correctSound = new Howl({ src: correctSoundRes });
 const wrongSound = new Howl({ src: wrongSoundRes });
@@ -136,9 +141,6 @@ const initData = async () => {
     })
     .then((response) => {
       words.value = response.data;
-      // if (words.value)
-      //   visibleWords.value = [words.value[0], words.value[1]];
-
       taskStore.type = Task.Learn;
       taskStore.url = router.currentRoute.value.fullPath;
     })
@@ -159,9 +161,9 @@ const isVisited = (index: number) => {
 };
 
 function showAns(): void {
-  showMeaning.value = true;
-  showPhone.value = true;
-  showAnsButton.value = false;
+  isMeaningShown.value = true;
+  isPhoneShown.value = true;
+  isAnsButtonShown.value = false;
 }
 
 /**
@@ -176,10 +178,6 @@ function showAns(): void {
 function finishWord(isKnown: boolean): void {
   if (!words.value) return;
 
-  showMeaning.value = false;
-  showPhone.value = false;
-  showAnsButton.value = true;
-
   if (isKnown) {
     axios
       .post(
@@ -188,12 +186,10 @@ function finishWord(isKnown: boolean): void {
         }/learn`,
         {
           id: words.value[currWordIndex.value].id,
-          rating: "easy", // ?
+          rating: "easy",
         },
       )
-      .then(() => {
-        // ?
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
         ElMessage.error(t("learn.errUploadRec"));
@@ -203,17 +199,7 @@ function finishWord(isKnown: boolean): void {
     visitedWords.push(words.value[currWordIndex.value]);
   }
 
-  if (currWordIndex.value + 1 < words.value.length) {
-    if (currWordIndex.value != 0) visibleWordIndex.value?.shift();
-    currWordIndex.value++;
-
-    if (currWordIndex.value + 1 < words.value.length)
-      visibleWordIndex.value?.push(currWordIndex.value + 1);
-  } else {
-    currWordIndex.value++;
-    visibleWordIndex.value = [];
-    isAllFinished.value = true;
-  }
+  goToNextWord();
 }
 
 function shakeWord(): void {
@@ -222,6 +208,12 @@ function shakeWord(): void {
 }
 
 function goToNextWord(): void {
+  isMeaningShown.value = false;
+  isPhoneShown.value = false;
+  isInitialShown.value = false;
+  isAnsButtonShown.value = true;
+  tries.value = 0;
+
   if (words.value && currWordIndex.value + 1 < words.value.length) {
     if (currWordIndex.value != 0) visibleWordIndex.value?.shift();
     currWordIndex.value++;
@@ -233,6 +225,7 @@ function goToNextWord(): void {
   } else {
     currWordIndex.value++;
     visibleWordIndex.value = [];
+    isAllFinished.value = true;
   }
 }
 
@@ -247,7 +240,6 @@ function inputDone(isCorrect: boolean): void {
     correctSound.play();
     setTimeout(goToNextWord, 500);
     isCurrCorrect.value = true;
-    tries.value = 0;
   } else {
     ElMessage({
       message: t("learn.wrongSpelling"),
@@ -262,17 +254,16 @@ function inputDone(isCorrect: boolean): void {
 
     switch (tries.value) {
       case 1:
-        if (props.lang == Lang.English) showPhone.value = true;
+        if (props.lang == Lang.English) isPhoneShown.value = true;
         break;
       case 2:
-        if (props.lang == Lang.English) showInitial.value = true;
+        if (props.lang == Lang.English) isInitialShown.value = true;
         else if (props.lang == Lang.Japanese) {
-          showInitial.value = true;
-          showPhone.value = true;
+          isInitialShown.value = true;
+          isPhoneShown.value = true;
         }
         break;
       case 3:
-        showMain.value = true;
         showAns();
         break;
     }
