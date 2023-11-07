@@ -11,7 +11,7 @@
           <template #title>
             <el-avatar
               class="avatar"
-              :src="loginStore.avatar"
+              :src="loginStore.avatar ? loginStore.avatar : 'avatar.png'"
               v-if="loginStore.userVo"
             />
             {{

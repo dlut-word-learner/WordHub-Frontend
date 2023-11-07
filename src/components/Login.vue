@@ -78,7 +78,6 @@ function getAvatar(): void {
     })
     .catch((error) => {
       console.log(error);
-      ElMessage.error(t("userInfo.avatar.errGetAvatar"));
     });
 }
 </script>

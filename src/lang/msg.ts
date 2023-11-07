@@ -129,7 +129,6 @@ export const messages = {
         errPrompt: "保存失败，请检查网络是否正常",
       },
       avatar: {
-        errGetAvatar: "获取头像失败，请检查网络是否正常",
         currAvatar: "当前头像",
         clickUpload: "点击上传新头像",
         save: "保存",
@@ -291,7 +290,6 @@ export const messages = {
         errPrompt: "Failed to save, please check your network status",
       },
       avatar: {
-        errGetAvatar: "Failed to get avatar, please check your network status",
         currAvatar: "Current Avatar",
         clickUpload: "Click to upload new avatar",
         save: "Save",
@@ -454,8 +452,6 @@ export const messages = {
           "保存に失敗しました。ネットワークが正常かどうかを確認してください",
       },
       avatar: {
-        errGetAvatar:
-          "アバターの取得に失敗しました。ネットワークが正常かどうかを確認してください",
         currAvatar: "現在のアバター",
         clickUpload: "新しいアバターをアップロードする",
         save: "保存",
