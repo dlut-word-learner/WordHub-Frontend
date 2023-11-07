@@ -361,7 +361,7 @@ html.dark #footer {
             font-size: 2em; */
             padding: 0.75em 1em;
             color: #409EFF;
-            border: 0.15em solid #409EFF;
+            /* border: 0.15em solid #409EFF; */
             /* border-radius: 2em; */
             transition: 1s;
             box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
