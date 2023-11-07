@@ -1,5 +1,4 @@
 <template>
-  <router-view></router-view>
   <div class="a">
     <div class="b"></div>
     <div class="c"></div>

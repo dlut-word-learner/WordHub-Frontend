@@ -53,8 +53,8 @@
               autofocus
               @keypress.enter="promptGoToNextWord"
               ref="userInputRef"
+              :maxlength="currWord?.name.length"
             />
-            <!-- :maxlength="currWord?.name.length" -->
           </el-main>
           <el-main>
             <el-button
@@ -75,7 +75,12 @@
             />
           </el-main>
         </el-container>
-        <el-container class="result" direction="vertical" @keypress.enter="goBack" v-else>
+        <el-container
+          class="result"
+          direction="vertical"
+          @keypress.enter="goBack"
+          v-else
+        >
           <el-main>
             <el-result
               icon="success"
@@ -198,11 +203,11 @@ onDeactivated(() => {
   stopwatch.pause();
 });
 
-onActivated(()=> {
-  nextTick(()=>{
+onActivated(() => {
+  nextTick(() => {
     userInputRef.value?.focus();
-  })
-})
+  });
+});
 
 function startTiming(): void {
   if (!stopwatch.isRunning.value) stopwatch.start();

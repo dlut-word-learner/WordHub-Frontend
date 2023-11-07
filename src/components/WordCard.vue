@@ -23,7 +23,7 @@
       </div>
     </template>
     <div :class="{ emWordItem: emphasized, unEmWordItem: !emphasized }">
-      <div v-if="isPhoneShown?.[1]">
+      <div v-if="isPhoneShown?.[1] != false">
         {{ getWordPhone(word, lang) }}
         <img
           alt="speak"

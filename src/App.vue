@@ -53,12 +53,10 @@
       </el-menu>
     </el-header>
     <el-main class="appMain">
-      <!-- See https://router.vuejs.org/zh/guide/migration/#-router-view-%E3%80%81-keep-alive-%E5%92%8C-transition- -->
       <router-view v-slot="{ Component }">
-        <transition name="globalAnimation" mode="out-in">
-          <!-- appear -->
+        <transition name="globalAnimation" appear mode="out-in">
           <keep-alive :exclude="excludeCache">
-            <component :is="Component" :key="$route.name"/>
+            <component :is="Component" :key="$route.name" />
           </keep-alive>
         </transition>
       </router-view>
