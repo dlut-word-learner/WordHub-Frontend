@@ -16,6 +16,7 @@ export const useOptionsStore = defineStore(
     const isWordHidden = ref(false);
     const isMeaningHidden = ref(false);
     const isSoundEnabled = ref(true);
+    const isAnimationEnabled = ref(true);
 
     const volume = ref(50);
     const lang = ref(i18n.global.locale.value);
@@ -27,6 +28,13 @@ export const useOptionsStore = defineStore(
     watch(isSoundEnabled, (newValue) => {
       Howler.mute(!newValue);
     });
+
+    watch(isAnimationEnabled, (enabled) => {
+      document.querySelector("style[data-animation]")!.innerHTML = enabled
+        ? ""
+        : "* { transition: none !important; }";
+    });
+
     return {
       learnWordsPerRound,
       reviewWordsPerRound,
@@ -36,6 +44,7 @@ export const useOptionsStore = defineStore(
       isWordHidden,
       isMeaningHidden,
       isSoundEnabled,
+      isAnimationEnabled,
       volume,
       lang,
     };

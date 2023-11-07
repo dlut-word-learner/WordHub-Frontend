@@ -19,6 +19,7 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
+    ElCollapseTransition: typeof import('element-plus/es')['ElCollapseTransition']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElFooter: typeof import('element-plus/es')['ElFooter']

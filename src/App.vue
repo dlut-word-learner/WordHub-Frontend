@@ -1,6 +1,6 @@
 <template>
   <el-container class="appContainer">
-    <el-header>
+    <el-header id="header">
       <el-menu
         class="menu"
         mode="horizontal"
@@ -55,7 +55,11 @@
     <el-main class="appMain">
       <router-view v-slot="{ Component }">
         <keep-alive :exclude="excludeCache">
-          <component :is="Component" />
+          <transition name="globalAnimation" mode="out-in">
+            <div :key="$route.path" style="height: 100%">
+              <component :is="Component" />
+            </div>
+          </transition>
         </keep-alive>
       </router-view>
     </el-main>
@@ -106,8 +110,16 @@ watch(
 </script>
 
 <style scoped>
+#header {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 .menu {
-  min-width: 640px;
+  width: 100%;
+  /* background-color: #f2f6fc; */
+  z-index: 999;
+  box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.05);
 }
 
 .avatar {
@@ -117,6 +129,18 @@ watch(
 .appContainer {
   padding: 0;
   height: 100%;
+}
+
+.globalAnimation-enter-from,
+.globalAnimation-leave-to {
+  opacity: 0;
+}
+
+.globalAnimation-move,
+.globalAnimation-leave-active,
+.globalAnimation-enter-active {
+  transition: all 0.15s ease;
+  /* transition-delay: 0.2s; */
 }
 
 .appMain {
