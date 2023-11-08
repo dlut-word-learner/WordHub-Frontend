@@ -263,9 +263,7 @@ function inputDone(isCorrect: boolean): void {
 
     correctSound.play();
     isCurrCorrect.value = true;
-
-    if (optionsStore.autoNext)
-      setTimeout(goToNextWord, 500);
+    if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
   } else {
     ElMessage({
       message: t("qwerty.wrongSpelling"),

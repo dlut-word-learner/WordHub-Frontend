@@ -1,86 +1,106 @@
 <template>
-  <div class="word-container" v-if="!isAllFinished">
-    <div class="words" v-if="words">
-      <TransitionGroup name="visibleWordCards">
-        <WordCard
-          class="word-card-instance"
-          :class="{
-            'pre-word-card': isCurrWord(index + 1),
-            'next-word-card': isCurrWord(index - 1),
-          }"
-          v-for="index in visibleWordIndexes"
-          :key="index"
-          :word="words?.[index]"
-          :isMainShown="[
-            0,
-            !isVisited(index) ||
-              (isCurrWord(index) && isVisited(index) && tries >= 3),
-          ]"
-          :isMeaningShown="[
-            0,
-            isVisited(index) ||
-              (isCurrWord(index) && isMeaningShown) ||
-              index < currWordIndex,
-          ]"
-          :isPhoneShown="[
-            0,
-            (isPhoneShown && isCurrWord(index)) || index < currWordIndex,
-          ]"
-          :isInitialShown="[0, isCurrWord(index) && isInitialShown]"
-          :emphasized="isCurrWord(index)"
-          :sound="isCurrWord(index) ? currWordSound : undefined"
-          :lang="lang"
-          :userInput="
-            isCurrWord(index)
-              ? userInput
-              : index > currWordIndex
-              ? ''
-              : undefined
-          "
-          @done="inputDone"
-        />
-      </TransitionGroup>
-    </div>
-    <div id="inputArea">
-      <el-input
-        size="large"
-        v-model="userInput"
-        @keypress="typingSound.play()"
-        :class="{ shake: shake }"
-        :disabled="isAllFinished"
-        :maxlength="currWord?.name.length"
-        :clearable="true"
-        v-if="words && isVisited(currWordIndex) && tries < 3"
-      />
-      <el-button
-        size="large"
-        type="primary"
-        @click="showAns"
-        v-else-if="words && isAnsButtonShown"
-      >
-        {{ $t("learn.showAns") }}
-      </el-button>
-      <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
-        <el-button size="large" type="primary" @click="finishWord(true)">
-          {{ $t("learn.know") }}
-        </el-button>
-        <el-button size="large" @click="finishWord(false)">
-          {{ $t("learn.dontknow") }}
-        </el-button>
-      </div>
-      <el-button
-        size="large"
-        type="primary"
-        @click="finishWord(false)"
-        v-if="tries >= 3"
-      >
-        {{ $t("learn.tryAgain") }}
-      </el-button>
-    </div>
-  </div>
-  <div v-else>
-    <el-result icon="success" :title="$t('learn.finishPrompt')"> </el-result>
-  </div>
+  <el-container style="height: 100%" direction="vertical">
+    <el-main class="learnMain">
+      <Transition name="finishAnimation" mode="out-in">
+        <el-container class="word-spelling-app" v-if="!isAllFinished">
+          <el-main class="words" v-if="words">
+            <TransitionGroup name="visibleWordCards">
+              <WordCard
+                class="word-card-instance"
+                :class="{
+                  'pre-word-card': isCurrWord(index + 1),
+                  'next-word-card': isCurrWord(index - 1),
+                  shake: shake && isCurrWord(index),
+                }"
+                v-for="index in visibleWordIndexes"
+                :key="index"
+                :word="words?.[index]"
+                :isMainShown="[
+                  0,
+                  !isVisited(index) ||
+                    (isCurrWord(index) && isVisited(index) && tries >= 3),
+                ]"
+                :isMeaningShown="[
+                  0,
+                  isVisited(index) ||
+                    (isCurrWord(index) && isMeaningShown) ||
+                    index < currWordIndex,
+                ]"
+                :isPhoneShown="[
+                  0,
+                  (isPhoneShown && isCurrWord(index)) || index < currWordIndex,
+                ]"
+                :isInitialShown="[0, isCurrWord(index) && isInitialShown]"
+                :emphasized="isCurrWord(index)"
+                :sound="isCurrWord(index) ? currWordSound : undefined"
+                :lang="lang"
+                :userInput="
+                  isCurrWord(index)
+                    ? userInput
+                    : index > currWordIndex
+                    ? ''
+                    : undefined
+                "
+                @done="inputDone"
+              />
+            </TransitionGroup>
+          </el-main>
+          <el-main id="inputArea">
+            <el-input
+              size="large"
+              v-model="userInput"
+              @keypress="typingSound.play()"
+              :class="{ shake: shake }"
+              :disabled="isAllFinished"
+              :clearable="true"
+              :maxlength="currWord?.name.length"
+              v-if="isVisited(currWordIndex) && tries < 3"
+            />
+            <el-button
+              size="large"
+              type="primary"
+              @click="showAns"
+              v-else-if="words && isAnsButtonShown"
+            >
+              {{ $t("learn.showAns") }}
+            </el-button>
+            <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
+              <el-button size="large" type="primary" @click="finishWord(true)">
+                {{ $t("learn.know") }}
+              </el-button>
+              <el-button size="large" @click="finishWord(false)">
+                {{ $t("learn.dontknow") }}
+              </el-button>
+            </div>
+            <el-button
+              size="large"
+              type="primary"
+              @click="finishWord(false)"
+              v-if="tries >= 3"
+            >
+              {{ $t("learn.tryAgain") }}
+            </el-button>
+          </el-main>
+        </el-container>
+        <el-container
+          class="result"
+          direction="vertical"
+          @keypress.enter="goBack"
+          v-else
+        >
+          <el-main>
+            <el-result
+              icon="success"
+              :title="$t('qwerty.finishPrompt')"
+            ></el-result>
+          </el-main>
+          <el-button type="primary" @click="goBack" size="large">
+            {{ $t("qwerty.goBack") }}
+          </el-button>
+        </el-container>
+      </Transition>
+    </el-main>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -293,36 +313,51 @@ function inputDone(isCorrect: boolean): void {
     }
   }
 }
+
+function goBack(): void {
+  taskStore.type = Task.None;
+  router.push("/dicts");
+}
 </script>
 
 <style scoped>
 .word-spelling-app {
-  text-align: center;
-  margin: 20px 30px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 76vh;
+  padding: 20px;
+  gap: 2px;
   font-family: Arial, sans-serif;
+  transition: all 0.5s ease;
 }
 
-.word-container {
-  margin: 20px;
-  width: 98%;
-  text-align: center;
+.learnMain {
+  padding: 0;
+  flex: 23;
 }
 
 .words {
-  /* margin-bottom: 1.5em; */
-  width: 100%;
-  height: 550px;
+  margin: 10px;
+  padding: 0 20px;
+  width: 96%;
+  min-height: 33vw;
   display: flex;
   justify-content: center;
   align-items: center;
   perspective: 600px;
+  flex: 8 0 auto;
 }
 
 .word-card-instance {
-  margin: 10px;
+  margin: 0.5% 1%;
   display: inline-block;
   transform-origin: center center 20px;
   transform-style: preserve-3d;
+}
+
+.word-card-instance:hover {
+  scale: 1.05;
 }
 
 .pre-word-card {
@@ -343,8 +378,10 @@ function inputDone(isCorrect: boolean): void {
   margin: auto auto;
 }
 
-.stats-container {
-  margin-top: 1em;
+.result {
+  margin-top: 15%;
+  transition: all 0.5s ease;
+  align-items: center;
 }
 
 .shake {
@@ -375,12 +412,21 @@ function inputDone(isCorrect: boolean): void {
   }
 }
 
-/* .visibleWordCards-move,
+.finishAnimation-move,
+.finishAnimation-enter-active,
+.finishAnimation-leave-active {
+  transition: all 0.35s ease;
+}
 
-.visibleWordCards-leave-active {
-  transition: all 3s ease-out;
-  
-} */
+.finishAnimation-enter-from {
+  opacity: 0;
+}
+
+.finishAnimation-leave-to {
+  transform: translateY(-300px);
+  opacity: 0;
+}
+
 .visibleWordCards-enter-from,
 .visibleWordCards-leave-to {
   opacity: 0;
@@ -395,5 +441,6 @@ function inputDone(isCorrect: boolean): void {
 
 .visibleWordCards-leave-active {
   position: absolute;
+  z-index: -1;
 }
 </style>
