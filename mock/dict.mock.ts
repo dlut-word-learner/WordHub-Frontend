@@ -228,7 +228,9 @@ export default defineMock([
     status: 200,
     enabled: true,
     type: "json",
-    body: enWords,
+    body: (request) => {
+      return enWords.slice(0, request.query.num);
+    },
   },
   {
     url: "/api/dicts/2/learn",
@@ -236,6 +238,8 @@ export default defineMock([
     status: 200,
     enabled: true,
     type: "json",
-    body: jaWords,
+    body: (request) => {
+      return jaWords.slice(0, request.query.num);
+    },
   },
 ]);
