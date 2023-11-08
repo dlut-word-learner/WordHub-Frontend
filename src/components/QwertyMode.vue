@@ -1,5 +1,6 @@
 <template>
   <el-container style="height: 100%" direction="vertical">
+  <el-container style="height: 100%" direction="vertical">
     <el-collapse-transition>
       <el-header
         class="header"
@@ -12,6 +13,7 @@
         />
       </el-header>
     </el-collapse-transition>
+    <el-main class="qwertyMain">
     <el-main class="qwertyMain">
       <Transition name="finishAnimation" mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
@@ -57,6 +59,7 @@
             />
           </el-main>
           <el-main id="nextWordButton">
+          <el-main id="nextWordButton">
             <el-button
               size="large"
               type="primary"
@@ -97,6 +100,7 @@
         </el-container>
       </Transition>
     </el-main>
+    <el-main class="statsFooter">
     <el-main class="statsFooter">
       <Stats
         class="stats"
