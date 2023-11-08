@@ -300,7 +300,7 @@ function goBack(): void {
   justify-content: flex-start;
   align-items: center;
   height: 76vh;
-  /* gap: 5px; */
+  gap: 2px;
   font-family: Arial, sans-serif;
   transition: all 0.5s ease;
 }
@@ -314,7 +314,7 @@ function goBack(): void {
 
 .qwertyMain {
   padding: 0;
-  flex: 22;
+  flex: 23;
 }
 
 .statsFooter {
@@ -331,12 +331,12 @@ function goBack(): void {
   margin: 10px;
   padding: 0;
   width: 100%;
-  /* min-height: 500px; */
+  min-height: 33vw;
   display: flex;
   justify-content: center;
   align-items: center;
   perspective: 600px;
-  flex: 5 0 auto;
+  flex: 8 0 auto;
 }
 
 #progressBar {
