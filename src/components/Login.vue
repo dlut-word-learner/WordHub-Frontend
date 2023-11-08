@@ -216,7 +216,7 @@ html.dark .e {
   transition: 1.5s;
 }
 
-.body:hover .f {
+#body:hover .f {
   opacity: 1;
 }
 </style>
