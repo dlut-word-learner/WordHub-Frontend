@@ -293,7 +293,7 @@ html.dark .dictCard2 {
   background-color: rgba(0, 0, 0, 0);
   height: max(8vh, 4vw);
   /* width: 3vh; */
-  font-size: max(2vh, 0.5vw);
+  font-size: max(2vh, 1vw);
 }
 
 .dictRow {
