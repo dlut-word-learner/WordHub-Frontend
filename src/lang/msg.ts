@@ -223,8 +223,8 @@ export const messages = {
       prompt: "Prompt",
       currTaskPrompt:
         "There is a learning task in progress. How do you want to handle it?",
-      continueCurrTask: "Continue current learning task",
-      startNewTask: "Start a new learning task",
+      continueCurrTask: "Continue the current task",
+      startNewTask: "Start a new task",
     },
     learn: {
       showAns: "Show Answer",
