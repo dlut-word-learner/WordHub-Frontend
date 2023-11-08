@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container style="height: 100%" direction="vertical">
     <el-collapse-transition>
       <el-header
         class="header"
@@ -12,7 +12,7 @@
         />
       </el-header>
     </el-collapse-transition>
-    <el-main>
+    <el-main class="qwertyMain">
       <Transition name="finishAnimation" mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
           <el-main class="words" v-if="words">
@@ -56,14 +56,13 @@
               :maxlength="currWord?.name.length"
             />
           </el-main>
-          <el-main>
+          <el-main id="nextWordButton">
             <el-button
               size="large"
               type="primary"
               @click="promptGoToNextWord"
               :disabled="!stopwatch.isRunning"
               v-if="!isAllFinished"
-              id="nextWordButton"
             >
               {{ $t("qwerty.goToNextWord") }}
             </el-button>
@@ -98,7 +97,7 @@
         </el-container>
       </Transition>
     </el-main>
-    <el-footer class="statsFooter">
+    <el-main class="statsFooter">
       <Stats
         class="stats"
         :stopwatch="stopwatch"
@@ -108,7 +107,7 @@
         :skips="skips"
         v-if="words"
       />
-    </el-footer>
+    </el-main>
   </el-container>
 </template>
 
@@ -298,38 +297,67 @@ function goBack(): void {
 <style scoped>
 .word-spelling-app {
   flex-direction: column;
-  /* justify-content: center; */
+  justify-content: flex-start;
   align-items: center;
-  height: 80%;
-  gap: 2%;
+  height: 76vh;
+  /* gap: 5px; */
   font-family: Arial, sans-serif;
   transition: all 0.5s ease;
 }
 
 .header {
+  flex: 1;
   z-index: 998;
   position: absolute;
   width: 100%;
 }
 
-.word-container {
-  margin: 5px 30px;
-  width: 98%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2%;
+.qwertyMain {
+  padding: 0;
+  flex: 22;
+}
+
+.statsFooter {
+  position: sticky;
+  bottom: 0.1vh;
+  padding: 15px;
+  flex: 4;
+  height: 10%;
+  transition: all 0.5s ease;
 }
 
 .words {
-  margin-bottom: 2%;
+  /* margin-bottom: 10px; */
+  margin: 10px;
+  padding: 0;
   width: 100%;
-  min-height: 500px;
+  /* min-height: 500px; */
   display: flex;
   justify-content: center;
   align-items: center;
   perspective: 600px;
+  flex: 5 0 auto;
+}
+
+#progressBar {
+  width: 96%;
+  margin: 10px;
+  padding: 0;
+  flex: 1 0 auto;
+}
+
+#inputArea {
+  width: 50%;
+  /* min-width: 30%;
+  max-width: 50%; */
+  padding: 0 10px;
+  flex: 2 0 auto;
+}
+
+#nextWordButton {
+  padding: 0;
+  min-width: 120px;
+  flex: 1 0 auto;
 }
 
 .word-card-instance {
@@ -350,24 +378,7 @@ function goBack(): void {
   transform: rotateY(5deg);
 }
 
-#progressBar {
-  width: 96%;
-  margin: 10px;
-}
-
-#inputArea {
-  width: 50%;
-  /* min-width: 30%;
-  max-width: 50%; */
-  padding: 0 20px;
-}
-
-.statsFooter {
-  transition: all 0.5s ease;
-}
-
 .stats {
-  /* background-color: #fafafa; */
   border-radius: 20px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
   transition: all 0.5s ease;
@@ -387,10 +398,6 @@ function goBack(): void {
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%); */
-}
-
-#nextWordButton {
-  min-width: 120px;
 }
 
 .shake {
