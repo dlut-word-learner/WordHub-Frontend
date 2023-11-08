@@ -1,10 +1,5 @@
 <template>
   <div class="a">
-    <div class="b"></div>
-    <div class="c"></div>
-    <div class="d"></div>
-    <div class="e"></div>
-
     <el-container id="body">
       <el-header>
         <img
@@ -48,6 +43,10 @@
         </el-button>
       </el-main>
     </el-container>
+    <div class="b"></div>
+    <div class="c"></div>
+    <div class="d"></div>
+    <div class="e"></div>
   </div>
 </template>
 
@@ -112,16 +111,18 @@ function getAvatar(): void {
 
 <style scoped>
 #body {
-  padding: 8% 30%;
+  margin: 11% 30%;
+  padding: 1% 5%;
+  pointer-events:all;
 }
 
 .a {
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: 700px;
+  height: 96%;
   margin: auto auto;
   /* border: 10px solid white; */
   /* background-image: url("163727-15190294471b41.jpg"); */
@@ -138,25 +139,29 @@ function getAvatar(): void {
 .d,
 .e {
   position: absolute;
-  width: 45%;
-  height: 700px;
+  top: 0;
+  width: 50%;
+  height: 100%;
   background-image: linear-gradient(
     180deg,
     rgb(207, 252, 231),
     rgb(206, 229, 253)
   );
-  filter: drop-shadow(4px 4px 12px rgb(0, 0, 0));
+  filter: blur(50px);
+  box-shadow:0px 0px 2px rgba(0,0,0, 0.1), 0 0 4px rgba(0,0,0, 0.1), 0 0 8px rgba(0,0,0, 0.1);
   background-size: cover;
   opacity: 0.6;
   transition: all 1.5s ease;
   z-index: 997;
+  pointer-events: none;
 }
 
 html.dark .b,
 html.dark .c,
 html.dark .d,
 html.dark .e {
-  background-image: linear-gradient(180deg, rgb(92, 44, 169), rgb(60, 44, 79));
+  background-image: none;
+  background-color: rgba(92, 44, 169, 0.7);
 }
 
 .b {
@@ -183,23 +188,23 @@ html.dark .e {
   background-position: 800px 0;
 }
 
-.a:hover .b {
-  left: -200px;
+#body:hover ~ .b {
+  left: -340px;
 }
 
-.a:hover .c {
-  left: -150px;
+#body:hover ~ .c {
+  left: -250px;
 }
 
-.a:hover .d {
-  right: -140px;
+#body:hover ~ .d {
+  right: -210px;
 }
 
-.a:hover .e {
-  right: -220px;
+#body:hover ~ .e {
+  right: -380px;
 }
 
-.a:hover div {
+#body:hover ~ div {
   opacity: 0.9;
 }
 
@@ -211,7 +216,7 @@ html.dark .e {
   transition: 1.5s;
 }
 
-.a:hover .f {
+.body:hover .f {
   opacity: 1;
 }
 </style>
