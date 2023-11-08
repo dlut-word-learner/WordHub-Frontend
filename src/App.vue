@@ -30,18 +30,25 @@
               }}
             </span>
           </template>
-          <el-menu-item index="/user-info" class="sub-menu-item">
-          <el-menu-item index="/user-info" class="sub-menu-item">
-            {{ $t("app.userInfo") }}
+          <el-menu-item index="/user-info">
+            <div class="sub-menu-item">
+              {{ $t("app.userInfo") }}
+            </div>
           </el-menu-item>
           <el-menu-item index="/Chart">
             {{ $t("app.Chart") }}
           </el-menu-item>
-          <el-menu-item @click="logout" class="sub-menu-item">
-            {{ $t("app.logout") }}
+          <el-menu-item @click="logout">
+            <div class="sub-menu-item">
+              {{ $t("app.logout") }}
+            </div>
           </el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="/login" v-if="!loginStore.userVo" class="menu-item">
+        <el-menu-item
+          index="/login"
+          v-if="!loginStore.userVo"
+          class="menu-item"
+        >
           {{ $t("app.login") }}
         </el-menu-item>
         <el-menu-item index="/dicts" class="menu-item">{{
@@ -140,13 +147,11 @@ watch(
 <style scoped>
 #header {
   width: 100%;
-  margin: 0;
   padding: 0;
   height: max(6vh, 3vw);
 }
 .menu {
-  font-size: 12vw;
-  font-size: 12vw;
+  font-size: max(6vh, 3vw);
   width: 100%;
   height: max(6vh, 3vw);
   /* background-color: #ecf5ff; */
@@ -156,23 +161,25 @@ watch(
 }
 
 .menu-item {
+  text-align: center;
   font-size: max(1.8vh, 0.9vw);
 }
 
 .sub-menu-item {
-  height: max(4vh, 1.5vw);
+  text-align: center;
+  width: 100%;
   font-size: max(1.8vh, 0.9vw);
-  margin: auto auto;
 }
 
 .menu-item {
+  text-align: center;
   font-size: max(1.8vh, 0.9vw);
 }
 
 .sub-menu-item {
-  height: max(4vh, 1.5vw);
+  text-align: center;
+  width: 100%;
   font-size: max(1.8vh, 0.9vw);
-  margin: auto auto;
 }
 
 .avatar {

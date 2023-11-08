@@ -5,6 +5,7 @@
         @select="onSelectDictsCategory"
         default-active="all"
         :background-color="'rgba(255,255,255,0)'"
+        class="elMenu"
       >
         <el-menu-item :index="'recentlyUsed'" class="menu-item">
           <div>{{ $t(`dict.recentlyUsed`) }}</div>
@@ -105,11 +106,11 @@ onMounted(() => {
 const sideWidth = computed(() => {
   switch (i18n.global.locale.value) {
     case "zh_cn":
-      return "12vh";
+      return "max(12vh, 6vw)";
     case "en":
-      return "16vh";
+      return "max(16vh, 10vw)";
     case "ja":
-      return "14vh";
+      return "max(14vh, 7vw)";
   }
 });
 
@@ -288,9 +289,9 @@ html.dark .dictCard2 {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0);
-  height: 8vh;
+  height: max(8vh, 4vw);
   /* width: 3vh; */
-  font-size: 2vh;
+  font-size: max(2vh, 0.5vw);
 }
 
 .dictRow {
