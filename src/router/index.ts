@@ -1,8 +1,17 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { useLoginStore } from "../store/loginStore";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
+    name: "Home",
+    redirect: () => {
+      const loginStore = useLoginStore();
+      return loginStore.userVo ? "/dicts" : "/login";
+    },
+  },
+  {
+    path: "/login",
     name: "Login",
     component: () => import("../components/Login.vue"),
   },
