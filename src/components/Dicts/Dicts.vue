@@ -155,7 +155,7 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-  if(historyStore.recentlyUsedDicts.includes(dict)){
+  if (historyStore.recentlyUsedDicts.includes(dict)) {
     const index = historyStore.recentlyUsedDicts.indexOf(dict);
     historyStore.recentlyUsedDicts.splice(index, 1);
   }
