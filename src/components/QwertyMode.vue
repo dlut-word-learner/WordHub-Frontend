@@ -115,13 +115,11 @@ import { Task, useTaskStore } from "../store/taskStore";
 import { useI18n } from "vue-i18n";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
+import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
 import router from "../router";
-import correctSoundRes from "../assets/audio/correct.wav";
-import typingSoundRes from "../assets/audio/typing.wav";
-import wrongSoundRes from "../assets/audio/wrong.wav";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
@@ -135,6 +133,7 @@ const visibleWordIndex = ref<number[]>([]);
 const currWord = computed(() => {
   return words.value?.[currWordIndex.value];
 });
+
 const isCurrWord = (index: number) => {
   return index == currWordIndex.value;
 };
@@ -149,9 +148,6 @@ const isAllFinished = ref(false);
 const shake = ref(false);
 const stopwatch = useStopwatch(0, false);
 const userInputRef: Ref<HTMLInputElement | null> = ref(null);
-const correctSound = new Howl({ src: correctSoundRes });
-const wrongSound = new Howl({ src: wrongSoundRes });
-const typingSound = new Howl({ src: typingSoundRes });
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
