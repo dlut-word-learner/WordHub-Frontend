@@ -41,8 +41,7 @@
             {{ $t("app.logout") }}
           </el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="/" v-if="!loginStore.userVo" class="menu-item">
-        <el-menu-item index="/" v-if="!loginStore.userVo" class="menu-item">
+        <el-menu-item index="/login" v-if="!loginStore.userVo" class="menu-item">
           {{ $t("app.login") }}
         </el-menu-item>
         <el-menu-item index="/dicts" class="menu-item">{{
@@ -143,15 +142,13 @@ watch(
   width: 100%;
   margin: 0;
   padding: 0;
-  height: 6vh;
-  height: 6vh;
+  height: max(6vh, 3vw);
 }
 .menu {
   font-size: 12vw;
   font-size: 12vw;
   width: 100%;
-  height: 6vh;
-  height: 6vh;
+  height: max(6vh, 3vw);
   /* background-color: #ecf5ff; */
   z-index: 999;
   box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.05);
@@ -159,28 +156,28 @@ watch(
 }
 
 .menu-item {
-  font-size: 1.8vh;
+  font-size: max(1.8vh, 0.9vw);
 }
 
 .sub-menu-item {
-  height: 2vh;
-  font-size: 1.8vh;
+  height: max(4vh, 1.5vw);
+  font-size: max(1.8vh, 0.9vw);
   margin: auto auto;
 }
 
 .menu-item {
-  font-size: 1.8vh;
+  font-size: max(1.8vh, 0.9vw);
 }
 
 .sub-menu-item {
-  height: 2vh;
-  font-size: 1.8vh;
+  height: max(4vh, 1.5vw);
+  font-size: max(1.8vh, 0.9vw);
   margin: auto auto;
 }
 
 .avatar {
-  height: 4.5vh;
-  width: 4.5vh;
+  height: 2vw;
+  width: 2vw;
   margin-right: 1em;
 }
 
