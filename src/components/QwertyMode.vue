@@ -332,7 +332,7 @@ function goBack(): void {
   margin: 10px;
   padding: 0 20px;
   width: 96%;
-  min-height: 33vw;
+  min-height: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
