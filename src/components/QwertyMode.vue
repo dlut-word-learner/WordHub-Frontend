@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 100%;" direction="vertical">
+  <el-container style="height: 100%" direction="vertical">
     <el-collapse-transition>
       <el-header
         class="header"

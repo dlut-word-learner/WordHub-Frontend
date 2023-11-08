@@ -3,6 +3,42 @@
     <el-main class="learnMain">
       <Transition name="finishAnimation" mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
+          <el-main id="inputArea">
+            <el-input
+              size="large"
+              v-model="userInput"
+              @keypress="typingSound.play()"
+              :class="{ shake: shake }"
+              :disabled="isAllFinished"
+              :clearable="true"
+              :maxlength="currWord?.name.length"
+              v-if="isVisited(currWordIndex) && tries < 3"
+            />
+            <el-button
+              size="large"
+              type="primary"
+              @click="showAns"
+              v-else-if="words && isAnsButtonShown"
+            >
+              {{ $t("learn.showAns") }}
+            </el-button>
+            <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
+              <el-button size="large" type="primary" @click="finishWord(true)">
+                {{ $t("learn.know") }}
+              </el-button>
+              <el-button size="large" @click="finishWord(false)">
+                {{ $t("learn.dontknow") }}
+              </el-button>
+            </div>
+            <el-button
+              size="large"
+              type="primary"
+              @click="finishWord(false)"
+              v-if="tries >= 3"
+            >
+              {{ $t("learn.tryAgain") }}
+            </el-button>
+          </el-main>
           <el-main class="words" v-if="words">
             <TransitionGroup name="visibleWordCards">
               <WordCard
@@ -44,42 +80,6 @@
                 @done="inputDone"
               />
             </TransitionGroup>
-          </el-main>
-          <el-main id="inputArea">
-            <el-input
-              size="large"
-              v-model="userInput"
-              @keypress="typingSound.play()"
-              :class="{ shake: shake }"
-              :disabled="isAllFinished"
-              :clearable="true"
-              :maxlength="currWord?.name.length"
-              v-if="isVisited(currWordIndex) && tries < 3"
-            />
-            <el-button
-              size="large"
-              type="primary"
-              @click="showAns"
-              v-else-if="words && isAnsButtonShown"
-            >
-              {{ $t("learn.showAns") }}
-            </el-button>
-            <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
-              <el-button size="large" type="primary" @click="finishWord(true)">
-                {{ $t("learn.know") }}
-              </el-button>
-              <el-button size="large" @click="finishWord(false)">
-                {{ $t("learn.dontknow") }}
-              </el-button>
-            </div>
-            <el-button
-              size="large"
-              type="primary"
-              @click="finishWord(false)"
-              v-if="tries >= 3"
-            >
-              {{ $t("learn.tryAgain") }}
-            </el-button>
           </el-main>
         </el-container>
         <el-container
@@ -322,12 +322,12 @@ function goBack(): void {
 
 <style scoped>
 .word-spelling-app {
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: flex-start;
   align-items: center;
   height: 76vh;
   padding: 20px;
-  gap: 2px;
+  gap: 10px;
   font-family: Arial, sans-serif;
   transition: all 0.5s ease;
 }
@@ -341,7 +341,7 @@ function goBack(): void {
   margin: 10px;
   padding: 0 20px;
   width: 96%;
-  min-height: 33vw;
+  min-height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
