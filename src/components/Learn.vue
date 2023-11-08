@@ -8,7 +8,7 @@
             'pre-word-card': isCurrWord(index + 1),
             'next-word-card': isCurrWord(index - 1),
           }"
-          v-for="index in visibleWordIndex"
+          v-for="index in visibleWordIndexes"
           :key="index"
           :word="words?.[index]"
           :isMainShown="[
@@ -105,7 +105,7 @@ const words = ref<WordVo[]>();
 const visitedWords: WordVo[] = [];
 
 const currWordIndex = ref(0);
-const visibleWordIndex = ref([0, 1]);
+const visibleWordIndexes = ref([0, 1]);
 
 const currWord = computed(() => {
   return words.value?.[currWordIndex.value];
@@ -233,16 +233,16 @@ function goToNextWord(): void {
   tries.value = 0;
 
   if (words.value && currWordIndex.value + 1 < words.value.length) {
-    if (currWordIndex.value != 0) visibleWordIndex.value?.shift();
+    if (currWordIndex.value != 0) visibleWordIndexes.value?.shift();
     currWordIndex.value++;
 
     if (currWordIndex.value + 1 < words.value.length)
-      visibleWordIndex.value?.push(currWordIndex.value + 1);
+      visibleWordIndexes.value?.push(currWordIndex.value + 1);
 
     userInput.value = "";
   } else {
     currWordIndex.value++;
-    visibleWordIndex.value = [];
+    visibleWordIndexes.value = [];
     isAllFinished.value = true;
   }
 }
