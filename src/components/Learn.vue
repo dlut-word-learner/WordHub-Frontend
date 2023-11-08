@@ -68,7 +68,12 @@
           {{ $t("learn.dontknow") }}
         </el-button>
       </div>
-      <el-button size="large" type="primary" @click="finishWord(false)" v-if="tries >= 3">
+      <el-button
+        size="large"
+        type="primary"
+        @click="finishWord(false)"
+        v-if="tries >= 3"
+      >
         {{ $t("learn.tryAgain") }}
       </el-button>
     </div>
