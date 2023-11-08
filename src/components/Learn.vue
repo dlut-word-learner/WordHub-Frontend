@@ -256,7 +256,7 @@ function inputDone(isCorrect: boolean): void {
     });
 
     correctSound.play();
-    setTimeout(goToNextWord, 500);
+    setTimeout(finishWord, 500, true);
     isCurrCorrect.value = true;
   } else {
     ElMessage({
