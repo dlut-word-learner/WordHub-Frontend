@@ -86,12 +86,7 @@
               :title="$t('qwerty.finishPrompt')"
             ></el-result>
           </el-main>
-          <el-button
-            type="primary"
-            @click="goBack"
-            size="large"
-            id="goBackButton"
-          >
+          <el-button type="primary" @click="goBack" size="large">
             {{ $t("qwerty.goBack") }}
           </el-button>
         </el-container>
