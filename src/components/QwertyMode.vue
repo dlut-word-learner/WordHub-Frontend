@@ -300,6 +300,7 @@ function goBack(): void {
   justify-content: flex-start;
   align-items: center;
   height: 76vh;
+  padding: 20px;
   gap: 2px;
   font-family: Arial, sans-serif;
   transition: all 0.5s ease;
@@ -329,8 +330,8 @@ function goBack(): void {
 .words {
   /* margin-bottom: 10px; */
   margin: 10px;
-  padding: 0;
-  width: 100%;
+  padding: 0 20px;
+  width: 96%;
   min-height: 33vw;
   display: flex;
   justify-content: center;
