@@ -155,9 +155,10 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-  const index = historyStore.recentlyUsedDicts.indexOf(dict);
-  if (index !== -1) historyStore.recentlyUsedDicts.splice(index, 1);
-  historyStore.recentlyUsedDicts.unshift(dict);
+  if(historyStore.recentlyUsedDicts.includes(dict)){
+    const index = historyStore.recentlyUsedDicts.indexOf(dict);
+    historyStore.recentlyUsedDicts.splice(index, 1);
+  }
   router.push({
     name: Task[task],
     query: {
