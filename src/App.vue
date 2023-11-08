@@ -156,9 +156,9 @@ html.dark .menu {
 }
 
 .avatar {
-  height: 2vw;
-  width: 2vw;
-  margin-right: 1em;
+  height: max(2.5vw, 1.8vh);
+  width: max(2.5vw, 1.8vh);
+  margin-right: 14px;
 }
 
 .appContainer {
