@@ -8,7 +8,6 @@
         router
       >
         <el-sub-menu index="/" v-if="loginStore.userVo" class="menu-item">
-        <el-sub-menu index="/" v-if="loginStore.userVo" class="menu-item">
           <template #title>
             <el-avatar
               class="avatar"
@@ -54,13 +53,9 @@
         <el-menu-item index="/dicts" class="menu-item">{{
           $t("app.dict")
         }}</el-menu-item>
-        <el-menu-item index="/dicts" class="menu-item">{{
-          $t("app.dict")
-        }}</el-menu-item>
         <el-menu-item
           :index="taskStore.url"
           v-if="taskStore.type == Task.Learn"
-          class="menu-item"
           class="menu-item"
         >
           {{ $t("app.learn") }}
@@ -69,7 +64,6 @@
           :index="taskStore.url"
           v-else-if="taskStore.type == Task.Review"
           class="menu-item"
-          class="menu-item"
         >
           {{ $t("app.review") }}
         </el-menu-item>
@@ -77,13 +71,9 @@
           :index="taskStore.url"
           v-else-if="taskStore.type == Task.QwertyMode"
           class="menu-item"
-          class="menu-item"
         >
           {{ $t("app.qwertyMode") }}
         </el-menu-item>
-        <el-menu-item index="/options" class="menu-item">{{
-          $t("app.options")
-        }}</el-menu-item>
         <el-menu-item index="/options" class="menu-item">{{
           $t("app.options")
         }}</el-menu-item>
