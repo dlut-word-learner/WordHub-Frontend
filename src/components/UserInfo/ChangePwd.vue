@@ -22,10 +22,12 @@
           :show-password="true"
         />
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="savePasswd">
+          {{ $t("userInfo.pwd.save") }}
+        </el-button>
+      </el-form-item>
     </el-form>
-    <el-button type="primary" @click="savePasswd">
-      {{ $t("userInfo.pwd.save") }}
-    </el-button>
   </div>
 </template>
 

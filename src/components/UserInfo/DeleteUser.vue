@@ -18,10 +18,12 @@
           :show-password="true"
         />
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="deleteUser">
+          {{ $t("userInfo.delete.delete") }}
+        </el-button>
+      </el-form-item>
     </el-form>
-    <el-button type="primary" @click="deleteUser">
-      {{ $t("userInfo.delete.delete") }}
-    </el-button>
   </div>
 </template>
 
