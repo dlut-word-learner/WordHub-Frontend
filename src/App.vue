@@ -134,10 +134,14 @@ watch(
   font-size: max(6vh, 3vw);
   width: 100%;
   height: max(6vh, 3vw);
-  /* background-color: #ecf5ff; */
+  background-color: white;
   z-index: 999;
   box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s ease;
+}
+
+html.dark .menu {
+  background-color: #242424;
 }
 
 .menu-item {
