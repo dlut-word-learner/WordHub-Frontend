@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 100%" direction="vertical">
+  <el-container style="height: 100%;" direction="vertical">
     <el-collapse-transition>
       <el-header
         class="header"
@@ -15,6 +15,38 @@
     <el-main class="qwertyMain">
       <Transition name="finishAnimation" mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
+          <el-main id="progressBar">
+            <el-progress
+              :show-text="false"
+              :percentage="words ? (currWordIndex / words.length) * 100 : 0"
+            />
+          </el-main>
+          <el-main id="nextWordButton">
+            <el-button
+              size="large"
+              type="primary"
+              @click="promptGoToNextWord"
+              :disabled="!stopwatch.isRunning"
+              v-if="!isAllFinished"
+            >
+              {{ $t("qwerty.goToNextWord") }}
+            </el-button>
+          </el-main>
+          <el-main id="inputArea">
+            <el-input
+              size="large"
+              v-model="userInput"
+              @keypress="typingSound.play()"
+              @keydown="startTiming"
+              :class="{ shake: shake }"
+              :disabled="isAllFinished"
+              :clearable="true"
+              autofocus
+              @keypress.enter="promptGoToNextWord"
+              ref="userInputRef"
+              :maxlength="currWord?.name.length"
+            />
+          </el-main>
           <el-main class="words" v-if="words">
             <TransitionGroup name="visibleWordCards">
               <WordCard
@@ -40,38 +72,6 @@
                 @done="inputDone"
               />
             </TransitionGroup>
-          </el-main>
-          <el-main id="inputArea">
-            <el-input
-              size="large"
-              v-model="userInput"
-              @keypress="typingSound.play()"
-              @keydown="startTiming"
-              :class="{ shake: shake }"
-              :disabled="isAllFinished"
-              :clearable="true"
-              autofocus
-              @keypress.enter="promptGoToNextWord"
-              ref="userInputRef"
-              :maxlength="currWord?.name.length"
-            />
-          </el-main>
-          <el-main id="nextWordButton">
-            <el-button
-              size="large"
-              type="primary"
-              @click="promptGoToNextWord"
-              :disabled="!stopwatch.isRunning"
-              v-if="!isAllFinished"
-            >
-              {{ $t("qwerty.goToNextWord") }}
-            </el-button>
-          </el-main>
-          <el-main id="progressBar">
-            <el-progress
-              :show-text="false"
-              :percentage="words ? (currWordIndex / words.length) * 100 : 0"
-            />
           </el-main>
         </el-container>
         <el-container
@@ -293,12 +293,12 @@ function goBack(): void {
 
 <style scoped>
 .word-spelling-app {
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: flex-start;
   align-items: center;
   height: 76vh;
   padding: 20px;
-  gap: 2px;
+  gap: 10px;
   font-family: Arial, sans-serif;
   transition: all 0.5s ease;
 }
@@ -329,7 +329,7 @@ function goBack(): void {
   margin: 10px;
   padding: 0 20px;
   width: 96%;
-  min-height: 33vw;
+  min-height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
