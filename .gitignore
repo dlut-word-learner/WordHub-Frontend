@@ -25,4 +25,4 @@ dist-ssr
 
 # Vue
 /mock/*.mjs
-./components.d.ts
+/components.d.ts
