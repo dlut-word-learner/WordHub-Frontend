@@ -12,7 +12,7 @@
         />
       </el-header>
     </el-collapse-transition>
-    <el-main class="qwertyMain">
+    <el-main class="body">
       <Transition name="finishAnimation" mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
           <el-main id="progressBar">
@@ -120,6 +120,8 @@ import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
 import router from "../router";
+import "./wordStyle.css";
+import "./animation.css";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
@@ -282,27 +284,11 @@ function goBack(): void {
 </script>
 
 <style scoped>
-.word-spelling-app {
-  flex-direction: column-reverse;
-  justify-content: flex-start;
-  align-items: center;
-  height: 76vh;
-  padding: 20px;
-  gap: 10px;
-  font-family: Arial, sans-serif;
-  transition: all 0.5s ease;
-}
-
 .header {
   flex: 1;
   z-index: 998;
   position: absolute;
   width: 100%;
-}
-
-.qwertyMain {
-  padding: 0;
-  flex: 23;
 }
 
 .statsFooter {
@@ -314,19 +300,6 @@ function goBack(): void {
   transition: all 0.5s ease;
 }
 
-.words {
-  /* margin-bottom: 10px; */
-  margin: 10px;
-  padding: 0 20px;
-  width: 96%;
-  min-height: 40vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 600px;
-  flex: 8 0 auto;
-}
-
 #progressBar {
   width: 96%;
   margin: 10px;
@@ -336,8 +309,6 @@ function goBack(): void {
 
 #inputArea {
   width: 50%;
-  /* min-width: 30%;
-  max-width: 50%; */
   padding: 0 10px;
   flex: 2 0 auto;
 }
@@ -346,24 +317,6 @@ function goBack(): void {
   padding: 0;
   min-width: 120px;
   flex: 1 0 auto;
-}
-
-.word-card-instance {
-  margin: 0.5% 1%;
-  display: inline-block;
-  transform-origin: center center 20px;
-  transform-style: preserve-3d;
-}
-.word-card-instance:hover {
-  scale: 1.05;
-}
-
-.pre-word-card {
-  transform: rotateY(-5deg);
-}
-
-.next-word-card {
-  transform: rotateY(5deg);
 }
 
 .stats {
@@ -386,65 +339,5 @@ function goBack(): void {
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%); */
-}
-
-.shake {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-.finishAnimation-move,
-.finishAnimation-enter-active,
-.finishAnimation-leave-active {
-  transition: all 0.35s ease;
-}
-
-.finishAnimation-enter-from {
-  opacity: 0;
-}
-
-.finishAnimation-leave-to {
-  transform: translateY(-300px);
-  opacity: 0;
-}
-
-.visibleWordCards-enter-from,
-.visibleWordCards-leave-to {
-  opacity: 0;
-  scale: 0.1;
-}
-
-.visibleWordCards-move,
-.visibleWordCards-leave-active,
-.visibleWordCards-enter-active {
-  transition: all 0.5s ease;
-}
-
-.visibleWordCards-leave-active {
-  position: absolute;
-  z-index: -1;
 }
 </style>
