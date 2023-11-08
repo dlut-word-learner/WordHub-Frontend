@@ -40,28 +40,10 @@ export function getWordPhone(
   }
 }
 
-export function getHiddenWord(
-  word: WordVo,
-  input: string,
-  lang: Lang,
-  isInitialShown?: boolean,
-): string {
+export function getHiddenWord(word: WordVo, input: string, lang: Lang): string {
   switch (lang) {
     case Lang.English:
-      if (isInitialShown && word.name.length > 1)
-        return (
-          word.name[0] +
-          input.slice(1) +
-          "_ ".repeat(
-            input == ""
-              ? word.name.length - 1
-              : word.name.length - input.length,
-          )
-        );
-      else
-        return (
-          input + "_ ".repeat(Math.max(0, word.name.length - input.length))
-        );
+      return input + "_ ".repeat(word.name.length - input.length);
 
     case Lang.Japanese:
       return isKatakana(word.extension.notation)

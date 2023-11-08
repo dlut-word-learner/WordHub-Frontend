@@ -68,7 +68,12 @@
           {{ $t("learn.dontknow") }}
         </el-button>
       </div>
-      <el-button size="large" type="primary" @click="finishWord(false)" v-if="tries >= 3">
+      <el-button
+        size="large"
+        type="primary"
+        @click="finishWord(false)"
+        v-if="tries >= 3"
+      >
         {{ $t("learn.tryAgain") }}
       </el-button>
     </div>
@@ -79,8 +84,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { toKana, toRomaji } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
@@ -116,6 +122,24 @@ const isAnsButtonShown = ref(true);
 const isMeaningShown = ref(false);
 const isPhoneShown = ref(false);
 const isInitialShown = ref(false);
+
+watch(userInput, (newInput) => {
+  if (isInitialShown.value) {
+    switch (props.lang) {
+      case Lang.English:
+        if (currWord.value!.name.length > 1 && newInput == "")
+          userInput.value = currWord.value!.name[0];
+        break;
+      case Lang.Japanese:
+        if (toKana(currWord.value?.name).length > 1) {
+          const firstKana: string = toRomaji(toKana(currWord.value?.name)[0]);
+          if (newInput.length < firstKana.length) userInput.value = firstKana;
+        }
+
+        break;
+    }
+  }
+});
 
 const correctSound = new Howl({ src: correctSoundRes });
 const wrongSound = new Howl({ src: wrongSoundRes });
@@ -177,27 +201,20 @@ function showAns(): void {
  *                  -> Mark the current word as visited
  */
 function finishWord(isKnown: boolean): void {
-  if (!words.value) return;
-
   if (isKnown) {
     axios
-      .post(
-        `/api/dicts/${props.dictId}/words/${
-          words.value[currWordIndex.value].id
-        }/learn`,
-        {
-          id: words.value[currWordIndex.value].id,
-          rating: "easy",
-        },
-      )
+      .post(`/api/dicts/${props.dictId}/words/${currWord.value?.id}/learn`, {
+        id: currWord.value?.id,
+        rating: "easy",
+      })
       .then(() => {})
       .catch((error) => {
         console.log(error);
         ElMessage.error(t("learn.errUploadRec"));
       });
-  } else {
-    words.value.push(words.value[currWordIndex.value]);
-    visitedWords.push(words.value[currWordIndex.value]);
+  } else if (currWord.value) {
+    words.value?.push(currWord.value);
+    visitedWords.push(currWord.value);
   }
 
   goToNextWord();

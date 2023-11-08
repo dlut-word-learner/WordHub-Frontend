@@ -18,7 +18,7 @@
           {{ getWordMain(word, lang) }}
         </div>
         <div v-else>
-          {{ getHiddenWord(word, userInput, lang, isInitialShown?.[1]) }}
+          {{ getHiddenWord(word, userInput, lang) }}
         </div>
       </div>
     </template>
