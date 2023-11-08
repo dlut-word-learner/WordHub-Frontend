@@ -1,19 +1,19 @@
 import { ref } from "vue";
 
 export interface DictVo {
-  id: number;
-  language: string;
-  name: string;
+  readonly id: number;
+  readonly language: string;
+  readonly name: string;
 }
 
 export interface WordVo {
-  id: number;
-  name: string;
-  extension: {
-    meanings: string[];
-    ukphone: string;
-    usphone: string;
-    notation: string;
+  readonly id: number;
+  readonly name: string;
+  readonly extension: {
+    readonly meanings: string[];
+    readonly ukphone: string;
+    readonly usphone: string;
+    readonly notation: string;
   };
 }
 
