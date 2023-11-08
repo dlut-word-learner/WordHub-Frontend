@@ -1,14 +1,14 @@
 <template>
-  <el-container>
+  <el-container direction="vertical" class="statisticsContainer">
     <el-main id="charts">
-      <div
-        v-for="task in tasks"
-        :ref="(ele) => (barChartRef[task] = ele)"
-        class="chart"
-      ></div>
+      <el-row>
+        <el-col v-for="task in tasks" :span="8"
+          ><div class="chart" :ref="(ele) => (barChartRef[task] = ele)"></div
+        ></el-col>
+      </el-row>
     </el-main>
-    <el-main id="progess">
-      <div v-for="(_dict, index) in historyStore.recentlyUsedDicts.slice(10)">
+    <el-main id="progress">
+      <div v-for="(_dict, index) in historyStore.recentlyUsedDicts.slice(3)">
         <div :ref="(ele) => (progressRef[index] = ele as HTMLElement)"></div>
       </div>
     </el-main>
@@ -112,16 +112,26 @@ fetchData();
 
 <style>
 /* 在这里放置你的样式 */
-.charts {
+.statisticsContainer {
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+#charts {
   flex: 1;
 }
 
-.progress {
+#progress {
   flex: 1;
+  background-color: #d9ecff;
+  border-radius: 20px;
+  width: 70vw;
+  height: 30vh;
 }
 
 .chart {
-  height: 300px;
-  width: 500px;
+  width: 32vw;
+  height: 50vh;
 }
 </style>
