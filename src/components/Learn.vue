@@ -129,6 +129,7 @@ watch(userInput, (newInput) => {
       case Lang.English:
         if (currWord.value!.name.length > 1 && newInput == "")
           userInput.value = currWord.value!.name[0];
+
         break;
       case Lang.Japanese:
         if (toKana(currWord.value?.name).length > 1) {
@@ -230,6 +231,7 @@ function goToNextWord(): void {
   isPhoneShown.value = false;
   isInitialShown.value = false;
   isAnsButtonShown.value = true;
+  isCurrCorrect.value = false;
   tries.value = 0;
 
   if (words.value && currWordIndex.value + 1 < words.value.length) {
@@ -238,6 +240,10 @@ function goToNextWord(): void {
 
     if (currWordIndex.value + 1 < words.value.length)
       visibleWordIndexes.value?.push(currWordIndex.value + 1);
+    else if (!isCurrCorrect.value) {
+      visibleWordIndexes.value?.pop();
+      visibleWordIndexes.value?.push(currWordIndex.value);
+    }
 
     userInput.value = "";
   } else {
@@ -256,8 +262,8 @@ function inputDone(isCorrect: boolean): void {
     });
 
     correctSound.play();
-    setTimeout(finishWord, 500, true);
     isCurrCorrect.value = true;
+    setTimeout(finishWord, 500, true);
   } else {
     ElMessage({
       message: t("learn.wrongSpelling"),
