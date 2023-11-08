@@ -295,8 +295,11 @@ html.dark .dictCard2 {
 }
 
 .dictRow {
+  align-items: center;
+  justify-content: center;
   min-height: 90%;
   overflow: hidden;
+  padding: 20px;
   margin: 10px 20px;
 }
 
@@ -403,22 +406,5 @@ html.dark #footer {
 .dictsMain {
   padding: 10px 50px;
   /* height: 100%; */
-}
-
-.dictsTrans-enter-from,
-.dictsTrans-leave-to {
-  opacity: 0;
-  scale: 0.5;
-}
-
-.dictsTrans-move,
-.dictsTrans-leave-active,
-.dictsTrans-enter-active {
-  transition: all 0.2s ease;
-  /* transition-delay: 0.2s; */
-}
-.dictsTrans-leave-active {
-  position: absolute;
-  z-index: -1;
 }
 </style>
