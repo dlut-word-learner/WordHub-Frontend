@@ -21,23 +21,21 @@
                   : $t("app.loggedOut")
               }}
             </span>
-            <span class="menu-item">
-              {{
-                loginStore.userVo
-                  ? loginStore.userVo?.username
-                  : $t("app.loggedOut")
-              }}
-            </span>
           </template>
           <el-menu-item index="/user-info">
             <div class="sub-menu-item">
+              <div class="sub-menu-item">
               {{ $t("app.userInfo") }}
             </div>
           </el-menu-item>
           <el-menu-item index="/Chart">
             {{ $t("app.Chart") }}
+            </div>
           </el-menu-item>
           <el-menu-item @click="logout">
+            <div class="sub-menu-item">
+              {{ $t("app.logout") }}
+            </div>
             <div class="sub-menu-item">
               {{ $t("app.logout") }}
             </div>
@@ -152,17 +150,6 @@ watch(
 
 html.dark .menu {
   background-color: #242424;
-}
-
-.menu-item {
-  text-align: center;
-  font-size: max(1.8vh, 0.9vw);
-}
-
-.sub-menu-item {
-  text-align: center;
-  width: 100%;
-  font-size: max(1.8vh, 0.9vw);
 }
 
 .menu-item {

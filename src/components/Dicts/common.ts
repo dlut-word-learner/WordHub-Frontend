@@ -24,11 +24,14 @@ export enum Lang {
 
 export const excludeCache = ref("");
 
-export function sortWithIntersection<T>(a: T[], reference: string[]): T[] {
-  const intersection = a.filter((elem) => reference.includes(elem["name"]));
-  const rest = a.filter((elem) => !reference.includes(elem["name"]));
+export function sortWithIntersection(
+  a: DictVo[],
+  reference: DictVo[],
+): DictVo[] {
+  const intersection = a.filter((elem) => reference.includes(elem));
+  const rest = a.filter((elem) => !reference.includes(elem));
   intersection.sort((elem1, elem2) => {
-    return reference.indexOf(elem1["name"]) - reference.indexOf(elem2["name"]);
+    return reference.indexOf(elem1) - reference.indexOf(elem2);
   });
   return intersection.concat(rest);
 }

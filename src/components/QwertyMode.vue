@@ -15,6 +15,38 @@
     <el-main class="qwertyMain">
       <Transition name="finishAnimation" mode="out-in">
         <el-container class="word-spelling-app" v-if="!isAllFinished">
+          <el-main id="progressBar">
+            <el-progress
+              :show-text="false"
+              :percentage="words ? (currWordIndex / words.length) * 100 : 0"
+            />
+          </el-main>
+          <el-main id="nextWordButton">
+            <el-button
+              size="large"
+              type="primary"
+              @click="promptGoToNextWord"
+              :disabled="!stopwatch.isRunning"
+              v-if="!isAllFinished"
+            >
+              {{ $t("qwerty.goToNextWord") }}
+            </el-button>
+          </el-main>
+          <el-main id="inputArea">
+            <el-input
+              size="large"
+              v-model="userInput"
+              @keypress="typingSound.play()"
+              @keydown="startTiming"
+              :class="{ shake: shake }"
+              :disabled="isAllFinished"
+              :clearable="true"
+              autofocus
+              @keypress.enter="promptGoToNextWord"
+              ref="userInputRef"
+              :maxlength="currWord?.name.length"
+            />
+          </el-main>
           <el-main class="words" v-if="words">
             <TransitionGroup name="visibleWordCards">
               <WordCard
@@ -40,38 +72,6 @@
                 @done="inputDone"
               />
             </TransitionGroup>
-          </el-main>
-          <el-main id="inputArea">
-            <el-input
-              size="large"
-              v-model="userInput"
-              @keypress="typingSound.play()"
-              @keydown="startTiming"
-              :class="{ shake: shake }"
-              :disabled="isAllFinished"
-              :clearable="true"
-              autofocus
-              @keypress.enter="promptGoToNextWord"
-              ref="userInputRef"
-              :maxlength="currWord?.name.length"
-            />
-          </el-main>
-          <el-main id="nextWordButton">
-            <el-button
-              size="large"
-              type="primary"
-              @click="promptGoToNextWord"
-              :disabled="!stopwatch.isRunning"
-              v-if="!isAllFinished"
-            >
-              {{ $t("qwerty.goToNextWord") }}
-            </el-button>
-          </el-main>
-          <el-main id="progressBar">
-            <el-progress
-              :show-text="false"
-              :percentage="words ? (currWordIndex / words.length) * 100 : 0"
-            />
           </el-main>
         </el-container>
         <el-container
@@ -112,8 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onDeactivated, nextTick } from "vue";
-import { ElButton } from "element-plus";
+import { Ref, ref, computed, onActivated, onDeactivated, nextTick } from "vue";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
@@ -128,8 +127,6 @@ import router from "../router";
 import correctSoundRes from "../assets/audio/correct.wav";
 import typingSoundRes from "../assets/audio/typing.wav";
 import wrongSoundRes from "../assets/audio/wrong.wav";
-import { onActivated } from "vue";
-import { Ref } from "vue";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
@@ -198,14 +195,14 @@ const initData = async () => {
 };
 initData();
 
-onDeactivated(() => {
-  stopwatch.pause();
-});
-
 onActivated(() => {
   nextTick(() => {
     userInputRef.value?.focus();
   });
+});
+
+onDeactivated(() => {
+  stopwatch.pause();
 });
 
 function startTiming(): void {
@@ -219,6 +216,7 @@ function shakeWord(): void {
 
 function promptGoToNextWord(): void {
   if (isAllFinished.value) return;
+
   if (!isCurrCorrect.value) {
     ElMessageBox.confirm(t("qwerty.promptGoToNextWord"), t("qwerty.prompt"), {
       confirmButtonText: t("qwerty.confirm"),
@@ -264,11 +262,9 @@ function inputDone(isCorrect: boolean): void {
     });
 
     correctSound.play();
+    isCurrCorrect.value = true;
 
-    if (optionsStore.autoNext) {
-      isCurrCorrect.value = true;
-      setTimeout(goToNextWord, 500);
-    } else isCurrCorrect.value = true;
+    if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
   } else {
     ElMessage({
       message: t("qwerty.wrongSpelling"),
@@ -296,12 +292,12 @@ function goBack(): void {
 
 <style scoped>
 .word-spelling-app {
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: flex-start;
   align-items: center;
   height: 76vh;
   padding: 20px;
-  gap: 2px;
+  gap: 10px;
   font-family: Arial, sans-serif;
   transition: all 0.5s ease;
 }
@@ -332,7 +328,7 @@ function goBack(): void {
   margin: 10px;
   padding: 0 20px;
   width: 96%;
-  min-height: 20vh;
+  min-height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
