@@ -7,52 +7,61 @@
         :default-active="$route.fullPath"
         router
       >
-        <el-sub-menu index="/" v-if="loginStore.userVo">
+        <el-sub-menu index="/" v-if="loginStore.userVo" class="menu-item">
           <template #title>
             <el-avatar
               class="avatar"
               :src="loginStore.avatar ? loginStore.avatar : 'avatar.png'"
               v-if="loginStore.userVo"
             />
-            {{
-              loginStore.userVo
-                ? loginStore.userVo?.username
-                : $t("app.loggedOut")
-            }}
+            <span class="menu-item">
+              {{
+                loginStore.userVo
+                  ? loginStore.userVo?.username
+                  : $t("app.loggedOut")
+              }}
+            </span>
           </template>
-          <el-menu-item index="/user-info">
+          <el-menu-item index="/user-info" class="sub-menu-item">
             {{ $t("app.userInfo") }}
           </el-menu-item>
           <el-menu-item index="/Chart">
             {{ $t("app.Chart") }}
           </el-menu-item>
-          <el-menu-item @click="logout">
+          <el-menu-item @click="logout" class="sub-menu-item">
             {{ $t("app.logout") }}
           </el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="/" v-if="!loginStore.userVo">
+        <el-menu-item index="/" v-if="!loginStore.userVo" class="menu-item">
           {{ $t("app.login") }}
         </el-menu-item>
-        <el-menu-item index="/dicts">{{ $t("app.dict") }}</el-menu-item>
+        <el-menu-item index="/dicts" class="menu-item">{{
+          $t("app.dict")
+        }}</el-menu-item>
         <el-menu-item
           :index="taskStore.url"
           v-if="taskStore.type == Task.Learn"
+          class="menu-item"
         >
           {{ $t("app.learn") }}
         </el-menu-item>
         <el-menu-item
           :index="taskStore.url"
           v-else-if="taskStore.type == Task.Review"
+          class="menu-item"
         >
           {{ $t("app.review") }}
         </el-menu-item>
         <el-menu-item
           :index="taskStore.url"
           v-else-if="taskStore.type == Task.QwertyMode"
+          class="menu-item"
         >
           {{ $t("app.qwertyMode") }}
         </el-menu-item>
-        <el-menu-item index="/options">{{ $t("app.options") }}</el-menu-item>
+        <el-menu-item index="/options" class="menu-item">{{
+          $t("app.options")
+        }}</el-menu-item>
       </el-menu>
     </el-header>
     <el-main class="appMain">
@@ -115,13 +124,26 @@ watch(
   width: 100%;
   margin: 0;
   padding: 0;
+  height: 6vh;
 }
 .menu {
+  font-size: 12vw;
   width: 100%;
+  height: 6vh;
   /* background-color: #ecf5ff; */
   z-index: 999;
   box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s ease;
+}
+
+.menu-item {
+  font-size: 1.8vh;
+}
+
+.sub-menu-item {
+  height: 2vh;
+  font-size: 1.8vh;
+  margin: auto auto;
 }
 
 .avatar {
@@ -145,10 +167,6 @@ watch(
   /* transition-delay: 0.2s; */
 }
 
-/* .globalAnimation-leave-active{
-  position: absolute;
-  z-index: -1;
-} */
 .appMain {
   padding: 0;
 }

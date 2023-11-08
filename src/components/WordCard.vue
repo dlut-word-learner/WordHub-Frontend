@@ -130,32 +130,38 @@ html.dark .word-card {
 
 .emWord {
   width: 41%;
-  min-height: 400px;
+  min-height: 40vh;
 }
 .unEmWord {
   width: 27%;
-  min-height: 350px;
+  min-height: 37vh;
 }
 
 .emWordMain {
-  font-size: 40px;
+  /* font-size: 40px; */
+  /* font-size: clamp(30px,40px,70px); */
+  font-size: clamp(2vw, 4vw, 5vw);
   font-weight: bold;
   animation: zoom-in 0.5s ease;
 }
 
 .unEmWordMain {
-  font-size: 26px;
+  /* font-size: 26px; */
+  /* font-size: clamp(16px,26px,50px); */
+  font-size: clamp(2vw, 3vw, 4vw);
   animation: zoom-out 0.5s ease;
 }
 
 .emWordItem {
   margin-top: 15px;
-  font-size: 26px;
+  /* font-size: 23px; */
+  font-size: clamp(2vh, 2.5vh, 3vh);
 }
 
 .unEmWordItem {
   margin-top: 15px;
-  font-size: 18px;
+  /* font-size: 16px; */
+  font-size: clamp(1.8vh, 2.2vh, 2.6vh);
 }
 
 @keyframes zoom-in {

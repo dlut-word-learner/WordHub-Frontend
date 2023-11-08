@@ -105,11 +105,11 @@ onMounted(() => {
 const sideWidth = computed(() => {
   switch (i18n.global.locale.value) {
     case "zh_cn":
-      return "120px";
+      return "12vh";
     case "en":
-      return "160px";
+      return "16vh";
     case "ja":
-      return "140px";
+      return "14vh";
   }
 });
 
@@ -199,18 +199,18 @@ const displayedDicts = computed(() => {
 }
 
 html.dark .dictCard {
-  box-shadow: 0px 0px 10px 5px rgba(92, 44, 169, 0.1); 
+  box-shadow: 0px 0px 10px 5px rgba(92, 44, 169, 0.1);
 }
 
 .dictCard:hover {
   scale: 1.02;
-  box-shadow: 0px 0px 15px 5px rgba(18, 18, 18, 0.1); 
+  box-shadow: 0px 0px 15px 5px rgba(18, 18, 18, 0.1);
   filter: brightness(105%) grayscale(10%);
 }
 
 html.dark .dictCard:hover {
   filter: brightness(110%) saturate(120%);
-  box-shadow: 0px 0px 20px 5px rgba(92, 44, 169, 0.3); 
+  box-shadow: 0px 0px 20px 5px rgba(92, 44, 169, 0.3);
 }
 .dictCard1 {
   background-image: -moz-linear-gradient(
@@ -286,8 +286,11 @@ html.dark .dictCard2 {
 
 .menu-item {
   justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0);
-  height: 80px;
+  height: 8vh;
+  /* width: 3vh; */
+  font-size: 2vh;
 }
 
 .dictRow {

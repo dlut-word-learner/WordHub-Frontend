@@ -79,15 +79,17 @@ table {
 
 th,
 td {
-  padding: 0.5em;
-  width: 25%;
+  padding: 1.2vh;
+  width: 24%;
 }
 
 th {
+  padding: 0.3vh;
+  font-size: 2vh;
   border-bottom: 1px solid #ddd;
 }
 
 td {
-  font-size: 1.5em;
+  font-size: 3vh;
 }
 </style>
