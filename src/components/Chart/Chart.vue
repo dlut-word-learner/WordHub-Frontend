@@ -8,7 +8,7 @@
       </el-row>
     </el-main>
     <el-main id="progress">
-      <div v-for="(_dict, index) in historyStore.recentlyUsedDicts.slice(3)">
+      <div v-for="(_dict, index) in dictsToGenerateProgress">
         <div :ref="(ele) => (progressRef[index] = ele as HTMLElement)"></div>
       </div>
     </el-main>
@@ -21,8 +21,12 @@ import * as echarts from "echarts";
 import axios from "axios";
 import { useHistoryStore } from "../../store/historyStore";
 import { Task } from "../../store/taskStore";
+import { DictVo } from "../Dicts/common";
 
+const historyStore = useHistoryStore();
+const dictsToGenerateProgress: DictVo[] = historyStore.recentlyUsedDicts.slice(0,4);
 const tasks = [Task.Learn, Task.Review, Task.QwertyMode];
+
 // 图表div元素绑定
 const barChartRef = reactive(new Map<Task, HTMLElement>());
 const progressRef = reactive<HTMLElement[]>([]);
@@ -31,7 +35,8 @@ const progressRef = reactive<HTMLElement[]>([]);
 let barCharts = new Map<Task, echarts.ECharts>();
 let progress: echarts.ECharts[] = [];
 
-const historyStore = useHistoryStore();
+// 声明要从后端API取得的数据
+
 
 const initChart = () => {
   if (progressRef) {
@@ -39,6 +44,7 @@ const initChart = () => {
       if (progressRef[i] != undefined) {
         console.debug("recentlyUsed: " + i);
         progress.push(echarts.init(progressRef[i]));
+        initProgress(i);
       } else break;
     }
   }
@@ -47,7 +53,7 @@ const initChart = () => {
   initBarChart(Task.QwertyMode);
 };
 
-function initBarChart(task: Task) {
+function initBarChart(task: Task): void{
   console.log(task + ": " + barChartRef.has(task));
   console.log(barChartRef[task]);
   if (barChartRef[task] != undefined) {
@@ -91,12 +97,24 @@ function initBarChart(task: Task) {
   }
 }
 
+function initProgress(index: number): void{
+  if (barChartRef[index] != undefined) {
+    // dictsToGenerateProgress[index].id;
+    progress[index] = echarts.init(progressRef[index]);
+    const option:echarts.EChartsOption = {
+      // 建表
+    };
+    progress[index].setOption(option);
+  }
+}
+
 onMounted(() => {
   initChart();
 });
 
 // 通过ref获取信息的示例
 const fetchData = async () => {
+  // 从后端API获取数据
   try {
     const response = await axios.get(
       "https://jsonplaceholder.typicode.com/todos/1",
