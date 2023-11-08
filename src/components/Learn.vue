@@ -110,9 +110,7 @@ import { toKana, toRomaji } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
-import correctSoundRes from "../assets/audio/correct.wav";
-import typingSoundRes from "../assets/audio/typing.wav";
-import wrongSoundRes from "../assets/audio/wrong.wav";
+import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import axios from "axios";
 import router from "../router";
 
@@ -161,10 +159,6 @@ watch(userInput, (newInput) => {
     }
   }
 });
-
-const correctSound = new Howl({ src: correctSoundRes });
-const wrongSound = new Howl({ src: wrongSoundRes });
-const typingSound = new Howl({ src: typingSoundRes });
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
