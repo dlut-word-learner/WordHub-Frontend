@@ -10,8 +10,9 @@
   -webkit-text-size-adjust: 100%;
 }
 
-html.dark {
-  background-color: #242424;
+html.dark,
+body.dark {
+  background-color: #121212;
   transition: background-color 0.5s ease;
 }
 
