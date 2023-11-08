@@ -138,30 +138,28 @@ html.dark .word-card {
 }
 
 .emWordMain {
-  /* font-size: 40px; */
-  /* font-size: clamp(30px,40px,70px); */
-  font-size: clamp(2vw, 4vw, 5vw);
+  font-size: 40px;
+  /* font-size: clamp(20px,36px,70px); */
   font-weight: bold;
   animation: zoom-in 0.5s ease;
 }
 
 .unEmWordMain {
-  /* font-size: 26px; */
+  font-size: 26px;
   /* font-size: clamp(16px,26px,50px); */
-  font-size: clamp(2vw, 3vw, 4vw);
   animation: zoom-out 0.5s ease;
 }
 
 .emWordItem {
   margin-top: 15px;
   /* font-size: 23px; */
-  font-size: clamp(2vh, 2.5vh, 3vh);
+  font-size: clamp(18px, 21px, 26px);
 }
 
 .unEmWordItem {
   margin-top: 15px;
   /* font-size: 16px; */
-  font-size: clamp(1.8vh, 2.2vh, 2.6vh);
+  font-size: clamp(14px, 18px, 22px);
 }
 
 @keyframes zoom-in {
