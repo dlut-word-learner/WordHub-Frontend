@@ -48,7 +48,9 @@
         <el-switch v-model="isDark"></el-switch>
       </el-form-item>
       <el-divider />
-      <el-form-item :label="$t('options.qwertyOnly')"> </el-form-item>
+      <div id="qwertyOnly">
+        {{ $t("options.qwertyOnly") }}
+      </div>
       <el-form-item :label="$t('options.qwertyWordsPerRound')">
         <el-input-number
           v-model="optionsStore.qwertyWordsPerRound"
@@ -83,5 +85,12 @@ const optionsStore = useOptionsStore();
   margin-left: 2em;
   margin-right: 2em;
   margin-top: 2em;
+}
+
+#qwertyOnly {
+  text-align: left;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 </style>
