@@ -199,16 +199,18 @@ const displayedDicts = computed(() => {
 }
 
 html.dark .dictCard {
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.72);
+  box-shadow: 0px 0px 10px 5px rgba(92, 44, 169, 0.1); 
 }
 
 .dictCard:hover {
   scale: 1.02;
+  box-shadow: 0px 0px 15px 5px rgba(18, 18, 18, 0.1); 
   filter: brightness(105%) grayscale(10%);
 }
 
 html.dark .dictCard:hover {
   filter: brightness(110%) saturate(120%);
+  box-shadow: 0px 0px 20px 5px rgba(92, 44, 169, 0.3); 
 }
 .dictCard1 {
   background-image: -moz-linear-gradient(
