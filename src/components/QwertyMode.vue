@@ -112,8 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onDeactivated, nextTick } from "vue";
-import { ElButton } from "element-plus";
+import { Ref, ref, computed, onActivated, onDeactivated, nextTick } from "vue";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
@@ -128,8 +127,6 @@ import router from "../router";
 import correctSoundRes from "../assets/audio/correct.wav";
 import typingSoundRes from "../assets/audio/typing.wav";
 import wrongSoundRes from "../assets/audio/wrong.wav";
-import { onActivated } from "vue";
-import { Ref } from "vue";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
@@ -198,14 +195,14 @@ const initData = async () => {
 };
 initData();
 
-onDeactivated(() => {
-  stopwatch.pause();
-});
-
 onActivated(() => {
   nextTick(() => {
     userInputRef.value?.focus();
   });
+});
+
+onDeactivated(() => {
+  stopwatch.pause();
 });
 
 function startTiming(): void {
@@ -219,6 +216,7 @@ function shakeWord(): void {
 
 function promptGoToNextWord(): void {
   if (isAllFinished.value) return;
+
   if (!isCurrCorrect.value) {
     ElMessageBox.confirm(t("qwerty.promptGoToNextWord"), t("qwerty.prompt"), {
       confirmButtonText: t("qwerty.confirm"),
@@ -264,11 +262,10 @@ function inputDone(isCorrect: boolean): void {
     });
 
     correctSound.play();
+    isCurrCorrect.value = true;
 
-    if (optionsStore.autoNext) {
-      isCurrCorrect.value = true;
+    if (optionsStore.autoNext)
       setTimeout(goToNextWord, 500);
-    } else isCurrCorrect.value = true;
   } else {
     ElMessage({
       message: t("qwerty.wrongSpelling"),
