@@ -144,6 +144,8 @@ watch(
 }
 
 .avatar {
+  height: 4.5vh;
+  width: 4.5vh;
   margin-right: 1em;
 }
 
