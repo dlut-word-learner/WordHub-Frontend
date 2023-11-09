@@ -1,13 +1,17 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import { DictVo } from "../components/Dicts/common";
+import { reactive } from "vue";
+import { DictVo, includesDict } from "../components/Dicts/common";
 
 export const useHistoryStore = defineStore(
   "history",
   () => {
-    const recentlyUsedDicts = ref<DictVo[]>([]);
+    const recentlyUsedDicts = reactive(Array<DictVo>());
+    const isRecentlyUsed = (dict: DictVo): boolean => {
+      return includesDict(recentlyUsedDicts , dict);
+    };
     return {
       recentlyUsedDicts,
+      isRecentlyUsed,
     };
   },
   {

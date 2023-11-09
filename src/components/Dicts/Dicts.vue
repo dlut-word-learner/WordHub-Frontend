@@ -155,10 +155,10 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-  if (historyStore.recentlyUsedDicts.includes(dict)) {
-    const index = historyStore.recentlyUsedDicts.indexOf(dict);
-    historyStore.recentlyUsedDicts.splice(index, 1);
+  if (historyStore.isRecentlyUsed(dict)) {
+    historyStore.recentlyUsedDicts = historyStore.recentlyUsedDicts.filter(x => {dict.name == x.name && dict.id == x.id && dict.language == x.language});
   }
+  historyStore.recentlyUsedDicts.unshift(dict);
   router.push({
     name: Task[task],
     query: {
@@ -174,7 +174,7 @@ const selectedDicts = computed(() => {
   return sortWithIntersection(
     dicts.value.filter((x) => {
       if (currCate.value == "recentlyUsed") {
-        return historyStore.recentlyUsedDicts.includes(x);
+        return historyStore.isRecentlyUsed(x);
       } else
         return currCate.value == "all" || currCate.value == Lang[x.language];
     }),
