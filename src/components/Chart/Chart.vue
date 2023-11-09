@@ -77,10 +77,10 @@ function initheatchart(task: Task): void {
     heatcharts[task] = echarts.init(heatchartRef[task]);
     const option: echarts.EChartsOption = {
       // 在这里放置你的图表配置
-      backgroundColor: '#404a59',
+      backgroundColor: isDark?'#404a59':'#000',
   title: {
     top: 30,
-    text: 'Daily WORD Count in 2016',
+    text: 'Daily WORD Count in Last Three Months',
    
     left: 'center',
     textStyle: {
