@@ -46,24 +46,26 @@ export function getHiddenWord(word: WordVo, input: string, lang: Lang): string {
       return input + "_ ".repeat(word.name.length - input.length);
 
     case Lang.Japanese:
-      return isKatakana(word.extension.notation)
-        ? toKatakana(input)
-        : toHiragana(input) +
-            "__".repeat(
-              Math.max(
-                0,
-                toKana(word.name).length -
-                  toKana(input)
-                    .split("")
-                    .filter((x) => isKana(x))
-                    .join("").length -
-                  toKana(input)
-                    .split("")
-                    .filter((x) => !isKana(x))
-                    .join("").length /
-                    3,
-              ),
-            );
+      return (
+        (isKatakana(word.extension.notation)
+          ? toKatakana(input)
+          : toHiragana(input)) +
+        "__".repeat(
+          Math.max(
+            0,
+            toKana(word.name).length -
+              toKana(input)
+                .split("")
+                .filter((x) => isKana(x))
+                .join("").length -
+              toKana(input)
+                .split("")
+                .filter((x) => !isKana(x))
+                .join("").length /
+                3,
+          ),
+        )
+      );
     default:
       return "";
   }
