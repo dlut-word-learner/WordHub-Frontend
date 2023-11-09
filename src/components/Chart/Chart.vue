@@ -3,7 +3,7 @@
     <el-main id="charts">
       <el-row>
         <el-col v-for="task in tasks" :span="8"
-          ><div class="chart" :ref="(ele) => (barChartRef[task] = ele)"></div
+          ><div class="chart" :ref="(ele) => (heatchartRef[task] = ele)"></div
         ></el-col>
       </el-row>
     </el-main>
@@ -24,19 +24,21 @@ import { Task } from "../../store/taskStore";
 import { DictVo } from "../Dicts/common";
 
 const historyStore = useHistoryStore();
-const dictsToGenerateProgress: DictVo[] = historyStore.recentlyUsedDicts.slice(0,4);
+const dictsToGenerateProgress: DictVo[] = historyStore.recentlyUsedDicts.slice(
+  0,
+  4,
+);
 const tasks = [Task.Learn, Task.Review, Task.QwertyMode];
 
 // 图表div元素绑定
-const barChartRef = reactive(new Map<Task, HTMLElement>());
+const heatchartRef = reactive(new Map<Task, HTMLElement>());
 const progressRef = reactive<HTMLElement[]>([]);
 
 // 实际ECharts图表
-let barCharts = new Map<Task, echarts.ECharts>();
+let heatcharts = new Map<Task, echarts.ECharts>();
 let progress: echarts.ECharts[] = [];
 
 // 声明要从后端API取得的数据
-
 
 const initChart = () => {
   if (progressRef) {
@@ -48,17 +50,17 @@ const initChart = () => {
       } else break;
     }
   }
-  initBarChart(Task.Learn);
-  initBarChart(Task.Review);
-  initBarChart(Task.QwertyMode);
+  initheatchart(Task.Learn);
+  initheatchart(Task.Review);
+  initheatchart(Task.QwertyMode);
 };
 
-function initBarChart(task: Task): void{
-  console.log(task + ": " + barChartRef.has(task));
-  console.log(barChartRef[task]);
-  if (barChartRef[task] != undefined) {
+function initheatchart(task: Task): void {
+  console.log(task + ": " + heatchartRef.has(task));
+  console.log(heatchartRef[task]);
+  if (heatchartRef[task] != undefined) {
     console.log("yes");
-    barCharts[task] = echarts.init(barChartRef[task]);
+    heatcharts[task] = echarts.init(heatchartRef[task]);
     const option: echarts.EChartsOption = {
       // 在这里放置你的图表配置
       title: {
@@ -93,15 +95,15 @@ function initBarChart(task: Task): void{
         },
       ],
     };
-    barCharts[task].setOption(option);
+    heatcharts[task].setOption(option);
   }
 }
 
-function initProgress(index: number): void{
-  if (barChartRef[index] != undefined) {
+function initProgress(index: number): void {
+  if (heatchartRef[index] != undefined) {
     // dictsToGenerateProgress[index].id;
     progress[index] = echarts.init(progressRef[index]);
-    const option:echarts.EChartsOption = {
+    const option: echarts.EChartsOption = {
       // 建表
     };
     progress[index].setOption(option);
