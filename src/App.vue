@@ -72,7 +72,7 @@
     <el-main class="appMain">
       <router-view v-slot="{ Component }">
         <transition name="globalAnimation" appear mode="out-in">
-          <keep-alive :exclude="excludeCache">
+          <keep-alive :include="['QwertyMode', 'Learn', 'Review']" :exclude="excludeCache">
             <component :is="Component" :key="$route.name" />
           </keep-alive>
         </transition>
