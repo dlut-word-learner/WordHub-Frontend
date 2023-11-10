@@ -68,20 +68,19 @@ const initChart = () => {
   initbarchart(Task.Review);
   initbarchart(Task.QwertyMode);
 };
-function getVirtualData(year) {
-  const date = +echarts.time.parse(year + "-09-01");
-  const end = +echarts.time.parse(+year + 1 + "-11-31");
-  const dayTime = 3600 * 24 * 1000;
-  const data = [];
-  for (let time = date; time < end; time += dayTime) {
-    data.push([
-      echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
-      Math.floor(Math.random() * 10000),
-    ]);
+//for bar chart ,generate fake datas.
+function getVirtualData(): Array<[string, string]> {
+  const data: Array<[string, string]> = []; // 声明一个数组，其中的元素是键值对数组
+
+  for (let i = 1; i <= 30; i++) {
+    const date = `11/${i < 10 ? '0' + i : i}`; // 格式化日期字符串，补全个位数日期
+    const randomValue = Math.floor(Math.random() * 10000).toString(); // 生成随机数并转换为字符串
+    data.push([date, randomValue]); // 将键值对推入data数组中
   }
+
   return data;
 }
-const data = getVirtualData("2023");
+
 function initbarchart(task: Task): void {
   console.log(task + ": " + barChartsRef.has(task));
   console.log(heatMapRef[task]);
@@ -90,30 +89,85 @@ function initbarchart(task: Task): void {
     barCharts[task] = echarts.init(barChartsRef[task]);
     const option: echarts.EChartsOption = {
       xAxis: {
-        type: "category",
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    type: "category",
+    data: getVirtualData().map(item => item[0]), // 获取虚拟数据中的第一个元素作为x轴数据
+  },
+  yAxis: {
+    type: "value",
+  },
+  series: [
+    {
+      data: getVirtualData().map(item => ({
+        name: item[0], // 使用日期作为名称
+        value: parseInt(item[1]), // 将随机数字符串转换为整数
+      })),
+      type: "bar",
+      showBackground: true,
+      backgroundStyle: {
+        color: "rgba(180, 180, 180, 0.2)",
       },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          data: [120, 200, 150, 80, 70, 110, 130],
-          type: "bar",
-          showBackground: true,
-          backgroundStyle: {
-            color: "rgba(180, 180, 180, 0.2)",
-          },
-        },
-      ],
+    },
+  ],
     };
     barCharts[task].setOption(option);
   }
+}
+// heatmap生成模拟数据的函数
+function generateData(): Array<[string, string]> {
+  const data: Array<[string, string]> = [];
+  for (let i = 1; i <= 90; i++) {
+    const date = `2023-${Math.floor(i / 30) + 9}-${i % 30 + 1}`;
+    const randomValue = Math.floor(Math.random() * 10000).toString();
+    data.push([date, randomValue]);
+  }
+  return data;
+}
+
+// heatmap生成模拟系列数据的函数
+function generateMockSeries(data: Array<[string, string]>): echarts.SeriesOption[] {
+  const recentData = data.slice(-90);
+
+  const series: echarts.SeriesOption[] = [
+    {
+      name: 'Steps',
+      type: 'scatter',
+      coordinateSystem: 'calendar',
+      data: recentData,
+      symbolSize: function (val) {
+        return val[1] / 500;
+      },
+      itemStyle: {
+        color: '#ddb926'
+      }
+    },
+    {
+      name: 'Top 12',
+      type: 'effectScatter',
+      coordinateSystem: 'calendar',
+      data:generateData(),
+      symbolSize: function (val) {
+        return val[1] / 500;
+      },
+      showEffectOn: 'render',
+      rippleEffect: {
+        brushType: 'stroke'
+      },
+      itemStyle: {
+        color: '#f4e925',
+        shadowBlur: 10,
+        shadowColor: '#333'
+      },
+      zlevel: 1
+    }
+  ];
+
+  return series;
 }
 function initheatchart(): void {
   if (heatMapRef.value) {
     console.log("yes");
     heatMap = echarts.init(heatMapRef.value);
+  
     const option: echarts.EChartsOption = {
       // 在这里放置你的图表配置
       backgroundColor: isDark ? "#404a59" : "#000",
@@ -143,7 +197,7 @@ function initheatchart(): void {
         {
           top: 100,
           left: "center",
-          range: ["2023-9-01", "2023-11-30"],
+          // range: ["2023-9-01", "2023-11-30"],
           splitLine: {
             show: true,
             lineStyle: {
@@ -165,7 +219,7 @@ function initheatchart(): void {
         {
           top: 340,
           left: "center",
-          range: ["2016-07-01", "2016-12-31"],
+          // range: ["2016-07-01", "2016-12-31"],
           splitLine: {
             show: true,
             lineStyle: {
@@ -184,81 +238,10 @@ function initheatchart(): void {
             borderColor: "#111",
           },
         },
+        
       ],
-      series: [
-        {
-          name: "Steps",
-          type: "scatter",
-          coordinateSystem: "calendar",
-          data: data,
-          symbolSize: function (val) {
-            return val[1] / 500;
-          },
-          itemStyle: {
-            color: "#409EFF",
-          },
-        },
-        {
-          name: "Steps",
-          type: "scatter",
-          coordinateSystem: "calendar",
-          calendarIndex: 1,
-          data: data,
-          symbolSize: function (val) {
-            return val[1] / 500;
-          },
-          itemStyle: {
-            color: "#ddb926",
-          },
-        },
-        {
-          name: "Top 12",
-          type: "effectScatter",
-          coordinateSystem: "calendar",
-          calendarIndex: 1,
-          data: data
-            .sort(function (a, b) {
-              return b[1] - a[1];
-            })
-            .slice(0, 12),
-          symbolSize: function (val) {
-            return val[1] / 500;
-          },
-          showEffectOn: "render",
-          rippleEffect: {
-            brushType: "stroke",
-          },
-          itemStyle: {
-            color: "#f4e925",
-            shadowBlur: 10,
-            shadowColor: "#333",
-          },
-          zlevel: 1,
-        },
-        {
-          name: "Top 12",
-          type: "effectScatter",
-          coordinateSystem: "calendar",
-          data: data
-            .sort(function (a, b) {
-              return b[1] - a[1];
-            })
-            .slice(0, 12),
-          symbolSize: function (val) {
-            return val[1] / 500;
-          },
-          showEffectOn: "render",
-          rippleEffect: {
-            brushType: "stroke",
-          },
-          itemStyle: {
-            color: "#f4e925",
-            shadowBlur: 10,
-            shadowColor: "#333",
-          },
-          zlevel: 1,
-        },
-      ],
+      series: generateMockSeries(generateData())  ,// 使用类型断言
+      
     };
     heatMap.setOption(option);
   }
