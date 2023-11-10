@@ -59,6 +59,7 @@ export const messages = {
       currTaskPrompt: "有学习任务正在进行，您想要如何处理？",
       continueCurrTask: "继续之前的学习任务",
       startNewTask: "开始新的学习任务",
+      loginFirst: "请先登录",
     },
     learn: {
       showAns: "显示答案",
@@ -225,6 +226,7 @@ export const messages = {
         "There is a learning task in progress. How do you want to handle it?",
       continueCurrTask: "Continue the current task",
       startNewTask: "Start a new task",
+      loginFirst: "Please log in first",
     },
     learn: {
       showAns: "Show Answer",
@@ -398,6 +400,7 @@ export const messages = {
       currTaskPrompt: "学習タスクが進行中です。どのように処理しますか？",
       continueCurrTask: "前回のタスクを続ける",
       startNewTask: "新しいタスクを始める",
+      loginFirst: "まずログインしてください",
     },
     learn: {
       showAns: "回答を表示する",
