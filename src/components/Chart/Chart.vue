@@ -122,32 +122,48 @@ function initbarchart(task: Task): void {
   }
 }
 // heatmap生成模拟数据的函数
-function getheatmapVirtualData(year: string) {
-  const date = +echarts.time.parse(year + "-01-01");
-  const end = +echarts.time.parse(+year + 1 + "-01-01");
+function getheatmapVirtualData() {
+  const currentDate = new Date();
+  const currentday = new Date().getDay()
+  const startMonth = currentDate.getMonth() - 2; // Get the starting month (three months ago)
+  currentDate.setMonth(startMonth); // Set the date to three months ago
+  const date = +echarts.time.parse(echarts.time.format(currentDate, "{yyyy}-{MM}-01",false));
+  const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-01",false));
   const dayTime = 3600 * 24 * 1000;
   const data: [string, number][] = [];
+
   for (let time = date; time < end; time += dayTime) {
     data.push([
       echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
       Math.floor(Math.random() * 10000),
     ]);
   }
+
   return data;
 }
 
-const data = getheatmapVirtualData("2016");
+
+const currentYear = new Date().getFullYear();
+// const currentMonth = new Date().getMonth();
+
+const currentDate = new Date();
+const startOfMonth = new Date(
+  currentDate.getFullYear(),
+  currentDate.getMonth() - 2,
+  1
+);
+const data = getheatmapVirtualData();
 function initheatchart(): void {
   if (heatMapRef.value) {
     console.log("yes");
-    heatMap = echarts.init(heatMapRef.value);
+    heatMap = echarts.init(heatMapRef.value,isDark?'Dark':'default');
 
     const option: echarts.EChartsOption = {
       backgroundColor: "#404a59",
       title: {
         top: 30,
-        text: "Daily Step Count in 2016",
-        subtext: "Fake Data",
+        text: currentYear.toString(),
+        subtext: "WORDS ACCUMULATION",
         left: "center",
         textStyle: {
           color: "#fff",
@@ -159,7 +175,7 @@ function initheatchart(): void {
       legend: {
         top: "30",
         left: "100",
-        data: ["Steps", "Top 12"],
+        data: ["Steps", "deligent days"],
         textStyle: {
           color: "#fff",
         },
@@ -168,7 +184,8 @@ function initheatchart(): void {
         {
           top: 100,
           left: "center",
-          range: ["2016-01-01", "2016-06-30"],
+          range: [echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}",false),
+  echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}",false)],
           splitLine: {
             show: true,
             lineStyle: {
@@ -187,28 +204,7 @@ function initheatchart(): void {
             borderColor: "#111",
           },
         },
-        {
-          top: 340,
-          left: "center",
-          range: ["2016-07-01", "2016-12-31"],
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: "#000",
-              width: 4,
-              type: "solid",
-            },
-          },
-          yearLabel: {
-            formatter: "{start}  2nd",
-            color: "#fff",
-          },
-          itemStyle: {
-            color: "#323c48",
-            borderWidth: 1,
-            borderColor: "#111",
-          },
-        },
+        
       ],
       series: [
         {
@@ -220,7 +216,7 @@ function initheatchart(): void {
             return val[1] / 500;
           },
           itemStyle: {
-            color: "#ddb926",
+            color: "#409EFF",
           },
         },
         {
@@ -233,11 +229,11 @@ function initheatchart(): void {
             return val[1] / 500;
           },
           itemStyle: {
-            color: "#ddb926",
+            color: "#409EFF",
           },
         },
         {
-          name: "Top 12",
+          name: "deligent days",
           type: "effectScatter",
           coordinateSystem: "calendar",
           calendarIndex: 1,
@@ -261,7 +257,7 @@ function initheatchart(): void {
           zlevel: 1,
         },
         {
-          name: "Top 12",
+          name: "deligent days",
           type: "effectScatter",
           coordinateSystem: "calendar",
           data: data
