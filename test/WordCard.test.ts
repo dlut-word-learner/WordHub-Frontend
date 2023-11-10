@@ -1,5 +1,5 @@
 import { expect, describe, it } from "vitest";
-import { mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import WordCardVue from "../src/components/WordCard.vue";
 import { Lang } from "../src/components/Dicts/common";
 
@@ -19,7 +19,7 @@ const testProps = {
 };
 describe("Japanese spell check: なん", () => {
   it('should emit "done" when input "nan"', async () => {
-    const wrapper = mount(WordCardVue, {
+    const wrapper = shallowMount(WordCardVue, {
       props: {
         ...testProps,
         word: { ...testProps.word, name: "nan" },
@@ -31,7 +31,7 @@ describe("Japanese spell check: なん", () => {
     expect(wrapper.emitted("done")).toBeTruthy();
   });
   it('should not emit "done" when input "na"', async () => {
-    const wrapper = mount(WordCardVue, {
+    const wrapper = shallowMount(WordCardVue, {
       props: {
         ...testProps,
         word: { ...testProps.word, name: "nan" },
@@ -45,7 +45,7 @@ describe("Japanese spell check: なん", () => {
 
 describe("Japanese spell check: なな", () => {
   it('should emit "done" when input "nana"', async () => {
-    const wrapper = mount(WordCardVue, {
+    const wrapper = shallowMount(WordCardVue, {
       props: {
         ...testProps,
         word: { ...testProps.word, name: "nana" },
@@ -56,7 +56,7 @@ describe("Japanese spell check: なな", () => {
     expect(wrapper.emitted("done")).toBeTruthy();
   });
   it('should not emit "done" when input "nan"', async () => {
-    const wrapper = mount(WordCardVue, {
+    const wrapper = shallowMount(WordCardVue, {
       props: {
         ...testProps,
         word: { ...testProps.word, name: "nana" },
