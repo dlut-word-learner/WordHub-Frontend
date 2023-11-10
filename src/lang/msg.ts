@@ -71,6 +71,17 @@ export const messages = {
       tryAgain: "稍后再试",
       finishPrompt: "恭喜，你已学完所有单词！",
     },
+    review: {
+      hard: "困难",
+      good: "中等",
+      easy: "容易",
+      correctSpelling: "拼写正确！",
+      wrongSpelling: "拼写错误，请继续尝试。",
+      errUploadRec: "上传复习记录失败，请检查网络是否正常",
+      learnAgain: "稍后重新学习",
+      finishPrompt: "恭喜，你已复习完所有单词！",
+      goBack: "返回主菜单",
+    },
     qwerty: {
       errGetWords: "获取单词失败，请检查网络是否正常",
       errGetSound: "获取单词发音失败，请检查网络是否正常",
@@ -239,6 +250,18 @@ export const messages = {
       tryAgain: "Try again later",
       finishPrompt:
         "Congratulations, you have completed learning all the words!",
+    },
+    review: {
+      hard: "Hard",
+      good: "Good",
+      easy: "Easy",
+      correctSpelling: "Correct!",
+      wrongSpelling: "Spelling error, please continue to try.",
+      errUploadRec: "Failed to upload reviewing records, please check your network status",
+      learnAgain: "Learn again later",
+      finishPrompt:
+        "Congratulations, you have completed reviewing all the words!",
+      goBack: "Back",
     },
     qwerty: {
       errGetWords: "Failed to get words, please check your network status",
@@ -412,6 +435,18 @@ export const messages = {
         "学習記録のアップロードに失敗しました。ネットワークが正常かどうかを確認してください",
       tryAgain: "後でもう一度試してください",
       finishPrompt: "おめでとうございます。すべての単語の学習を完了しました！",
+    },
+    review: {
+      hard: "難しい",
+      good: "良い",
+      easy: "易い",
+      correctSpelling: "スペルが正しいです！",
+      wrongSpelling: "スペルが間違っています。続けて試してください。",
+      errUploadRec:
+        "復習記録のアップロードに失敗しました。ネットワークが正常かどうかを確認してください",
+      learnAgain: "後で再学習",
+      finishPrompt: "おめでとうございます。すべての単語の復習を完了しました！",
+      goBack: "ホームページに戻る",
     },
     qwerty: {
       errGetWords:

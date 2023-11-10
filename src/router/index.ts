@@ -39,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/review",
     name: "Review",
     component: () => import("../components/Review.vue"),
+    props: (router) => ({
+      lang: router.query.lang,
+      dictId: router.query.dictId,
+      num: router.query.num,
+    }),
   },
   {
     path: "/qwerty-mode",
