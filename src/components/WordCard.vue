@@ -84,7 +84,32 @@ const emits = defineEmits<{
 watch(
   () => props.userInput,
   (newInput) => {
-    if (newInput == undefined || !props.word) return;
+    if(newInput)TryToEmitDone(newInput);
+  },
+  {
+    immediate: true,
+  },
+);
+
+watch(
+  () => props.sound,
+  (newSound) => {
+    if (newSound) newSound.play();
+  },
+  {
+    immediate: true,
+  },
+);
+
+function checkSpelling(input: string, wordName: string): boolean {
+  return input.toLowerCase() === wordName;
+}
+
+/**
+ * Check whether input is done and emit if so
+ */
+function TryToEmitDone(newInput: string): void {
+  if (newInput == undefined || !props.word) return;
     const wordName = props.word.name;
 
     switch (props.lang) {
@@ -108,24 +133,6 @@ watch(
         } else if (newInput.length == wordName.length)
           emits("done", checkSpelling(newInput, wordName));
     }
-  },
-  {
-    immediate: true,
-  },
-);
-
-watch(
-  () => props.sound,
-  (newSound) => {
-    if (newSound) newSound.play();
-  },
-  {
-    immediate: true,
-  },
-);
-
-function checkSpelling(input: string, wordName: string): boolean {
-  return input.toLowerCase() === wordName;
 }
 </script>
 
