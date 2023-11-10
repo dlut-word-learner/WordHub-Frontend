@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="50%">
+    <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.avatar.currAvatar')">
         <el-avatar :size="200" :src="loginStore.avatar" />
       </el-form-item>
@@ -18,7 +18,7 @@
         <vueCropper ref="cropper" v-bind="option"></vueCropper>
       </div>
     </el-form>
-    <el-button type="primary" @click="saveAvatar">
+    <el-button type="primary" @click="saveAvatar" size="large">
       {{ $t("userInfo.avatar.save") }}
     </el-button>
   </div>
@@ -119,7 +119,7 @@ function saveAvatar(): void {
 
   margin-top: 18px;
   margin-bottom: 18px;
-  padding: 9px 15px;
+  padding: 12px 18px;
 
   font-size: 14px;
   border-radius: 4px;

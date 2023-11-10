@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="50%">
+    <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.pwd.originalPwd')">
         <el-input
           type="password"
