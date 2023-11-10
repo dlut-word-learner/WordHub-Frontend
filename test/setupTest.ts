@@ -1,9 +1,5 @@
 import { beforeEach, afterEach } from "vitest";
 
-beforeEach(() => {
-    
-});
+beforeEach(() => {});
 
-afterEach(() => {
-    
-});
+afterEach(() => {});
