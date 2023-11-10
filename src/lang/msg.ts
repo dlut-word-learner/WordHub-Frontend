@@ -1,5 +1,6 @@
 export const messages = {
   zh_cn: {
+    chkNet: "请检查网络是否正常",
     app: {
       login: "登录",
       logout: "退出登录",
@@ -24,7 +25,7 @@ export const messages = {
       inputPrompt: "请输入用户名和密码",
       successPrompt: "登录成功",
       userErrPrompt: "用户名或密码错误",
-      networkErrPrompt: "网络异常",
+      netErrPrompt: "网络异常",
     },
     register: {
       userRegister: "用户注册",
@@ -44,7 +45,7 @@ export const messages = {
       avatarUploadSuccess: "头像上传成功",
       register: "注册",
       successPrompt: "注册成功",
-      errPrompt: "注册失败，请检查网络是否正常",
+      errPrompt: "注册失败，@:chkNet",
     },
     dict: {
       all: "全部词典",
@@ -54,7 +55,7 @@ export const messages = {
       learn: "学习",
       review: "复习",
       qwertyMode: "Qwerty 模式",
-      errGetDicts: "获取词典失败，请检查网络是否正常",
+      errGetDicts: "获取词典失败，@:chkNet",
       prompt: "提示",
       currTaskPrompt: "有学习任务正在进行，您想要如何处理？",
       continueCurrTask: "继续之前的学习任务",
@@ -67,7 +68,7 @@ export const messages = {
       dontknow: "不认识",
       correctSpelling: "拼写正确！",
       wrongSpelling: "拼写错误，请继续尝试。",
-      errUploadRec: "上传学习记录失败，请检查网络是否正常",
+      errUploadRec: "上传学习记录失败，@:chkNet",
       tryAgain: "稍后再试",
       finishPrompt: "恭喜，你已学完所有单词！",
     },
@@ -77,14 +78,14 @@ export const messages = {
       easy: "容易",
       correctSpelling: "拼写正确！",
       wrongSpelling: "拼写错误，请继续尝试。",
-      errUploadRec: "上传复习记录失败，请检查网络是否正常",
+      errUploadRec: "上传复习记录失败，@:chkNet",
       learnAgain: "稍后重新学习",
       finishPrompt: "恭喜，你已复习完所有单词！",
       goBack: "返回主菜单",
     },
     qwerty: {
-      errGetWords: "获取单词失败，请检查网络是否正常",
-      errGetSound: "获取单词发音失败，请检查网络是否正常",
+      errGetWords: "获取单词失败，@:chkNet",
+      errGetSound: "获取单词发音失败，@:chkNet",
       typingToStart: "键入以开始",
       goToNextWord: "下一个单词",
       prompt: "提示",
@@ -125,7 +126,7 @@ export const messages = {
         deleteUser: "注销用户",
       },
       basic: {
-        errGetInfo: "获取用户信息失败，请检查网络是否正常",
+        errGetInfo: "获取用户信息失败，@:chkNet",
         id: "ID",
         username: "用户名",
         role: "用户组",
@@ -136,7 +137,7 @@ export const messages = {
         save: "保存",
         inputPrompt: "请输入新用户名和邮箱",
         successPrompt: "保存成功",
-        errPrompt: "保存失败，请检查网络是否正常",
+        errPrompt: "保存失败，@:chkNet",
       },
       pwd: {
         originalPwd: "原密码",
@@ -148,14 +149,14 @@ export const messages = {
         diffPrompt: "两次新密码不一致",
         originalPwdPrompt: "原密码错误",
         successPrompt: "保存成功",
-        errPrompt: "保存失败，请检查网络是否正常",
+        errPrompt: "保存失败，@:chkNet",
       },
       avatar: {
         currAvatar: "当前头像",
         clickUpload: "点击上传新头像",
         save: "保存",
         successPrompt: "保存成功",
-        errPrompt: "保存失败，请检查网络是否正常",
+        errPrompt: "保存失败，@:chkNet",
       },
       delete: {
         username: "将要注销的用户",
@@ -171,11 +172,12 @@ export const messages = {
         diffPrompt: "密码不一致",
         wrongPwdPrompt: "密码错误",
         successPrompt: "注销成功",
-        errPrompt: "注销失败，请检查网络是否正常",
+        errPrompt: "注销失败，@:chkNet",
       },
     },
   },
   en: {
+    chkNet: "please check your network status",
     app: {
       login: "Login",
       logout: "Logout",
@@ -200,7 +202,7 @@ export const messages = {
       inputPrompt: "Please input your username and password",
       successPrompt: "Logged in successfully",
       userErrPrompt: "Username or password is incorrect",
-      networkErrPrompt: "Login failed, please check your network status",
+      netErrPrompt: "Login failed, @:chkNet",
     },
     register: {
       userRegister: "User Register",
@@ -219,7 +221,7 @@ export const messages = {
       avatarTypeErr: "Invalid avatar format",
       avatarUploadSuccess: "Uploaded avatar successfully",
       successPrompt: "Registered successfully",
-      errPrompt: "Register failed, please check network status",
+      errPrompt: "Register failed, @:chkNet",
       register: "Register",
     },
     dict: {
@@ -230,8 +232,7 @@ export const messages = {
       learn: "Learn",
       review: "Review",
       qwertyMode: "Qwerty Mode",
-      errGetDicts:
-        "Failed to get dictionaries, please check you network status",
+      errGetDicts: "Failed to get dictionaries, @:chkNet",
       prompt: "Prompt",
       currTaskPrompt:
         "There is a learning task in progress. How do you want to handle it?",
@@ -243,8 +244,7 @@ export const messages = {
       showAns: "Show Answer",
       know: "Know",
       dontknow: "Don't Know",
-      errUploadRec:
-        "Failed to upload learning records, please check your network status",
+      errUploadRec: "Failed to upload learning records, @:chkNet",
       correctSpelling: "Correct!",
       wrongSpelling: "Spelling error, please continue to try.",
       tryAgain: "Try again later",
@@ -257,17 +257,15 @@ export const messages = {
       easy: "Easy",
       correctSpelling: "Correct!",
       wrongSpelling: "Spelling error, please continue to try.",
-      errUploadRec:
-        "Failed to upload reviewing records, please check your network status",
+      errUploadRec: "Failed to upload reviewing records, @:chkNet",
       learnAgain: "Learn again later",
       finishPrompt:
         "Congratulations, you have completed reviewing all the words!",
       goBack: "Back",
     },
     qwerty: {
-      errGetWords: "Failed to get words, please check your network status",
-      errGetSound:
-        "Failed to get pronunciation of words, please check your network status",
+      errGetWords: "Failed to get words, @:chkNet",
+      errGetSound: "Failed to get pronunciation of words, @:chkNet",
       typingToStart: "Type to start",
       goToNextWord: "Next Word",
       prompt: "Prompt",
@@ -310,8 +308,7 @@ export const messages = {
         deleteUser: "Delete User",
       },
       basic: {
-        errGetInfo:
-          "Failed to get user information, please check your network status",
+        errGetInfo: "Failed to get user information, @:chkNet",
         id: "ID",
         username: "Username",
         role: "User Group",
@@ -322,8 +319,7 @@ export const messages = {
         save: "Save",
         inputPrompt: "Please input your new username and e-mail",
         successPrompt: "Saved successfully",
-        errPrompt:
-          "Failed to save information, please check your network status",
+        errPrompt: "Failed to save information, @:chkNet",
       },
       pwd: {
         originalPwd: "Original Password",
@@ -335,14 +331,14 @@ export const messages = {
         diffPrompt: "The two new passwords are inconsistent",
         originalPwdPrompt: "Incorrect original password",
         successPrompt: "Saved successfully",
-        errPrompt: "Failed to save, please check your network status",
+        errPrompt: "Failed to save, @:chkNet",
       },
       avatar: {
         currAvatar: "Current Avatar",
         clickUpload: "Click to upload new avatar",
         save: "Save",
         successPrompt: "Saved successfully",
-        errPrompt: "Failed to save, please check your network status",
+        errPrompt: "Failed to save, @:chkNet",
       },
       delete: {
         username: "User to be deleted",
@@ -358,11 +354,12 @@ export const messages = {
         diffPrompt: "The two passwords are inconsistent",
         wrongPwdPrompt: "Incorrect password",
         successPrompt: "Deleted successfully",
-        errPrompt: "Failed to delete, please check your network status",
+        errPrompt: "Failed to delete, @:chkNet",
       },
     },
   },
   ja: {
+    chkNet: "ネットワークが正常かどうかを確認してください",
     app: {
       login: "ログイン",
       logout: "ログアウト",
@@ -387,7 +384,7 @@ export const messages = {
       inputPrompt: "登録情報をすべて入力してください",
       successPrompt: "ログインに成功しました",
       userErrPrompt: "ユーザー名またはパスワードが間違っています",
-      networkErrPrompt: "ネットワークエラー",
+      netErrPrompt: "ネットワークエラー",
     },
     register: {
       userRegister: "ユーザー登録",
@@ -407,8 +404,7 @@ export const messages = {
       avatarUploadSuccess: "アバターのアップロードに成功しました",
       register: "登録",
       successPrompt: "登録に成功しました",
-      errPrompt:
-        "登録に失敗しました。ネットワークが正常かどうかを確認してください",
+      errPrompt: "登録に失敗しました。@:chkNet",
     },
     dict: {
       all: "すべての辞書",
@@ -418,8 +414,7 @@ export const messages = {
       learn: "学習",
       review: "復習",
       qwertyMode: "Qwerty モード",
-      errGetDicts:
-        "辞書の取得に失敗しました。ネットワークが正常かどうかを確認してください",
+      errGetDicts: "辞書の取得に失敗しました。@:chkNet",
       prompt: "プロンプト",
       currTaskPrompt: "学習タスクが進行中です。どのように処理しますか？",
       continueCurrTask: "前回のタスクを続ける",
@@ -432,8 +427,7 @@ export const messages = {
       dontknow: "知らない",
       correctSpelling: "スペルが正しいです！",
       wrongSpelling: "スペルが間違っています。続けて試してください。",
-      errUploadRec:
-        "学習記録のアップロードに失敗しました。ネットワークが正常かどうかを確認してください",
+      errUploadRec: "学習記録のアップロードに失敗しました。@:chkNet",
       tryAgain: "後でもう一度試してください",
       finishPrompt: "おめでとうございます。すべての単語の学習を完了しました！",
     },
@@ -443,17 +437,14 @@ export const messages = {
       easy: "易い",
       correctSpelling: "スペルが正しいです！",
       wrongSpelling: "スペルが間違っています。続けて試してください。",
-      errUploadRec:
-        "復習記録のアップロードに失敗しました。ネットワークが正常かどうかを確認してください",
+      errUploadRec: "復習記録のアップロードに失敗しました。@:chkNet",
       learnAgain: "後で再学習",
       finishPrompt: "おめでとうございます。すべての単語の復習を完了しました！",
       goBack: "ホームページに戻る",
     },
     qwerty: {
-      errGetWords:
-        "単語の取得に失敗しました。ネットワークが正常かどうかを確認してください",
-      errGetSound:
-        "単語の音声取得に失敗しました。ネットワークが正常かどうかを確認してください",
+      errGetWords: "単語の取得に失敗しました。@:chkNet",
+      errGetSound: "単語の音声取得に失敗しました。@:chkNet",
       typingToStart: "入力して開始",
       goToNextWord: "次の単語に進む",
       prompt: "プロンプト",
@@ -495,8 +486,7 @@ export const messages = {
         deleteUser: "ユーザーを削除する",
       },
       basic: {
-        errGetInfo:
-          "ユーザー情報の取得に失敗しました。ネットワークが正常かどうかを確認してください",
+        errGetInfo: "ユーザー情報の取得に失敗しました。@:chkNet",
         id: "ID",
         username: "ユーザー名",
         role: "ユーザーグループ",
@@ -507,8 +497,7 @@ export const messages = {
         save: "保存",
         inputPrompt: "新しいユーザー名とメールアドレスを入力してください",
         successPrompt: "保存に成功しました",
-        errPrompt:
-          "保存に失敗しました。ネットワークが正常かどうかを確認してください",
+        errPrompt: "保存に失敗しました。@:chkNet",
       },
       pwd: {
         originalPwd: "元のパスワード",
@@ -520,16 +509,14 @@ export const messages = {
         diffPrompt: "新しいパスワードが一致しません",
         originalPwdPrompt: "元のパスワードが間違っています",
         successPrompt: "保存に成功しました",
-        errPrompt:
-          "保存に失敗しました。ネットワークが正常かどうかを確認してください",
+        errPrompt: "保存に失敗しました。@:chkNet",
       },
       avatar: {
         currAvatar: "現在のアバター",
         clickUpload: "新しいアバターをアップロードする",
         save: "保存",
         successPrompt: "保存に成功しました",
-        errPrompt:
-          "保存に失敗しました。ネットワークが正常かどうかを確認してください",
+        errPrompt: "保存に失敗しました。@:chkNet",
       },
       delete: {
         username: "削除するユーザー",
@@ -545,8 +532,7 @@ export const messages = {
         diffPrompt: "パスワードが一致しません",
         wrongPwdPrompt: "パスワードが間違っています",
         successPrompt: "削除に成功しました",
-        errPrompt:
-          "削除に失敗しました。ネットワークが正常かどうかを確認してください",
+        errPrompt: "削除に失敗しました。@:chkNet",
       },
     },
   },

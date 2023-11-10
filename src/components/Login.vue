@@ -91,7 +91,7 @@ function login(): void {
     })
     .catch((error) => {
       if (error.response) ElMessage.error(t("login.userErrPrompt"));
-      else ElMessage.error(t("login.networkErrPrompt"));
+      else ElMessage.error(t("login.netErrPrompt"));
     });
 }
 
