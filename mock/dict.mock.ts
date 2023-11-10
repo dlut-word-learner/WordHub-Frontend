@@ -1,6 +1,6 @@
 import Mock from "mockjs";
 import { defineMock } from "vite-plugin-mock-dev-server";
-import { DictVo, WordVo } from "../src/components/Dicts/common";
+import { DictVo, WordToReviewVo, WordVo } from "../src/components/Dicts/common";
 
 const dicts: DictVo[] = [
   {
@@ -213,6 +213,14 @@ const jaWords: WordVo[] = [
   },
 ];
 
+const enWordsToReview: WordToReviewVo[] = enWords.map((elem) => {
+  return { ...elem, tick: 0 };
+});
+
+const jaWordsToReview: WordToReviewVo[] = jaWords.map((elem) => {
+  return { ...elem, tick: 0 };
+});
+
 export default defineMock([
   {
     url: "/api/dicts",
@@ -233,6 +241,16 @@ export default defineMock([
     },
   },
   {
+    url: "/api/dicts/1/review",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: (request) => {
+      return enWordsToReview.slice(0, request.query.num);
+    },
+  },
+  {
     url: "/api/dicts/2/learn",
     method: "GET",
     status: 200,
@@ -240,6 +258,16 @@ export default defineMock([
     type: "json",
     body: (request) => {
       return jaWords.slice(0, request.query.num);
+    },
+  },
+  {
+    url: "/api/dicts/2/review",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: (request) => {
+      return jaWordsToReview.slice(0, request.query.num);
     },
   },
 ]);
