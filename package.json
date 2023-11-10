@@ -12,8 +12,8 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@vueuse/core": "^10.5.0",
-    "axios": "^1.6.0",
+    "@vueuse/core": "^10.6.0",
+    "axios": "^1.6.1",
     "crypto-js": "^4.2.0",
     "echarts": "^5.4.3",
     "element-plus": "^2.4.2",
@@ -32,10 +32,10 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.1",
-    "@types/howler": "^2.2.10",
-    "@types/mockjs": "^1.0.9",
-    "@types/node": "^20.8.10",
-    "@vitejs/plugin-vue": "^4.4.0",
+    "@types/howler": "^2.2.11",
+    "@types/mockjs": "^1.0.10",
+    "@types/node": "^20.9.0",
+    "@vitejs/plugin-vue": "^4.4.1",
     "@vue/test-utils": "^2.4.1",
     "jsdom": "^22.1.0",
     "mockjs": "^1.1.0",
