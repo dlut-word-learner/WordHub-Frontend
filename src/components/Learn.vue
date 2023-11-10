@@ -106,6 +106,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { onKeyStroke } from '@vueuse/core'
 import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
@@ -161,6 +162,14 @@ watch(userInput, (newInput) => {
     }
   }
 });
+
+onKeyStroke("Enter", () => {
+  isAnsButtonShown.value ? showAns() : finishWord(true);
+})
+
+onKeyStroke("\\", () => {
+  if (!isAnsButtonShown.value) finishWord(false);
+})
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
