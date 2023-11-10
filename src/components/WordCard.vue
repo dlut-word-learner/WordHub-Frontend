@@ -68,7 +68,6 @@ const props = defineProps<{
   isMainShown?: [any, boolean];
   isMeaningShown?: [any, boolean];
   isPhoneShown?: [any, boolean];
-  isInitialShown?: [any, boolean];
 
   emphasized?: boolean;
   /** undefined if the word is previous,<br/>
