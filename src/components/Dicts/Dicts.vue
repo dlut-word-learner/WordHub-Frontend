@@ -79,10 +79,12 @@ import { Task, useTaskStore } from "../../store/taskStore";
 import axios from "axios";
 import router from "../../router";
 import { useHistoryStore } from "../../store/historyStore";
+import { useLoginStore } from "../../store/loginStore";
 
 const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
 const historyStore = useHistoryStore();
+const loginStore = useLoginStore();
 
 const dicts: Ref<DictVo[]> = ref([]);
 const currCate: Ref<string> = ref("all");
@@ -141,6 +143,11 @@ function continueCurrTask(): void {
 }
 
 function startNewTask(dict: DictVo, task: Task): void {
+  if(task != Task.QwertyMode && !loginStore.userVo){
+    ElMessage.warning(t("dict.loginFirst"));
+    router.push('Login');
+    return ;
+  }
   excludeCache.value = Task[taskStore.type];
   const wordsPerRound = ref(0);
 
