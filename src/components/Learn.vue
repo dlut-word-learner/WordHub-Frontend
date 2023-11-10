@@ -233,8 +233,7 @@ function finishWord(isKnown: boolean): void {
   if (isKnown) {
     axios
       .post(`/api/dicts/${props.dictId}/words/${currWord.value?.id}/learn`, {
-        id: currWord.value?.id,
-        rating: "easy",
+        familiar: isVisited(currWordIndex.value) ? false : true,
       })
       .then(() => {})
       .catch((error) => {
