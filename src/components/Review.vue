@@ -16,23 +16,25 @@
             />
             <div v-if="!isForgotten(currWordIndex) && isCurrCorrect">
               <el-button size="large" @click="finishWord(true, Rating.Hard)">
-              {{ $t("review.hard") }}
+                {{ $t("review.hard") }}
               </el-button>
               <el-button
                 size="large"
                 type="primary"
-                @click="finishWord(true, Rating.Good)">
+                @click="finishWord(true, Rating.Good)"
+              >
                 {{ $t("review.good") }}
-              </el-button >
+              </el-button>
               <el-button size="large" @click="finishWord(true, Rating.Easy)">
-              {{ $t("review.easy") }}
+                {{ $t("review.easy") }}
               </el-button>
             </div>
             <el-button
               size="large"
               type="primary"
               @click="finishWord()"
-              v-if="tries >= 3">
+              v-if="tries >= 3"
+            >
               {{ $t("review.learnAgain") }}
             </el-button>
           </el-main>
@@ -192,7 +194,7 @@ function showAns(): void {
 /**
  * @param isCorrect - whether spelling of the current word is correct<br/>
  *                    default: ```false```
- * 
+ *
  * @param rating - valid only when ```isCorrect == true```<br/>
  *                 3 options: Hard / Good / Easy<br/>
  */

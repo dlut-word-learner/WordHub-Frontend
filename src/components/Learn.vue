@@ -106,7 +106,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { toKana, toRomaji } from "wanakana";
+import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
@@ -164,12 +164,24 @@ watch(userInput, (newInput) => {
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
-  return new Howl({
-    src: `/dictYoudao/dictvoice?le=${
-      props.lang == Lang.English ? "eng" : "jap"
-    }&audio=${getWordMain(currWord.value, props.lang)}`,
-    format: "mp3",
-  });
+  
+  const wordName = currWord.value.name;
+  switch (props.lang) {
+    case Lang.English:
+      return new Howl({
+        src: `/dictYoudao/dictvoice?le=eng&audio=${wordName}`,
+        format: "mp3",
+      });
+    case Lang.Japanese:
+      return new Howl({
+        src: `/dictYoudao/dictvoice?le=jap&audio=${
+          isKatakana(getWordMain(currWord.value, Lang.Japanese))
+            ? toKatakana(wordName)
+            : toHiragana(wordName)
+        }`,
+        format: "mp3",
+      });
+  }
 });
 
 const initData = async () => {
@@ -251,8 +263,7 @@ function goToNextWord(): void {
   tries.value = 0;
 
   if (words.value && currWordIndex.value + 1 < words.value.length) {
-    if (currWordIndex.value != 0) visibleWordIndexes.value?.shift();
-    currWordIndex.value++;
+    if (currWordIndex.value++ != 0) visibleWordIndexes.value?.shift();
 
     if (currWordIndex.value + 1 < words.value.length)
       visibleWordIndexes.value?.push(currWordIndex.value + 1);
@@ -297,11 +308,10 @@ function inputDone(isCorrect: boolean): void {
         if (props.lang == Lang.English) isPhoneShown.value = true;
         break;
       case 2:
-        if (props.lang == Lang.English) isInitialShown.value = true;
-        else if (props.lang == Lang.Japanese) {
-          isInitialShown.value = true;
+        isInitialShown.value = true;
+        if (props.lang == Lang.Japanese) 
           isPhoneShown.value = true;
-        }
+
         break;
       case 3:
         showAns();

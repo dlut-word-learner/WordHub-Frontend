@@ -257,7 +257,8 @@ export const messages = {
       easy: "Easy",
       correctSpelling: "Correct!",
       wrongSpelling: "Spelling error, please continue to try.",
-      errUploadRec: "Failed to upload reviewing records, please check your network status",
+      errUploadRec:
+        "Failed to upload reviewing records, please check your network status",
       learnAgain: "Learn again later",
       finishPrompt:
         "Congratulations, you have completed reviewing all the words!",
