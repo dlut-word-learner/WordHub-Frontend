@@ -36,6 +36,9 @@ export function sortWithIntersection(
   return intersection.concat(rest);
 }
 
-export function includesDict(list: DictVo[],dict: DictVo): boolean {
-  return list.some(x => dict.name == x.name && dict.id == x.id && dict.language == x.language);
+export function includesDict(list: DictVo[], dict: DictVo): boolean {
+  return list.some(
+    (x) =>
+      dict.name == x.name && dict.id == x.id && dict.language == x.language,
+  );
 }

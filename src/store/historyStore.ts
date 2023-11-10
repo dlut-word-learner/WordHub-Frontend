@@ -7,7 +7,7 @@ export const useHistoryStore = defineStore(
   () => {
     const recentlyUsedDicts = reactive(Array<DictVo>());
     const isRecentlyUsed = (dict: DictVo): boolean => {
-      return includesDict(recentlyUsedDicts , dict);
+      return includesDict(recentlyUsedDicts, dict);
     };
     return {
       recentlyUsedDicts,
