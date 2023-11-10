@@ -143,10 +143,10 @@ function continueCurrTask(): void {
 }
 
 function startNewTask(dict: DictVo, task: Task): void {
-  if(task != Task.QwertyMode && !loginStore.userVo){
+  if (task != Task.QwertyMode && !loginStore.userVo) {
     ElMessage.warning(t("dict.loginFirst"));
-    router.push('Login');
-    return ;
+    router.push("Login");
+    return;
   }
   excludeCache.value = Task[taskStore.type];
   const wordsPerRound = ref(0);
