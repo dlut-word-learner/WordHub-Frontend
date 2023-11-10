@@ -25,7 +25,7 @@
             <el-button
               size="large"
               type="primary"
-              @click="promptGoToNextWord"
+              @click="if (!isCurrCorrect) promptGoToNextWord();"
               :disabled="!stopwatch.isRunning"
               v-if="!isAllFinished"
             >
@@ -42,7 +42,7 @@
               :disabled="isAllFinished"
               :clearable="true"
               autofocus
-              @keypress.enter="promptGoToNextWord"
+              @keypress.enter="if (!isCurrCorrect) promptGoToNextWord();"
               ref="userInputRef"
               :maxlength="currWord?.name.length"
             />
