@@ -1,6 +1,6 @@
 <template>
   <div id="options">
-    <el-form label-position="left" label-width="50%">
+    <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('options.learnWordsPerRound')">
         <el-input-number
           v-model="optionsStore.learnWordsPerRound"
@@ -91,6 +91,7 @@ const optionsStore = useOptionsStore();
   text-align: left;
   font-weight: bold;
   font-size: 18px;
-  margin-bottom: 15px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>
