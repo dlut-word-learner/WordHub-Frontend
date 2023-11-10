@@ -3,16 +3,16 @@
     <el-aside :width="sideWidth">
       <el-menu id="menu" default-active="/user-info/basic" :router="true">
         <el-menu-item index="/user-info/basic">
-          <div class="navItem">{{ $t("userInfo.nav.basic") }}</div>
+          <div class="menu-item">{{ $t("userInfo.nav.basic") }}</div>
         </el-menu-item>
         <el-menu-item index="/user-info/change-pwd">
-          <div class="navItem">{{ $t("userInfo.nav.changePwd") }}</div>
+          <div class="menu-item">{{ $t("userInfo.nav.changePwd") }}</div>
         </el-menu-item>
         <el-menu-item index="/user-info/change-avatar">
-          <div class="navItem">{{ $t("userInfo.nav.changeAvatar") }}</div>
+          <div class="menu-item">{{ $t("userInfo.nav.changeAvatar") }}</div>
         </el-menu-item>
         <el-menu-item index="/user-info/delete-user">
-          <div class="navItem">{{ $t("userInfo.nav.deleteUser") }}</div>
+          <div class="menu-item">{{ $t("userInfo.nav.deleteUser") }}</div>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -46,8 +46,9 @@ router.push("/user-info/basic");
   min-height: 100%;
 }
 
-.navItem {
+.menu-item {
   margin: auto auto;
+  font-size: max(2vh, 1vw);
 }
 
 #main {
