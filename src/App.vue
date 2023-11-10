@@ -109,6 +109,7 @@ function logout(): void {
         loginStore.password = "";
         loginStore.avatar = "";
         localStorage.removeItem("satoken");
+        taskStore.type = Task.None;
         router.push("/");
       }
     })
