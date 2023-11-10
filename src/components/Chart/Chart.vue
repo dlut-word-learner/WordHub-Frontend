@@ -12,13 +12,13 @@
     </el-main>
     <el-main id="secondRow">
       <el-row>
-        <el-col
+        <el-col :span="12"
           ><div
             id="heatMap"
             :ref="(ele) => (heatMapRef = ele as HTMLElement)"
           ></div
         ></el-col>
-        <el-col>
+        <el-col :span="12">
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
             class="progress"
@@ -77,6 +77,7 @@ const initChart = () => {
     // }
   }
   initheatchart();
+  initProgress(1);
 };
 //for bar chart ,generate fake datas.
 function getVirtualData(): Array<[string, string]> {
@@ -124,11 +125,11 @@ function initbarchart(task: Task): void {
 // heatmap生成模拟数据的函数
 function getheatmapVirtualData() {
   const currentDate = new Date();
-  const currentday = new Date().getDay()
+
   const startMonth = currentDate.getMonth() - 2; // Get the starting month (three months ago)
   currentDate.setMonth(startMonth); // Set the date to three months ago
   const date = +echarts.time.parse(echarts.time.format(currentDate, "{yyyy}-{MM}-01",false));
-  const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-01",false));
+  const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-31",false));
   const dayTime = 3600 * 24 * 1000;
   const data: [string, number][] = [];
 
@@ -143,7 +144,7 @@ function getheatmapVirtualData() {
 }
 
 
-const currentYear = new Date().getFullYear();
+
 // const currentMonth = new Date().getMonth();
 
 const currentDate = new Date();
@@ -153,6 +154,7 @@ const startOfMonth = new Date(
   1
 );
 const data = getheatmapVirtualData();
+
 function initheatchart(): void {
   if (heatMapRef.value) {
     console.log("yes");
@@ -160,22 +162,14 @@ function initheatchart(): void {
 
     const option: echarts.EChartsOption = {
       backgroundColor: "#404a59",
-      title: {
-        top: 30,
-        text: currentYear.toString(),
-        subtext: "WORDS ACCUMULATION",
-        left: "center",
-        textStyle: {
-          color: "#fff",
-        },
-      },
+
       tooltip: {
         trigger: "item",
       },
       legend: {
         top: "30",
         left: "100",
-        data: ["Steps", "deligent days"],
+        data: ["Steps", "diligent days"],
         textStyle: {
           color: "#fff",
         },
@@ -195,7 +189,7 @@ function initheatchart(): void {
             },
           },
           yearLabel: {
-            formatter: "{start}  1st",
+            formatter: " recent 3 months",
             color: "#fff",
           },
           itemStyle: {
@@ -204,7 +198,7 @@ function initheatchart(): void {
             borderColor: "#111",
           },
         },
-        
+
       ],
       series: [
         {
@@ -219,52 +213,17 @@ function initheatchart(): void {
             color: "#409EFF",
           },
         },
+
+
         {
-          name: "Steps",
-          type: "scatter",
-          coordinateSystem: "calendar",
-          calendarIndex: 1,
-          data: data,
-          symbolSize: function (val) {
-            return val[1] / 500;
-          },
-          itemStyle: {
-            color: "#409EFF",
-          },
-        },
-        {
-          name: "deligent days",
-          type: "effectScatter",
-          coordinateSystem: "calendar",
-          calendarIndex: 1,
-          data: data
-            .sort(function (a, b) {
-              return b[1] - a[1];
-            })
-            .slice(0, 12),
-          symbolSize: function (val) {
-            return val[1] / 500;
-          },
-          showEffectOn: "render",
-          rippleEffect: {
-            brushType: "stroke",
-          },
-          itemStyle: {
-            color: "#f4e925",
-            shadowBlur: 10,
-            shadowColor: "#333",
-          },
-          zlevel: 1,
-        },
-        {
-          name: "deligent days",
+          name: "diligent days",
           type: "effectScatter",
           coordinateSystem: "calendar",
           data: data
             .sort(function (a, b) {
               return b[1] - a[1];
             })
-            .slice(0, 12),
+            .slice(0, 6),
           symbolSize: function (val) {
             return val[1] / 500;
           },
@@ -286,15 +245,94 @@ function initheatchart(): void {
 }
 
 function initProgress(index: number): void {
-  if (heatMapRef[index] != undefined) {
+  if (progressRef.value ) {
     // dictsToGenerateProgress[index].id;
-    progress[index] = echarts.init(progressRef[index]);
+    progress = echarts.init(progressRef.value);
     const option: echarts.EChartsOption = {
-      // 建表
+      backgroundColor:"#17326b",
+			grid:{
+				left:"10",
+				top:"10",
+				right:"0",
+				bottom:"10",
+				containLabel:true
+			},
+			xAxis: {
+				type: 'value',
+				splitLine:{show:false},
+				axisLabel:{show:false},
+				axisTick:{show:false},
+				axisLine:{show:false}
+			},
+			yAxis:[
+			   {
+					type: 'category',
+					axisTick:{show:false},
+					axisLine:{show:false},
+					axisLabel:{
+						color:"black",
+						fontSize:14,
+
+					},
+					data:["苹果","香蕉","橘子","梨子","葡萄","柿子","草莓","蓝莓","柚子","橙子"],
+					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
+					 inverse:true
+				},
+				 {
+					type: 'category',
+					axisTick:{show:false},
+					axisLine:{show:false},
+					axisLabel:{
+						color:"black",
+						fontSize:14,
+
+					},
+					data:[702,350,800,600,550,700,600,800,900,600],
+					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
+					inverse:true
+				}
+			],
+			series: [
+			  {
+				name:"条",
+				type:"bar",
+				barWidth:19,
+				data:[80,40,60,10,80,50,70,80,90,60],
+				barCategoryGap:20,
+				itemStyle:{
+
+
+						color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+						  offset: 0,
+						  color: '#22b6ed'
+						}, {
+						  offset: 1,
+						  color: '#3fE279'
+						}]),
+
+				},
+				zlevel:1
+
+			  },{
+				  name:"进度条背景",
+				  type:"bar",
+				  barGap:"-100%",
+				  barWidth:19,
+				  data:[100,100,100,100,100,100,100,100,100,100],
+				  color:"#2e5384",
+				  itemStyle:{
+
+				  },
+			  }
+			]
+		};
+    progress.setOption(option);
     };
-    progress[index].setOption(option);
-  }
-}
+   }
+
+
+
+
 
 onMounted(() => {
   initChart();
@@ -332,8 +370,8 @@ fetchData();
   flex: 1;
   background-color: #d9ecff;
   border-radius: 20px;
-  width: 70vw;
-  height: 30vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 .barChart {
@@ -343,11 +381,13 @@ fetchData();
 
 #heatMap {
   flex: 1;
-  width: 32vw;
-  height: 50vh;
+  width: 50vm;
+  height: 100vh;
 }
 
 .progress {
   flex: 2;
+  width: 50vm;
+  height: 100vh;
 }
 </style>
