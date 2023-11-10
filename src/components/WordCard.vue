@@ -84,7 +84,7 @@ const emits = defineEmits<{
 watch(
   () => props.userInput,
   (newInput) => {
-    if(newInput)TryToEmitDone(newInput);
+    if (newInput) TryToEmitDone(newInput);
   },
   {
     immediate: true,
@@ -110,29 +110,29 @@ function checkSpelling(input: string, wordName: string): boolean {
  */
 function TryToEmitDone(newInput: string): void {
   if (newInput == undefined || !props.word) return;
-    const wordName = props.word.name;
+  const wordName = props.word.name;
 
-    switch (props.lang) {
-      case Lang.English:
-        if (newInput.length == wordName.length)
-          emits("done", checkSpelling(newInput, wordName));
-        break;
-      case Lang.Japanese:
-        /**
-         * When the last kana of the word is 'な', 'に', 'ぬ', 'ね' or 'の',
-         * it is essential to wait for another letter to input.
-         */
+  switch (props.lang) {
+    case Lang.English:
+      if (newInput.length == wordName.length)
+        emits("done", checkSpelling(newInput, wordName));
+      break;
+    case Lang.Japanese:
+      /**
+       * When the last kana of the word is 'な', 'に', 'ぬ', 'ね' or 'の',
+       * it is essential to wait for another letter to input.
+       */
 
-        if (isKana(toKana(newInput))) {
-          if (
-            ((newInput.slice(-1) != "n" || wordName.slice(-1) == "n") &&
-              toKana(newInput).length == toKana(wordName).length) ||
-            newInput.length == wordName.length
-          )
-            emits("done", checkSpelling(newInput, wordName));
-        } else if (newInput.length == wordName.length)
+      if (isKana(toKana(newInput))) {
+        if (
+          ((newInput.slice(-1) != "n" || wordName.slice(-1) == "n") &&
+            toKana(newInput).length == toKana(wordName).length) ||
+          newInput.length == wordName.length
+        )
           emits("done", checkSpelling(newInput, wordName));
-    }
+      } else if (newInput.length == wordName.length)
+        emits("done", checkSpelling(newInput, wordName));
+  }
 }
 </script>
 
