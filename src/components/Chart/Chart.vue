@@ -10,7 +10,7 @@
     <el-main id="secondRow">
       <el-row>
         <el-col
-          ><div id="heatMap" :ref="ele => {ele = heatMapRef as HTMLElement}"></div
+          ><div id="heatMap" :ref="ele => {heatMapRef = ele  as HTMLElement}"></div
         ></el-col>
         <el-col>
           <div v-for="(_dict, index) in dictsToGenerateProgress" class="progress">
