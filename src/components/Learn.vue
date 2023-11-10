@@ -164,7 +164,7 @@ watch(userInput, (newInput) => {
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
-  
+
   const wordName = currWord.value.name;
   switch (props.lang) {
     case Lang.English:
@@ -308,8 +308,7 @@ function inputDone(isCorrect: boolean): void {
         break;
       case 2:
         isInitialShown.value = true;
-        if (props.lang == Lang.Japanese) 
-          isPhoneShown.value = true;
+        if (props.lang == Lang.Japanese) isPhoneShown.value = true;
 
         break;
       case 3:

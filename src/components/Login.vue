@@ -85,7 +85,7 @@ function login(): void {
       ElMessage.success(t("login.successPrompt"));
       const userVo: UserVo = response.data;
       loginStore.userVo = userVo;
-      loginStore.password = form.password;
+      loginStore.password = hash;
       getAvatar();
       router.push("/dicts");
     })
