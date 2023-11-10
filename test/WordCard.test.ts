@@ -18,7 +18,7 @@ const testProps = {
     userInput: ''
 };
 describe('Japanese spell check: なん', ()=>{
-    it('it should be done', async ()=>{
+    it('should emit "done" when input "nan"', async ()=>{
         const wrapper = mount(WordCardVue, {
             props: {...testProps, word: {...testProps.word, name: 'nan'}, userInput: 'na'}
           });
@@ -26,7 +26,7 @@ describe('Japanese spell check: なん', ()=>{
         await wrapper.setProps({userInput: 'nan'});
         expect(wrapper.emitted('done')).toBeTruthy();
     })
-    it('it should not be done', async ()=>{
+    it('should not emit "done" when input "na"', async ()=>{
         const wrapper = mount(WordCardVue, {
             props: {...testProps, word: {...testProps.word, name: 'nan'}, userInput: 'n'}
           });
@@ -36,14 +36,14 @@ describe('Japanese spell check: なん', ()=>{
 })
 
 describe('Japanese spell check: なな', ()=>{
-    it('it should be done', async ()=>{
+    it('should emit "done" when input "nana"', async ()=>{
         const wrapper = mount(WordCardVue, {
             props: {...testProps, word: {...testProps.word, name: 'nana'}, userInput: 'nan'}
           });
         await wrapper.setProps({userInput: 'nana'});
         expect(wrapper.emitted('done')).toBeTruthy();
     })
-    it('it should not be done', async ()=>{
+    it('should not emit "done" when input "nan"', async ()=>{
         const wrapper = mount(WordCardVue, {
             props: {...testProps, word: {...testProps.word, name: 'nana'}, userInput: 'na'}
           });
