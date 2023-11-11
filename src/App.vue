@@ -102,6 +102,7 @@ function logout(): void {
   ElMessageBox.confirm(t("app.logoutPrompt"), t("app.prompt"), {
     confirmButtonText: t("app.confirm"),
     cancelButtonText: t("app.cancel"),
+    buttonSize: "large",
   })
     .then((data) => {
       if (data == "confirm") {

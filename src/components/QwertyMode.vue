@@ -227,6 +227,7 @@ function promptGoToNextWord(): void {
     ElMessageBox.confirm(t("qwerty.promptGoToNextWord"), t("qwerty.prompt"), {
       confirmButtonText: t("qwerty.confirm"),
       cancelButtonText: t("qwerty.cancel"),
+      buttonSize: "large",
     })
       .then((data) => {
         if (data == "confirm") {

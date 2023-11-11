@@ -126,6 +126,7 @@ function tryTask(dict: DictVo, task: Task): void {
       distinguishCancelAndClose: true,
       confirmButtonText: t("dict.startNewTask"),
       cancelButtonText: t("dict.continueCurrTask"),
+      buttonSize: "large",
     })
       .then(() => {
         console.log("confirm");

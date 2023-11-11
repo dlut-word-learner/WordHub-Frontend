@@ -67,6 +67,7 @@ function deleteUser(): void {
     {
       confirmButtonText: t("userInfo.delete.confirm"),
       cancelButtonText: t("userInfo.delete.cancel"),
+      buttonSize: "large",
     },
   )
     .then(() => {
