@@ -54,7 +54,8 @@ router.push("/user-info/basic");
 }
 
 #main {
-  padding-left: 10px;
+  margin-left: 10px;
+  margin-top: 5px;
   max-width: 600px;
 }
 </style>
