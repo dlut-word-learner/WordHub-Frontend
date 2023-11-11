@@ -2,7 +2,7 @@
   <div id="body">
     <img alt="WordHub" src="/wordhub.png" width="100" height="100" />
     <h2>{{ $t("register.userRegister") }}</h2>
-    <el-form label-width="auto">
+    <el-form label-width="auto" size="large">
       <el-form-item :label="$t('register.username')">
         <el-input type="text" v-model="form.username" />
       </el-form-item>
@@ -49,7 +49,7 @@
         <vueCropper ref="cropper" v-bind="option"></vueCropper>
       </div>
     </el-form>
-    <el-button @click="register">{{ $t("register.register") }}</el-button>
+    <el-button @click="register" size="large">{{ $t("register.register") }}</el-button>
   </div>
 </template>
 
@@ -204,8 +204,8 @@ function uploadImg(event: any): void {
   box-sizing: border-box;
   outline: none;
 
-  margin-bottom: 18px;
-  padding: 9px 15px;
+  margin-bottom: 30px;
+  padding: 12px 18px;
 
   font-size: 14px;
   border-radius: 4px;
