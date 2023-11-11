@@ -94,7 +94,7 @@ import { Task, useTaskStore } from "../store/taskStore";
 import { Lang, Rating, WordToReviewVo, excludeCache } from "./Dicts/common";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { toKana, toRomaji } from "wanakana";
+import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
 import { getWordMain } from "./WordCard";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import { throwError } from "./Error";
@@ -149,12 +149,24 @@ watch(userInput, (newInput) => {
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
-  return new Howl({
-    src: `/dictYoudao/dictvoice?le=${
-      props.lang == Lang.English ? "eng" : "jap"
-    }&audio=${getWordMain(currWord.value, props.lang)}`,
-    format: "mp3",
-  });
+
+  const wordName = currWord.value.name;
+  switch (props.lang) {
+    case Lang.English:
+      return new Howl({
+        src: `/dictYoudao/dictvoice?le=eng&audio=${wordName}`,
+        format: "mp3",
+      });
+    case Lang.Japanese:
+      return new Howl({
+        src: `/dictYoudao/dictvoice?le=jap&audio=${
+          isKatakana(getWordMain(currWord.value, Lang.Japanese))
+            ? toKatakana(wordName)
+            : toHiragana(wordName)
+        }`,
+        format: "mp3",
+      });
+  }
 });
 
 const initData = async () => {
