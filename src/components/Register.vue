@@ -102,7 +102,7 @@ function register(): void {
     return;
   }
 
-  if (!checkPasswd()) return;
+  if (!checkPasswd(form.passwd1) || !checkEmail(form.email)) return;
 
   if (form.passwd1 != form.passwd2) {
     ElMessage.error(t("register.diffPrompt"));
@@ -133,16 +133,28 @@ function register(): void {
     });
 }
 
-function checkPasswd(): boolean {
+function checkPasswd(password: string): boolean {
   if (
-    form.passwd1.length >= 8 &&
-    form.passwd1.length <= 20 &&
-    form.passwd1.match(/[a-zA-Z]/g) &&
-    form.passwd1.match(/[0-9]/g)
+    password.length >= 8 &&
+    password.length <= 20 &&
+    password.match(/[a-zA-Z]/g) &&
+    password.match(/[0-9]/g)
   )
     return true;
 
   ElMessage.error(t("register.invalidPwd"));
+  return false;
+}
+
+function checkEmail(email: string): boolean {
+  if (
+    email.match(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    )
+  )
+    return true;
+
+  ElMessage.error(t("register.invalidEmail"));
   return false;
 }
 
