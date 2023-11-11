@@ -14,30 +14,24 @@
         <h2 class="f">{{ $t("login.userLogin") }}</h2>
       </el-main>
       <el-main>
-        <el-form label-width="auto">
-          <el-form-item :label="$t('login.username')" size="large">
-            <el-input
-              type="text"
-              id="username"
-              v-model="form.username"
-              size="large"
-            />
+        <el-form label-width="auto" size="large">
+          <el-form-item :label="$t('login.username')">
+            <el-input type="text" id="username" v-model="form.username" />
           </el-form-item>
-          <el-form-item :label="$t('login.password')" size="large">
+          <el-form-item :label="$t('login.password')">
             <el-input
               type="password"
               id="password"
               v-model="form.password"
               :show-password="true"
-              size="large"
             />
           </el-form-item>
         </el-form>
       </el-main>
       <el-main>
-        <el-button type="primary" @click="login" size="large">{{
-          $t("login.login")
-        }}</el-button>
+        <el-button type="primary" @click="login" size="large">
+          {{ $t("login.login") }}
+        </el-button>
         <el-button @click="router.push('/register')" size="large">
           {{ $t("login.register") }}
         </el-button>
@@ -214,8 +208,9 @@ html.dark .e {
 
 .f {
   opacity: 0;
-  font: 900 50px "";
-  letter-spacing: 10px;
+  font: 900 42px "";
+  margin-top: 80px;
+  letter-spacing: 5px;
   color: #73767a;
   transition: 1.5s;
 }
