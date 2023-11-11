@@ -90,6 +90,7 @@ function login(): void {
       router.push("/dicts");
     })
     .catch((error) => {
+      console.log(error);
       if (error.response) ElMessage.error(t("login.userErrPrompt"));
       else ElMessage.error(t("login.netErrPrompt"));
     });

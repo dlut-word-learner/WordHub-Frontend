@@ -117,6 +117,7 @@ import { isKatakana, toHiragana, toKatakana } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import { getWordMain } from "./WordCard";
+import { throwError } from "./Error";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
@@ -194,8 +195,7 @@ const initData = async () => {
         setTimeout(() => visibleWordIndex.value.push(1), 200);
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("qwerty.errGetWords"));
+      throwError(error, "qwerty.errGetWords", t);
       router.back();
     });
 };

@@ -112,6 +112,7 @@ import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
+import { throwError } from "./Error";
 import axios from "axios";
 import router from "../router";
 import "./wordStyle.css";
@@ -208,8 +209,7 @@ const initData = async () => {
       taskStore.url = router.currentRoute.value.fullPath;
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("learn.errGetWords"));
+      throwError(error, "learn.errGetWords", t);
       router.back();
     });
 };
@@ -246,8 +246,7 @@ function finishWord(isKnown: boolean): void {
       })
       .then(() => {})
       .catch((error) => {
-        console.log(error);
-        ElMessage.error(t("learn.errUploadRec"));
+        throwError(error, "learn.errUploadRec", t);
       });
   } else if (currWord.value) {
     words.value?.push(currWord.value);

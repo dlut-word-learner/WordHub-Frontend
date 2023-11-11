@@ -29,6 +29,7 @@ import { reactive, ref } from "vue";
 import { VueCropper } from "vue-cropper";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
+import { throwError } from "../Error";
 import axios from "axios";
 import router from "../../router";
 import "vue-cropper/dist/index.css";
@@ -91,8 +92,7 @@ function saveAvatar(): void {
       router.push("/");
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("userInfo.avatar.errPrompt"));
+      throwError(error, "userInfo.avatar.errPrompt", t);
     });
 }
 </script>

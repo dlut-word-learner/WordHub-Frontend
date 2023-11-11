@@ -97,6 +97,7 @@ import { useI18n } from "vue-i18n";
 import { toKana, toRomaji } from "wanakana";
 import { getWordMain } from "./WordCard";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
+import { throwError } from "./Error";
 import axios from "axios";
 import router from "../router";
 import "./wordStyle.css";
@@ -171,8 +172,7 @@ const initData = async () => {
       taskStore.url = router.currentRoute.value.fullPath;
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("review.errGetWords"));
+      throwError(error, "review.errGetWords", t);
       router.back();
     });
 };
@@ -209,8 +209,7 @@ function finishWord(isCorrect?: boolean, rating?: Rating): void {
       })
       .then(() => {})
       .catch((error) => {
-        console.log(error);
-        ElMessage.error(t("review.errUploadRec"));
+        throwError(error, "review.errUploadRec", t);
       });
   } else if (isCorrect) {
     axios
@@ -219,8 +218,7 @@ function finishWord(isCorrect?: boolean, rating?: Rating): void {
       })
       .then(() => {})
       .catch((error) => {
-        console.log(error);
-        ElMessage.error(t("review.errUploadRec"));
+        throwError(error, "review.errUploadRec", t);
       });
   } else {
     words.value?.push(currWord.value);

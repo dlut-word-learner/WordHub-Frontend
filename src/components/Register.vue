@@ -61,6 +61,7 @@ import router from "../router";
 import sha3 from "crypto-js/sha3";
 import axios from "axios";
 import "vue-cropper/dist/index.css";
+import { throwError } from "./Error";
 
 const form = reactive({
   username: "",
@@ -128,8 +129,7 @@ function register(): void {
       router.push("/");
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("register.errPrompt"));
+      throwError(error, "register.errPrompt", t);
     });
 }
 

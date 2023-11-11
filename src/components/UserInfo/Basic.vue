@@ -31,6 +31,7 @@
 import { reactive } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
+import { throwError } from "../Error";
 import axios from "axios";
 import router from "../../router";
 
@@ -49,8 +50,7 @@ axios
     loginStore.userVo = response.data;
   })
   .catch((error) => {
-    console.log(error);
-    ElMessage.error(t("userInfo.basic.errGetInfo"));
+    throwError(error, "userInfo.basic.errGetInfo", t);
   });
 
 if (loginStore.userVo) {
@@ -72,8 +72,7 @@ function saveUserInfo(): void {
       router.push("/");
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("userInfo.basic.errPrompt"));
+      throwError(error, "userInfo.basic.errPrompt", t);
     });
 }
 </script>

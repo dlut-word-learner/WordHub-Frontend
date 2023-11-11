@@ -31,6 +31,7 @@
 import { reactive } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
+import { throwError } from "../Error";
 import axios from "axios";
 import sha3 from "crypto-js/sha3";
 import router from "../../router";
@@ -76,8 +77,7 @@ function deleteUser(): void {
           router.push("/");
         })
         .catch((error) => {
-          console.log(error);
-          ElMessage.error(t("userInfo.delete.errPrompt"));
+          throwError(error, "userInfo.delete.errPrompt", t);
         });
     })
     .catch(() => {
