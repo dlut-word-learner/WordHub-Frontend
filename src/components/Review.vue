@@ -94,6 +94,7 @@ import { Task, useTaskStore } from "../store/taskStore";
 import { Lang, Rating, WordToReviewVo, excludeCache } from "./Dicts/common";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { onKeyStroke } from "@vueuse/core";
 import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
 import { getWordMain } from "./WordCard";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
@@ -145,6 +146,22 @@ watch(userInput, (newInput) => {
         break;
     }
   }
+});
+
+onKeyStroke("Enter", () => {
+  if (!isForgotten(currWordIndex.value) && isCurrCorrect.value)
+    finishWord(true, Rating.Good);
+  else if (tries.value >= 3) finishWord();
+});
+
+onKeyStroke("[", () => {
+  if (!isForgotten(currWordIndex.value) && isCurrCorrect.value)
+    finishWord(true, Rating.Hard);
+});
+
+onKeyStroke("]", () => {
+  if (!isForgotten(currWordIndex.value) && isCurrCorrect.value)
+    finishWord(true, Rating.Easy);
 });
 
 const currWordSound = computed(() => {
