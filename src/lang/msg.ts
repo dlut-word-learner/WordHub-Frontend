@@ -69,6 +69,7 @@ export const messages = {
       loginFirst: "请先登录",
     },
     learn: {
+      errGetWords: "获取单词失败，{err}",
       showAns: "显示答案",
       know: "认识",
       dontknow: "不认识",
@@ -79,8 +80,9 @@ export const messages = {
       finishPrompt: "恭喜，你已学完所有单词！",
     },
     review: {
+      errGetWords: "获取单词失败，{err}",
       hard: "困难",
-      good: "中等",
+      good: "良好",
       easy: "容易",
       correctSpelling: "拼写正确！",
       wrongSpelling: "拼写错误，请继续尝试。",
@@ -91,7 +93,6 @@ export const messages = {
     },
     qwerty: {
       errGetWords: "获取单词失败，{err}",
-      errGetSound: "获取单词发音失败，{err}",
       typingToStart: "键入以开始",
       goToNextWord: "下一个单词",
       prompt: "提示",
@@ -253,6 +254,7 @@ export const messages = {
       loginFirst: "Please log in first",
     },
     learn: {
+      errGetWords: "Failed to get words, {err}",
       showAns: "Show Answer",
       know: "Know",
       dontknow: "Don't Know",
@@ -264,6 +266,7 @@ export const messages = {
         "Congratulations, you have completed learning all the words!",
     },
     review: {
+      errGetWords: "Failed to get words, {err}",
       hard: "Hard",
       good: "Good",
       easy: "Easy",
@@ -277,7 +280,6 @@ export const messages = {
     },
     qwerty: {
       errGetWords: "Failed to get words, {err}",
-      errGetSound: "Failed to get pronunciation of words, {err}",
       typingToStart: "Type to start",
       goToNextWord: "Next Word",
       prompt: "Prompt",
@@ -440,6 +442,7 @@ export const messages = {
       loginFirst: "まずログインしてください",
     },
     learn: {
+      errGetWords: "単語の取得に失敗しました。{err}",
       showAns: "回答を表示する",
       know: "知っている",
       dontknow: "知らない",
@@ -450,6 +453,7 @@ export const messages = {
       finishPrompt: "おめでとうございます。すべての単語の学習を完了しました！",
     },
     review: {
+      errGetWords: "単語の取得に失敗しました。{err}",
       hard: "難しい",
       good: "良い",
       easy: "易い",
@@ -462,7 +466,6 @@ export const messages = {
     },
     qwerty: {
       errGetWords: "単語の取得に失敗しました。{err}",
-      errGetSound: "単語の音声取得に失敗しました。{err}",
       typingToStart: "入力して開始",
       goToNextWord: "次の単語に進む",
       prompt: "プロンプト",
