@@ -58,13 +58,13 @@ let progress: echarts.ECharts;
 
 // 声明要从后端API取得的数据
 
-const initChart = () => {
+const initChart = (responseData) => {
   console.log("heatMapRef: ");
   console.log(heatMapRef.value);
   console.log("progressRef: ");
   console.log(progressRef.value);
   for (const task of tasks) {
-    initbarchart(task);
+    initbarchart(task, responseData.virtualData);
   }
   if (progressRef) {
     progress = echarts.init(progressRef.value);
@@ -76,23 +76,23 @@ const initChart = () => {
     //   } else break;
     // }
   }
-  initheatchart();
-  initProgress(1);
+  initheatchart(responseData.responseData);
+  initProgress(1, responseData.progressData);
 };
-//for bar chart ,generate fake datas.
-function getVirtualData(): Array<[string, string]> {
-  const data: Array<[string, string]> = []; // 声明一个数组，其中的元素是键值对数组
+// //for bar chart ,generate fake datas.
+// function getVirtualData(): Array<[string, string]> {
+//   const data: Array<[string, string]> = []; // 声明一个数组，其中的元素是键值对数组
 
-  for (let i = 1; i <= 30; i++) {
-    const date = `11/${i < 10 ? "0" + i : i}`; // 格式化日期字符串，补全个位数日期
-    const randomValue = Math.floor(Math.random() * 10000).toString(); // 生成随机数并转换为字符串
-    data.push([date, randomValue]); // 将键值对推入data数组中
-  }
+//   for (let i = 1; i <= 30; i++) {
+//     const date = `11/${i < 10 ? "0" + i : i}`; // 格式化日期字符串，补全个位数日期
+//     const randomValue = Math.floor(Math.random() * 10000).toString(); // 生成随机数并转换为字符串
+//     data.push([date, randomValue]); // 将键值对推入data数组中
+//   }
 
-  return data;
-}
+//   return data;
+// }
 
-function initbarchart(task: Task): void {
+function initbarchart(task: Task, virtualData): void {
   if (barChartsRef[task]) {
     console.log(task);
     console.log(barChartsRef[task]);
@@ -100,14 +100,14 @@ function initbarchart(task: Task): void {
     const option: echarts.EChartsOption = {
       xAxis: {
         type: "category",
-        data: getVirtualData().map((item) => item[0]), // 获取虚拟数据中的第一个元素作为x轴数据
+        data: virtualData.map((item) => item[0]), // 获取虚拟数据中的第一个元素作为x轴数据
       },
       yAxis: {
         type: "value",
       },
       series: [
         {
-          data: getVirtualData().map((item) => ({
+          data: virtualData.map((item) => ({
             name: item[0], // 使用日期作为名称
             value: parseInt(item[1]), // 将随机数字符串转换为整数
           })),
@@ -122,28 +122,26 @@ function initbarchart(task: Task): void {
     barCharts[task].setOption(option);
   }
 }
-// heatmap生成模拟数据的函数
-function getheatmapVirtualData() {
-  const currentDate = new Date();
+// // heatmap生成模拟数据的函数
+// function getheatmapVirtualData() {
+//   const currentDate = new Date();
 
-  const startMonth = currentDate.getMonth() - 2; // Get the starting month (three months ago)
-  currentDate.setMonth(startMonth); // Set the date to three months ago
-  const date = +echarts.time.parse(echarts.time.format(currentDate, "{yyyy}-{MM}-01",false));
-  const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-31",false));
-  const dayTime = 3600 * 24 * 1000;
-  const data: [string, number][] = [];
+//   const startMonth = currentDate.getMonth() - 2; // Get the starting month (three months ago)
+//   currentDate.setMonth(startMonth); // Set the date to three months ago
+//   const date = +echarts.time.parse(echarts.time.format(currentDate, "{yyyy}-{MM}-01",false));
+//   const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-31",false));
+//   const dayTime = 3600 * 24 * 1000;
+//   const data: [string, number][] = [];
 
-  for (let time = date; time < end; time += dayTime) {
-    data.push([
-      echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
-      Math.floor(Math.random() * 10000),
-    ]);
-  }
+//   for (let time = date; time < end; time += dayTime) {
+//     data.push([
+//       echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
+//       Math.floor(Math.random() * 10000),
+//     ]);
+//   }
 
-  return data;
-}
-
-
+//   return data;
+// }
 
 // const currentMonth = new Date().getMonth();
 
@@ -151,14 +149,13 @@ const currentDate = new Date();
 const startOfMonth = new Date(
   currentDate.getFullYear(),
   currentDate.getMonth() - 2,
-  1
+  1,
 );
-const data = getheatmapVirtualData();
 
-function initheatchart(): void {
+function initheatchart(heatmapData): void {
   if (heatMapRef.value) {
     console.log("yes");
-    heatMap = echarts.init(heatMapRef.value,isDark?'Dark':'default');
+    heatMap = echarts.init(heatMapRef.value, isDark ? "Dark" : "default");
 
     const option: echarts.EChartsOption = {
       backgroundColor: "#404a59",
@@ -178,8 +175,10 @@ function initheatchart(): void {
         {
           top: 100,
           left: "center",
-          range: [echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}",false),
-  echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}",false)],
+          range: [
+            echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
+            echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
+          ],
           splitLine: {
             show: true,
             lineStyle: {
@@ -198,14 +197,13 @@ function initheatchart(): void {
             borderColor: "#111",
           },
         },
-
       ],
       series: [
         {
           name: "Steps",
           type: "scatter",
           coordinateSystem: "calendar",
-          data: data,
+          data: heatmapData,
           symbolSize: function (val) {
             return val[1] / 500;
           },
@@ -214,12 +212,11 @@ function initheatchart(): void {
           },
         },
 
-
         {
           name: "diligent days",
           type: "effectScatter",
           coordinateSystem: "calendar",
-          data: data
+          data: heatmapData
             .sort(function (a, b) {
               return b[1] - a[1];
             })
@@ -244,114 +241,103 @@ function initheatchart(): void {
   }
 }
 
-function initProgress(index: number): void {
-  if (progressRef.value ) {
+function initProgress(index: number, progressData): void {
+  if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
     const option: echarts.EChartsOption = {
-      backgroundColor:"#17326b",
-			grid:{
-				left:"10",
-				top:"10",
-				right:"0",
-				bottom:"10",
-				containLabel:true
-			},
-			xAxis: {
-				type: 'value',
-				splitLine:{show:false},
-				axisLabel:{show:false},
-				axisTick:{show:false},
-				axisLine:{show:false}
-			},
-			yAxis:[
-			   {
-					type: 'category',
-					axisTick:{show:false},
-					axisLine:{show:false},
-					axisLabel:{
-						color:"black",
-						fontSize:14,
-
-					},
-					data:["苹果","香蕉","橘子","梨子","葡萄","柿子","草莓","蓝莓","柚子","橙子"],
-					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
-					 inverse:true
-				},
-				 {
-					type: 'category',
-					axisTick:{show:false},
-					axisLine:{show:false},
-					axisLabel:{
-						color:"black",
-						fontSize:14,
-
-					},
-					data:[702,350,800,600,550,700,600,800,900,600],
-					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
-					inverse:true
-				}
-			],
-			series: [
-			  {
-				name:"条",
-				type:"bar",
-				barWidth:19,
-				data:[80,40,60,10,80,50,70,80,90,60],
-				barCategoryGap:20,
-				itemStyle:{
-
-
-						color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-						  offset: 0,
-						  color: '#22b6ed'
-						}, {
-						  offset: 1,
-						  color: '#3fE279'
-						}]),
-
-				},
-				zlevel:1
-
-			  },{
-				  name:"进度条背景",
-				  type:"bar",
-				  barGap:"-100%",
-				  barWidth:19,
-				  data:[100,100,100,100,100,100,100,100,100,100],
-				  color:"#2e5384",
-				  itemStyle:{
-
-				  },
-			  }
-			]
-		};
-    progress.setOption(option);
+      backgroundColor: "#17326b",
+      grid: {
+        left: "10",
+        top: "10",
+        right: "0",
+        bottom: "10",
+        containLabel: true,
+      },
+      xAxis: {
+        type: "value",
+        splitLine: { show: false },
+        axisLabel: { show: false },
+        axisTick: { show: false },
+        axisLine: { show: false },
+      },
+      yAxis: [
+        {
+          type: "category",
+          axisTick: { show: false },
+          axisLine: { show: false },
+          axisLabel: {
+            color: "black",
+            fontSize: 14,
+          },
+          data: progressData.data1,
+          max: 10, // 关键：设置y刻度最大值，相当于设置总体行高
+          inverse: true,
+        },
+        {
+          type: "category",
+          axisTick: { show: false },
+          axisLine: { show: false },
+          axisLabel: {
+            color: "black",
+            fontSize: 14,
+          },
+          data: progressData.data2,
+          max: 10, // 关键：设置y刻度最大值，相当于设置总体行高
+          inverse: true,
+        },
+      ],
+      series: [
+        {
+          name: "条",
+          type: "bar",
+          barWidth: 19,
+          data: progressData.data3,
+          barCategoryGap: 20,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              {
+                offset: 0,
+                color: "#22b6ed",
+              },
+              {
+                offset: 1,
+                color: "#3fE279",
+              },
+            ]),
+          },
+          zlevel: 1,
+        },
+        {
+          name: "进度条背景",
+          type: "bar",
+          barGap: "-100%",
+          barWidth: 19,
+          data: progressData.data4,
+          color: "#2e5384",
+          itemStyle: {},
+        },
+      ],
     };
-   }
+    progress.setOption(option);
+  }
+}
 
+// 在 setup 函数内使用 ref 创建一个响应式变量，用于存储从后端获取的数据
+const responseData = ref(null);
 
-
-
-
-onMounted(() => {
-  initChart();
-});
-
-// 通过ref获取信息的示例
-const fetchData = async () => {
-  // 从后端API获取数据
+onMounted(async () => {
+  // 在组件挂载后使用 axios 发送请求获取数据
   try {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/todos/1",
-    );
-    console.log(response.data);
+    const response = await axios.get("/dicts/:dictId/learn/review/qwerty");
+    // 将获取到的数据存储在响应式变量 responseData 中
+    responseData.value = response.data;
+    // 在数据获取后调用 initChart 函数
+    initChart(responseData.value);
   } catch (error) {
     console.error(error);
   }
-};
-
-fetchData();
+});
 </script>
 
 <style>
