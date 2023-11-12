@@ -1,7 +1,7 @@
 <template>
   <el-container direction="vertical" class="statisticsContainer">
     <el-main id="barCharts">
-      <el-row>
+      <el-row id="firstRow">
         <el-col v-for="task in tasks" :span="8"
           ><div
             class="barChart"
@@ -10,15 +10,15 @@
         ></el-col>
       </el-row>
     </el-main>
-    <el-main id="secondRow">
-      <el-row>
-        <el-col :span="12"
+    <el-main>
+      <el-row id="secondRow" :gutter="10">
+        <el-col :span="8" id="heatMapCol"
           ><div
             id="heatMap"
             :ref="(ele) => (heatMapRef = ele as HTMLElement)"
           ></div
         ></el-col>
-        <el-col :span="12">
+        <el-col :span="16" id="progressCol">
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
             class="progress"
@@ -128,8 +128,12 @@ function getheatmapVirtualData() {
 
   const startMonth = currentDate.getMonth() - 2; // Get the starting month (three months ago)
   currentDate.setMonth(startMonth); // Set the date to three months ago
-  const date = +echarts.time.parse(echarts.time.format(currentDate, "{yyyy}-{MM}-01",false));
-  const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-31",false));
+  const date = +echarts.time.parse(
+    echarts.time.format(currentDate, "{yyyy}-{MM}-01", false),
+  );
+  const end = +echarts.time.parse(
+    echarts.time.format(new Date(), "{yyyy}-{MM}-31", false),
+  );
   const dayTime = 3600 * 24 * 1000;
   const data: [string, number][] = [];
 
@@ -143,25 +147,23 @@ function getheatmapVirtualData() {
   return data;
 }
 
-
-
 // const currentMonth = new Date().getMonth();
 
 const currentDate = new Date();
 const startOfMonth = new Date(
   currentDate.getFullYear(),
   currentDate.getMonth() - 2,
-  1
+  1,
 );
 const data = getheatmapVirtualData();
 
 function initheatchart(): void {
   if (heatMapRef.value) {
     console.log("yes");
-    heatMap = echarts.init(heatMapRef.value,isDark?'Dark':'default');
+    heatMap = echarts.init(heatMapRef.value, isDark ? "Dark" : "default");
 
     const option: echarts.EChartsOption = {
-      backgroundColor: "#404a59",
+      // backgroundColor: "#404a59",
 
       tooltip: {
         trigger: "item",
@@ -176,10 +178,12 @@ function initheatchart(): void {
       },
       calendar: [
         {
-          top: 100,
+          top: 80,
           left: "center",
-          range: [echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}",false),
-  echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}",false)],
+          range: [
+            echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
+            echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
+          ],
           splitLine: {
             show: true,
             lineStyle: {
@@ -198,7 +202,6 @@ function initheatchart(): void {
             borderColor: "#111",
           },
         },
-
       ],
       series: [
         {
@@ -213,7 +216,6 @@ function initheatchart(): void {
             color: "#409EFF",
           },
         },
-
 
         {
           name: "diligent days",
@@ -245,97 +247,98 @@ function initheatchart(): void {
 }
 
 function initProgress(index: number): void {
-  if (progressRef.value ) {
+  if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
     const option: echarts.EChartsOption = {
-      backgroundColor:"#17326b",
-			grid:{
-				left:"10",
-				top:"10",
-				right:"0",
-				bottom:"10",
-				containLabel:true
-			},
-			xAxis: {
-				type: 'value',
-				splitLine:{show:false},
-				axisLabel:{show:false},
-				axisTick:{show:false},
-				axisLine:{show:false}
-			},
-			yAxis:[
-			   {
-					type: 'category',
-					axisTick:{show:false},
-					axisLine:{show:false},
-					axisLabel:{
-						color:"black",
-						fontSize:14,
-
-					},
-					data:["苹果","香蕉","橘子","梨子","葡萄","柿子","草莓","蓝莓","柚子","橙子"],
-					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
-					 inverse:true
-				},
-				 {
-					type: 'category',
-					axisTick:{show:false},
-					axisLine:{show:false},
-					axisLabel:{
-						color:"black",
-						fontSize:14,
-
-					},
-					data:[702,350,800,600,550,700,600,800,900,600],
-					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
-					inverse:true
-				}
-			],
-			series: [
-			  {
-				name:"条",
-				type:"bar",
-				barWidth:19,
-				data:[80,40,60,10,80,50,70,80,90,60],
-				barCategoryGap:20,
-				itemStyle:{
-
-
-						color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-						  offset: 0,
-						  color: '#22b6ed'
-						}, {
-						  offset: 1,
-						  color: '#3fE279'
-						}]),
-
-				},
-				zlevel:1
-
-			  },{
-				  name:"进度条背景",
-				  type:"bar",
-				  barGap:"-100%",
-				  barWidth:19,
-				  data:[100,100,100,100,100,100,100,100,100,100],
-				  color:"#2e5384",
-				  itemStyle:{
-
-				  },
-			  }
-			]
-		};
-    progress.setOption(option);
+      // backgroundColor:"#17326b",
+      grid: {
+        left: "10",
+        top: "10",
+        right: "0",
+        bottom: "10",
+        containLabel: true,
+      },
+      xAxis: {
+        type: "value",
+        splitLine: { show: true },
+        axisLabel: { show: true },
+        axisTick: { show: false },
+        axisLine: { show: false },
+      },
+      yAxis: [
+        {
+          type: "category",
+          axisTick: { show: false },
+          axisLine: { show: false },
+          axisLabel: {
+            color: "black",
+            fontSize: 14,
+          },
+          data: [
+            "Japanese N3",
+            "English TOFFL",
+            "English CET-6",
+            "English 3500",
+          ],
+          max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
+          inverse: true,
+        },
+        {
+          type: "category",
+          axisTick: { show: false },
+          axisLine: { show: false },
+          axisLabel: {
+            color: "black",
+            fontSize: 14,
+          },
+          data: [702, 350, 800, 600],
+          max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
+          inverse: true,
+        },
+      ],
+      series: [
+        {
+          name: "条",
+          type: "bar",
+          barWidth: 19,
+          data: [80, 40, 60, 10],
+          barCategoryGap: 20,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              {
+                offset: 0,
+                color: "#22b6ed",
+              },
+              {
+                offset: 1,
+                color: "#3fE279",
+              },
+            ]),
+            borderRadius: 10,
+          },
+          zlevel: 1,
+        },
+        {
+          name: "进度条背景",
+          type: "bar",
+          barGap: "-100%",
+          barWidth: 19,
+          data: [100, 100, 100, 100],
+          color: "#2e5384",
+          itemStyle: {
+            barBorderRadius: 10,
+          },
+        },
+      ],
     };
-   }
-
-
-
-
+    progress.setOption(option);
+  }
+}
 
 onMounted(() => {
   initChart();
+  window;
 });
 
 // 通过ref获取信息的示例
@@ -366,28 +369,39 @@ fetchData();
   flex: 1;
 }
 
+#firstRow {
+  align-items: center;
+  width: 95vw;
+}
+
 #secondRow {
   flex: 1;
-  background-color: #d9ecff;
+  background-color: #a0cfff;
   border-radius: 20px;
-  width: 100vw;
-  height: 100vh;
+  align-items: center;
+  justify-items: center;
+  width: 92vw;
+  height: 38vh;
+  padding: 10px;
+  margin: 0 15px;
+  margin-bottom: 20px;
+}
+
+html.dark #secondRow {
+  background-color: #337ecc;
 }
 
 .barChart {
   width: 32vw;
-  height: 50vh;
+  height: 45vh;
 }
 
 #heatMap {
-  flex: 1;
-  width: 50vm;
-  height: 100vh;
+  height: 32vh;
 }
 
 .progress {
-  flex: 2;
-  width: 50vm;
-  height: 100vh;
+  width: 55vw;
+  height: 32vh;
 }
 </style>
