@@ -8,6 +8,8 @@
             :ref="(ele) => (barChartsRef[task] = ele as HTMLElement)"
           ></div
         ></el-col>
+        <el-col v-for="task in tasks" :span="8"
+          > {{ $t(`statistics.bar${Task[task]}`) }} </el-col>
       </el-row>
     </el-main>
     <el-main>
@@ -100,6 +102,9 @@ function initbarchart(task: Task): void {
     console.log(barChartsRef[task]);
     barCharts[task] = echarts.init(barChartsRef[task]);
     const option: echarts.EChartsOption = {
+      grid: {
+        bottom: 30,
+      },
       xAxis: {
         type: "category",
         data: getVirtualData().map((item) => item[0]), // 获取虚拟数据中的第一个元素作为x轴数据
@@ -397,7 +402,7 @@ html.dark #secondRow {
 
 .barChart {
   width: 32vw;
-  height: 45vh;
+  height: 42vh;
 }
 
 #heatMap {

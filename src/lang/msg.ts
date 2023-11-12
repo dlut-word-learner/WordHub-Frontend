@@ -14,6 +14,7 @@ export const messages = {
       confirm: "确定",
       cancel: "取消",
       userInfo: "个人资料",
+      statistics: "统计信息",
     },
     login: {
       userLogin: "用户登录",
@@ -163,6 +164,12 @@ export const messages = {
         errPrompt: "注销失败，请检查网络是否正常",
       },
     },
+    statistics: {
+      recentMonths: "最近三个月",
+      barLearn: "学习记录",
+      barReview: "复习记录",
+      barQwertyMode: "Qwerty记录",
+    },
   },
   en: {
     app: {
@@ -179,6 +186,7 @@ export const messages = {
       confirm: "Confirm",
       cancel: "Cancel",
       userInfo: "My Profile",
+      statistics: "Statistics",
     },
     login: {
       userLogin: "User Login",
@@ -337,6 +345,11 @@ export const messages = {
         errPrompt: "Failed to delete, please check your network status",
       },
     },
+    statistics: {
+      recentMonths: "Recent 3 Months",
+      steps: "Steps",
+      diligentDays: "Diligent Days",
+    },
   },
   ja: {
     app: {
@@ -353,6 +366,7 @@ export const messages = {
       confirm: "確認",
       cancel: "キャンセル",
       userInfo: "ユーザー情報",
+      statistics: "統計情報",
     },
     login: {
       userLogin: "ユーザーログイン",
@@ -512,6 +526,9 @@ export const messages = {
         errPrompt:
           "削除に失敗しました。ネットワークが正常かどうかを確認してください",
       },
+    },
+    statistics: {
+      recentMonths: "ここ三ヶ月",
     },
   },
 };
