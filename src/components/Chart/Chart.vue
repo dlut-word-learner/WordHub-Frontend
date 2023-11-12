@@ -1,5 +1,5 @@
 <template>
-  <el-container direction="vertical" class="statisticsContainer">
+  <el-container direction="vertical" id="statisticsContainer">
     <el-main id="barCharts">
       <el-row id="firstRow">
         <el-col v-for="task in tasks" :span="8"
@@ -11,7 +11,7 @@
       </el-row>
     </el-main>
     <el-main>
-      <el-row id="secondRow" :gutter="10">
+      <el-row id="secondRow" :gutter="0">
         <el-col :span="8" id="heatMapCol"
           ><div
             id="heatMap"
@@ -37,6 +37,8 @@ import { useHistoryStore } from "../../store/historyStore";
 import { Task } from "../../store/taskStore";
 import { DictVo } from "../Dicts/common";
 import { isDark } from "../../main";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const progressNum = 3;
 const historyStore = useHistoryStore();
@@ -76,7 +78,7 @@ const initChart = () => {
     //   } else break;
     // }
   }
-  initheatchart();
+  initHeatMap();
   initProgress(1);
 };
 //for bar chart ,generate fake datas.
@@ -157,29 +159,30 @@ const startOfMonth = new Date(
 );
 const data = getheatmapVirtualData();
 
-function initheatchart(): void {
+function initHeatMap(): void {
   if (heatMapRef.value) {
     console.log("yes");
-    heatMap = echarts.init(heatMapRef.value, isDark ? "Dark" : "default");
+    heatMap = echarts.init(heatMapRef.value);
 
     const option: echarts.EChartsOption = {
       // backgroundColor: "#404a59",
-
       tooltip: {
         trigger: "item",
       },
-      legend: {
-        top: "30",
-        left: "100",
-        data: ["Steps", "diligent days"],
-        textStyle: {
-          color: "#fff",
-        },
-      },
+      // legend: {
+      //   top: "0",
+      //   left: "0",
+      //   data: ["Steps", "diligent days"],
+      //   textStyle: {
+      //     color: "#fff",
+      //   },
+      // },
       calendar: [
         {
-          top: 80,
-          left: "center",
+          // top: 20,
+          // left: "center",
+          // right: 50,
+          cellSize: 24,
           range: [
             echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
             echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
@@ -187,17 +190,19 @@ function initheatchart(): void {
           splitLine: {
             show: true,
             lineStyle: {
-              color: "#000",
-              width: 4,
+              // color: "#000",
+              width: 2,
               type: "solid",
             },
           },
           yearLabel: {
-            formatter: " recent 3 months",
+            formatter: t("statistics.recentMonths"),
+            position: "bottom",
             color: "#fff",
+            fontSize: 16,
           },
           itemStyle: {
-            color: "#323c48",
+            color: isDark.value ? "#337ecc" : "#c6e2ff",
             borderWidth: 1,
             borderColor: "#111",
           },
@@ -205,7 +210,7 @@ function initheatchart(): void {
       ],
       series: [
         {
-          name: "Steps",
+          name: t("statistics.steps"),
           type: "scatter",
           coordinateSystem: "calendar",
           data: data,
@@ -213,12 +218,12 @@ function initheatchart(): void {
             return val[1] / 500;
           },
           itemStyle: {
-            color: "#409EFF",
+            // color: "#409EFF",
           },
         },
 
         {
-          name: "diligent days",
+          name: t("statistics.diligentDays"),
           type: "effectScatter",
           coordinateSystem: "calendar",
           data: data
@@ -246,7 +251,7 @@ function initheatchart(): void {
   }
 }
 
-function initProgress(index: number): void {
+function initProgress(): void {
   if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
@@ -327,7 +332,7 @@ function initProgress(index: number): void {
           data: [100, 100, 100, 100],
           color: "#2e5384",
           itemStyle: {
-            barBorderRadius: 10,
+            borderRadius: 10,
           },
         },
       ],
@@ -338,7 +343,6 @@ function initProgress(index: number): void {
 
 onMounted(() => {
   initChart();
-  window;
 });
 
 // 通过ref获取信息的示例
@@ -359,7 +363,7 @@ fetchData();
 
 <style>
 /* 在这里放置你的样式 */
-.statisticsContainer {
+#statisticsContainer {
   align-items: center;
   align-content: center;
   width: 100%;
