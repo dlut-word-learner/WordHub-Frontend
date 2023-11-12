@@ -41,6 +41,7 @@ import { Task } from "../../store/taskStore";
 import { DictVo } from "../Dicts/common";
 import { isDark } from "../../main";
 import { useI18n } from "vue-i18n";
+import { onUnmounted } from "vue";
 const { t } = useI18n();
 
 const progressNum = 3;
@@ -64,25 +65,15 @@ let progress: echarts.ECharts;
 // 声明要从后端API取得的数据
 
 const initChart = () => {
-  console.log("heatMapRef: ");
-  console.log(heatMapRef.value);
-  console.log("progressRef: ");
-  console.log(progressRef.value);
+  // console.debug("heatMapRef: ");
+  // console.debug(heatMapRef.value);
+  // console.debug("progressRef: ");
+  // console.debug(progressRef.value);
   for (const task of tasks) {
     initbarchart(task);
   }
-  if (progressRef) {
-    progress = echarts.init(progressRef.value);
-    // for (let i = 0; i < 10; i++) {
-    //   if (progressRef[i] != undefined) {
-    //     console.debug("recentlyUsed: " + i);
-
-    //     initProgress(i);
-    //   } else break;
-    // }
-  }
   initHeatMap();
-  initProgress(1);
+  initProgress();
 };
 //for bar chart ,generate fake datas.
 function getVirtualData(): Array<[string, string]> {
@@ -99,8 +90,8 @@ function getVirtualData(): Array<[string, string]> {
 
 function initbarchart(task: Task): void {
   if (barChartsRef[task]) {
-    console.log(task);
-    console.log(barChartsRef[task]);
+    // console.log(task);
+    // console.log(barChartsRef[task]);
     barCharts[task] = echarts.init(barChartsRef[task]);
     const option: echarts.EChartsOption = {
       grid: {
@@ -145,10 +136,11 @@ function getheatmapVirtualData() {
   const dayTime = 3600 * 24 * 1000;
   const data: [string, number][] = [];
 
+  const maxData = 50;
   for (let time = date; time < end; time += dayTime) {
     data.push([
       echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
-      Math.floor(Math.random() * 10000),
+      Math.floor(Math.random()*maxData),
     ]);
   }
 
@@ -167,27 +159,14 @@ const data = getheatmapVirtualData();
 
 function initHeatMap(): void {
   if (heatMapRef.value) {
-    console.log("yes");
     heatMap = echarts.init(heatMapRef.value);
 
     const option: echarts.EChartsOption = {
-      // backgroundColor: "#404a59",
       tooltip: {
         trigger: "item",
       },
-      // legend: {
-      //   top: "0",
-      //   left: "0",
-      //   data: ["Steps", "diligent days"],
-      //   textStyle: {
-      //     color: "#fff",
-      //   },
-      // },
       calendar: [
         {
-          // top: 20,
-          // left: "center",
-          // right: 50,
           cellSize: 24,
           range: [
             echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
@@ -221,7 +200,7 @@ function initHeatMap(): void {
           coordinateSystem: "calendar",
           data: data,
           symbolSize: function (val) {
-            return val[1] / 500;
+            return val[1] / 3;
           },
           itemStyle: {
             color: isDark.value ? "#b3e19d" : "#409EFF",
@@ -238,14 +217,14 @@ function initHeatMap(): void {
             })
             .slice(0, 6),
           symbolSize: function (val) {
-            return val[1] / 500;
+            return val[1] / 3;
           },
           showEffectOn: "render",
           rippleEffect: {
             brushType: "stroke",
           },
           itemStyle: {
-            color: "#eebe77",
+            color: isDark.value ? "#eebe77" : "#f4e925",
             shadowBlur: 10,
             shadowColor: "#333",
           },
@@ -259,10 +238,8 @@ function initHeatMap(): void {
 
 function initProgress(): void {
   if (progressRef.value) {
-    // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
     const option: echarts.EChartsOption = {
-      // backgroundColor:"#17326b",
       grid: {
         left: "10",
         top: "10",
@@ -351,8 +328,19 @@ function initProgress(): void {
   }
 }
 
+function handleResize() {
+  barCharts.forEach(x => x.resize()); 
+  progress.resize();
+  heatMap.resize();
+}
 onMounted(() => {
   initChart();
+  window.addEventListener("resize", handleResize);
+});
+
+onUnmounted(() => {
+  // 卸载echarts实例
+  window.removeEventListener("resize", handleResize);
 });
 
 // 通过ref获取信息的示例
