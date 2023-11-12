@@ -8,8 +8,9 @@
             :ref="(ele) => (barChartsRef[task] = ele as HTMLElement)"
           ></div
         ></el-col>
-        <el-col v-for="task in tasks" :span="8"
-          > {{ $t(`statistics.bar${Task[task]}`) }} </el-col>
+        <el-col v-for="task in tasks" :span="8">
+          {{ $t(`statistics.bar${Task[task]}`) }}
+        </el-col>
       </el-row>
     </el-main>
     <el-main>
@@ -203,7 +204,7 @@ function initHeatMap(): void {
           yearLabel: {
             formatter: t("statistics.recentMonths"),
             position: "bottom",
-            color: "#fff",
+            color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 16,
           },
           itemStyle: {
@@ -223,7 +224,7 @@ function initHeatMap(): void {
             return val[1] / 500;
           },
           itemStyle: {
-            // color: "#409EFF",
+            color: isDark.value ? "#b3e19d" : "#409EFF",
           },
         },
 
@@ -244,7 +245,7 @@ function initHeatMap(): void {
             brushType: "stroke",
           },
           itemStyle: {
-            color: "#f4e925",
+            color: "#eebe77",
             shadowBlur: 10,
             shadowColor: "#333",
           },
@@ -272,7 +273,10 @@ function initProgress(): void {
       xAxis: {
         type: "value",
         splitLine: { show: true },
-        axisLabel: { show: true },
+        axisLabel: {
+          show: true,
+          color: isDark.value ? "#E5EAF3" : "#000000",
+        },
         axisTick: { show: false },
         axisLine: { show: false },
       },
@@ -282,7 +286,7 @@ function initProgress(): void {
           axisTick: { show: false },
           axisLine: { show: false },
           axisLabel: {
-            color: "black",
+            color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 14,
           },
           data: [
@@ -299,7 +303,7 @@ function initProgress(): void {
           axisTick: { show: false },
           axisLine: { show: false },
           axisLabel: {
-            color: "black",
+            color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 14,
           },
           data: [702, 350, 800, 600],
@@ -335,9 +339,10 @@ function initProgress(): void {
           barGap: "-100%",
           barWidth: 19,
           data: [100, 100, 100, 100],
-          color: "#2e5384",
+          color: isDark.value ? "#2e5384" : "#dedfe0",
           itemStyle: {
             borderRadius: 10,
+            opacity: 0.45,
           },
         },
       ],
