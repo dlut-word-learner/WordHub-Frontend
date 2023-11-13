@@ -292,6 +292,7 @@ function finish(): void {
 }
 
 function goBack(): void {
+  excludeCache.value = Task[taskStore.type];
   taskStore.type = Task.None;
   router.push("/dicts");
 }

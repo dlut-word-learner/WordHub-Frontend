@@ -44,18 +44,20 @@ import { useLoginStore } from "../../store/loginStore";
 import { concatDate, progressVo } from "./Chart";
 import axios from "axios";
 
-import * as echarts from 'echarts/core';
-import { BarChart, ScatterChart, EffectScatterChart } from 'echarts/charts';
-import { TooltipComponent, CalendarComponent } from 'echarts/components';
-import { CanvasRenderer } from 'echarts/renderers';
+import * as echarts from "echarts/core";
+import { BarChart, ScatterChart, EffectScatterChart } from "echarts/charts";
+import { TooltipComponent, CalendarComponent } from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
 
-import type { BarSeriesOption, EffectScatterSeriesOption, ScatterSeriesOption } from 'echarts/charts';
-import type { ComposeOption } from 'echarts/core';
+import type {
+  BarSeriesOption,
+  EffectScatterSeriesOption,
+  ScatterSeriesOption,
+} from "echarts/charts";
+import type { ComposeOption } from "echarts/core";
 
 type ECOption = ComposeOption<
-  | BarSeriesOption
-  | ScatterSeriesOption
-  | EffectScatterSeriesOption
+  BarSeriesOption | ScatterSeriesOption | EffectScatterSeriesOption
 >;
 
 echarts.use([
@@ -64,7 +66,7 @@ echarts.use([
   BarChart,
   ScatterChart,
   EffectScatterChart,
-  CanvasRenderer
+  CanvasRenderer,
 ]);
 
 const { t } = useI18n();
