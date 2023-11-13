@@ -15,7 +15,6 @@ export const messages = {
       cancel: "取消",
       userInfo: "个人资料",
       statistics: "统计信息",
-      statistics: "统计信息",
     },
     login: {
       userLogin: "用户登录",
@@ -172,6 +171,9 @@ export const messages = {
       barQwertyMode: "Qwerty记录",
       steps: "日常",
       diligentDays: "高光",
+      studied: "学习过",
+      mastered: "掌握",
+      totalWords: "总词数",
     },
   },
   en: {
@@ -349,9 +351,15 @@ export const messages = {
       },
     },
     statistics: {
+      barLearn: "Learn Record",
+      barReview: "Review Record",
+      barQwertyMode: "Qwerty Record",
       recentMonths: "Recent 3 Months",
       steps: "Steps",
       diligentDays: "Diligent Days",
+      studied: "studied",
+      mastered: "mastered",
+      totalWords: "total words",
     },
   },
   ja: {
@@ -531,9 +539,15 @@ export const messages = {
       },
     },
     statistics: {
+      barLearn: "学習 記録",
+      barReview: "レビュー 記録",
+      barQwertyMode: "Qwerty 記録",
       recentMonths: "ここ三ヶ月",
       diligentDays: "勤勉な日々",
       steps: "ステップ",
+      studied: "学んだ",
+      mastered: "マスターした",
+      totalWords: "総単語数",
     },
   },
 };

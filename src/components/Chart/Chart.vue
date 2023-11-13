@@ -42,10 +42,13 @@ import { DictVo } from "../Dicts/common";
 import { isDark } from "../../main";
 import { useI18n } from "vue-i18n";
 import { onUnmounted } from "vue";
+import { useLoginStore } from "../../store/loginStore";
+import { concatDate, progressVo } from "./Chart";
 const { t } = useI18n();
 
 const progressNum = 3;
 const historyStore = useHistoryStore();
+const loginStore = useLoginStore();
 const dictsToGenerateProgress: DictVo[] = historyStore.recentlyUsedDicts.slice(
   0,
   progressNum,
@@ -63,50 +66,50 @@ let barCharts = new Map<Task, echarts.ECharts>();
 let progress: echarts.ECharts;
 
 // 声明要从后端API取得的数据
-
-const initChart = (responseData) => {
-  // console.debug("heatMapRef: ");
-  // console.debug(heatMapRef.value);
-  // console.debug("progressRef: ");
-  // console.debug(progressRef.value);
-  for (const task of tasks) {
-    initbarchart(task, responseData.virtualData);
-  }
-  initheatchart(responseData.responseData);
-  initProgress(1, responseData.progressData);
+let barChartData = new Map<Task, [string, number][]>();
+const heatmapDuration = 90;
+let heatmapData: [string, number][] = [];
+interface progressModel {
+  name: string[];
+  sum: number[];
+  studied: number[];
+  mastered: number[];
+}
+let progressData: progressModel = {
+  name: [],
+  sum: [],
+  studied: [],
+  mastered: [],
 };
-// //for bar chart ,generate fake datas.
-// function getVirtualData(): Array<[string, string]> {
-//   const data: Array<[string, string]> = []; // 声明一个数组，其中的元素是键值对数组
 
-//   for (let i = 1; i <= 30; i++) {
-//     const date = `11/${i < 10 ? "0" + i : i}`; // 格式化日期字符串，补全个位数日期
-//     const randomValue = Math.floor(Math.random() * 10000).toString(); // 生成随机数并转换为字符串
-//     data.push([date, randomValue]); // 将键值对推入data数组中
-//   }
-
-//   return data;
-// }
-
-function initbarchart(task: Task, virtualData): void {
+function initbarchart(task: Task): void {
   if (barChartsRef[task]) {
     // console.log(task);
     // console.log(barChartsRef[task]);
     barCharts[task] = echarts.init(barChartsRef[task]);
     const option: echarts.EChartsOption = {
+      tooltip: {
+        trigger: "item",
+      },
       grid: {
         bottom: 30,
       },
       xAxis: {
         type: "category",
-        data: virtualData.map((item) => item[0]), // 获取虚拟数据中的第一个元素作为x轴数据
+        show: false,
+        // data: barChartData[task].map((x: [string, number])=>{x[0]}), // 获取虚拟数据中的第一个元素作为x轴数据
       },
       yAxis: {
         type: "value",
       },
       series: [
         {
-          data: virtualData.map((item) => ({
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "#83bff6" },
+            { offset: 0.7, color: "#188df0" },
+            { offset: 1, color: "#188df0" },
+          ]),
+          data: barChartData[task].map((item) => ({
             name: item[0], // 使用日期作为名称
             value: parseInt(item[1]), // 将随机数字符串转换为整数
           })),
@@ -115,34 +118,15 @@ function initbarchart(task: Task, virtualData): void {
           backgroundStyle: {
             color: "rgba(180, 180, 180, 0.2)",
           },
+          emphasis: {
+            focus: "series",
+          },
         },
       ],
     };
     barCharts[task].setOption(option);
   }
 }
-// // heatmap生成模拟数据的函数
-// function getheatmapVirtualData() {
-//   const currentDate = new Date();
-
-//   const startMonth = currentDate.getMonth() - 2; // Get the starting month (three months ago)
-//   currentDate.setMonth(startMonth); // Set the date to three months ago
-//   const date = +echarts.time.parse(echarts.time.format(currentDate, "{yyyy}-{MM}-01",false));
-//   const end = +echarts.time.parse(echarts.time.format(new Date(), "{yyyy}-{MM}-31",false));
-//   const dayTime = 3600 * 24 * 1000;
-//   const data: [string, number][] = [];
-
-//   for (let time = date; time < end; time += dayTime) {
-//     data.push([
-//       echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
-//       Math.floor(Math.random() * 10000),
-//     ]);
-//   }
-
-//   return data;
-// }
-
-// const currentMonth = new Date().getMonth();
 
 const currentDate = new Date();
 const startOfMonth = new Date(
@@ -151,7 +135,7 @@ const startOfMonth = new Date(
   1,
 );
 
-function initheatchart(heatmapData): void {
+function initheatchart(heatmapData, duration: number): void {
   if (heatMapRef.value) {
     console.log("yes");
     heatMap = echarts.init(heatMapRef.value);
@@ -231,11 +215,14 @@ function initheatchart(heatmapData): void {
   }
 }
 
-function initProgress(index: number, progressData): void {
+function initProgress(): void {
   if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
     const option: echarts.EChartsOption = {
+      tooltip: {
+        trigger: "item",
+      },
       grid: {
         left: "10",
         top: "10",
@@ -262,7 +249,7 @@ function initProgress(index: number, progressData): void {
             color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 14,
           },
-          data: progressData.data1,
+          data: progressData.name,
           max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
           inverse: true,
         },
@@ -274,17 +261,17 @@ function initProgress(index: number, progressData): void {
             color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 14,
           },
-          data: progressData.data2,
+          data: progressData.sum,
           max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
           inverse: true,
         },
       ],
       series: [
         {
-          name: "条",
+          name: t("statistics.studied"),
           type: "bar",
           barWidth: 19,
-          data: progressData.data3,
+          data: progressData.studied,
           barCategoryGap: 20,
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
@@ -302,11 +289,32 @@ function initProgress(index: number, progressData): void {
           zlevel: 1,
         },
         {
-          name: "进度条背景",
+          name: t("statistics.mastered"),
+          type: "bar",
+          barWidth: 19,
+          data: progressData.mastered,
+          barCategoryGap: 20,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              {
+                offset: 0,
+                color: "#f89898",
+              },
+              {
+                offset: 1,
+                color: "#eebe77",
+              },
+            ]),
+            borderRadius: 10,
+          },
+          zlevel: 2,
+        },
+        {
+          name: t("statistics.totalWords"),
           type: "bar",
           barGap: "-100%",
           barWidth: 19,
-          data: progressData.data4,
+          data: progressData.sum,
           color: isDark.value ? "#2e5384" : "#dedfe0",
           itemStyle: {
             borderRadius: 10,
@@ -320,17 +328,23 @@ function initProgress(index: number, progressData): void {
 }
 
 function handleResize() {
-  barCharts.forEach(x => x.resize()); 
+  barCharts.forEach((x) => x.resize());
   progress.resize();
   heatMap.resize();
 }
-onMounted(() => {
-  initChart();
+onMounted(async () => {
+  // initChart();
+  await fetchData();
+  console.log("barChartData: ", barChartData);
+  console.log("heatmapData: ", heatmapData);
+  console.log("progressData: ", progressData);
+  for (const task of tasks) {
+    initbarchart(task);
+  }
+  initheatchart(heatmapData, heatmapDuration);
+  initProgress();
   window.addEventListener("resize", handleResize);
 });
-
-// 在 setup 函数内使用 ref 创建一个响应式变量，用于存储从后端获取的数据
-const responseData = ref(null);
 
 onUnmounted(() => {
   // 卸载echarts实例
@@ -341,15 +355,58 @@ onUnmounted(() => {
 const fetchData = async () => {
   // 从后端API获取数据
   try {
-    const response = await axios.get("/dicts/:dictId/learn/review/qwerty");
-    // 将获取到的数据存储在响应式变量 responseData 中
-    responseData.value = response.data;
-    // 在数据获取后调用 initChart 函数
-    initChart(responseData.value);
+    // 分别获取学习、复习、qwerty三个柱状图的数据
+    for (const task of tasks) {
+      barChartData[task] = concatDate(
+        (await axios.get(`/api/users/1/study-rec/${Task[task]}`))
+          .data as number[],
+      );
+    }
+
+    // 获取热力图数据
+    let heatmapData1 = (
+      await axios.get(
+        `/api/users/${loginStore.userVo?.id}/study-rec?duration=${heatmapDuration}`,
+      )
+    ).data;
+    heatmapData = concatDate(heatmapData1);
+
+    // 没有最近单词，则生成假数据
+    if (dictsToGenerateProgress.length == 0) {
+      dictsToGenerateProgress.push({
+        id: 1,
+        language: "English",
+        name: "3500",
+      });
+      dictsToGenerateProgress.push({
+        id: 14,
+        language: "Japanese",
+        name: "N3",
+      });
+      dictsToGenerateProgress.push({
+        id: 2,
+        language: "English",
+        name: "CET-4",
+      });
+      dictsToGenerateProgress.push({
+        id: 8,
+        language: "English",
+        name: "CET-6",
+      });
+    }
+    // 对最近词库分别获取进度信息
+    for (const [index, dict] of dictsToGenerateProgress.entries()) {
+      const data = (await axios.get(`/api/dicts/${dict.id}/progress`))
+        .data as progressVo;
+      progressData.name.push(dict.name);
+      progressData.mastered.push(data.mastered);
+      progressData.sum.push(data.sum);
+      progressData.studied.push(data.studied);
+    }
   } catch (error) {
     console.error(error);
   }
-});
+};
 </script>
 
 <style>

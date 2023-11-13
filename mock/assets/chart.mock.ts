@@ -1,75 +1,80 @@
 // chart.mock.ts
 import { defineMock } from "vite-plugin-mock-dev-server";
 import Mock from "mockjs";
-import * as echarts from "echarts";
+import { Task } from "../../src/store/taskStore";
+import { progressVo } from "../../src/components/Chart/Chart";
 
 //for bar chart ,generate fake datas.
-function getVirtualData(): Array<[string, string]> {
-  const data: Array<[string, string]> = [];
+function getBarChartMockData(userId: number, task: Task): number[] {
+  const data: number[] = [];
 
   for (let i = 1; i <= 30; i++) {
-    const date = `11/${i < 10 ? "0" + i : i}`;
-    const randomValue = Math.floor(Math.random() * 10000).toString();
-    data.push([date, randomValue]);
+    const randomValue = Math.floor(Math.random() * 100);
+    data.push(randomValue);
   }
 
   return data;
 }
-function getheatmapVirtualData() {
-  const currentDate = new Date();
 
-  const startMonth = currentDate.getMonth() - 2;
-  currentDate.setMonth(startMonth);
-  const date = +echarts.time.parse(
-    echarts.time.format(currentDate, "{yyyy}-{MM}-01", false),
-  );
-  const end = +echarts.time.parse(
-    echarts.time.format(new Date(), "{yyyy}-{MM}-31", false),
-  );
-  const dayTime = 3600 * 24 * 1000;
-  const data: [string, number][] = [];
-
-  for (let time = date; time < end; time += dayTime) {
-    data.push([
-      echarts.time.format(time, "{yyyy}-{MM}-{dd}", false),
-      Math.floor(Math.random() * 10000),
-    ]);
+/**
+ * 获取过去duration天学习记录的Mock
+ * @param duration
+ */
+function getheatmapVirtualData(userId: number, duration: number): number[] {
+  let data: number[] = [];
+  for (let time = 0; time < duration; time++) {
+    data.push(Math.floor(Math.random() * 50));
   }
-
   return data;
 }
-function getprogressmockdata() {
-  const data1: string[] = [
-    "苹果",
-    "香蕉",
-    "橘子",
-    "梨子",
-    "葡萄",
-    "柿子",
-    "草莓",
-    "蓝莓",
-    "柚子",
-    "橙子",
-  ];
-  const data2: number[] = [702, 350, 800, 600, 550, 700, 600, 800, 900, 600];
-  const data3: number[] = [80, 40, 60, 10, 80, 50, 70, 80, 90, 60];
-  const data4: number[] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
 
-  return { data1, data2, data3, data4 };
+/**
+ * 获取某个词典的进度Mock
+ * @param dictId
+ */
+function getProgressMockData(dictId: number): progressVo {
+  const sum = Math.floor(
+    3500 + Math.random() * (Math.random() > 0.5 ? -1 : 1) * 2000,
+  );
+  const studied = Math.min(Math.floor(Math.random() * 2000), sum);
+  const mastered = Math.min(Math.floor(Math.random() * 1000), studied);
+  return { sum, studied, mastered };
 }
+
 export default defineMock([
   {
-    url: "/dicts/:dictId/learn/review/qwerty",
+    url: "/api/users/:userId/study-rec/:task",
     method: "GET",
     status: 200,
     enabled: true,
     type: "json",
     body: (request) => {
-      return {
-        virtualData: getVirtualData(),
-        responseData: getheatmapVirtualData(),
-        progressData: getprogressmockdata(),
-      };
+      const userId = request.params.userId as number;
+      const task = request.params.task as Task;
+      return getBarChartMockData(userId, task);
+    },
+  },
+  {
+    url: "/api/dicts/:dictId/progress",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: (request) => {
+      const id = request.params.dictId as number;
+      return getProgressMockData(id);
+    },
+  },
+  {
+    url: "/api/users/:userId/study-rec",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: (request) => {
+      const userId = request.params.userId as number;
+      const duration = request.query.duration as number;
+      return getheatmapVirtualData(userId, duration);
     },
   },
 ]);
