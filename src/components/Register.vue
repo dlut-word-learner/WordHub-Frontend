@@ -49,7 +49,9 @@
         <vueCropper ref="cropper" v-bind="option"></vueCropper>
       </div>
     </el-form>
-    <el-button @click="register" size="large">{{ $t("register.register") }}</el-button>
+    <el-button @click="register" size="large">
+      {{ $t("register.register") }}
+    </el-button>
   </div>
 </template>
 

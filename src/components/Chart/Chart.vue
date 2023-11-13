@@ -2,12 +2,12 @@
   <el-container direction="vertical" id="statisticsContainer">
     <el-main id="barCharts">
       <el-row id="firstRow">
-        <el-col v-for="task in tasks" :span="8"
-          ><div
+        <el-col v-for="task in tasks" :span="8">
+          <div
             class="barChart"
             :ref="(ele) => (barChartsRef[task] = ele as HTMLElement)"
-          ></div
-        ></el-col>
+          ></div>
+        </el-col>
         <el-col v-for="task in tasks" :span="8">
           {{ $t(`statistics.bar${Task[task]}`) }}
         </el-col>
@@ -15,12 +15,12 @@
     </el-main>
     <el-main>
       <el-row id="secondRow" :gutter="0">
-        <el-col :span="8" id="heatMapCol"
-          ><div
+        <el-col :span="8" id="heatMapCol">
+          <div
             id="heatMap"
             :ref="(ele) => (heatMapRef = ele as HTMLElement)"
-          ></div
-        ></el-col>
+          ></div>
+        </el-col>
         <el-col :span="16" id="progressCol">
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
@@ -136,7 +136,7 @@ const startOfMonth = new Date(
   1,
 );
 
-function initheatchart(heatmapData, duration: number): void {
+function initHeatMap(): void {
   if (heatMapRef.value) {
     console.log("yes");
     heatMap = echarts.init(heatMapRef.value);
@@ -348,7 +348,8 @@ onMounted(async () => {
   for (const task of tasks) {
     initbarchart(task);
   }
-  initheatchart(heatmapData, heatmapDuration);
+
+  initHeatMap();
   initProgress();
   window.addEventListener("resize", handleResize);
 });
@@ -405,10 +406,10 @@ const fetchData = async () => {
     for (const [index, dict] of dictsToGenerateProgress.entries()) {
       const data = (await axios.get(`/api/dicts/${dict.id}/progress`))
         .data as progressVo;
-      progressData.name.push(dict.name);
-      progressData.mastered.push(data.mastered);
-      progressData.sum.push(data.sum);
-      progressData.studied.push(data.studied);
+      progressData.name[index] = dict.name;
+      progressData.mastered[index] = data.mastered;
+      progressData.sum[index] = data.sum;
+      progressData.studied[index] = data.studied;
     }
   } catch (error) {
     console.error(error);
