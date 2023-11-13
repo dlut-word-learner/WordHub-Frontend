@@ -33,10 +33,10 @@ function getheatmapVirtualData(_userId: number, duration: number): number[] {
  */
 function getProgressMockData(_dictId: number): progressVo {
   const sum = Math.floor(
-    3500 + Math.random() * (Math.random() > 0.5 ? -1 : 1) * 2000,
+    2500 + Math.random() * (Math.random() > 0.5 ? -1 : 1) * 2000,
   );
-  const studied = Math.min(Math.floor(Math.random() * 2000), sum);
-  const mastered = Math.min(Math.floor(Math.random() * 1000), studied);
+  const studied = Math.floor(Math.random() * sum);
+  const mastered = Math.floor(Math.random() * studied);
   return { sum, studied, mastered };
 }
 

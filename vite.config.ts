@@ -17,7 +17,7 @@ export default defineConfig({
       dts: true,
     }),
     mockDevServerPlugin({
-      exclude: ["mock/**"],
+      // exclude: ["mock/**"],
     }),
   ],
   server: {
