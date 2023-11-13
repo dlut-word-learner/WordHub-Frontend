@@ -1,24 +1,27 @@
 <template>
-  <el-container direction="vertical" class="statisticsContainer">
+  <el-container direction="vertical" id="statisticsContainer">
     <el-main id="barCharts">
-      <el-row>
+      <el-row id="firstRow">
         <el-col v-for="task in tasks" :span="8"
           ><div
             class="barChart"
             :ref="(ele) => (barChartsRef[task] = ele as HTMLElement)"
           ></div
         ></el-col>
+        <el-col v-for="task in tasks" :span="8">
+          {{ $t(`statistics.bar${Task[task]}`) }}
+        </el-col>
       </el-row>
     </el-main>
-    <el-main id="secondRow">
-      <el-row>
-        <el-col :span="12"
+    <el-main>
+      <el-row id="secondRow" :gutter="0">
+        <el-col :span="8" id="heatMapCol"
           ><div
             id="heatMap"
             :ref="(ele) => (heatMapRef = ele as HTMLElement)"
           ></div
         ></el-col>
-        <el-col :span="12">
+        <el-col :span="16" id="progressCol">
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
             class="progress"
@@ -37,6 +40,9 @@ import { useHistoryStore } from "../../store/historyStore";
 import { Task } from "../../store/taskStore";
 import { DictVo } from "../Dicts/common";
 import { isDark } from "../../main";
+import { useI18n } from "vue-i18n";
+import { onUnmounted } from "vue";
+const { t } = useI18n();
 
 const progressNum = 3;
 const historyStore = useHistoryStore();
@@ -59,22 +65,12 @@ let progress: echarts.ECharts;
 // 声明要从后端API取得的数据
 
 const initChart = (responseData) => {
-  console.log("heatMapRef: ");
-  console.log(heatMapRef.value);
-  console.log("progressRef: ");
-  console.log(progressRef.value);
+  // console.debug("heatMapRef: ");
+  // console.debug(heatMapRef.value);
+  // console.debug("progressRef: ");
+  // console.debug(progressRef.value);
   for (const task of tasks) {
     initbarchart(task, responseData.virtualData);
-  }
-  if (progressRef) {
-    progress = echarts.init(progressRef.value);
-    // for (let i = 0; i < 10; i++) {
-    //   if (progressRef[i] != undefined) {
-    //     console.debug("recentlyUsed: " + i);
-
-    //     initProgress(i);
-    //   } else break;
-    // }
   }
   initheatchart(responseData.responseData);
   initProgress(1, responseData.progressData);
@@ -94,10 +90,13 @@ const initChart = (responseData) => {
 
 function initbarchart(task: Task, virtualData): void {
   if (barChartsRef[task]) {
-    console.log(task);
-    console.log(barChartsRef[task]);
+    // console.log(task);
+    // console.log(barChartsRef[task]);
     barCharts[task] = echarts.init(barChartsRef[task]);
     const option: echarts.EChartsOption = {
+      grid: {
+        bottom: 30,
+      },
       xAxis: {
         type: "category",
         data: virtualData.map((item) => item[0]), // 获取虚拟数据中的第一个元素作为x轴数据
@@ -155,26 +154,15 @@ const startOfMonth = new Date(
 function initheatchart(heatmapData): void {
   if (heatMapRef.value) {
     console.log("yes");
-    heatMap = echarts.init(heatMapRef.value, isDark ? "Dark" : "default");
+    heatMap = echarts.init(heatMapRef.value);
 
     const option: echarts.EChartsOption = {
-      backgroundColor: "#404a59",
-
       tooltip: {
         trigger: "item",
       },
-      legend: {
-        top: "30",
-        left: "100",
-        data: ["Steps", "diligent days"],
-        textStyle: {
-          color: "#fff",
-        },
-      },
       calendar: [
         {
-          top: 100,
-          left: "center",
+          cellSize: 24,
           range: [
             echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
             echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
@@ -182,17 +170,19 @@ function initheatchart(heatmapData): void {
           splitLine: {
             show: true,
             lineStyle: {
-              color: "#000",
-              width: 4,
+              // color: "#000",
+              width: 2,
               type: "solid",
             },
           },
           yearLabel: {
-            formatter: " recent 3 months",
-            color: "#fff",
+            formatter: t("statistics.recentMonths"),
+            position: "bottom",
+            color: isDark.value ? "#E5EAF3" : "#000000",
+            fontSize: 16,
           },
           itemStyle: {
-            color: "#323c48",
+            color: isDark.value ? "#337ecc" : "#c6e2ff",
             borderWidth: 1,
             borderColor: "#111",
           },
@@ -200,20 +190,20 @@ function initheatchart(heatmapData): void {
       ],
       series: [
         {
-          name: "Steps",
+          name: t("statistics.steps"),
           type: "scatter",
           coordinateSystem: "calendar",
           data: heatmapData,
           symbolSize: function (val) {
-            return val[1] / 500;
+            return val[1] / 3;
           },
           itemStyle: {
-            color: "#409EFF",
+            color: isDark.value ? "#b3e19d" : "#409EFF",
           },
         },
 
         {
-          name: "diligent days",
+          name: t("statistics.diligentDays"),
           type: "effectScatter",
           coordinateSystem: "calendar",
           data: heatmapData
@@ -222,14 +212,14 @@ function initheatchart(heatmapData): void {
             })
             .slice(0, 6),
           symbolSize: function (val) {
-            return val[1] / 500;
+            return val[1] / 3;
           },
           showEffectOn: "render",
           rippleEffect: {
             brushType: "stroke",
           },
           itemStyle: {
-            color: "#f4e925",
+            color: isDark.value ? "#eebe77" : "#f4e925",
             shadowBlur: 10,
             shadowColor: "#333",
           },
@@ -246,7 +236,6 @@ function initProgress(index: number, progressData): void {
     // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
     const option: echarts.EChartsOption = {
-      backgroundColor: "#17326b",
       grid: {
         left: "10",
         top: "10",
@@ -256,8 +245,11 @@ function initProgress(index: number, progressData): void {
       },
       xAxis: {
         type: "value",
-        splitLine: { show: false },
-        axisLabel: { show: false },
+        splitLine: { show: true },
+        axisLabel: {
+          show: true,
+          color: isDark.value ? "#E5EAF3" : "#000000",
+        },
         axisTick: { show: false },
         axisLine: { show: false },
       },
@@ -267,11 +259,11 @@ function initProgress(index: number, progressData): void {
           axisTick: { show: false },
           axisLine: { show: false },
           axisLabel: {
-            color: "black",
+            color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 14,
           },
           data: progressData.data1,
-          max: 10, // 关键：设置y刻度最大值，相当于设置总体行高
+          max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
           inverse: true,
         },
         {
@@ -279,11 +271,11 @@ function initProgress(index: number, progressData): void {
           axisTick: { show: false },
           axisLine: { show: false },
           axisLabel: {
-            color: "black",
+            color: isDark.value ? "#E5EAF3" : "#000000",
             fontSize: 14,
           },
           data: progressData.data2,
-          max: 10, // 关键：设置y刻度最大值，相当于设置总体行高
+          max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
           inverse: true,
         },
       ],
@@ -305,6 +297,7 @@ function initProgress(index: number, progressData): void {
                 color: "#3fE279",
               },
             ]),
+            borderRadius: 10,
           },
           zlevel: 1,
         },
@@ -314,8 +307,11 @@ function initProgress(index: number, progressData): void {
           barGap: "-100%",
           barWidth: 19,
           data: progressData.data4,
-          color: "#2e5384",
-          itemStyle: {},
+          color: isDark.value ? "#2e5384" : "#dedfe0",
+          itemStyle: {
+            borderRadius: 10,
+            opacity: 0.45,
+          },
         },
       ],
     };
@@ -323,11 +319,27 @@ function initProgress(index: number, progressData): void {
   }
 }
 
+function handleResize() {
+  barCharts.forEach(x => x.resize()); 
+  progress.resize();
+  heatMap.resize();
+}
+onMounted(() => {
+  initChart();
+  window.addEventListener("resize", handleResize);
+});
+
 // 在 setup 函数内使用 ref 创建一个响应式变量，用于存储从后端获取的数据
 const responseData = ref(null);
 
-onMounted(async () => {
-  // 在组件挂载后使用 axios 发送请求获取数据
+onUnmounted(() => {
+  // 卸载echarts实例
+  window.removeEventListener("resize", handleResize);
+});
+
+// 通过ref获取信息的示例
+const fetchData = async () => {
+  // 从后端API获取数据
   try {
     const response = await axios.get("/dicts/:dictId/learn/review/qwerty");
     // 将获取到的数据存储在响应式变量 responseData 中
@@ -342,7 +354,7 @@ onMounted(async () => {
 
 <style>
 /* 在这里放置你的样式 */
-.statisticsContainer {
+#statisticsContainer {
   align-items: center;
   align-content: center;
   width: 100%;
@@ -352,28 +364,39 @@ onMounted(async () => {
   flex: 1;
 }
 
+#firstRow {
+  align-items: center;
+  width: 95vw;
+}
+
 #secondRow {
   flex: 1;
-  background-color: #d9ecff;
+  background-color: #a0cfff;
   border-radius: 20px;
-  width: 100vw;
-  height: 100vh;
+  align-items: center;
+  justify-items: center;
+  width: 92vw;
+  height: 38vh;
+  padding: 10px;
+  margin: 0 15px;
+  margin-bottom: 20px;
+}
+
+html.dark #secondRow {
+  background-color: #337ecc;
 }
 
 .barChart {
   width: 32vw;
-  height: 50vh;
+  height: 42vh;
 }
 
 #heatMap {
-  flex: 1;
-  width: 50vm;
-  height: 100vh;
+  height: 32vh;
 }
 
 .progress {
-  flex: 2;
-  width: 50vm;
-  height: 100vh;
+  width: 55vw;
+  height: 32vh;
 }
 </style>

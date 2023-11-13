@@ -15,6 +15,7 @@ export const messages = {
       cancel: "取消",
       userInfo: "个人资料",
       statistics: "统计信息",
+      statistics: "统计信息",
     },
     login: {
       userLogin: "用户登录",
@@ -169,6 +170,8 @@ export const messages = {
       barLearn: "学习记录",
       barReview: "复习记录",
       barQwertyMode: "Qwerty记录",
+      steps: "日常",
+      diligentDays: "高光",
     },
   },
   en: {
@@ -529,6 +532,8 @@ export const messages = {
     },
     statistics: {
       recentMonths: "ここ三ヶ月",
+      diligentDays: "勤勉な日々",
+      steps: "ステップ",
     },
   },
 };

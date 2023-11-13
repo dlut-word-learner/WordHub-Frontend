@@ -29,7 +29,7 @@
           </el-menu-item>
           <el-menu-item index="/Chart">
             <div class="sub-menu-item">
-              {{ $t("app.Chart") }}
+              {{ $t("app.statistics") }}
             </div>
           </el-menu-item>
           <el-menu-item @click="logout">
