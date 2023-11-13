@@ -2,11 +2,11 @@
  * 返回从过去numDays天到今天每天日期字符串数组
  * @param numDays 倒推多少天
  */
-function getDateStringFromToday(numDays: number): string[] {
+export function getDateStringFromToday(numDays: number): string[] {
   const dateList: string[] = [];
   for (let i = numDays - 1; i >= 0; i--) {
     const date = new Date();
-    date.setDate(date.getDate() - i - 3);
+    date.setDate(date.getDate() - i);
     dateList.push(date.toISOString().slice(0, 10));
   }
   return dateList;
