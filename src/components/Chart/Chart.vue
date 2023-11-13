@@ -120,6 +120,7 @@ function initBarChart(task: Task): void {
       },
       grid: {
         bottom: 30,
+        top: 30,
       },
       xAxis: {
         type: "category",
@@ -412,22 +413,22 @@ const fetchData = async () => {
       dictsToGenerateProgress.push({
         id: 1,
         language: "English",
-        name: "3500",
+        name: "3500 (For Test)",
       });
       dictsToGenerateProgress.push({
         id: 14,
         language: "Japanese",
-        name: "N3",
+        name: "N3 (For Test)",
       });
       dictsToGenerateProgress.push({
         id: 2,
         language: "English",
-        name: "CET-4",
+        name: "CET-4 (For Test)",
       });
       dictsToGenerateProgress.push({
         id: 8,
         language: "English",
-        name: "CET-6",
+        name: "CET-6 (For Test)",
       });
     }
     // 对最近词库分别获取进度信息
