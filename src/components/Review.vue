@@ -197,6 +197,8 @@ const initData = async () => {
     })
     .then((response) => {
       words.value = response.data;
+      if (!words.value?.length) isAllFinished.value = true;
+
       taskStore.type = Task.Review;
       taskStore.url = router.currentRoute.value.fullPath;
     })
