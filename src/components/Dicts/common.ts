@@ -30,9 +30,9 @@ export enum Lang {
 }
 
 export enum Rating {
-  Hard = "hard",
-  Good = "good",
-  Easy = "easy",
+  Hard,
+  Good,
+  Easy,
 }
 
 export const excludeCache = ref("");
