@@ -166,7 +166,7 @@ function startNewTask(dict: DictVo, task: Task): void {
   if (historyStore.isRecentlyUsed(dict)) {
     historyStore.recentlyUsedDicts = historyStore.recentlyUsedDicts.filter(
       (x) => {
-        dict.name == x.name && dict.id == x.id && dict.language == x.language;
+        return !(dict.name == x.name && dict.id == x.id && dict.language == x.language);
       },
     );
   }
