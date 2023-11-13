@@ -15,10 +15,10 @@
     </el-main>
     <el-main>
       <el-row id="secondRow" :gutter="0">
-        <el-col :span="8" id="heatMapCol">
+        <el-col :span="8" id="heatmapCol">
           <div
-            id="heatMap"
-            :ref="(ele) => (heatMapRef = ele as HTMLElement)"
+            id="heatmap"
+            :ref="(ele) => (heatmapRef = ele as HTMLElement)"
           ></div>
         </el-col>
         <el-col :span="16" id="progressCol">
@@ -34,8 +34,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
-import * as echarts from "echarts";
-import axios from "axios";
 import { useHistoryStore } from "../../store/historyStore";
 import { Task } from "../../store/taskStore";
 import { DictVo } from "../Dicts/common";
@@ -44,6 +42,31 @@ import { useI18n } from "vue-i18n";
 import { onUnmounted } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { concatDate, progressVo } from "./Chart";
+import axios from "axios";
+
+import * as echarts from 'echarts/core';
+import { BarChart, ScatterChart, EffectScatterChart } from 'echarts/charts';
+import { TooltipComponent, CalendarComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+
+import type { BarSeriesOption, EffectScatterSeriesOption, ScatterSeriesOption } from 'echarts/charts';
+import type { ComposeOption } from 'echarts/core';
+
+type ECOption = ComposeOption<
+  | BarSeriesOption
+  | ScatterSeriesOption
+  | EffectScatterSeriesOption
+>;
+
+echarts.use([
+  TooltipComponent,
+  CalendarComponent,
+  BarChart,
+  ScatterChart,
+  EffectScatterChart,
+  CanvasRenderer
+]);
+
 const { t } = useI18n();
 
 const progressNum = 3;
@@ -57,12 +80,12 @@ const tasks = [Task.Learn, Task.Review, Task.QwertyMode];
 const fontColor = computed(() => (isDark.value ? "#E5EAF3" : "#000"));
 
 // 图表div元素绑定
-const heatMapRef = ref<HTMLElement>();
+const heatmapRef = ref<HTMLElement>();
 const barChartsRef = reactive(new Map<Task, HTMLElement>());
 const progressRef = ref<HTMLElement>();
 
 // 实际ECharts图表
-let heatMap: echarts.ECharts;
+let heatmap: echarts.ECharts;
 let barCharts = new Map<Task, echarts.ECharts>();
 let progress: echarts.ECharts;
 
@@ -70,25 +93,26 @@ let progress: echarts.ECharts;
 let barChartData = new Map<Task, [string, number][]>();
 const heatmapDuration = 90;
 let heatmapData: [string, number][] = [];
-interface progressModel {
+interface ProgressModel {
   name: string[];
   sum: number[];
   studied: number[];
   mastered: number[];
 }
-let progressData: progressModel = {
+
+let progressData: ProgressModel = {
   name: [],
   sum: [],
   studied: [],
   mastered: [],
 };
 
-function initbarchart(task: Task): void {
+function initBarChart(task: Task): void {
   if (barChartsRef[task]) {
     // console.log(task);
     // console.log(barChartsRef[task]);
     barCharts[task] = echarts.init(barChartsRef[task]);
-    const option: echarts.EChartsOption = {
+    const option: ECOption = {
       tooltip: {
         trigger: "item",
       },
@@ -137,11 +161,11 @@ const startOfMonth = new Date(
 );
 
 function initHeatMap(): void {
-  if (heatMapRef.value) {
+  if (heatmapRef.value) {
     console.log("yes");
-    heatMap = echarts.init(heatMapRef.value);
+    heatmap = echarts.init(heatmapRef.value);
 
-    const option: echarts.EChartsOption = {
+    const option: ECOption = {
       tooltip: {
         trigger: "item",
       },
@@ -218,7 +242,7 @@ function initHeatMap(): void {
         },
       ],
     };
-    heatMap.setOption(option);
+    heatmap.setOption(option);
   }
 }
 
@@ -226,7 +250,7 @@ function initProgress(): void {
   if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
     progress = echarts.init(progressRef.value);
-    const option: echarts.EChartsOption = {
+    const option: ECOption = {
       tooltip: {
         trigger: "item",
       },
@@ -330,6 +354,7 @@ function initProgress(): void {
         },
       ],
     };
+
     progress.setOption(option);
   }
 }
@@ -337,8 +362,9 @@ function initProgress(): void {
 function handleResize() {
   barCharts.forEach((x) => x.resize());
   progress.resize();
-  heatMap.resize();
+  heatmap.resize();
 }
+
 onMounted(async () => {
   // initChart();
   await fetchData();
@@ -346,7 +372,7 @@ onMounted(async () => {
   console.log("heatmapData: ", heatmapData);
   console.log("progressData: ", progressData);
   for (const task of tasks) {
-    initbarchart(task);
+    initBarChart(task);
   }
 
   initHeatMap();
@@ -418,7 +444,6 @@ const fetchData = async () => {
 </script>
 
 <style>
-/* 在这里放置你的样式 */
 #statisticsContainer {
   align-items: center;
   align-content: center;
@@ -456,7 +481,7 @@ html.dark #secondRow {
   height: 42vh;
 }
 
-#heatMap {
+#heatmap {
   height: 32vh;
 }
 
