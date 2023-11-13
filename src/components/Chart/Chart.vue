@@ -178,7 +178,11 @@ function initHeatMap(): void {
       },
       calendar: [
         {
-          cellSize: 26,
+          left: 40,
+          top: 30,
+          right: 40,
+          bottom: 30,
+          cellSize: "auto",
           range: [
             echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
             echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
@@ -201,7 +205,7 @@ function initHeatMap(): void {
             formatter: t("statistics.recentMonths"),
             position: "bottom",
             color: fontColor.value,
-            fontSize: 16,
+            fontSize: 15,
           },
           itemStyle: {
             color: isDark.value ? "#337ecc" : "#c6e2ff",
