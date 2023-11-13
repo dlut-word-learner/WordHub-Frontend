@@ -1,6 +1,6 @@
 <template>
   <el-container direction="vertical" id="statisticsContainer">
-    <el-main id="barCharts">
+    <el-main id="barCharts" style="padding-bottom: 10px;">
       <el-row id="firstRow">
         <el-col v-for="task in tasks" :span="8">
           <div
@@ -178,10 +178,10 @@ function initHeatMap(): void {
       },
       calendar: [
         {
-          left: 40,
-          top: 30,
-          right: 40,
-          bottom: 30,
+          left: 35,
+          top: 25,
+          right: 35,
+          bottom: 45,
           cellSize: "auto",
           range: [
             echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
@@ -191,7 +191,7 @@ function initHeatMap(): void {
             show: true,
             lineStyle: {
               color: isDark.value ? "#79bbff" : "#337ecc",
-              width: 2,
+              width: 4,
               type: "solid",
             },
           },
@@ -205,6 +205,7 @@ function initHeatMap(): void {
             formatter: t("statistics.recentMonths"),
             position: "bottom",
             color: fontColor.value,
+            margin: 16,
             fontSize: 15,
           },
           itemStyle: {
@@ -263,7 +264,7 @@ function initProgress(): void {
     progress = echarts.init(progressRef.value);
     const option: ECOption = {
       tooltip: {
-        trigger: "item",
+        trigger: "axis",
       },
       grid: {
         left: "10",
@@ -328,7 +329,7 @@ function initProgress(): void {
             ]),
             borderRadius: 10,
           },
-          zlevel: 1,
+          zlevel: 2,
         },
         {
           name: t("statistics.mastered"),
@@ -349,7 +350,7 @@ function initProgress(): void {
             ]),
             borderRadius: 10,
           },
-          zlevel: 2,
+          zlevel: 3,
         },
         {
           name: t("statistics.totalWords"),
@@ -362,6 +363,7 @@ function initProgress(): void {
             borderRadius: 10,
             opacity: 0.45,
           },
+          zlevel: 1,
         },
       ],
     };
@@ -480,13 +482,13 @@ const fetchData = async () => {
   justify-items: center;
   width: 92vw;
   height: 38vh;
-  padding: 1vw 2vw;
-  margin: 0 15px;
-  margin-bottom: 20px;
+  padding: 1vh 2.5vw;
+  box-shadow: 0px 1px 15px 3px rgba(0, 0, 0, 0.2);
 }
 
 html.dark #secondRow {
   background-color: #337ecc;
+  box-shadow: 0px 1px 15px 3px rgba(51, 125, 204, 0.2);
 }
 
 .barChart {
@@ -495,10 +497,10 @@ html.dark #secondRow {
 }
 
 #heatmap {
-  height: 32vh;
+  height: 35vh;
 }
 
 .progress {
-  height: 32vh;
+  height: 35vh;
 }
 </style>
