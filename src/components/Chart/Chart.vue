@@ -137,9 +137,9 @@ function initBarChart(task: Task): void {
             { offset: 0.7, color: "#188df0" },
             { offset: 1, color: "#188df0" },
           ]),
-          data: barChartData[task].map((item) => ({
-            name: item[0], // 使用日期作为名称
-            value: parseInt(item[1]), // 将随机数字符串转换为整数
+          data: barChartData[task].map(([name, value]) => ({
+            name, // 使用日期作为名称
+            value, // 将随机数字符串转换为整数
           })),
           type: "bar",
           showBackground: true,
@@ -164,8 +164,12 @@ const startOfMonth = new Date(
 );
 
 function initHeatMap(): void {
+  const maxTick = heatmapData
+    .map(([_, x]) => x)
+    .reduce((a, b) => Math.max(a, b));
+
   if (heatmapRef.value) {
-    console.log("yes");
+    // console.log("yes");
     heatmap = echarts.init(heatmapRef.value);
 
     const option: ECOption = {
@@ -174,7 +178,7 @@ function initHeatMap(): void {
       },
       calendar: [
         {
-          cellSize: 24,
+          cellSize: 26,
           range: [
             echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
             echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
@@ -212,8 +216,8 @@ function initHeatMap(): void {
           type: "scatter",
           coordinateSystem: "calendar",
           data: heatmapData,
-          symbolSize: function (val) {
-            return val[1] / 3;
+          symbolSize: ([_, tick]) => {
+            return (12 * Math.log(tick)) / Math.log(maxTick);
           },
           itemStyle: {
             color: isDark.value ? "#b3e19d" : "#409EFF",
@@ -225,12 +229,12 @@ function initHeatMap(): void {
           type: "effectScatter",
           coordinateSystem: "calendar",
           data: heatmapData
-            .sort(function (a, b) {
-              return b[1] - a[1];
+            .sort(([_a, a], [_b, b]) => {
+              return b - a;
             })
             .slice(0, 6),
-          symbolSize: function (val) {
-            return val[1] / 3;
+          symbolSize: ([_, tick]) => {
+            return (13 * Math.log(tick)) / Math.log(maxTick);
           },
           showEffectOn: "render",
           rippleEffect: {
@@ -363,17 +367,19 @@ function initProgress(): void {
 }
 
 function handleResize() {
+  /*
   barCharts.forEach((x) => x.resize());
   progress.resize();
   heatmap.resize();
+  */
 }
 
 onMounted(async () => {
   // initChart();
   await fetchData();
-  console.log("barChartData: ", barChartData);
-  console.log("heatmapData: ", heatmapData);
-  console.log("progressData: ", progressData);
+  // console.log("barChartData: ", barChartData);
+  // console.log("heatmapData: ", heatmapData);
+  // console.log("progressData: ", progressData);
   for (const task of tasks) {
     initBarChart(task);
   }
@@ -470,7 +476,7 @@ const fetchData = async () => {
   justify-items: center;
   width: 92vw;
   height: 38vh;
-  padding: 10px;
+  padding: 1vw 2vw;
   margin: 0 15px;
   margin-bottom: 20px;
 }
@@ -489,7 +495,6 @@ html.dark #secondRow {
 }
 
 .progress {
-  width: 55vw;
   height: 32vh;
 }
 </style>
