@@ -113,6 +113,7 @@ import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import { throwError } from "./Error";
+
 import axios from "axios";
 import router from "../router";
 import "./wordStyle.css";

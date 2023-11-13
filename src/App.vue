@@ -27,6 +27,11 @@
               {{ $t("app.userInfo") }}
             </div>
           </el-menu-item>
+          <el-menu-item index="/Chart">
+            <div class="sub-menu-item">
+              {{ $t("app.statistics") }}
+            </div>
+          </el-menu-item>
           <el-menu-item @click="logout">
             <div class="sub-menu-item">
               {{ $t("app.logout") }}

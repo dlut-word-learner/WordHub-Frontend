@@ -91,7 +91,6 @@ const optionsStore = useOptionsStore();
   text-align: left;
   font-weight: bold;
   font-size: 18px;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 </style>

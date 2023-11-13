@@ -79,6 +79,8 @@ import { Task, useTaskStore } from "../../store/taskStore";
 import { useHistoryStore } from "../../store/historyStore";
 import { useLoginStore } from "../../store/loginStore";
 import { throwError } from "../Error";
+import { useHistoryStore } from "../../store/historyStore";
+import { useLoginStore } from "../../store/loginStore";
 import axios from "axios";
 import router from "../../router";
 

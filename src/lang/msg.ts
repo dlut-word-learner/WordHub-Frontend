@@ -21,6 +21,7 @@ export const messages = {
       confirm: "确定",
       cancel: "取消",
       userInfo: "个人资料",
+      statistics: "统计信息",
     },
     login: {
       userLogin: "用户登录",
@@ -183,6 +184,17 @@ export const messages = {
         errPrompt: "注销失败，{err}",
       },
     },
+    statistics: {
+      recentMonths: "最近三个月",
+      barLearn: "学习记录",
+      barReview: "复习记录",
+      barQwertyMode: "Qwerty记录",
+      steps: "日常",
+      diligentDays: "高光",
+      studied: "学习过",
+      mastered: "掌握",
+      totalWords: "总词数",
+    },
   },
   en: {
     badRequest: "bad request",
@@ -206,6 +218,7 @@ export const messages = {
       confirm: "Confirm",
       cancel: "Cancel",
       userInfo: "My Profile",
+      statistics: "Statistics",
     },
     login: {
       userLogin: "User Login",
@@ -373,6 +386,17 @@ export const messages = {
         errPrompt: "Failed to delete, {err}",
       },
     },
+    statistics: {
+      barLearn: "Learn Record",
+      barReview: "Review Record",
+      barQwertyMode: "Qwerty Record",
+      recentMonths: "Recent 3 Months",
+      steps: "Steps",
+      diligentDays: "Diligent Days",
+      studied: "studied",
+      mastered: "mastered",
+      totalWords: "total words",
+    },
   },
   ja: {
     badRequest: "リクエストは無効です",
@@ -396,6 +420,7 @@ export const messages = {
       confirm: "確認",
       cancel: "キャンセル",
       userInfo: "ユーザー情報",
+      statistics: "統計情報",
     },
     login: {
       userLogin: "ユーザーログイン",
@@ -558,6 +583,17 @@ export const messages = {
         successPrompt: "削除に成功しました",
         errPrompt: "削除に失敗しました。{err}",
       },
+    },
+    statistics: {
+      barLearn: "学習 記録",
+      barReview: "レビュー 記録",
+      barQwertyMode: "Qwerty 記録",
+      recentMonths: "ここ三ヶ月",
+      diligentDays: "勤勉な日々",
+      steps: "ステップ",
+      studied: "学んだ",
+      mastered: "マスターした",
+      totalWords: "総単語数",
     },
   },
 };
