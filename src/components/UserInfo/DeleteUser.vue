@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="50%">
+    <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.delete.username')">
         <div>{{ loginStore.userVo?.username }}</div>
       </el-form-item>
@@ -31,6 +31,7 @@
 import { reactive } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
+import { throwError } from "../Error";
 import axios from "axios";
 import sha3 from "crypto-js/sha3";
 import router from "../../router";
@@ -66,6 +67,7 @@ function deleteUser(): void {
     {
       confirmButtonText: t("userInfo.delete.confirm"),
       cancelButtonText: t("userInfo.delete.cancel"),
+      buttonSize: "large",
     },
   )
     .then(() => {
@@ -76,8 +78,7 @@ function deleteUser(): void {
           router.push("/");
         })
         .catch((error) => {
-          console.log(error);
-          ElMessage.error(t("userInfo.delete.errPrompt"));
+          throwError(error, "userInfo.delete.errPrompt", t);
         });
     })
     .catch(() => {

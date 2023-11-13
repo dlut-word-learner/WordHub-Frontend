@@ -25,7 +25,7 @@
             <el-button
               size="large"
               type="primary"
-              @click="promptGoToNextWord"
+              @click="if (!isCurrCorrect) promptGoToNextWord();"
               :disabled="!stopwatch.isRunning"
               v-if="!isAllFinished"
             >
@@ -42,7 +42,7 @@
               :disabled="isAllFinished"
               :clearable="true"
               autofocus
-              @keypress.enter="promptGoToNextWord"
+              @keypress.enter="if (!isCurrCorrect) promptGoToNextWord();"
               ref="userInputRef"
               :maxlength="currWord?.name.length"
             />
@@ -117,6 +117,7 @@ import { isKatakana, toHiragana, toKatakana } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import { getWordMain } from "./WordCard";
+import { throwError } from "./Error";
 import WordCard from "./WordCard.vue";
 import Stats from "./Stats.vue";
 import axios from "axios";
@@ -194,8 +195,7 @@ const initData = async () => {
         setTimeout(() => visibleWordIndex.value.push(1), 200);
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("qwerty.errGetWords"));
+      throwError(error, "qwerty.errGetWords", t);
       router.back();
     });
 };
@@ -227,6 +227,7 @@ function promptGoToNextWord(): void {
     ElMessageBox.confirm(t("qwerty.promptGoToNextWord"), t("qwerty.prompt"), {
       confirmButtonText: t("qwerty.confirm"),
       cancelButtonText: t("qwerty.cancel"),
+      buttonSize: "large",
     })
       .then((data) => {
         if (data == "confirm") {

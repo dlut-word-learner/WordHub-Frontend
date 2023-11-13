@@ -17,9 +17,22 @@ export interface WordVo {
   };
 }
 
+/**
+ * @param ticks - how many times a word have been learned
+ */
+export interface WordToReviewVo extends WordVo {
+  readonly tick: number;
+}
+
 export enum Lang {
   English = "en",
   Japanese = "ja",
+}
+
+export enum Rating {
+  Hard = "hard",
+  Good = "good",
+  Easy = "easy",
 }
 
 export const excludeCache = ref("");
@@ -33,6 +46,7 @@ export function sortWithIntersection(
   intersection.sort((elem1, elem2) => {
     return reference.indexOf(elem1) - reference.indexOf(elem2);
   });
+
   return intersection.concat(rest);
 }
 

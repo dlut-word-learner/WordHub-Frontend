@@ -76,10 +76,13 @@ import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
 import { useOptionsStore } from "../../store/optionsStore";
 import { Task, useTaskStore } from "../../store/taskStore";
-import axios from "axios";
-import router from "../../router";
 import { useHistoryStore } from "../../store/historyStore";
 import { useLoginStore } from "../../store/loginStore";
+import { throwError } from "../Error";
+import { useHistoryStore } from "../../store/historyStore";
+import { useLoginStore } from "../../store/loginStore";
+import axios from "axios";
+import router from "../../router";
 
 const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
@@ -100,8 +103,7 @@ onMounted(() => {
       dicts.value = response.data;
     })
     .catch((error) => {
-      console.error(error);
-      ElMessage.error(t("dict.errGetDicts"));
+      throwError(error, "dict.errGetDicts", t);
     });
 });
 
@@ -126,6 +128,7 @@ function tryTask(dict: DictVo, task: Task): void {
       distinguishCancelAndClose: true,
       confirmButtonText: t("dict.startNewTask"),
       cancelButtonText: t("dict.continueCurrTask"),
+      buttonSize: "large",
     })
       .then(() => {
         console.log("confirm");

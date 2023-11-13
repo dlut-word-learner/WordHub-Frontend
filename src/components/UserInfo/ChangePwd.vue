@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="50%">
+    <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.pwd.originalPwd')">
         <el-input
           type="password"
@@ -35,6 +35,7 @@
 import { reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import { useLoginStore } from "../../store/loginStore";
+import { throwError } from "../Error";
 import sha3 from "crypto-js/sha3";
 import axios from "axios";
 import router from "../../router";
@@ -88,8 +89,7 @@ function savePasswd(): void {
       router.push("/");
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("userinfo.changePwd.errorPrompt"));
+      throwError(error, "userinfo.changePwd.errorPrompt", t);
     });
 }
 </script>

@@ -106,11 +106,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { toKana, toRomaji } from "wanakana";
+import { onKeyStroke } from "@vueuse/core";
+import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
 import { Lang, WordVo, excludeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
+import { throwError } from "./Error";
+
 import axios from "axios";
 import router from "../router";
 import "./wordStyle.css";
@@ -162,14 +165,34 @@ watch(userInput, (newInput) => {
   }
 });
 
+onKeyStroke("Enter", () => {
+  isAnsButtonShown.value ? showAns() : finishWord(true);
+});
+
+onKeyStroke("\\", () => {
+  if (!isAnsButtonShown.value) finishWord(false);
+});
+
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;
-  return new Howl({
-    src: `/dictYoudao/dictvoice?le=${
-      props.lang == Lang.English ? "eng" : "jap"
-    }&audio=${getWordMain(currWord.value, props.lang)}`,
-    format: "mp3",
-  });
+
+  const wordName = currWord.value.name;
+  switch (props.lang) {
+    case Lang.English:
+      return new Howl({
+        src: `/dictYoudao/dictvoice?le=eng&audio=${wordName}`,
+        format: "mp3",
+      });
+    case Lang.Japanese:
+      return new Howl({
+        src: `/dictYoudao/dictvoice?le=jap&audio=${
+          isKatakana(getWordMain(currWord.value, Lang.Japanese))
+            ? toKatakana(wordName)
+            : toHiragana(wordName)
+        }`,
+        format: "mp3",
+      });
+  }
 });
 
 const initData = async () => {
@@ -187,8 +210,7 @@ const initData = async () => {
       taskStore.url = router.currentRoute.value.fullPath;
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("learn.errGetWords"));
+      throwError(error, "learn.errGetWords", t);
       router.back();
     });
 };
@@ -221,13 +243,11 @@ function finishWord(isKnown: boolean): void {
   if (isKnown) {
     axios
       .post(`/api/dicts/${props.dictId}/words/${currWord.value?.id}/learn`, {
-        id: currWord.value?.id,
-        rating: "easy",
+        familiar: isVisited(currWordIndex.value) ? false : true,
       })
       .then(() => {})
       .catch((error) => {
-        console.log(error);
-        ElMessage.error(t("learn.errUploadRec"));
+        throwError(error, "learn.errUploadRec", t);
       });
   } else if (currWord.value) {
     words.value?.push(currWord.value);
@@ -251,8 +271,7 @@ function goToNextWord(): void {
   tries.value = 0;
 
   if (words.value && currWordIndex.value + 1 < words.value.length) {
-    if (currWordIndex.value != 0) visibleWordIndexes.value?.shift();
-    currWordIndex.value++;
+    if (currWordIndex.value++ != 0) visibleWordIndexes.value?.shift();
 
     if (currWordIndex.value + 1 < words.value.length)
       visibleWordIndexes.value?.push(currWordIndex.value + 1);
@@ -297,11 +316,9 @@ function inputDone(isCorrect: boolean): void {
         if (props.lang == Lang.English) isPhoneShown.value = true;
         break;
       case 2:
-        if (props.lang == Lang.English) isInitialShown.value = true;
-        else if (props.lang == Lang.Japanese) {
-          isInitialShown.value = true;
-          isPhoneShown.value = true;
-        }
+        isInitialShown.value = true;
+        if (props.lang == Lang.Japanese) isPhoneShown.value = true;
+
         break;
       case 3:
         showAns();

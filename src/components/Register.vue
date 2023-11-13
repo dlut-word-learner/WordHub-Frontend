@@ -2,7 +2,7 @@
   <div id="body">
     <img alt="WordHub" src="/wordhub.png" width="100" height="100" />
     <h2>{{ $t("register.userRegister") }}</h2>
-    <el-form label-width="auto">
+    <el-form label-width="auto" size="large">
       <el-form-item :label="$t('register.username')">
         <el-input type="text" v-model="form.username" />
       </el-form-item>
@@ -49,7 +49,7 @@
         <vueCropper ref="cropper" v-bind="option"></vueCropper>
       </div>
     </el-form>
-    <el-button @click="register">{{ $t("register.register") }}</el-button>
+    <el-button @click="register" size="large">{{ $t("register.register") }}</el-button>
   </div>
 </template>
 
@@ -61,6 +61,7 @@ import router from "../router";
 import sha3 from "crypto-js/sha3";
 import axios from "axios";
 import "vue-cropper/dist/index.css";
+import { throwError } from "./Error";
 
 const form = reactive({
   username: "",
@@ -101,7 +102,7 @@ function register(): void {
     return;
   }
 
-  if (!checkPasswd()) return;
+  if (!checkPasswd(form.passwd1) || !checkEmail(form.email)) return;
 
   if (form.passwd1 != form.passwd2) {
     ElMessage.error(t("register.diffPrompt"));
@@ -128,21 +129,32 @@ function register(): void {
       router.push("/");
     })
     .catch((error) => {
-      console.log(error);
-      ElMessage.error(t("register.errPrompt"));
+      throwError(error, "register.errPrompt", t);
     });
 }
 
-function checkPasswd(): boolean {
+function checkPasswd(password: string): boolean {
   if (
-    form.passwd1.length >= 8 &&
-    form.passwd1.length <= 20 &&
-    form.passwd1.match(/[a-zA-Z]/g) &&
-    form.passwd1.match(/[0-9]/g)
+    password.length >= 8 &&
+    password.length <= 20 &&
+    password.match(/[a-zA-Z]/g) &&
+    password.match(/[0-9]/g)
   )
     return true;
 
   ElMessage.error(t("register.invalidPwd"));
+  return false;
+}
+
+function checkEmail(email: string): boolean {
+  if (
+    email.match(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    )
+  )
+    return true;
+
+  ElMessage.error(t("register.invalidEmail"));
   return false;
 }
 
@@ -192,8 +204,8 @@ function uploadImg(event: any): void {
   box-sizing: border-box;
   outline: none;
 
-  margin-bottom: 18px;
-  padding: 9px 15px;
+  margin-bottom: 30px;
+  padding: 12px 18px;
 
   font-size: 14px;
   border-radius: 4px;
