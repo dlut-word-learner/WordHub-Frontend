@@ -238,7 +238,6 @@ function finishWord(isCorrect?: boolean, rating?: Rating): void {
         tick: currWord.value.tick + 1,
         rating: Rating[rating],
       })
-      .then(() => {})
       .catch((error) => {
         throwError(error, "review.errUploadRec", t);
       });
@@ -247,7 +246,6 @@ function finishWord(isCorrect?: boolean, rating?: Rating): void {
       .post(`/api/dicts/${props.dictId}/words/${currWord.value.id}/learn`, {
         familiar: false,
       })
-      .then(() => {})
       .catch((error) => {
         throwError(error, "review.errUploadRec", t);
       });
