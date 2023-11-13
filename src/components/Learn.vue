@@ -247,7 +247,6 @@ function finishWord(isKnown: boolean): void {
       .post(`/api/dicts/${props.dictId}/words/${currWord.value?.id}/learn`, {
         familiar: isVisited(currWordIndex.value) ? false : true,
       })
-      .then(() => {})
       .catch((error) => {
         throwError(error, "learn.errUploadRec", t);
       });
