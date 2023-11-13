@@ -25,7 +25,7 @@
             <el-button
               size="large"
               type="primary"
-              @click="if (!isCurrCorrect) promptGoToNextWord();"
+              @click="promptGoToNextWord"
               :disabled="!stopwatch.isRunning"
               v-if="!isAllFinished"
             >
@@ -42,7 +42,7 @@
               :disabled="isAllFinished"
               :clearable="true"
               autofocus
-              @keypress.enter="if (!isCurrCorrect) promptGoToNextWord();"
+              @keypress.enter="promptGoToNextWord"
               ref="userInputRef"
               :maxlength="currWord?.name.length"
             />
@@ -269,9 +269,9 @@ function inputDone(isCorrect: boolean): void {
     });
 
     correctSound.play();
-    isCurrCorrect.value = true;
 
     if (optionsStore.autoNext) setTimeout(goToNextWord, 500);
+    else isCurrCorrect.value = true;
   } else {
     ElMessage({
       message: t("qwerty.wrongSpelling"),
