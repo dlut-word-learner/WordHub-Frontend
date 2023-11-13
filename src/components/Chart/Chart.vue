@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import * as echarts from "echarts";
 import axios from "axios";
 import { useHistoryStore } from "../../store/historyStore";
@@ -54,6 +54,7 @@ const dictsToGenerateProgress: DictVo[] = historyStore.recentlyUsedDicts.slice(
   progressNum,
 );
 const tasks = [Task.Learn, Task.Review, Task.QwertyMode];
+const fontColor = computed(() => (isDark.value ? "#E5EAF3" : "#000"));
 
 // 图表div元素绑定
 const heatMapRef = ref<HTMLElement>();
@@ -154,21 +155,27 @@ function initheatchart(heatmapData, duration: number): void {
           splitLine: {
             show: true,
             lineStyle: {
-              // color: "#000",
+              color: isDark.value ? "#79bbff" : "#337ecc",
               width: 2,
               type: "solid",
             },
           },
+          dayLabel: {
+            color: fontColor.value,
+          },
+          monthLabel: {
+            color: fontColor.value,
+          },
           yearLabel: {
             formatter: t("statistics.recentMonths"),
             position: "bottom",
-            color: isDark.value ? "#E5EAF3" : "#000000",
+            color: fontColor.value,
             fontSize: 16,
           },
           itemStyle: {
             color: isDark.value ? "#337ecc" : "#c6e2ff",
             borderWidth: 1,
-            borderColor: "#111",
+            borderColor: isDark.value ? "#79bbff" : "#337ecc",
           },
         },
       ],
@@ -235,7 +242,7 @@ function initProgress(): void {
         splitLine: { show: true },
         axisLabel: {
           show: true,
-          color: isDark.value ? "#E5EAF3" : "#000000",
+          color: fontColor.value,
         },
         axisTick: { show: false },
         axisLine: { show: false },
@@ -246,7 +253,7 @@ function initProgress(): void {
           axisTick: { show: false },
           axisLine: { show: false },
           axisLabel: {
-            color: isDark.value ? "#E5EAF3" : "#000000",
+            color: fontColor.value,
             fontSize: 14,
           },
           data: progressData.name,
@@ -258,7 +265,7 @@ function initProgress(): void {
           axisTick: { show: false },
           axisLine: { show: false },
           axisLabel: {
-            color: isDark.value ? "#E5EAF3" : "#000000",
+            color: fontColor.value,
             fontSize: 14,
           },
           data: progressData.sum,
