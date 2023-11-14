@@ -78,22 +78,24 @@ function saveAvatar(): void {
   cropper?.value?.getCropBlob((data: Blob) => {
     newAvatar.value = data;
   });
-
-  axios
-    .put(
-      `/api/users/${loginStore.userVo?.id}/profile/avatar`,
-      newAvatar.value,
-      {
-        headers: { "Content-Type": "image/png" },
-      },
-    )
-    .then(() => {
-      ElMessage.success(t("userInfo.avatar.successPrompt"));
-      logout();
-    })
-    .catch((error) => {
-      throwError(error, "userInfo.avatar.errPrompt", t);
-    });
+  setTimeout(()=>{
+    axios
+      .put(
+        `/api/users/${loginStore.userVo?.id}/profile/avatar`,
+        newAvatar.value,
+        {
+          headers: { "Content-Type": "image/png" },
+        },
+      )
+      .then(() => {
+        ElMessage.success(t("userInfo.avatar.successPrompt"));
+        logout();
+      })
+      .catch((error) => {
+        throwError(error, "userInfo.avatar.errPrompt", t);
+      });
+  }, 200);
+  
 }
 </script>
 

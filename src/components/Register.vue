@@ -115,24 +115,29 @@ function register(): void {
   formData.append("username", form.username);
   formData.append("password", sha3(form.passwd1).toString());
   formData.append("email", form.email);
-
-  cropper?.value?.getCropBlob((data: Blob) => {
+  
+  cropper.value.getCropBlob((data: Blob) => {
     form.avatar = data;
   });
-
-  formData.append("avatar", form.avatar);
-
-  axios
-    .post("/api/users", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-    .then(() => {
-      ElMessage.success(t("register.successPrompt"));
-      router.push("/");
-    })
-    .catch((error) => {
-      throwError(error, "register.errPrompt", t);
-    });
+  setTimeout(()=>{
+    if (!form.avatar.size){
+      console.log("avater is null!");
+      return;
+    }
+    formData.append("avatar", form.avatar);
+    // 给个延迟就行了，笑死
+    axios
+      .post("/api/users", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        ElMessage.success(t("register.successPrompt"));
+        router.push("/login");
+      })
+      .catch((error) => {
+        throwError(error, "register.errPrompt", t);
+      });
+  }, 300);
 }
 
 function checkPasswd(password: string): boolean {
