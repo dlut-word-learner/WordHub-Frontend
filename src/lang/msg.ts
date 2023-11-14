@@ -195,6 +195,7 @@ export const messages = {
       studied: "学习过",
       mastered: "掌握",
       totalWords: "总词数",
+      noProgressData: "暂无进度信息，请完成一项学习任务方可在此查看进度",
     },
   },
   en: {
@@ -398,6 +399,7 @@ export const messages = {
       studied: "studied",
       mastered: "mastered",
       totalWords: "total words",
+      noProgressData: "No progress info yet, please complete a task to see your progress here",
     },
   },
   ja: {
@@ -597,6 +599,7 @@ export const messages = {
       studied: "学んだ",
       mastered: "マスターした",
       totalWords: "総単語数",
+      noProgressData: "進捗情報はまだありません。ここに進捗状況を確認するには、タスクを完了してください。",
     },
   },
 };

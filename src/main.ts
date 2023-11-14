@@ -7,6 +7,7 @@ import { createI18n } from "vue-i18n";
 import { messages } from "./lang/msg";
 import { useDark } from "@vueuse/core";
 
+import 'default-passive-events';
 import "./style.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 

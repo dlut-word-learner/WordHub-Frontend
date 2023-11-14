@@ -15,6 +15,7 @@
     "@vueuse/core": "^10.6.0",
     "axios": "^1.6.1",
     "crypto-js": "^4.2.0",
+    "default-passive-events": "^2.0.0",
     "echarts": "^5.4.3",
     "element-plus": "^2.4.2",
     "howler": "^2.2.4",

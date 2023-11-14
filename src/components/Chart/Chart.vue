@@ -24,8 +24,10 @@
         <el-col :span="16" id="progressCol">
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
-            class="progress"
+            id="progress"
+            v-if="showProgress"
           ></div>
+          <div v-else style="font-size: larger;"> {{ $t("statistics.noProgressData") }} </div>
         </el-col>
       </el-row>
     </el-main>
@@ -55,6 +57,7 @@ import type {
   ScatterSeriesOption,
 } from "echarts/charts";
 import type { ComposeOption } from "echarts/core";
+import { nextTick } from "vue";
 
 type ECOption = ComposeOption<
   BarSeriesOption | ScatterSeriesOption | EffectScatterSeriesOption
@@ -90,11 +93,13 @@ const progressRef = ref<HTMLElement>();
 let heatmap: echarts.ECharts;
 let barCharts = new Map<Task, echarts.ECharts>();
 let progress: echarts.ECharts;
+const showProgress = ref(false);
 
 // 声明要从后端API取得的数据
 let barChartData = new Map<Task, [string, number][]>();
 const heatmapDuration = 90;
 let heatmapData: [string, number][] = [];
+
 interface ProgressModel {
   name: string[];
   sum: number[];
@@ -102,6 +107,7 @@ interface ProgressModel {
   mastered: number[];
 }
 
+// TODO: Reimplement this with echarts.dataset
 let progressData: ProgressModel = {
   name: [],
   sum: [],
@@ -259,8 +265,10 @@ function initHeatMap(): void {
 }
 
 function initProgress(): void {
+  console.log(progressRef.value);
   if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
+    
     progress = echarts.init(progressRef.value);
     const option: ECOption = {
       tooltip: {
@@ -373,11 +381,11 @@ function initProgress(): void {
 }
 
 function handleResize() {
-  /*
-  barCharts.forEach((x) => x.resize());
-  progress.resize();
-  heatmap.resize();
-  */
+  nextTick(()=>{
+    barCharts.forEach((x) => x.resize());
+    progress.resize();
+    heatmap.resize();
+  });
 }
 
 onMounted(async () => {
@@ -386,12 +394,14 @@ onMounted(async () => {
   // console.log("barChartData: ", barChartData);
   // console.log("heatmapData: ", heatmapData);
   // console.log("progressData: ", progressData);
-  for (const task of tasks) {
-    initBarChart(task);
-  }
-
-  initHeatMap();
-  initProgress();
+  await nextTick(()=>{
+    console.log("initializing echarts...");
+    for (const task of tasks) {
+      initBarChart(task);
+    }
+    initHeatMap();
+    initProgress();
+  })
   window.addEventListener("resize", handleResize);
 });
 
@@ -451,6 +461,7 @@ const fetchData = async () => {
       progressData.mastered[index] = data.mastered;
       progressData.sum[index] = data.sum;
       progressData.studied[index] = data.studied;
+      if(data.studied!=0||data.mastered!=0)showProgress.value = true;
     }
   } catch (error) {
     console.error(error);
@@ -500,7 +511,8 @@ html.dark #secondRow {
   height: 35vh;
 }
 
-.progress {
+#progress {
+  
   height: 35vh;
 }
 </style>
