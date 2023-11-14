@@ -105,6 +105,7 @@ import axios from "axios";
 import router from "../router";
 import "./wordStyle.css";
 import "./animation.css";
+import { watchEffect } from "vue";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
@@ -131,6 +132,10 @@ const shake = ref(false);
 const isMainShown = ref(false);
 const isPhoneShown = ref(false);
 const userInputRef = ref<HTMLInputElement>();
+
+watchEffect(()=>{
+    userInputRef.value?.focus();
+  });
 
 watch(userInput, (newInput) => {
   if (tries.value == 2 && !isForgotten(currWordIndex.value)) {
