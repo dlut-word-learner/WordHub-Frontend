@@ -433,22 +433,22 @@ const fetchData = async () => {
     // 没有最近单词，则生成假数据
     if (dictsToGenerateProgress.length == 0) {
       dictsToGenerateProgress.push({
-        id: 1,
+        id: -1,
         language: "English",
         name: "3500 (For Test)",
       });
       dictsToGenerateProgress.push({
-        id: 14,
+        id: -2,
         language: "Japanese",
         name: "N3 (For Test)",
       });
       dictsToGenerateProgress.push({
-        id: 2,
+        id: -3,
         language: "English",
         name: "CET-4 (For Test)",
       });
       dictsToGenerateProgress.push({
-        id: 8,
+        id: -4,
         language: "English",
         name: "CET-6 (For Test)",
       });
@@ -461,7 +461,7 @@ const fetchData = async () => {
       progressData.mastered[index] = data.mastered;
       progressData.sum[index] = data.sum;
       progressData.studied[index] = data.studied;
-      if(data.studied!=0||data.mastered!=0)showProgress.value = true;
+      if(data.sum!=0)showProgress.value = true;
     }
   } catch (error) {
     console.error(error);
