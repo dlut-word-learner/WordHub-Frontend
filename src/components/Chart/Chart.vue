@@ -222,7 +222,7 @@ function initHeatMap(): void {
           coordinateSystem: "calendar",
           data: heatmapData,
           symbolSize: ([_, tick]) => {
-            return (12 * Math.log(tick)) / Math.log(maxTick);
+            return (20 * Math.log(tick)) / Math.log(maxTick);
           },
           itemStyle: {
             color: isDark.value ? "#b3e19d" : "#409EFF",
@@ -239,7 +239,7 @@ function initHeatMap(): void {
             })
             .slice(0, 6),
           symbolSize: ([_, tick]) => {
-            return (13 * Math.log(tick)) / Math.log(maxTick);
+            return (20 * Math.log(tick)) / Math.log(maxTick);
           },
           showEffectOn: "render",
           rippleEffect: {
