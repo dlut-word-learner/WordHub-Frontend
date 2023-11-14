@@ -231,6 +231,14 @@ export default defineMock([
     body: dicts,
   },
   {
+    url: "/api/dicts/:dictId/review/num",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "text/plain",
+    body: "20",
+  },
+  {
     url: "/api/dicts/1/learn",
     method: "GET",
     status: 200,

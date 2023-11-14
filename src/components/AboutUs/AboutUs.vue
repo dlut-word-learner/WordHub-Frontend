@@ -2,9 +2,9 @@
   <el-container id="body">
     <div class="a">
       <div class="b">
-        <a href="#">致力于做世界上最好的单词APP</a>
+        <a href="#">{{ $t("aboutUs.description") }}</a>
         <h2>Donate us</h2>
-        WORDHUB项目组出品
+        WordHub项目组出品
       </div>
       <div class="c">
         <!-- --i是用来计算平面圆柱的动效延迟和距离的
@@ -22,12 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import image from "../Contactus/donateus.jpg";
+import image from "../AboutUs/donateus.jpg";
 </script>
 
 <style scoped>
 #body {
-  /* background-color: rgb(204, 212, 230); */
   display: flex;
   justify-content: center;
 }
@@ -35,11 +34,16 @@ import image from "../Contactus/donateus.jpg";
   position: relative;
   width: 700px;
   height: 400px;
-  border: #fff 10px solid;
-
+  background-color: #a0cfff;
   top: 120px;
   border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  transition: scale 0.5s ease;
+}
+
+html.dark .a{
+  background-color: #337ecc;
 }
 .b {
   position: absolute;
@@ -48,7 +52,12 @@ import image from "../Contactus/donateus.jpg";
   left: 0;
   margin: 75px 50px;
   transition: 1s;
+  color: #fff;
 }
+html.dark .b{
+  color: #E5EAF3;
+}
+
 .b a {
   text-decoration: none;
   color: #fff;
@@ -125,5 +134,10 @@ import image from "../Contactus/donateus.jpg";
 .a:hover .f {
   transition: 1s 1.3s;
   opacity: 1;
+}
+
+.a:hover {
+  scale: 1.02;
+  transition: scale 0.5s ease;
 }
 </style>

@@ -22,7 +22,7 @@ export const messages = {
       cancel: "取消",
       userInfo: "个人资料",
       statistics: "统计信息",
-      Contactus: "联系我们",
+      aboutUs: "关于我们",
     },
     login: {
       userLogin: "用户登录",
@@ -70,6 +70,7 @@ export const messages = {
       continueCurrTask: "继续之前的学习任务",
       startNewTask: "开始新的学习任务",
       loginFirst: "请先登录",
+      numToReview: "待复习",
     },
     learn: {
       errGetWords: "获取单词失败，{err}",
@@ -197,6 +198,9 @@ export const messages = {
       totalWords: "总词数",
       noProgressData: "暂无进度信息，请完成一项学习任务方可在此查看进度",
     },
+    aboutUs: {
+      description: "单词学习一站式解决方案",
+    }
   },
   en: {
     badRequest: "bad request",
@@ -221,7 +225,7 @@ export const messages = {
       cancel: "Cancel",
       userInfo: "My Profile",
       statistics: "Statistics",
-      Contactus: "Contact us",
+      aboutUs: "about us",
     },
     login: {
       userLogin: "User Login",
@@ -270,6 +274,7 @@ export const messages = {
       continueCurrTask: "Continue the current task",
       startNewTask: "Start a new task",
       loginFirst: "Please log in first",
+      numToReview: "need to review",
     },
     learn: {
       errGetWords: "Failed to get words, {err}",
@@ -402,6 +407,9 @@ export const messages = {
       noProgressData:
         "No progress info yet, please complete a task to see your progress here",
     },
+    aboutUs: {
+      description: "A word learning resolution",
+    }
   },
   ja: {
     badRequest: "リクエストは無効です",
@@ -426,7 +434,7 @@ export const messages = {
       cancel: "キャンセル",
       userInfo: "ユーザー情報",
       statistics: "統計情報",
-      Contactus: "私たちに連絡",
+      aboutUs: "私たちについて",
     },
     login: {
       userLogin: "ユーザーログイン",
@@ -474,6 +482,7 @@ export const messages = {
       continueCurrTask: "前回のタスクを続ける",
       startNewTask: "新しいタスクを始める",
       loginFirst: "まずログインしてください",
+      numToReview: "復習が必要な",
     },
     learn: {
       errGetWords: "単語の取得に失敗しました。{err}",
@@ -603,5 +612,8 @@ export const messages = {
       noProgressData:
         "進捗情報はまだありません。ここに進捗状況を確認するには、タスクを完了してください。",
     },
+    aboutUs: {
+      description: "単語学習の解決策",
+    }
   },
 };

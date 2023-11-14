@@ -72,8 +72,8 @@
         <el-menu-item index="/options" class="menu-item">{{
           $t("app.options")
         }}</el-menu-item>
-        <el-menu-item index="/Contactus" class="menu-item">
-          {{ $t("app.Contactus") }}
+        <el-menu-item index="/about-us" class="menu-item" id="aboutUs">
+          {{ $t("app.aboutUs") }}
         </el-menu-item>
       </el-menu>
     </el-header>
@@ -190,5 +190,11 @@ html.dark .menu {
 
 .appMain {
   padding: 0;
+}
+
+#aboutUs {
+  position: absolute;
+  right: 20px;
+  font-size: max(1.5vh, 0.5vw);
 }
 </style>

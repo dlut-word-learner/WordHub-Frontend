@@ -38,6 +38,7 @@
                 <div>
                   <div class="dictName">{{ dict.name }}</div>
                   <div class="dictLang">{{ dict.language }}</div>
+                  <div class="numToReview" v-if="numToReview[dict.id]">{{ t("dict.numToReview") + ": " + numToReview[dict.id] }} </div>
                 </div>
               </template>
               <el-button @click="tryTask(dict, Task.Learn)" class="taskButton">
@@ -93,9 +94,10 @@ const { t } = useI18n();
 
 const currPage = ref(1);
 const pageSize = ref(12);
+let numToReview = ref(new Map<number, number>);
 
-onMounted(() => {
-  axios
+onMounted(async () => {
+  await axios
     .get("/api/dicts")
     .then((response) => {
       dicts.value = response.data;
@@ -103,6 +105,12 @@ onMounted(() => {
     .catch((error) => {
       throwError(error, "dict.errGetDicts", t);
     });
+  // TODO
+  // for(const dict of dicts.value){
+  //   await axios.get(`/api/dicts/${dict.id}/review/num`).then((body)=>{
+  //     numToReview.value[dict.id] = body.data;
+  //   });
+  // }
 });
 
 const sideWidth = computed(() => {
