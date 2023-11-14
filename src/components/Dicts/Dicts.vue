@@ -38,7 +38,11 @@
                 <div>
                   <div class="dictName">{{ dict.name }}</div>
                   <div class="dictLang">{{ dict.language }}</div>
-                  <div class="numToReview" v-if="numToReview[dict.id]">{{ t("dict.numToReview") + ": " + numToReview[dict.id] }} </div>
+                  <div class="numToReview" v-if="numToReview.get(dict.id)">
+                    {{
+                      t("dict.numToReview") + ": " + numToReview.get(dict.id)
+                    }}
+                  </div>
                 </div>
               </template>
               <el-button @click="tryTask(dict, Task.Learn)" class="taskButton">
@@ -94,23 +98,24 @@ const { t } = useI18n();
 
 const currPage = ref(1);
 const pageSize = ref(12);
-let numToReview = ref(new Map<number, number>);
+const numToReview = ref(new Map<number, number>());
 
 onMounted(async () => {
-  await axios
-    .get("/api/dicts")
-    .then((response) => {
-      dicts.value = response.data;
-    })
-    .catch((error) => {
-      throwError(error, "dict.errGetDicts", t);
+  try {
+    const { data: dictsData } = await axios.get("/api/dicts");
+    dicts.value = dictsData;
+    const promises = dicts.value.map(async (dict) => {
+      const { data: reviewNum } = await axios.get(
+        `/api/dicts/${dict.id}/review/num`,
+      );
+      // Typescript set get 才支持异步，[]访问不支持！！！
+      numToReview.value.set(dict.id, reviewNum);
+      // console.log(dict.id, " : ", numToReview.value[dict.id]);
     });
-  // TODO
-  // for(const dict of dicts.value){
-  //   await axios.get(`/api/dicts/${dict.id}/review/num`).then((body)=>{
-  //     numToReview.value[dict.id] = body.data;
-  //   });
-  // }
+    await Promise.all(promises);
+  } catch (error) {
+    throwError(error, "dict.errGetDicts", t);
+  }
 });
 
 const sideWidth = computed(() => {
@@ -344,6 +349,11 @@ html.dark .dictCard2 {
 
 .dictLang {
   font-size: 18px;
+}
+
+.numToReview {
+  margin-top: 10px;
+  margin-bottom: 0;
 }
 
 .taskButton {
