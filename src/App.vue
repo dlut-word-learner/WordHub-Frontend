@@ -72,15 +72,10 @@
         <el-menu-item index="/options" class="menu-item">{{
           $t("app.options")
         }}</el-menu-item>
-              <el-menu-item
-          index="/Contactus"
-        
-          class="menu-item"
-        >
+        <el-menu-item index="/Contactus" class="menu-item">
           {{ $t("app.contactus") }}
         </el-menu-item>
       </el-menu>
-
     </el-header>
     <el-main class="appMain">
       <router-view v-slot="{ Component }">

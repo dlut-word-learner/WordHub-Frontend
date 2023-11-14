@@ -1,6 +1,6 @@
 <template>
   <el-container direction="vertical" id="statisticsContainer">
-    <el-main id="barCharts" style="padding-bottom: 10px;">
+    <el-main id="barCharts" style="padding-bottom: 10px">
       <el-row id="firstRow">
         <el-col v-for="task in tasks" :span="8">
           <div
