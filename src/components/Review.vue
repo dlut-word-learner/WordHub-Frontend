@@ -17,19 +17,36 @@
               v-if="tries < 3 && !isCurrCorrect"
             />
             <div v-if="!isForgotten(currWordIndex) && isCurrCorrect">
-              <el-button size="large" @click="finishWord(true, Rating.Hard)">
-                {{ $t("review.hard") }}
-              </el-button>
-              <el-button
-                size="large"
-                type="primary"
-                @click="finishWord(true, Rating.Good)"
-              >
-                {{ $t("review.good") }}
-              </el-button>
-              <el-button size="large" @click="finishWord(true, Rating.Easy)">
-                {{ $t("review.easy") }}
-              </el-button>
+              <el-container>
+                <el-main>
+                  <el-button
+                    size="large"
+                    @click="finishWord(true, Rating.Hard)"
+                  >
+                    {{ $t("review.hard") }}
+                  </el-button>
+                  <div>{{ peek.hard }}</div>
+                </el-main>
+                <el-main>
+                  <el-button
+                    size="large"
+                    type="primary"
+                    @click="finishWord(true, Rating.Good)"
+                  >
+                    {{ $t("review.good") }}
+                  </el-button>
+                  <div>{{ peek.good }}</div>
+                </el-main>
+                <el-main>
+                  <el-button
+                    size="large"
+                    @click="finishWord(true, Rating.Easy)"
+                  >
+                    {{ $t("review.easy") }}
+                  </el-button>
+                  <div>{{ peek.easy }}</div>
+                </el-main>
+              </el-container>
             </div>
             <el-button
               size="large"
@@ -93,7 +110,13 @@
 
 <script setup lang="ts">
 import { Task, useTaskStore } from "../store/taskStore";
-import { Lang, Rating, WordToReviewVo, excludeCache } from "./Dicts/common";
+import {
+  Lang,
+  Rating,
+  WordReviewPeekVo,
+  WordToReviewVo,
+  excludeCache,
+} from "./Dicts/common";
 import { computed, nextTick, onActivated, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onKeyStroke } from "@vueuse/core";
@@ -115,7 +138,7 @@ const taskStore = useTaskStore();
 const words = ref<WordToReviewVo[]>();
 const forgottenWords: WordToReviewVo[] = [];
 
-const currWordIndex = ref(0);
+const currWordIndex = ref(-1);
 const visibleWordIndexes = ref([0, 1]);
 
 const currWord = computed(() => {
@@ -132,6 +155,27 @@ const shake = ref(false);
 const isMainShown = ref(false);
 const isPhoneShown = ref(false);
 const userInputRef = ref<HTMLInputElement>();
+
+const peek = ref({
+  good: 0,
+  easy: 0,
+  hard: 0,
+} as WordReviewPeekVo);
+
+watch(
+  () => currWordIndex.value,
+  async (newIndex) => {
+    if (words?.value) {
+      // console.log("getting: ", newIndex, ", ", words.value[newIndex]);
+      const res = await axios.get(
+        `/api/dicts/${props.dictId}/words/${words.value[newIndex].id}/review`,
+      );
+      peek.value = res.data as WordReviewPeekVo;
+      // console.log("peek: ", peek.value);
+    }
+  },
+  { immediate: true },
+);
 
 watchEffect(() => {
   userInputRef.value?.focus();
@@ -206,7 +250,7 @@ const initData = async () => {
     .then((response) => {
       words.value = response.data;
       if (!words.value?.length) isAllFinished.value = true;
-
+      currWordIndex.value = 0;
       taskStore.type = Task.Review;
       taskStore.url = router.currentRoute.value.fullPath;
     })
@@ -335,5 +379,12 @@ onActivated(() => {
   margin-top: 15%;
   transition: all 0.5s ease;
   align-items: center;
+}
+
+#inputArea {
+  width: 30vw;
+  height: 12vh;
+  padding: 0 10px;
+  flex: 2 0 auto;
 }
 </style>

@@ -56,3 +56,9 @@ export function includesDict(list: DictVo[], dict: DictVo): boolean {
       dict.name == x.name && dict.id == x.id && dict.language == x.language,
   );
 }
+
+export interface WordReviewPeekVo {
+  hard: number;
+  good: number;
+  easy: number;
+}
