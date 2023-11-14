@@ -1,4 +1,5 @@
 <template>
+    <el-container id="body">
   <div class="a">
     <div class="b">
       <a href="#">致力于做世界上最好的单词APP</a>
@@ -12,20 +13,21 @@
       <div class="d" style="--i: 2; --w: 1.6"></div>
       <div class="d" style="--i: 3; --w: 1.4"></div>
       <div class="d" style="--i: 4; --w: 1.7"></div>
-      <div class="e" style="--i: 1"></div>
+      <div class="e" style="--i: 5"></div>
     </div>
     <!-- 设置二维码 -->
     <div class="f"><img :src="image" alt="Image" /></div>
   </div>
+</el-container>
 </template>
 
 <script setup lang="ts">
 import image from "../Contactus/donateus.jpg";
 </script>
 
-<style>
-body {
-  background-color: rgb(204, 212, 230);
+<style scoped>
+#body {
+  /* background-color: rgb(204, 212, 230); */
   display: flex;
   justify-content: center;
 }
