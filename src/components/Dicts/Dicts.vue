@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { DictVo, includeCache, Lang, sortWithIntersection } from "./common";
+import { DictVo, Lang, sortWithIntersection } from "./common";
 import { Ref, ref, onMounted, computed } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
@@ -122,6 +122,11 @@ function onSelectDictsCategory(index: string, _indexPath, _routeResult): void {
 
 function tryTask(dict: DictVo, task: Task): void {
   if (taskStore.type != Task.None) {
+    console.log(taskStore.url);
+    if(taskStore.type == task && taskStore.url.includes(Lang[dict.language]) && taskStore.url.includes(dict.id.toString())){
+      continueCurrTask();
+      return ;
+    }
     ElMessageBox.confirm(t("dict.currTaskPrompt"), t("dict.prompt"), {
       distinguishCancelAndClose: true,
       confirmButtonText: t("dict.startNewTask"),
@@ -149,9 +154,7 @@ function startNewTask(dict: DictVo, task: Task): void {
     router.push("Login");
     return;
   }
-  includeCache.value = Task[taskStore.type];
   const wordsPerRound = ref(0);
-
   switch (task) {
     case Task.Learn:
       wordsPerRound.value = optionsStore.learnWordsPerRound;
@@ -186,7 +189,7 @@ function startNewTask(dict: DictVo, task: Task): void {
 }
 
 const selectedDicts = computed(() => {
-  console.log(historyStore.recentlyUsedDicts);
+  // console.log(historyStore.recentlyUsedDicts);
   return sortWithIntersection(
     dicts.value.filter((x) => {
       if (currCate.value == "recentlyUsed") {

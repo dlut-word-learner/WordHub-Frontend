@@ -12,6 +12,8 @@
               :disabled="isAllFinished"
               :clearable="true"
               :maxlength="currWord?.name.length"
+              autofocus
+              ref="userInputRef"
               v-if="tries < 3 && !isCurrCorrect"
             />
             <div v-if="!isForgotten(currWordIndex) && isCurrCorrect">
@@ -92,7 +94,7 @@
 <script setup lang="ts">
 import { Task, useTaskStore } from "../store/taskStore";
 import { Lang, Rating, WordToReviewVo, includeCache } from "./Dicts/common";
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, onActivated, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onKeyStroke } from "@vueuse/core";
 import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
@@ -128,6 +130,7 @@ const shake = ref(false);
 
 const isMainShown = ref(false);
 const isPhoneShown = ref(false);
+const userInputRef = ref<HTMLInputElement>();
 
 watch(userInput, (newInput) => {
   if (tries.value == 2 && !isForgotten(currWordIndex.value)) {
@@ -315,6 +318,12 @@ function goBack(): void {
   taskStore.type = Task.None;
   router.push("/dicts");
 }
+
+onActivated(() => {
+  nextTick(() => {
+    userInputRef.value?.focus();
+  });
+});
 </script>
 
 <style scoped>

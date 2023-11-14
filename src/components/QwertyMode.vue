@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, computed, onActivated, onDeactivated, nextTick } from "vue";
+import { ref, computed, onActivated, onDeactivated, nextTick } from "vue";
 import { useStopwatch } from "vue-timer-hook";
 import { Howl } from "howler";
 import { useOptionsStore } from "../store/optionsStore";
@@ -151,7 +151,7 @@ const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
 const stopwatch = useStopwatch(0, false);
-const userInputRef: Ref<HTMLInputElement | null> = ref(null);
+const userInputRef = ref<HTMLInputElement>();
 
 const currWordSound = computed(() => {
   if (!currWord.value) return undefined;

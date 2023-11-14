@@ -9,9 +9,9 @@ export function throwError(error: any, prompt: string, t: any): void {
   const response = error.response;
 
   if (response) {
-    console.log(response.data);
-    console.log(response.status);
-    console.log(response.headers);
+    console.error(response.data);
+    console.error(response.status);
+    console.error(response.headers);
 
     switch (response.status) {
       case HttpStatusCode.BadRequest:
@@ -34,9 +34,9 @@ export function throwError(error: any, prompt: string, t: any): void {
         break;
     }
   } else {
-    error.request ? console.log(error.request) : console.log(error.message);
+    error.request ? console.error(error.request) : console.error(error.message);
     ElMessage.error(t(prompt, { err: t("chkNet") }));
   }
 
-  console.log(error.config);
+  console.error(error.config);
 }

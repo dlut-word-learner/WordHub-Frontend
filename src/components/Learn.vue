@@ -12,17 +12,19 @@
               :disabled="isAllFinished"
               :clearable="true"
               :maxlength="currWord?.name.length"
-              v-if="isVisited(currWordIndex) && tries < 3"
+              autofocus
+              ref="userInputRef"
+              v-show="isVisited(currWordIndex) && tries < 3"
             />
             <el-button
               size="large"
               type="primary"
               @click="showAns"
-              v-else-if="words && isAnsButtonShown"
+              v-show="!(isVisited(currWordIndex) && tries < 3) && words && isAnsButtonShown"
             >
               {{ $t("learn.showAns") }}
             </el-button>
-            <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
+            <div v-show="isMeaningShown && words && !isVisited(currWordIndex)">
               <el-button size="large" type="primary" @click="finishWord(true)">
                 {{ $t("learn.know") }}
               </el-button>
@@ -34,7 +36,7 @@
               size="large"
               type="primary"
               @click="finishWord(false)"
-              v-if="tries >= 3"
+              v-show="tries >= 3"
             >
               {{ $t("learn.tryAgain") }}
             </el-button>
@@ -104,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, onActivated, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onKeyStroke } from "@vueuse/core";
 import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
@@ -137,6 +139,7 @@ const currWord = computed(() => {
 const tries = ref(0); // Maximum tries: 3
 
 const userInput = ref("");
+const userInputRef = ref<HTMLInputElement>();
 const isCurrCorrect = ref(false);
 const isAllFinished = ref(false);
 const shake = ref(false);
@@ -333,6 +336,12 @@ function goBack(): void {
   taskStore.type = Task.None;
   router.push("/dicts");
 }
+
+onActivated(() => {
+  nextTick(() => {
+    userInputRef.value?.focus();
+  });
+});
 </script>
 
 <style scoped>
