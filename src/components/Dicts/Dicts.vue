@@ -123,9 +123,13 @@ function onSelectDictsCategory(index: string, _indexPath, _routeResult): void {
 function tryTask(dict: DictVo, task: Task): void {
   if (taskStore.type != Task.None) {
     console.log(taskStore.url);
-    if(taskStore.type == task && taskStore.url.includes(Lang[dict.language]) && taskStore.url.includes(dict.id.toString())){
+    if (
+      taskStore.type == task &&
+      taskStore.url.includes(Lang[dict.language]) &&
+      taskStore.url.includes(dict.id.toString())
+    ) {
       continueCurrTask();
-      return ;
+      return;
     }
     ElMessageBox.confirm(t("dict.currTaskPrompt"), t("dict.prompt"), {
       distinguishCancelAndClose: true,

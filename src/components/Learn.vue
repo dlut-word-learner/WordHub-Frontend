@@ -20,7 +20,11 @@
               size="large"
               type="primary"
               @click="showAns"
-              v-show="!(isVisited(currWordIndex) && tries < 3) && words && isAnsButtonShown"
+              v-show="
+                !(isVisited(currWordIndex) && tries < 3) &&
+                words &&
+                isAnsButtonShown
+              "
             >
               {{ $t("learn.showAns") }}
             </el-button>

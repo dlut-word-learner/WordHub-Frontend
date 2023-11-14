@@ -27,7 +27,9 @@
             id="progress"
             v-if="showProgress"
           ></div>
-          <div v-else style="font-size: larger;"> {{ $t("statistics.noProgressData") }} </div>
+          <div v-else style="font-size: larger">
+            {{ $t("statistics.noProgressData") }}
+          </div>
         </el-col>
       </el-row>
     </el-main>
@@ -268,7 +270,7 @@ function initProgress(): void {
   console.log(progressRef.value);
   if (progressRef.value) {
     // dictsToGenerateProgress[index].id;
-    
+
     progress = echarts.init(progressRef.value);
     const option: ECOption = {
       tooltip: {
@@ -381,7 +383,7 @@ function initProgress(): void {
 }
 
 function handleResize() {
-  nextTick(()=>{
+  nextTick(() => {
     barCharts.forEach((x) => x.resize());
     progress.resize();
     heatmap.resize();
@@ -394,14 +396,14 @@ onMounted(async () => {
   // console.log("barChartData: ", barChartData);
   // console.log("heatmapData: ", heatmapData);
   // console.log("progressData: ", progressData);
-  await nextTick(()=>{
+  await nextTick(() => {
     console.log("initializing echarts...");
     for (const task of tasks) {
       initBarChart(task);
     }
     initHeatMap();
     initProgress();
-  })
+  });
   window.addEventListener("resize", handleResize);
 });
 
@@ -461,7 +463,7 @@ const fetchData = async () => {
       progressData.mastered[index] = data.mastered;
       progressData.sum[index] = data.sum;
       progressData.studied[index] = data.studied;
-      if(data.sum!=0)showProgress.value = true;
+      if (data.sum != 0) showProgress.value = true;
     }
   } catch (error) {
     console.error(error);
@@ -512,7 +514,6 @@ html.dark #secondRow {
 }
 
 #progress {
-  
   height: 35vh;
 }
 </style>

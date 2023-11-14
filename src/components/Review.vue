@@ -133,9 +133,9 @@ const isMainShown = ref(false);
 const isPhoneShown = ref(false);
 const userInputRef = ref<HTMLInputElement>();
 
-watchEffect(()=>{
-    userInputRef.value?.focus();
-  });
+watchEffect(() => {
+  userInputRef.value?.focus();
+});
 
 watch(userInput, (newInput) => {
   if (tries.value == 2 && !isForgotten(currWordIndex.value)) {

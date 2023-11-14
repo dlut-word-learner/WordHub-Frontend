@@ -1,24 +1,24 @@
 <template>
-    <el-container id="body">
-  <div class="a">
-    <div class="b">
-      <a href="#">致力于做世界上最好的单词APP</a>
-      <h2>Donate us</h2>
-      WORDHUB项目组出品
-    </div>
-    <div class="c">
-      <!-- --i是用来计算平面圆柱的动效延迟和距离的
+  <el-container id="body">
+    <div class="a">
+      <div class="b">
+        <a href="#">致力于做世界上最好的单词APP</a>
+        <h2>Donate us</h2>
+        WORDHUB项目组出品
+      </div>
+      <div class="c">
+        <!-- --i是用来计算平面圆柱的动效延迟和距离的
             --w则是用来计算平面圆柱的宽度 -->
-      <div class="d" style="--i: 1; --w: 1.5"></div>
-      <div class="d" style="--i: 2; --w: 1.6"></div>
-      <div class="d" style="--i: 3; --w: 1.4"></div>
-      <div class="d" style="--i: 4; --w: 1.7"></div>
-      <div class="e" style="--i: 5"></div>
+        <div class="d" style="--i: 1; --w: 1.5"></div>
+        <div class="d" style="--i: 2; --w: 1.6"></div>
+        <div class="d" style="--i: 3; --w: 1.4"></div>
+        <div class="d" style="--i: 4; --w: 1.7"></div>
+        <div class="e" style="--i: 5"></div>
+      </div>
+      <!-- 设置二维码 -->
+      <div class="f"><img :src="image" alt="Image" /></div>
     </div>
-    <!-- 设置二维码 -->
-    <div class="f"><img :src="image" alt="Image" /></div>
-  </div>
-</el-container>
+  </el-container>
 </template>
 
 <script setup lang="ts">

@@ -80,8 +80,7 @@
     <el-main class="appMain">
       <router-view v-slot="{ Component }">
         <transition name="globalAnimation" appear mode="out-in">
-          <keep-alive
-            :include="includeCache">
+          <keep-alive :include="includeCache">
             <component :is="Component" :key="$route.name" />
           </keep-alive>
         </transition>
