@@ -36,9 +36,9 @@ import { reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import { useLoginStore } from "../../store/loginStore";
 import { throwError } from "../Error";
+import { logout } from "./common";
 import sha3 from "crypto-js/sha3";
 import axios from "axios";
-import router from "../../router";
 
 const form = reactive({
   originalPwd: "",
@@ -86,7 +86,7 @@ function savePasswd(): void {
     })
     .then(() => {
       ElMessage.success(t("userinfo.changePwd.successPrompt"));
-      router.push("/");
+      logout();
     })
     .catch((error) => {
       throwError(error, "userinfo.changePwd.errorPrompt", t);

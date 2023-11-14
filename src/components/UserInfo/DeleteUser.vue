@@ -32,9 +32,9 @@ import { reactive } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
 import { throwError } from "../Error";
+import { logout } from "./common";
 import axios from "axios";
 import sha3 from "crypto-js/sha3";
-import router from "../../router";
 
 const form = reactive({
   passwd1: "",
@@ -75,7 +75,7 @@ function deleteUser(): void {
         .delete(`/api/users/${loginStore.userVo?.id}`)
         .then(() => {
           ElMessage.success(t("userInfo.delete.successPrompt"));
-          router.push("/");
+          logout();
         })
         .catch((error) => {
           throwError(error, "userInfo.delete.errPrompt", t);

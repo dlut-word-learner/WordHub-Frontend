@@ -30,8 +30,8 @@ import { VueCropper } from "vue-cropper";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
 import { throwError } from "../Error";
+import { logout } from "./common";
 import axios from "axios";
-import router from "../../router";
 import "vue-cropper/dist/index.css";
 
 const loginStore = useLoginStore();
@@ -89,7 +89,7 @@ function saveAvatar(): void {
     )
     .then(() => {
       ElMessage.success(t("userInfo.avatar.successPrompt"));
-      router.push("/");
+      logout();
     })
     .catch((error) => {
       throwError(error, "userInfo.avatar.errPrompt", t);

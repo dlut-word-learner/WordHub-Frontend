@@ -32,8 +32,8 @@ import { reactive } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { useI18n } from "vue-i18n";
 import { throwError } from "../Error";
+import { logout } from "./common";
 import axios from "axios";
-import router from "../../router";
 
 const loginStore = useLoginStore();
 const { t } = useI18n();
@@ -69,7 +69,7 @@ function saveUserInfo(): void {
     })
     .then(() => {
       ElMessage.success(t("userInfo.basic.successPrompt"));
-      router.push("/");
+      logout();
     })
     .catch((error) => {
       throwError(error, "userInfo.basic.errPrompt", t);
