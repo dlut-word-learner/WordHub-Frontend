@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { DictVo, excludeCache, Lang, sortWithIntersection } from "./common";
+import { DictVo, includeCache, Lang, sortWithIntersection } from "./common";
 import { Ref, ref, onMounted, computed } from "vue";
 import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
@@ -149,7 +149,7 @@ function startNewTask(dict: DictVo, task: Task): void {
     router.push("Login");
     return;
   }
-  excludeCache.value = Task[taskStore.type];
+  includeCache.value = Task[taskStore.type];
   const wordsPerRound = ref(0);
 
   switch (task) {

@@ -108,7 +108,7 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onKeyStroke } from "@vueuse/core";
 import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
-import { Lang, WordVo, excludeCache } from "./Dicts/common";
+import { Lang, WordVo, includeCache } from "./Dicts/common";
 import { getWordMain } from "./WordCard";
 import { Task, useTaskStore } from "../store/taskStore";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
@@ -196,7 +196,7 @@ const currWordSound = computed(() => {
 });
 
 const initData = async () => {
-  excludeCache.value = "";
+  includeCache.value = Task[Task.Learn];
 
   await axios
     .get(`/api/dicts/${props.dictId}/learn`, {
@@ -329,6 +329,7 @@ function inputDone(isCorrect: boolean): void {
 }
 
 function goBack(): void {
+  includeCache.value = "";
   taskStore.type = Task.None;
   router.push("/dicts");
 }

@@ -35,7 +35,7 @@ export enum Rating {
   Easy,
 }
 
-export const excludeCache = ref("");
+export const includeCache = ref("");
 
 export function sortWithIntersection(
   a: DictVo[],

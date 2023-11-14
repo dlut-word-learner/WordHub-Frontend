@@ -114,7 +114,7 @@ import { useOptionsStore } from "../store/optionsStore";
 import { Task, useTaskStore } from "../store/taskStore";
 import { useI18n } from "vue-i18n";
 import { isKatakana, toHiragana, toKatakana } from "wanakana";
-import { Lang, WordVo, excludeCache } from "./Dicts/common";
+import { Lang, WordVo, includeCache } from "./Dicts/common";
 import { correctSound, wrongSound, typingSound } from "./SoundEffects";
 import { getWordMain } from "./WordCard";
 import { throwError } from "./Error";
@@ -176,7 +176,7 @@ const currWordSound = computed(() => {
 });
 
 const initData = async () => {
-  excludeCache.value = "";
+  includeCache.value = Task[Task.QwertyMode];
 
   await axios
     .get(`/api/dicts/${props.dictId}/learn`, {
@@ -292,7 +292,7 @@ function finish(): void {
 }
 
 function goBack(): void {
-  excludeCache.value = Task[taskStore.type];
+  includeCache.value = "";
   taskStore.type = Task.None;
   router.push("/dicts");
 }

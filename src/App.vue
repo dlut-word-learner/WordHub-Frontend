@@ -81,9 +81,7 @@
       <router-view v-slot="{ Component }">
         <transition name="globalAnimation" appear mode="out-in">
           <keep-alive
-            :include="['QwertyMode', 'Learn', 'Review']"
-            :exclude="excludeCache"
-          >
+            :include="includeCache">
             <component :is="Component" :key="$route.name" />
           </keep-alive>
         </transition>
@@ -99,7 +97,7 @@ import { useI18n } from "vue-i18n";
 import { useLoginStore } from "./store/loginStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { Task, useTaskStore } from "./store/taskStore";
-import { excludeCache } from "./components/Dicts/common";
+import { includeCache } from "./components/Dicts/common";
 import router from "./router";
 
 const { t } = useI18n();

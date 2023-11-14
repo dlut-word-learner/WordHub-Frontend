@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
 import { Task, useTaskStore } from "../store/taskStore";
-import { Lang, Rating, WordToReviewVo, excludeCache } from "./Dicts/common";
+import { Lang, Rating, WordToReviewVo, includeCache } from "./Dicts/common";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onKeyStroke } from "@vueuse/core";
@@ -187,7 +187,7 @@ const currWordSound = computed(() => {
 });
 
 const initData = async () => {
-  excludeCache.value = "";
+  includeCache.value = Task[Task.Review];
 
   await axios
     .get(`/api/dicts/${props.dictId}/review`, {
@@ -311,6 +311,7 @@ function inputDone(isCorrect: boolean): void {
 }
 
 function goBack(): void {
+  includeCache.value = "";
   taskStore.type = Task.None;
   router.push("/dicts");
 }
