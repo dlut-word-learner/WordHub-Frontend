@@ -73,7 +73,7 @@
           $t("app.options")
         }}</el-menu-item>
         <el-menu-item index="/Contactus" class="menu-item">
-          {{ $t("app.contactus") }}
+          {{ $t("app.Contactus") }}
         </el-menu-item>
       </el-menu>
     </el-header>

@@ -220,7 +220,7 @@ export const messages = {
       cancel: "Cancel",
       userInfo: "My Profile",
       statistics: "Statistics",
-      Contactus: "contact us",
+      Contactus: "Contact us",
     },
     login: {
       userLogin: "User Login",
