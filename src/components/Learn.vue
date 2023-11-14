@@ -14,21 +14,17 @@
               :maxlength="currWord?.name.length"
               autofocus
               ref="userInputRef"
-              v-show="isVisited(currWordIndex) && tries < 3"
+              v-if="isVisited(currWordIndex) && tries < 3"
             />
             <el-button
               size="large"
               type="primary"
               @click="showAns"
-              v-show="
-                !(isVisited(currWordIndex) && tries < 3) &&
-                words &&
-                isAnsButtonShown
-              "
+              v-else-if="words &&isAnsButtonShown"
             >
               {{ $t("learn.showAns") }}
             </el-button>
-            <div v-show="isMeaningShown && words && !isVisited(currWordIndex)">
+            <div v-if="isMeaningShown && words && !isVisited(currWordIndex)">
               <el-button size="large" type="primary" @click="finishWord(true)">
                 {{ $t("learn.know") }}
               </el-button>
@@ -40,7 +36,7 @@
               size="large"
               type="primary"
               @click="finishWord(false)"
-              v-show="tries >= 3"
+              v-if="tries >= 3"
             >
               {{ $t("learn.tryAgain") }}
             </el-button>
@@ -110,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onActivated, ref, watch } from "vue";
+import { computed, nextTick, onActivated, ref, watch, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
 import { onKeyStroke } from "@vueuse/core";
 import { isKatakana, toKana, toRomaji, toHiragana, toKatakana } from "wanakana";
@@ -152,6 +148,10 @@ const isAnsButtonShown = ref(true);
 const isMeaningShown = ref(false);
 const isPhoneShown = ref(false);
 const isInitialShown = ref(false);
+
+watchEffect(() => {
+  userInputRef.value?.focus();
+});
 
 watch(userInput, (newInput) => {
   if (isInitialShown.value) {
