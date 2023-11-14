@@ -22,6 +22,7 @@ export const messages = {
       cancel: "取消",
       userInfo: "个人资料",
       statistics: "统计信息",
+      Contactus:"联系我们"
     },
     login: {
       userLogin: "用户登录",
@@ -219,6 +220,7 @@ export const messages = {
       cancel: "Cancel",
       userInfo: "My Profile",
       statistics: "Statistics",
+      Contactus:"contact us"
     },
     login: {
       userLogin: "User Login",
@@ -421,6 +423,7 @@ export const messages = {
       cancel: "キャンセル",
       userInfo: "ユーザー情報",
       statistics: "統計情報",
+      Contactus:"私たちに連絡",
     },
     login: {
       userLogin: "ユーザーログイン",
