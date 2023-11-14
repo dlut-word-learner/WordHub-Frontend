@@ -115,12 +115,12 @@ function register(): void {
   formData.append("username", form.username);
   formData.append("password", sha3(form.passwd1).toString());
   formData.append("email", form.email);
-  
+
   cropper.value.getCropBlob((data: Blob) => {
     form.avatar = data;
   });
-  setTimeout(()=>{
-    if (!form.avatar.size){
+  setTimeout(() => {
+    if (!form.avatar.size) {
       console.log("avater is null!");
       return;
     }

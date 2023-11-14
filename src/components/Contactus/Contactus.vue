@@ -114,7 +114,7 @@ body {
   width: 250px;
   height: 250px;
   position: absolute;
-  background-image: url("goat.png");
+
   background-size: cover;
   margin: 70px;
   opacity: 0;

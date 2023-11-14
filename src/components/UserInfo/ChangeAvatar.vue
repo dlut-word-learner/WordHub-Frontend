@@ -78,7 +78,7 @@ function saveAvatar(): void {
   cropper?.value?.getCropBlob((data: Blob) => {
     newAvatar.value = data;
   });
-  setTimeout(()=>{
+  setTimeout(() => {
     axios
       .put(
         `/api/users/${loginStore.userVo?.id}/profile/avatar`,
@@ -95,7 +95,6 @@ function saveAvatar(): void {
         throwError(error, "userInfo.avatar.errPrompt", t);
       });
   }, 200);
-  
 }
 </script>
 
