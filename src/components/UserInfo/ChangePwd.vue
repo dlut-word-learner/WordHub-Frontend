@@ -81,8 +81,8 @@ function savePasswd(): void {
   }
 
   axios
-    .post(`/api/users/${loginStore.userVo?.id}/password`, passwdHash.new, {
-      headers: { "Content-Type": "application/json" },
+    .put(`/api/users/${loginStore.userVo?.id}/profile/password`, passwdHash.new, {
+      headers: { "Content-Type": "text/plain" },
     })
     .then(() => {
       ElMessage.success(t("userinfo.changePwd.successPrompt"));

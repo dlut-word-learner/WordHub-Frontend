@@ -80,7 +80,7 @@ function saveAvatar(): void {
   });
 
   axios
-    .post(
+    .put(
       `/api/users/${loginStore.userVo?.id}/profile/avatar`,
       newAvatar.value,
       {
