@@ -1,11 +1,11 @@
-name: pnpm build
+name: pnpm
 on:
   push:
     branches:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,3 +19,6 @@ jobs:
           npm install -g pnpm
           pnpm install
           pnpm build
+
+      - name: Test
+        run: pnpm test
