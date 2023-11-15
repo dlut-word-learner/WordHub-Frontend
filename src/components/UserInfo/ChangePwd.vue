@@ -89,11 +89,11 @@ function savePasswd(): void {
       },
     )
     .then(() => {
-      ElMessage.success(t("userinfo.changePwd.successPrompt"));
+      ElMessage.success(t("userInfo.changePwd.successPrompt"));
       logout();
     })
     .catch((error) => {
-      throwError(error, "userinfo.changePwd.errorPrompt", t);
+      throwError(error, "userInfo.changePwd.errorPrompt", t);
     });
 }
 </script>

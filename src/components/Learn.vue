@@ -20,7 +20,7 @@
               size="large"
               type="primary"
               @click="showAns"
-              v-else-if="words &&isAnsButtonShown"
+              v-else-if="words && isAnsButtonShown"
             >
               {{ $t("learn.showAns") }}
             </el-button>

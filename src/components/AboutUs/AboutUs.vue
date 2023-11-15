@@ -42,7 +42,7 @@ import image from "../AboutUs/donateus.jpg";
   transition: scale 0.5s ease;
 }
 
-html.dark .a{
+html.dark .a {
   background-color: #337ecc;
 }
 .b {
@@ -54,8 +54,8 @@ html.dark .a{
   transition: 1s;
   color: #fff;
 }
-html.dark .b{
-  color: #E5EAF3;
+html.dark .b {
+  color: #e5eaf3;
 }
 
 .b a {

@@ -27,7 +27,7 @@ describe("Japanese spell check: なん", () => {
       },
     });
 
-    await wrapper.setProps({...wrapper.props, userInput: "nan" });
+    await wrapper.setProps({ ...wrapper.props, userInput: "nan" });
     expect(wrapper.emitted("done")).toBeTruthy();
   });
   it('should not emit "done" when input "na"', async () => {
@@ -38,7 +38,7 @@ describe("Japanese spell check: なん", () => {
         userInput: "n",
       },
     });
-    await wrapper.setProps({...wrapper.props, userInput: "na" });
+    await wrapper.setProps({ ...wrapper.props, userInput: "na" });
     expect(wrapper.emitted("done")).toBeFalsy();
   });
 });
@@ -52,7 +52,7 @@ describe("Japanese spell check: なな", () => {
         userInput: "nan",
       },
     });
-    await wrapper.setProps({...wrapper.props, userInput: "nana" });
+    await wrapper.setProps({ ...wrapper.props, userInput: "nana" });
     expect(wrapper.emitted("done")).toBeTruthy();
   });
   it('should not emit "done" when input "nan"', async () => {
@@ -63,7 +63,7 @@ describe("Japanese spell check: なな", () => {
         userInput: "na",
       },
     });
-    await wrapper.setProps({...wrapper.props, userInput: "nan" });
+    await wrapper.setProps({ ...wrapper.props, userInput: "nan" });
     expect(wrapper.emitted("done")).toBeFalsy();
   });
 });

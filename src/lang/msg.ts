@@ -200,7 +200,7 @@ export const messages = {
     },
     aboutUs: {
       description: "单词学习一站式解决方案",
-    }
+    },
   },
   en: {
     badRequest: "bad request",
@@ -409,7 +409,7 @@ export const messages = {
     },
     aboutUs: {
       description: "A word learning resolution",
-    }
+    },
   },
   ja: {
     badRequest: "リクエストは無効です",
@@ -614,6 +614,6 @@ export const messages = {
     },
     aboutUs: {
       description: "単語学習の解決策",
-    }
+    },
   },
 };
