@@ -392,19 +392,24 @@ function handleResize() {
 
 onMounted(async () => {
   // initChart();
-  await fetchData();
-  // console.log("barChartData: ", barChartData);
-  // console.log("heatmapData: ", heatmapData);
-  // console.log("progressData: ", progressData);
-  await nextTick(() => {
-    console.log("initializing echarts...");
-    for (const task of tasks) {
-      initBarChart(task);
-    }
-    initHeatMap();
-    initProgress();
-  });
-  window.addEventListener("resize", handleResize);
+  try {
+    await fetchData();
+
+    // console.log("barChartData: ", barChartData);
+    // console.log("heatmapData: ", heatmapData);
+    // console.log("progressData: ", progressData);
+    await nextTick(() => {
+      console.log("initializing echarts...");
+      for (const task of tasks) {
+        initBarChart(task);
+      }
+      initHeatMap();
+      initProgress();
+    });
+    window.addEventListener("resize", handleResize);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 onUnmounted(() => {
@@ -413,61 +418,101 @@ onUnmounted(() => {
 });
 
 // 通过ref获取信息的示例
-const fetchData = async () => {
-  // 从后端API获取数据
-  try {
-    // 分别获取学习、复习、qwerty三个柱状图的数据
-    for (const task of tasks) {
-      barChartData[task] = concatDate(
-        (await axios.get(`/api/users/1/study-rec/${Task[task]}`))
-          .data as number[],
-      );
-    }
+// const fetchData = async () => {
+//   // 从后端API获取数据
+//   try {
+//     // 分别获取学习、复习、qwerty三个柱状图的数据
+//     for (const task of tasks) {
+//       barChartData[task] = concatDate(
+//         (await axios.get(`/api/users/1/study-rec/${Task[task]}`))
+//           .data as number[],
+//       );
+//     }
 
-    // 获取热力图数据
-    let heatmapData1 = (
-      await axios.get(
+//     // 获取热力图数据
+//     let heatmapData1 = (
+//       await axios.get(
+//         `/api/users/${loginStore.userVo?.id}/study-rec?duration=${heatmapDuration}`,
+//       )
+//     ).data;
+//     heatmapData = concatDate(heatmapData1);
+
+//     // 没有最近单词，则生成假数据
+//     if (dictsToGenerateProgress.length == 0) {
+//       dictsToGenerateProgress.push({
+//         id: -1,
+//         language: "English",
+//         name: "3500 (For Test)",
+//       });
+//       dictsToGenerateProgress.push({
+//         id: -2,
+//         language: "Japanese",
+//         name: "N3 (For Test)",
+//       });
+//       dictsToGenerateProgress.push({
+//         id: -3,
+//         language: "English",
+//         name: "CET-4 (For Test)",
+//       });
+//       dictsToGenerateProgress.push({
+//         id: -4,
+//         language: "English",
+//         name: "CET-6 (For Test)",
+//       });
+//     }
+//     // 对最近词库分别获取进度信息
+//     for (const [index, dict] of dictsToGenerateProgress.entries()) {
+//       const data = (await axios.get(`/api/dicts/${dict.id}/progress`))
+//         .data as progressVo;
+//       progressData.name[index] = dict.name;
+//       progressData.mastered[index] = data.mastered;
+//       progressData.sum[index] = data.sum;
+//       progressData.studied[index] = data.studied;
+//       if (data.sum != 0) showProgress.value = true;
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+// 异步并发获取数据
+const fetchData = async () => {
+  const promises: Promise<any>[] = [];
+
+  // 分别获取学习、复习、qwerty三个柱状图的数据
+  for (const task of tasks) {
+    promises.push(
+      axios.get(`/api/users/1/study-rec/${Task[task]}`).then((res) => {
+        barChartData[task] = concatDate(res.data as number[]);
+      }),
+    );
+  }
+
+  // 获取热力图数据
+  promises.push(
+    axios
+      .get(
         `/api/users/${loginStore.userVo?.id}/study-rec?duration=${heatmapDuration}`,
       )
-    ).data;
-    heatmapData = concatDate(heatmapData1);
+      .then((res) => {
+        heatmapData = concatDate(res.data);
+      }),
+  );
 
-    // 没有最近单词，则生成假数据
-    if (dictsToGenerateProgress.length == 0) {
-      dictsToGenerateProgress.push({
-        id: -1,
-        language: "English",
-        name: "3500 (For Test)",
-      });
-      dictsToGenerateProgress.push({
-        id: -2,
-        language: "Japanese",
-        name: "N3 (For Test)",
-      });
-      dictsToGenerateProgress.push({
-        id: -3,
-        language: "English",
-        name: "CET-4 (For Test)",
-      });
-      dictsToGenerateProgress.push({
-        id: -4,
-        language: "English",
-        name: "CET-6 (For Test)",
-      });
-    }
-    // 对最近词库分别获取进度信息
-    for (const [index, dict] of dictsToGenerateProgress.entries()) {
-      const data = (await axios.get(`/api/dicts/${dict.id}/progress`))
-        .data as progressVo;
-      progressData.name[index] = dict.name;
-      progressData.mastered[index] = data.mastered;
-      progressData.sum[index] = data.sum;
-      progressData.studied[index] = data.studied;
-      if (data.sum != 0) showProgress.value = true;
-    }
-  } catch (error) {
-    console.error(error);
+  // 对最近词库分别获取进度信息
+  for (const [index, dict] of dictsToGenerateProgress.entries()) {
+    promises.push(
+      axios.get(`/api/dicts/${dict.id}/progress`).then((res) => {
+        const data = res.data as progressVo;
+        progressData.name[index] = dict.name;
+        progressData.mastered[index] = data.mastered;
+        progressData.sum[index] = data.sum;
+        progressData.studied[index] = data.studied;
+        if (data.sum != 0) showProgress.value = true;
+      }),
+    );
   }
+  await Promise.all(promises);
 };
 </script>
 
