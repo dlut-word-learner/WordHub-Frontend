@@ -289,6 +289,9 @@ function inputDone(isCorrect: boolean): void {
 function finish(): void {
   isAllFinished.value = true;
   stopwatch.pause();
+  axios.post(`/api/dicts/${props.dictId}/qwerty`, {num: props.num} ).catch((error) => {
+    throwError(error, "learn.errUploadRec", t);
+  });;
 }
 
 function goBack(): void {

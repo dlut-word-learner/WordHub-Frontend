@@ -4,14 +4,14 @@ import { DictVo, WordToReviewVo, WordVo } from "../src/components/Dicts/common";
 
 const dicts: DictVo[] = [
   {
-    id: 1,
+    id: -1,
     language: "English",
-    name: "English Test Dict",
+    name: "English Test Dict (For Test)",
   },
   {
-    id: 2,
+    id: -2,
     language: "Japanese",
-    name: "Japanese Test Dict",
+    name: "Japanese Test Dict (For Test)",
   },
 ].concat(
   Mock.mock({

@@ -531,7 +531,7 @@ const fetchData = async () => {
         progressData.value.mastered[index] = data.mastered;
         progressData.value.sum[index] = data.sum;
         progressData.value.studied[index] = data.studied;
-        if (data.sum == 0) showProgress.value = false;
+        if (dict.name.includes("For Test")) showProgress.value = false;
         progress.hideLoading();
         progress.setOption(getProgressOption());
       }),
