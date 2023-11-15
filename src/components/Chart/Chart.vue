@@ -47,6 +47,7 @@ import { onUnmounted } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { concatDate, progressVo } from "./Chart";
 import axios from "axios";
+import router from "../../router/index";
 
 import * as echarts from "echarts/core";
 import { BarChart, ScatterChart, EffectScatterChart } from "echarts/charts";
@@ -392,6 +393,11 @@ function handleResize() {
 }
 
 onMounted(async () => {
+  if (!loginStore.userVo) {
+    ElMessage.warning(t("dict.loginFirst"));
+    router.push("Login");
+    return;
+  }
   // initChart();
   try {
     await fetchData();
@@ -485,11 +491,13 @@ const fetchData = async () => {
     barCharts[task] = echarts.init(barChartsRef[task]);
     barCharts[task].showLoading(isDark.value ? darkLoading : dayLoading);
     promises.push(
-      axios.get(`/api/users/1/study-rec/${Task[task]}`).then((res) => {
-        barChartData[task] = concatDate(res.data as number[]);
-        barCharts[task].hideLoading();
-        barCharts[task].setOption(getBarChartOption(task));
-      }),
+      axios
+        .get(`/api/users/${loginStore.userVo!.id}/study-rec/${Task[task]}`)
+        .then((res) => {
+          barChartData[task] = concatDate(res.data as number[]);
+          barCharts[task].hideLoading();
+          barCharts[task].setOption(getBarChartOption(task));
+        }),
     );
   }
 
@@ -499,7 +507,9 @@ const fetchData = async () => {
   promises.push(
     axios
       .get(
-        `/api/users/${loginStore.userVo?.id}/study-rec?duration=${heatmapDuration}`,
+        `/api/users/${
+          loginStore.userVo!.id
+        }/study-rec?duration=${heatmapDuration}`,
       )
       .then((res) => {
         heatmapData.value = concatDate(res.data);
@@ -510,7 +520,9 @@ const fetchData = async () => {
 
   // 对最近词库分别获取进度信息
   progress = echarts.init(progressRef.value);
-  progress.showLoading(isDark.value ? darkLoading : dayLoading);
+  if (dictsToGenerateProgress.length)
+    progress.showLoading(isDark.value ? darkLoading : dayLoading);
+  else showProgress.value = false;
   for (const [index, dict] of dictsToGenerateProgress.entries()) {
     promises.push(
       axios.get(`/api/dicts/${dict.id}/progress`).then((res) => {
