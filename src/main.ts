@@ -27,4 +27,4 @@ const style = document.createElement("style");
 style.setAttribute("data-animation", "");
 document.head.appendChild(style);
 
-app.use(pinia).use(router).use(i18n).mount("#app");
+app.use(pinia).use(i18n).use(router).mount("#app");

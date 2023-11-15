@@ -47,7 +47,6 @@ import { onUnmounted } from "vue";
 import { useLoginStore } from "../../store/loginStore";
 import { concatDate, progressVo } from "./Chart";
 import axios from "axios";
-import router from "../../router/index";
 
 import * as echarts from "echarts/core";
 import { BarChart, ScatterChart, EffectScatterChart } from "echarts/charts";
@@ -393,11 +392,6 @@ function handleResize() {
 }
 
 onMounted(async () => {
-  if (!loginStore.userVo) {
-    ElMessage.warning(t("dict.loginFirst"));
-    router.push("Login");
-    return;
-  }
   // initChart();
   try {
     await fetchData();

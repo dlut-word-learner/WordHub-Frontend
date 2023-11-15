@@ -7,6 +7,7 @@ export const messages = {
     internalErr: "服务器内部错误",
     unknownErr: "未知错误",
     chkNet: "请检查网络是否正常",
+    loginFirst: "请先登录",
     app: {
       login: "登录",
       logout: "退出登录",
@@ -69,7 +70,6 @@ export const messages = {
       currTaskPrompt: "有学习任务正在进行，您想要如何处理？",
       continueCurrTask: "继续之前的学习任务",
       startNewTask: "开始新的学习任务",
-      loginFirst: "请先登录",
       numToReview: "待复习",
     },
     learn: {
@@ -210,6 +210,7 @@ export const messages = {
     internalErr: "internal server error",
     unknownErr: "unknown error",
     chkNet: "please check your network status",
+    loginFirst: "Please log in first",
     app: {
       login: "Login",
       logout: "Logout",
@@ -273,7 +274,6 @@ export const messages = {
         "There is a learning task in progress. How do you want to handle it?",
       continueCurrTask: "Continue the current task",
       startNewTask: "Start a new task",
-      loginFirst: "Please log in first",
       numToReview: "need to review",
     },
     learn: {
@@ -419,6 +419,7 @@ export const messages = {
     internalErr: "内部サーバーエラー",
     unknownErr: "未知のエラー",
     chkNet: "ネットワークが正常かどうかを確認してください",
+    loginFirst: "まずログインしてください",
     app: {
       login: "ログイン",
       logout: "ログアウト",
@@ -481,7 +482,6 @@ export const messages = {
       currTaskPrompt: "学習タスクが進行中です。どのように処理しますか？",
       continueCurrTask: "前回のタスクを続ける",
       startNewTask: "新しいタスクを始める",
-      loginFirst: "まずログインしてください",
       numToReview: "復習が必要な",
     },
     learn: {
