@@ -15,13 +15,13 @@
     </el-main>
     <el-main>
       <el-row id="secondRow" :gutter="0">
-        <el-col :span="8" id="heatmapCol">
+        <el-col :span="8">
           <div
             id="heatmap"
             :ref="(ele) => (heatmapRef = ele as HTMLElement)"
           ></div>
         </el-col>
-        <el-col :span="16" id="progressCol">
+        <el-col :span="16">
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
             id="progress"
@@ -564,8 +564,10 @@ const fetchData = async () => {
 }
 
 #firstRow {
+  flex: 1;
   align-items: center;
   width: 95vw;
+  height: 45vh;
 }
 
 #secondRow {
