@@ -179,7 +179,7 @@ const initData = async () => {
   excludeCache.value = "";
 
   await axios
-    .get(`/api/dicts/${props.dictId}/learn`, {
+    .get(`/api/dicts/${props.dictId}/qwerty`, {
       params: {
         num: props.num,
       },
