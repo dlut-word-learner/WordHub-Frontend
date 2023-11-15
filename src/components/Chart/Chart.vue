@@ -25,9 +25,9 @@
           <div
             :ref="(ele) => (progressRef = ele as HTMLElement)"
             id="progress"
-            v-if="showProgress"
+            v-show="showProgress"
           ></div>
-          <div v-else style="font-size: larger">
+          <div v-show="!showProgress" style="font-size: larger">
             {{ $t("statistics.noProgressData") }}
           </div>
         </el-col>
@@ -95,12 +95,33 @@ const progressRef = ref<HTMLElement>();
 let heatmap: echarts.ECharts;
 let barCharts = new Map<Task, echarts.ECharts>();
 let progress: echarts.ECharts;
-const showProgress = ref(false);
+const showProgress = ref(true);
+const dayLoading = {
+  text: "loading",
+  color: "#c23531",
+  textColor: "#000",
+  maskColor: "rgba(255, 255, 255, 0.3)",
+  zlevel: 0,
+
+  // 字体大小。从 `v4.8.0` 开始支持。
+  fontSize: 12,
+  // 是否显示旋转动画（spinner）。从 `v4.8.0` 开始支持。
+  showSpinner: true,
+  // 旋转动画（spinner）的半径。从 `v4.8.0` 开始支持。
+  spinnerRadius: 10,
+  // 旋转动画（spinner）的线宽。从 `v4.8.0` 开始支持。
+  lineWidth: 5,
+  fontWeight: "normal",
+  fontStyle: "normal",
+  fontFamily: "sans-serif",
+};
+
+const darkLoading = { ...dayLoading, maskColor: "rgba(0, 0, 0, 0.3)" };
 
 // 声明要从后端API取得的数据
-let barChartData = new Map<Task, [string, number][]>();
+let barChartData = ref<Map<Task, [string, number][]>>(new Map());
 const heatmapDuration = 90;
-let heatmapData: [string, number][] = [];
+let heatmapData = ref<[string, number][]>([]);
 
 interface ProgressModel {
   name: string[];
@@ -110,58 +131,52 @@ interface ProgressModel {
 }
 
 // TODO: Reimplement this with echarts.dataset
-let progressData: ProgressModel = {
+let progressData = ref<ProgressModel>({
   name: [],
   sum: [],
   studied: [],
   mastered: [],
-};
+});
 
-function initBarChart(task: Task): void {
-  if (barChartsRef[task]) {
-    // console.log(task);
-    // console.log(barChartsRef[task]);
-    barCharts[task] = echarts.init(barChartsRef[task]);
-    const option: ECOption = {
-      tooltip: {
-        trigger: "item",
-      },
-      grid: {
-        bottom: 30,
-        top: 30,
-      },
-      xAxis: {
-        type: "category",
-        show: false,
-        // data: barChartData[task].map((x: [string, number])=>{x[0]}), // 获取虚拟数据中的第一个元素作为x轴数据
-      },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: "#83bff6" },
-            { offset: 0.7, color: "#188df0" },
-            { offset: 1, color: "#188df0" },
-          ]),
-          data: barChartData[task].map(([name, value]) => ({
-            name, // 使用日期作为名称
-            value, // 将随机数字符串转换为整数
-          })),
-          type: "bar",
-          showBackground: true,
-          backgroundStyle: {
-            color: "rgba(180, 180, 180, 0.2)",
-          },
-          emphasis: {
-            focus: "series",
-          },
+function getBarChartOption(task: Task): ECOption {
+  return {
+    tooltip: {
+      trigger: "item",
+    },
+    grid: {
+      bottom: 30,
+      top: 30,
+    },
+    xAxis: {
+      type: "category",
+      show: false,
+      // data: barChartData[task].map((x: [string, number])=>{x[0]}), // 获取虚拟数据中的第一个元素作为x轴数据
+    },
+    yAxis: {
+      type: "value",
+    },
+    series: [
+      {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: "#83bff6" },
+          { offset: 0.7, color: "#188df0" },
+          { offset: 1, color: "#188df0" },
+        ]),
+        data: barChartData[task].map(([name, value]) => ({
+          name, // 使用日期作为名称
+          value, // 将随机数字符串转换为整数
+        })),
+        type: "bar",
+        showBackground: true,
+        backgroundStyle: {
+          color: "rgba(180, 180, 180, 0.2)",
         },
-      ],
-    };
-    barCharts[task].setOption(option);
-  }
+        emphasis: {
+          focus: "series",
+        },
+      },
+    ],
+  };
 }
 
 const currentDate = new Date();
@@ -171,215 +186,201 @@ const startOfMonth = new Date(
   1,
 );
 
-function initHeatMap(): void {
-  const maxTick = heatmapData
+function getHeatmapOption(): ECOption {
+  const maxTick = heatmapData.value
     .map(([_, x]) => x)
     .reduce((a, b) => Math.max(a, b));
 
-  if (heatmapRef.value) {
-    // console.log("yes");
-    heatmap = echarts.init(heatmapRef.value);
-
-    const option: ECOption = {
-      tooltip: {
-        trigger: "item",
-      },
-      calendar: [
-        {
-          left: 35,
-          top: 25,
-          right: 35,
-          bottom: 45,
-          cellSize: "auto",
-          range: [
-            echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
-            echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
-          ],
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: isDark.value ? "#79bbff" : "#337ecc",
-              width: 4,
-              type: "solid",
-            },
-          },
-          dayLabel: {
-            color: fontColor.value,
-          },
-          monthLabel: {
-            color: fontColor.value,
-          },
-          yearLabel: {
-            formatter: t("statistics.recentMonths"),
-            position: "bottom",
-            color: fontColor.value,
-            margin: 16,
-            fontSize: 15,
-          },
-          itemStyle: {
-            color: isDark.value ? "#337ecc" : "#c6e2ff",
-            borderWidth: 1,
-            borderColor: isDark.value ? "#79bbff" : "#337ecc",
-          },
-        },
-      ],
-      series: [
-        {
-          name: t("statistics.steps"),
-          type: "scatter",
-          coordinateSystem: "calendar",
-          data: heatmapData,
-          symbolSize: ([_, tick]) => {
-            return (20 * Math.log(tick)) / Math.log(maxTick);
-          },
-          itemStyle: {
-            color: isDark.value ? "#b3e19d" : "#409EFF",
-          },
-        },
-
-        {
-          name: t("statistics.diligentDays"),
-          type: "effectScatter",
-          coordinateSystem: "calendar",
-          data: heatmapData
-            .sort(([_a, a], [_b, b]) => {
-              return b - a;
-            })
-            .slice(0, 6),
-          symbolSize: ([_, tick]) => {
-            return (20 * Math.log(tick)) / Math.log(maxTick);
-          },
-          showEffectOn: "render",
-          rippleEffect: {
-            brushType: "stroke",
-          },
-          itemStyle: {
-            color: isDark.value ? "#eebe77" : "#f4e925",
-            shadowBlur: 10,
-            shadowColor: "#333",
-          },
-          zlevel: 1,
-        },
-      ],
-    };
-    heatmap.setOption(option);
-  }
-}
-
-function initProgress(): void {
-  console.log(progressRef.value);
-  if (progressRef.value) {
-    // dictsToGenerateProgress[index].id;
-
-    progress = echarts.init(progressRef.value);
-    const option: ECOption = {
-      tooltip: {
-        trigger: "axis",
-      },
-      grid: {
-        left: "10",
-        top: "10",
-        right: "0",
-        bottom: "10",
-        containLabel: true,
-      },
-      xAxis: {
-        type: "value",
-        splitLine: { show: true },
-        axisLabel: {
+  return {
+    tooltip: {
+      trigger: "item",
+    },
+    calendar: [
+      {
+        left: 35,
+        top: 25,
+        right: 35,
+        bottom: 45,
+        cellSize: "auto",
+        range: [
+          echarts.time.format(startOfMonth, "{yyyy}-{MM}-{dd}", false),
+          echarts.time.format(currentDate, "{yyyy}-{MM}-{dd}", false),
+        ],
+        splitLine: {
           show: true,
+          lineStyle: {
+            color: isDark.value ? "#79bbff" : "#337ecc",
+            width: 4,
+            type: "solid",
+          },
+        },
+        dayLabel: {
           color: fontColor.value,
         },
+        monthLabel: {
+          color: fontColor.value,
+        },
+        yearLabel: {
+          formatter: t("statistics.recentMonths"),
+          position: "bottom",
+          color: fontColor.value,
+          margin: 16,
+          fontSize: 15,
+        },
+        itemStyle: {
+          color: isDark.value ? "#337ecc" : "#c6e2ff",
+          borderWidth: 1,
+          borderColor: isDark.value ? "#79bbff" : "#337ecc",
+        },
+      },
+    ],
+    series: [
+      {
+        name: t("statistics.steps"),
+        type: "scatter",
+        coordinateSystem: "calendar",
+        data: heatmapData.value,
+        symbolSize: ([_, tick]) => {
+          return (20 * Math.log(tick)) / Math.log(maxTick);
+        },
+        itemStyle: {
+          color: isDark.value ? "#b3e19d" : "#409EFF",
+        },
+      },
+
+      {
+        name: t("statistics.diligentDays"),
+        type: "effectScatter",
+        coordinateSystem: "calendar",
+        data: heatmapData.value
+          .sort(([_a, a], [_b, b]) => {
+            return b - a;
+          })
+          .slice(0, 6),
+        symbolSize: ([_, tick]) => {
+          return (20 * Math.log(tick)) / Math.log(maxTick);
+        },
+        showEffectOn: "render",
+        rippleEffect: {
+          brushType: "stroke",
+        },
+        itemStyle: {
+          color: isDark.value ? "#eebe77" : "#f4e925",
+          shadowBlur: 10,
+          shadowColor: "#333",
+        },
+        zlevel: 1,
+      },
+    ],
+  };
+}
+
+function getProgressOption(): ECOption {
+  return {
+    tooltip: {
+      trigger: "axis",
+    },
+    grid: {
+      left: "10",
+      top: "10",
+      right: "0",
+      bottom: "10",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "value",
+      splitLine: { show: true },
+      axisLabel: {
+        show: true,
+        color: fontColor.value,
+      },
+      axisTick: { show: false },
+      axisLine: { show: false },
+    },
+    yAxis: [
+      {
+        type: "category",
         axisTick: { show: false },
         axisLine: { show: false },
+        axisLabel: {
+          color: fontColor.value,
+          fontSize: 14,
+        },
+        data: progressData.value.name,
+        max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
+        inverse: true,
       },
-      yAxis: [
-        {
-          type: "category",
-          axisTick: { show: false },
-          axisLine: { show: false },
-          axisLabel: {
-            color: fontColor.value,
-            fontSize: 14,
-          },
-          data: progressData.name,
-          max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
-          inverse: true,
+      {
+        type: "category",
+        axisTick: { show: false },
+        axisLine: { show: false },
+        axisLabel: {
+          color: fontColor.value,
+          fontSize: 14,
         },
-        {
-          type: "category",
-          axisTick: { show: false },
-          axisLine: { show: false },
-          axisLabel: {
-            color: fontColor.value,
-            fontSize: 14,
-          },
-          data: progressData.sum,
-          max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
-          inverse: true,
+        data: progressData.value.sum,
+        max: 4, // 关键：设置y刻度最大值，相当于设置总体行高
+        inverse: true,
+      },
+    ],
+    series: [
+      {
+        name: t("statistics.studied"),
+        type: "bar",
+        barWidth: 19,
+        data: progressData.value.studied,
+        barCategoryGap: 20,
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            {
+              offset: 0,
+              color: "#22b6ed",
+            },
+            {
+              offset: 1,
+              color: "#3fE279",
+            },
+          ]),
+          borderRadius: 10,
         },
-      ],
-      series: [
-        {
-          name: t("statistics.studied"),
-          type: "bar",
-          barWidth: 19,
-          data: progressData.studied,
-          barCategoryGap: 20,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-              {
-                offset: 0,
-                color: "#22b6ed",
-              },
-              {
-                offset: 1,
-                color: "#3fE279",
-              },
-            ]),
-            borderRadius: 10,
-          },
-          zlevel: 2,
+        zlevel: 2,
+      },
+      {
+        name: t("statistics.mastered"),
+        type: "bar",
+        barWidth: 19,
+        data: progressData.value.mastered,
+        barCategoryGap: 20,
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            {
+              offset: 0,
+              color: "#f89898",
+            },
+            {
+              offset: 1,
+              color: "#eebe77",
+            },
+          ]),
+          borderRadius: 10,
         },
-        {
-          name: t("statistics.mastered"),
-          type: "bar",
-          barWidth: 19,
-          data: progressData.mastered,
-          barCategoryGap: 20,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-              {
-                offset: 0,
-                color: "#f89898",
-              },
-              {
-                offset: 1,
-                color: "#eebe77",
-              },
-            ]),
-            borderRadius: 10,
-          },
-          zlevel: 3,
+        zlevel: 3,
+      },
+      {
+        name: t("statistics.totalWords"),
+        type: "bar",
+        barGap: "-100%",
+        barWidth: 19,
+        data: progressData.value.sum,
+        color: isDark.value ? "#2e5384" : "#dedfe0",
+        itemStyle: {
+          borderRadius: 10,
+          opacity: 0.45,
         },
-        {
-          name: t("statistics.totalWords"),
-          type: "bar",
-          barGap: "-100%",
-          barWidth: 19,
-          data: progressData.sum,
-          color: isDark.value ? "#2e5384" : "#dedfe0",
-          itemStyle: {
-            borderRadius: 10,
-            opacity: 0.45,
-          },
-          zlevel: 1,
-        },
-      ],
-    };
-
-    progress.setOption(option);
-  }
+        zlevel: 1,
+      },
+    ],
+  };
 }
 
 function handleResize() {
@@ -398,14 +399,14 @@ onMounted(async () => {
     // console.log("barChartData: ", barChartData);
     // console.log("heatmapData: ", heatmapData);
     // console.log("progressData: ", progressData);
-    await nextTick(() => {
-      console.log("initializing echarts...");
-      for (const task of tasks) {
-        initBarChart(task);
-      }
-      initHeatMap();
-      initProgress();
-    });
+    // await nextTick(() => {
+    //   console.log("initializing echarts...");
+    //   for (const task of tasks) {
+    //     initBarChart(task);
+    //   }
+    //   initHeatMap();
+    //   initProgress();
+    // });
     window.addEventListener("resize", handleResize);
   } catch (error) {
     console.error(error);
@@ -481,34 +482,46 @@ const fetchData = async () => {
 
   // 分别获取学习、复习、qwerty三个柱状图的数据
   for (const task of tasks) {
+    barCharts[task] = echarts.init(barChartsRef[task]);
+    barCharts[task].showLoading(isDark.value ? darkLoading : dayLoading);
     promises.push(
       axios.get(`/api/users/1/study-rec/${Task[task]}`).then((res) => {
         barChartData[task] = concatDate(res.data as number[]);
+        barCharts[task].hideLoading();
+        barCharts[task].setOption(getBarChartOption(task));
       }),
     );
   }
 
   // 获取热力图数据
+  heatmap = echarts.init(heatmapRef.value);
+  heatmap.showLoading(isDark.value ? darkLoading : dayLoading);
   promises.push(
     axios
       .get(
         `/api/users/${loginStore.userVo?.id}/study-rec?duration=${heatmapDuration}`,
       )
       .then((res) => {
-        heatmapData = concatDate(res.data);
+        heatmapData.value = concatDate(res.data);
+        heatmap.hideLoading();
+        heatmap.setOption(getHeatmapOption());
       }),
   );
 
   // 对最近词库分别获取进度信息
+  progress = echarts.init(progressRef.value);
+  progress.showLoading(isDark.value ? darkLoading : dayLoading);
   for (const [index, dict] of dictsToGenerateProgress.entries()) {
     promises.push(
       axios.get(`/api/dicts/${dict.id}/progress`).then((res) => {
         const data = res.data as progressVo;
-        progressData.name[index] = dict.name;
-        progressData.mastered[index] = data.mastered;
-        progressData.sum[index] = data.sum;
-        progressData.studied[index] = data.studied;
-        if (data.sum != 0) showProgress.value = true;
+        progressData.value.name[index] = dict.name;
+        progressData.value.mastered[index] = data.mastered;
+        progressData.value.sum[index] = data.sum;
+        progressData.value.studied[index] = data.studied;
+        if (data.sum == 0) showProgress.value = false;
+        progress.hideLoading();
+        progress.setOption(getProgressOption());
       }),
     );
   }
