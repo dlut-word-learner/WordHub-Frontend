@@ -16,5 +16,6 @@ jobs:
       - name: Build
         run: |
           sudo apt update && sudo apt install npm
-          npm install
-          npm run build
+          npm install -g pnpm
+          pnpm install
+          pnpm build
