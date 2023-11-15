@@ -497,6 +497,9 @@ const fetchData = async () => {
           barChartData[task] = concatDate(res.data as number[]);
           barCharts[task].hideLoading();
           barCharts[task].setOption(getBarChartOption(task));
+        })
+        .catch(() => {
+          barCharts[task].hideLoading();
         }),
     );
   }
@@ -515,6 +518,9 @@ const fetchData = async () => {
         heatmapData.value = concatDate(res.data);
         heatmap.hideLoading();
         heatmap.setOption(getHeatmapOption());
+      })
+      .catch(() => {
+        heatmap.hideLoading();
       }),
   );
 
@@ -525,16 +531,21 @@ const fetchData = async () => {
   else showProgress.value = false;
   for (const [index, dict] of dictsToGenerateProgress.entries()) {
     promises.push(
-      axios.get(`/api/dicts/${dict.id}/progress`).then((res) => {
-        const data = res.data as progressVo;
-        progressData.value.name[index] = dict.name;
-        progressData.value.mastered[index] = data.mastered;
-        progressData.value.sum[index] = data.sum;
-        progressData.value.studied[index] = data.studied;
-        if (dict.name.includes("For Test")) showProgress.value = false;
-        progress.hideLoading();
-        progress.setOption(getProgressOption());
-      }),
+      axios
+        .get(`/api/dicts/${dict.id}/progress`)
+        .then((res) => {
+          const data = res.data as progressVo;
+          progressData.value.name[index] = dict.name;
+          progressData.value.mastered[index] = data.mastered;
+          progressData.value.sum[index] = data.sum;
+          progressData.value.studied[index] = data.studied;
+          if (dict.name.includes("For Test")) showProgress.value = false;
+          progress.hideLoading();
+          progress.setOption(getProgressOption());
+        })
+        .catch(() => {
+          progress.hideLoading();
+        }),
     );
   }
   await Promise.all(promises);
