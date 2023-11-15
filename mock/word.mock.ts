@@ -1,4 +1,5 @@
 import { defineMock } from "vite-plugin-mock-dev-server";
+import { WordReviewPeekVo } from "../src/components/Dicts/common";
 
 export default defineMock([
   {
