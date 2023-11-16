@@ -269,7 +269,7 @@ export default defineMock([
     body: "20",
   },
   {
-    url: "/api/dicts/1/learn",
+    url: "/api/dicts/-1/learn",
     method: "GET",
     status: 200,
     enabled: true,
@@ -279,7 +279,7 @@ export default defineMock([
     },
   },
   {
-    url: "/api/dicts/1/review",
+    url: "/api/dicts/-1/review",
     method: "GET",
     status: 200,
     enabled: true,
@@ -289,7 +289,17 @@ export default defineMock([
     },
   },
   {
-    url: "/api/dicts/2/learn",
+    url: "/api/dicts/-1/qwerty",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: (request) => {
+      return enWordsToReview.slice(0, request.query.num);
+    },
+  },
+  {
+    url: "/api/dicts/-2/learn",
     method: "GET",
     status: 200,
     enabled: true,
@@ -299,7 +309,17 @@ export default defineMock([
     },
   },
   {
-    url: "/api/dicts/2/review",
+    url: "/api/dicts/-2/review",
+    method: "GET",
+    status: 200,
+    enabled: true,
+    type: "json",
+    body: (request) => {
+      return jaWordsToReview.slice(0, request.query.num);
+    },
+  },
+  {
+    url: "/api/dicts/-2/qwerty",
     method: "GET",
     status: 200,
     enabled: true,
