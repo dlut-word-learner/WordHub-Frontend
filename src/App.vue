@@ -38,11 +38,7 @@
             </div>
           </el-menu-item>
         </el-sub-menu>
-        <el-menu-item
-          index="/login"
-          v-if="!userStore.userVo"
-          class="menu-item"
-        >
+        <el-menu-item index="/login" v-if="!userStore.userVo" class="menu-item">
           {{ $t("app.login") }}
         </el-menu-item>
         <el-menu-item index="/dicts" class="menu-item">{{
@@ -94,13 +90,13 @@
 
 <script setup lang="ts">
 import { watch } from "vue";
-import { i18n } from "./main";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "./store/userStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { Task, useTaskStore } from "./store/taskStore";
 import { excludeCache } from "./components/Dicts/common";
 import router from "./router";
+import { i18n } from "./locales";
 
 const { t } = useI18n();
 const userStore = useUserStore();

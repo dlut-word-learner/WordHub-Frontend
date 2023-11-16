@@ -1,11 +1,11 @@
 <template>
   <el-container id="selectDictContainer">
-    <el-aside :width="sideWidth" class="elAside">
+    <el-aside width="auto">
       <el-menu
         @select="onSelectDictsCategory"
         default-active="all"
         :background-color="'rgba(255,255,255,0)'"
-        class="elMenu"
+        id="elMenu"
       >
         <el-menu-item :index="'recentlyUsed'" class="menu-item">
           <div>{{ $t(`dict.recentlyUsed`) }}</div>
@@ -77,7 +77,6 @@
 <script setup lang="ts">
 import { DictVo, excludeCache, Lang, sortWithIntersection } from "./common";
 import { Ref, ref, onMounted, computed } from "vue";
-import { i18n } from "../../main";
 import { useI18n } from "vue-i18n";
 import { useOptionsStore } from "../../store/optionsStore";
 import { Task, useTaskStore } from "../../store/taskStore";
@@ -117,16 +116,16 @@ onMounted(async () => {
   }
 });
 
-const sideWidth = computed(() => {
-  switch (i18n.global.locale.value) {
-    case "zh_cn":
-      return "max(12vh, 6vw)";
-    case "en":
-      return "max(16vh, 10vw)";
-    case "ja":
-      return "max(14vh, 7vw)";
-  }
-});
+// const sideWidth = computed(() => {
+//   switch (i18n.global.locale) {
+//     case "zh-CN":
+//       return "max(12vh, 6vw)";
+//     case "en":
+//       return "max(16vh, 10vw)";
+//     case "ja":
+//       return "max(14vh, 7vw)";
+//   }
+// });
 
 function onSelectDictsCategory(index: string, _indexPath, _routeResult): void {
   currCate.value = index;
@@ -180,7 +179,7 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-  
+
   router.push({
     name: Task[task],
     query: {
@@ -435,5 +434,9 @@ html.dark #footer {
 .dictsMain {
   padding: 10px 50px;
   /* height: 100%; */
+}
+
+#elMenu {
+  padding: 0 20px;
 }
 </style>

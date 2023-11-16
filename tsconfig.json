@@ -27,6 +27,6 @@
     /* Volar support*/
     "types": ["element-plus/global"]
   },
-  "include": ["src/**/*.ts", "**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.mock.ts", "mock/assets/*.png", "test/**/*.test.ts", "test/**/*.ts"],
+  "include": ["src/**/*.ts", "**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.mock.ts", "mock/assets/*.png", "test/**/*.test.ts", "test/**/*.ts", "src/locales/lang/*.json"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

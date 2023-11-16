@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { useOptionsStore } from "../store/optionsStore";
-import { languages } from "../lang/list";
+import { languages } from "../locales/index";
 import { isDark } from "../main";
 
 const optionsStore = useOptionsStore();

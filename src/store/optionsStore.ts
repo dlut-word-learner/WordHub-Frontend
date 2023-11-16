@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { i18n } from "../main";
 import { Howler } from "howler";
+import { i18n } from "../locales";
 
 export const useOptionsStore = defineStore(
   "options",
