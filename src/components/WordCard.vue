@@ -12,7 +12,7 @@
             (isMainShown != undefined
               ? isMainShown[1]
               : !optionsStore.isWordHidden) ||
-            checkSpelling(userInput, word.name)
+            checkSpelling(userInput, word.name, props.lang)
           "
         >
           {{ getWordMain(word, lang) }}
@@ -53,7 +53,7 @@ import { useOptionsStore } from "../store/optionsStore";
 import { WordVo, Lang } from "./Dicts/common";
 import { getWordMain, getWordPhone, getHiddenWord } from "./WordCard";
 import { watch } from "vue";
-import { isKana, toKana } from "wanakana";
+import { isKana, toKana, toHiragana, toKatakana } from "wanakana";
 
 const optionsStore = useOptionsStore();
 
@@ -100,7 +100,15 @@ watch(
   },
 );
 
-function checkSpelling(input: string, wordName: string): boolean {
+function checkSpelling(input: string, wordName: string, lang: Lang): boolean {
+  // true if any matches
+  if (
+    lang == Lang.Japanese &&
+    (toHiragana(wordName) == toHiragana(input) ||
+      toKatakana(wordName) == toKatakana(input) ||
+      toKana(wordName) == toKana(input))
+  )
+    return true;
   return input.toLowerCase() === wordName;
 }
 
@@ -114,7 +122,7 @@ function TryToEmitDone(newInput: string): void {
   switch (props.lang) {
     case Lang.English:
       if (newInput.length == wordName.length)
-        emits("done", checkSpelling(newInput, wordName));
+        emits("done", checkSpelling(newInput, wordName, props.lang));
       break;
     case Lang.Japanese:
       /**
@@ -123,14 +131,19 @@ function TryToEmitDone(newInput: string): void {
        */
 
       if (isKana(toKana(newInput))) {
+        // 长度没到也可以先判true，如"maqi"->"machi"。只要不作为判false的依据就行
+        if (checkSpelling(newInput, wordName, props.lang)) {
+          emits("done", true);
+          return ;
+        }
         if (
           ((newInput.slice(-1) != "n" || wordName.slice(-1) == "n") &&
             toKana(newInput).length == toKana(wordName).length) ||
           newInput.length == wordName.length
         )
-          emits("done", checkSpelling(newInput, wordName));
+          emits("done", checkSpelling(newInput, wordName, props.lang));
       } else if (newInput.length == wordName.length)
-        emits("done", checkSpelling(newInput, wordName));
+        emits("done", checkSpelling(newInput, wordName, props.lang));
   }
 }
 </script>
