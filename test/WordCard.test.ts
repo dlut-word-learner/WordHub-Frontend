@@ -1,4 +1,5 @@
-import { expect, describe, it } from "vitest";
+import { createPinia, setActivePinia } from "pinia";
+import { expect, describe, it, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import { Lang } from "../src/components/Dicts/common";
 import WordCardVue from "../src/components/WordCard.vue";
@@ -14,12 +15,15 @@ const testProps = {
       notation: "",
     },
   },
-
   lang: Lang.Japanese,
   userInput: "",
 };
 
 describe("Japanese spell check: なん", () => {
+  beforeEach(()=>{
+    setActivePinia(createPinia());
+  })
+  
   it('should emit "done" when input "nan"', async () => {
     const props = {
       ...testProps,
@@ -52,6 +56,9 @@ describe("Japanese spell check: なん", () => {
 });
 
 describe("Japanese spell check: なな", () => {
+  beforeEach(()=>{
+    setActivePinia(createPinia());
+  })
   it('should emit "done" when input "nana"', async () => {
     const props = {
       ...testProps,
