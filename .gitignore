@@ -27,3 +27,4 @@ dist-ssr
 /mock/*.mjs
 /components.d.ts
 /.VSCodeCounter/*
+/stats.html

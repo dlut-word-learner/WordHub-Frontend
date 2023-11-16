@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import mockDevServerPlugin from 'vite-plugin-mock-dev-server' 
+import { visualizer } from "rollup-plugin-visualizer"
 
 export default defineConfig({
   plugins: [
@@ -19,6 +20,9 @@ export default defineConfig({
     mockDevServerPlugin({
       // exclude: ["mock/**"],
     }),
+    visualizer({
+      filename: "stats.html",
+    })
   ],
   server: {
     proxy: {
