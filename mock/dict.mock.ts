@@ -202,13 +202,43 @@ const jaWords: WordVo[] = [
     },
   },
   {
-    id: 3,
-    name: "himitsu",
+    id: 4,
+    name: "qiketto",
     extension: {
-      meanings: ["n. secret"],
+      meanings: ["n. ticket"],
       ukphone: "",
       usphone: "",
-      notation: "秘密(ひみつ)",
+      notation: "チケット",
+    },
+  },
+  {
+    id: 5,
+    name: "chiketto",
+    extension: {
+      meanings: ["n. ticket"],
+      ukphone: "",
+      usphone: "",
+      notation: "チケット",
+    },
+  },
+  {
+    id: 6,
+    name: "gurafu",
+    extension: {
+      meanings: ["n. graph"],
+      ukphone: "",
+      usphone: "",
+      notation: "グラフ",
+    },
+  },
+  {
+    id: 7,
+    name: "gurahu",
+    extension: {
+      meanings: ["n. graph"],
+      ukphone: "",
+      usphone: "",
+      notation: "グラフ",
     },
   },
 ];
