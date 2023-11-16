@@ -1,4 +1,5 @@
 import { HttpStatusCode } from "axios";
+import router from "../router";
 
 /**
  * @param error - the error caught from axios
@@ -19,6 +20,7 @@ export function throwError(error: any, prompt: string, t: any): void {
         break;
       case HttpStatusCode.Unauthorized:
         ElMessage.error(t(prompt, { err: t("unauthorized") }));
+        router.push("Login");
         break;
       case HttpStatusCode.Forbidden:
         ElMessage.error(t(prompt, { err: t("forbidden") }));
