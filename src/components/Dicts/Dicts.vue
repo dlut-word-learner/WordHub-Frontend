@@ -140,6 +140,7 @@ function tryTask(dict: DictVo, task: Task): void {
       taskStore.url.includes(dict.id.toString())
     ) {
       continueCurrTask();
+      ElMessage.info(t("dict.continueCurrTask"));
       return;
     }
     ElMessageBox.confirm(t("dict.currTaskPrompt"), t("dict.prompt"), {
@@ -165,6 +166,7 @@ function continueCurrTask(): void {
 
 function startNewTask(dict: DictVo, task: Task): void {
   excludeCache.value = Task[taskStore.type];
+  taskStore.type = Task.None;
   const wordsPerRound = ref(0);
   switch (task) {
     case Task.Learn:
@@ -177,18 +179,7 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-  if (historyStore.isRecentlyUsed(dict)) {
-    historyStore.recentlyUsedDicts = historyStore.recentlyUsedDicts.filter(
-      (x) => {
-        return !(
-          dict.name == x.name &&
-          dict.id == x.id &&
-          dict.language == x.language
-        );
-      },
-    );
-  }
-  historyStore.recentlyUsedDicts.unshift(dict);
+  historyStore.unShiftRecentlyUsed(dict);
   router.push({
     name: Task[task],
     query: {
