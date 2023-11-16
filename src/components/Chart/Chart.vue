@@ -76,7 +76,7 @@ echarts.use([
 
 const { t } = useI18n();
 
-const progressNum = 3;
+const progressNum = 5;
 const historyStore = useHistoryStore();
 const userStore = useUserStore();
 const dictsToGenerateProgress: DictVo[] = historyStore.recentlyUsedDicts.slice(

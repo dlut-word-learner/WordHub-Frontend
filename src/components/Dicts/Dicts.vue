@@ -102,6 +102,7 @@ onMounted(async () => {
   try {
     const { data: dictsData } = await axios.get("/api/dicts");
     dicts.value = dictsData;
+    historyStore.updateRecentlyUsedDicts();
     const promises = dicts.value.map(async (dict) => {
       const { data: reviewNum } = await axios.get(
         `/api/dicts/${dict.id}/review/num`,
@@ -179,7 +180,7 @@ function startNewTask(dict: DictVo, task: Task): void {
       wordsPerRound.value = optionsStore.qwertyWordsPerRound;
       break;
   }
-  historyStore.unShiftRecentlyUsed(dict);
+  
   router.push({
     name: Task[task],
     query: {
