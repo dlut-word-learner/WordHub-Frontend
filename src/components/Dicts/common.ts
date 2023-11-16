@@ -37,15 +37,13 @@ export enum Rating {
 
 export const excludeCache = ref("");
 
+// 先展示reference(与dicts的交集，确保词库有效)，再展示dicts中除reference的
 export function sortWithIntersection(
-  a: DictVo[],
+  dicts: DictVo[],
   reference: DictVo[],
 ): DictVo[] {
-  const intersection = a.filter((elem) => includesDict(reference, elem));
-  const rest = a.filter((elem) => !includesDict(reference, elem));
-  intersection.sort((elem1, elem2) => {
-    return reference.indexOf(elem1) - reference.indexOf(elem2);
-  });
+  const intersection = reference.filter((elem) => includesDict(dicts, elem)) ;
+  const rest = dicts.filter((elem) => !includesDict(reference, elem));
 
   return intersection.concat(rest);
 }
