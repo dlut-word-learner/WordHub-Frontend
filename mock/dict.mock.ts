@@ -202,17 +202,8 @@ const jaWords: WordVo[] = [
     },
   },
   {
-    id: 4,
-    name: "qiketto",
-    extension: {
-      meanings: ["n. ticket"],
-      ukphone: "",
-      usphone: "",
-      notation: "チケット",
-    },
-  },
-  {
     id: 5,
+    // qiketto now can pass, too
     name: "chiketto",
     extension: {
       meanings: ["n. ticket"],
@@ -223,17 +214,8 @@ const jaWords: WordVo[] = [
   },
   {
     id: 6,
+    // gurahu now can pass, too
     name: "gurafu",
-    extension: {
-      meanings: ["n. graph"],
-      ukphone: "",
-      usphone: "",
-      notation: "グラフ",
-    },
-  },
-  {
-    id: 7,
-    name: "gurahu",
     extension: {
       meanings: ["n. graph"],
       ukphone: "",
