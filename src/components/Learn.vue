@@ -76,8 +76,8 @@
                   isCurrWord(index)
                     ? userInput
                     : index > currWordIndex
-                    ? ''
-                    : undefined
+                      ? ''
+                      : undefined
                 "
                 @done="inputDone"
               />

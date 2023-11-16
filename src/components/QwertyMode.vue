@@ -64,8 +64,8 @@
                   isCurrWord(index)
                     ? userInput
                     : index > currWordIndex
-                    ? ''
-                    : undefined
+                      ? ''
+                      : undefined
                 "
                 :sound="isCurrWord(index) ? currWordSound : undefined"
                 :lang="lang"

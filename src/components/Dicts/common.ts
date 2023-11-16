@@ -42,7 +42,7 @@ export function sortWithIntersection(
   dicts: DictVo[],
   reference: DictVo[],
 ): DictVo[] {
-  const intersection = reference.filter((elem) => includesDict(dicts, elem)) ;
+  const intersection = reference.filter((elem) => includesDict(dicts, elem));
   const rest = dicts.filter((elem) => !includesDict(reference, elem));
 
   return intersection.concat(rest);

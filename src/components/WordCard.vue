@@ -134,7 +134,7 @@ function TryToEmitDone(newInput: string): void {
         // 长度没到也可以先判true，如"maqi"->"machi"。只要不作为判false的依据就行
         if (checkSpelling(newInput, wordName, props.lang)) {
           emits("done", true);
-          return ;
+          return;
         }
         if (
           ((newInput.slice(-1) != "n" || wordName.slice(-1) == "n") &&
