@@ -64,8 +64,8 @@
                   isCurrWord(index)
                     ? userInput
                     : index > currWordIndex
-                      ? ''
-                      : undefined
+                    ? ''
+                    : undefined
                 "
                 :sound="isCurrWord(index) ? currWordSound : undefined"
                 :lang="lang"
@@ -175,6 +175,11 @@ const currWordSound = computed(() => {
   }
 });
 
+function clear(): void {
+  excludeCache.value = Task[taskStore.type];
+  taskStore.type = Task.None;
+}
+
 const initData = async () => {
   excludeCache.value = "";
 
@@ -196,6 +201,7 @@ const initData = async () => {
     })
     .catch((error) => {
       throwError(error, "qwerty.errGetWords", t);
+      clear();
       router.back();
     });
 };
@@ -297,8 +303,7 @@ function finish(): void {
 }
 
 function goBack(): void {
-  excludeCache.value = Task[taskStore.type];
-  taskStore.type = Task.None;
+  clear();
   router.push("/dicts");
 }
 </script>
