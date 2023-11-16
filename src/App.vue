@@ -118,6 +118,7 @@ function logout(): void {
         loginStore.password = "";
         loginStore.avatar = "";
         localStorage.removeItem("satoken");
+        excludeCache.value = Task[taskStore.type];
         taskStore.type = Task.None;
         router.push("/");
       }

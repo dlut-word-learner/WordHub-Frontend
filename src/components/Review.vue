@@ -239,7 +239,7 @@ const currWordSound = computed(() => {
 });
 
 function clear(): void {
-  excludeCache.value = Task[taskStore.type];
+  excludeCache.value = Task[Task.Review];
   taskStore.type = Task.None;
 }
 

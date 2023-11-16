@@ -203,7 +203,7 @@ const currWordSound = computed(() => {
 });
 
 function clear(): void {
-  excludeCache.value = Task[taskStore.type];
+  excludeCache.value = Task[Task.Learn];
   taskStore.type = Task.None;
 }
 

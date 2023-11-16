@@ -176,7 +176,7 @@ const currWordSound = computed(() => {
 });
 
 function clear(): void {
-  excludeCache.value = Task[taskStore.type];
+  excludeCache.value = Task[Task.QwertyMode];
   taskStore.type = Task.None;
 }
 
