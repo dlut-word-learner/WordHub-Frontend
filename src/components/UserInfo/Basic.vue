@@ -2,21 +2,21 @@
   <div>
     <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.basic.id')">
-        <div>{{ loginStore.userVo?.id }}</div>
+        <div>{{ userStore.userVo?.id }}</div>
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.username')">
         <el-input v-model="form.username" />
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.role')">
         <div>
-          {{ loginStore.userVo ? userRole[loginStore.userVo.role] : "" }}
+          {{ userStore.userVo ? userRole[userStore.userVo.role] : "" }}
         </div>
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.email')">
         <el-input type="email" v-model="form.email" />
       </el-form-item>
       <el-form-item :label="$t('userInfo.basic.score')">
-        <div>{{ loginStore.userVo?.score }}</div>
+        <div>{{ userStore.userVo?.score }}</div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="saveUserInfo">
@@ -29,13 +29,13 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useLoginStore } from "../../store/loginStore";
+import { useUserStore } from "../../store/userStore";
 import { useI18n } from "vue-i18n";
 import { throwError } from "../Error";
 import { logout } from "./common";
 import axios from "axios";
 
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 const { t } = useI18n();
 const userRole = [t("userInfo.basic.normalUser"), t("userInfo.basic.admin")];
 
@@ -45,17 +45,17 @@ const form = reactive({
 });
 
 axios
-  .get(`/api/users/${loginStore.userVo?.id}/profile`)
+  .get(`/api/users/${userStore.userVo?.id}/profile`)
   .then((response) => {
-    loginStore.userVo = response.data;
+    userStore.userVo = response.data;
   })
   .catch((error) => {
     throwError(error, "userInfo.basic.errGetInfo", t);
   });
 
-if (loginStore.userVo) {
-  form.username = loginStore.userVo.username;
-  form.email = loginStore.userVo.email;
+if (userStore.userVo) {
+  form.username = userStore.userVo.username;
+  form.email = userStore.userVo.email;
 }
 
 function saveUserInfo(): void {
@@ -64,7 +64,7 @@ function saveUserInfo(): void {
     return;
   }
   axios
-    .put(`/api/users/${loginStore.userVo?.id}/profile`, form, {
+    .put(`/api/users/${userStore.userVo?.id}/profile`, form, {
       headers: { "Content-Type": "application/json" },
     })
     .then(() => {

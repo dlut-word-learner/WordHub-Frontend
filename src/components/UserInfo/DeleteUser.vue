@@ -2,7 +2,7 @@
   <div>
     <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.delete.username')">
-        <div>{{ loginStore.userVo?.username }}</div>
+        <div>{{ userStore.userVo?.username }}</div>
       </el-form-item>
       <el-form-item :label="$t('userInfo.delete.passwd1')">
         <el-input
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useLoginStore } from "../../store/loginStore";
+import { useUserStore } from "../../store/userStore";
 import { useI18n } from "vue-i18n";
 import { throwError } from "../Error";
 import { logout } from "./common";
@@ -41,7 +41,7 @@ const form = reactive({
   passwd2: "",
 });
 
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 const { t } = useI18n();
 
 function deleteUser(): void {
@@ -56,7 +56,7 @@ function deleteUser(): void {
   }
 
   const hash = sha3(form.passwd1).toString();
-  if (hash != loginStore.password) {
+  if (hash != userStore.password) {
     ElMessage.error(t("userInfo.delete.wrongPwdPrompt"));
     return;
   }
@@ -72,7 +72,7 @@ function deleteUser(): void {
   )
     .then(() => {
       axios
-        .delete(`/api/users/${loginStore.userVo?.id}`)
+        .delete(`/api/users/${userStore.userVo?.id}`)
         .then(() => {
           ElMessage.success(t("userInfo.delete.successPrompt"));
           logout();

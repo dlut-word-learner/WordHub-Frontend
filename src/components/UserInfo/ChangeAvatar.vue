@@ -2,7 +2,7 @@
   <div>
     <el-form label-position="left" label-width="50%" size="large">
       <el-form-item :label="$t('userInfo.avatar.currAvatar')">
-        <el-avatar :size="200" :src="loginStore.avatar" />
+        <el-avatar :size="200" :src="userStore.avatar" />
       </el-form-item>
       <label id="uploadBtn" for="uploads">
         {{ $t("userInfo.avatar.clickUpload") }}
@@ -27,14 +27,14 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { VueCropper } from "vue-cropper";
-import { useLoginStore } from "../../store/loginStore";
+import { useUserStore } from "../../store/userStore";
 import { useI18n } from "vue-i18n";
 import { throwError } from "../Error";
 import { logout } from "./common";
 import axios from "axios";
 import "vue-cropper/dist/index.css";
 
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 const option = reactive({
   img: "",
   size: 0,
@@ -81,7 +81,7 @@ function saveAvatar(): void {
   setTimeout(() => {
     axios
       .put(
-        `/api/users/${loginStore.userVo?.id}/profile/avatar`,
+        `/api/users/${userStore.userVo?.id}/profile/avatar`,
         newAvatar.value,
         {
           headers: { "Content-Type": "image/png" },

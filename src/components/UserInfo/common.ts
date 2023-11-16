@@ -1,12 +1,12 @@
-import { useLoginStore } from "../../store/loginStore";
+import { useUserStore } from "../../store/userStore";
 import router from "../../router";
 
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 
 export function logout(): void {
-  loginStore.userVo = null;
-  loginStore.password = "";
-  loginStore.avatar = "";
+  userStore.userVo = null;
+  userStore.password = "";
+  userStore.avatar = "";
   localStorage.removeItem("satoken");
   router.push("/");
 }

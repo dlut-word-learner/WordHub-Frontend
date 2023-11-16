@@ -7,17 +7,17 @@
         :default-active="$route.fullPath"
         router
       >
-        <el-sub-menu index="/" v-if="loginStore.userVo" class="menu-item">
+        <el-sub-menu index="/" v-if="userStore.userVo" class="menu-item">
           <template #title>
             <el-avatar
               class="avatar"
-              :src="loginStore.avatar ? loginStore.avatar : 'avatar.png'"
-              v-if="loginStore.userVo"
+              :src="userStore.avatar ? userStore.avatar : 'avatar.png'"
+              v-if="userStore.userVo"
             />
             <span class="menu-item">
               {{
-                loginStore.userVo
-                  ? loginStore.userVo?.username
+                userStore.userVo
+                  ? userStore.userVo?.username
                   : $t("app.loggedOut")
               }}
             </span>
@@ -40,7 +40,7 @@
         </el-sub-menu>
         <el-menu-item
           index="/login"
-          v-if="!loginStore.userVo"
+          v-if="!userStore.userVo"
           class="menu-item"
         >
           {{ $t("app.login") }}
@@ -96,14 +96,14 @@
 import { watch } from "vue";
 import { i18n } from "./main";
 import { useI18n } from "vue-i18n";
-import { useLoginStore } from "./store/loginStore";
+import { useUserStore } from "./store/userStore";
 import { useOptionsStore } from "./store/optionsStore";
 import { Task, useTaskStore } from "./store/taskStore";
 import { excludeCache } from "./components/Dicts/common";
 import router from "./router";
 
 const { t } = useI18n();
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 const taskStore = useTaskStore();
 
 function logout(): void {
@@ -114,9 +114,9 @@ function logout(): void {
   })
     .then((data) => {
       if (data == "confirm") {
-        loginStore.userVo = null;
-        loginStore.password = "";
-        loginStore.avatar = "";
+        userStore.userVo = null;
+        userStore.password = "";
+        userStore.avatar = "";
         localStorage.removeItem("satoken");
         excludeCache.value = Task[taskStore.type];
         taskStore.type = Task.None;

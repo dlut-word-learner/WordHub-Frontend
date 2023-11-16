@@ -1,5 +1,5 @@
 import { defineMock } from "vite-plugin-mock-dev-server";
-import { UserVo } from "../src/store/loginStore";
+import { UserVo } from "../src/store/userStore";
 
 export default defineMock([
   {

@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useI18n } from "vue-i18n";
-import { useLoginStore } from "../../store/loginStore";
+import { useUserStore } from "../../store/userStore";
 import { throwError } from "../Error";
 import { logout } from "./common";
 import sha3 from "crypto-js/sha3";
@@ -46,7 +46,7 @@ const form = reactive({
   newPasswd2: "",
 });
 
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 
 const { t } = useI18n();
 
@@ -75,14 +75,14 @@ function savePasswd(): void {
     new: sha3(form.newPasswd1).toString(),
   });
 
-  if (passwdHash.original != loginStore.password) {
+  if (passwdHash.original != userStore.password) {
     ElMessage.error(t("userInfo.pwd.originalPwdPrompt"));
     return;
   }
 
   axios
     .put(
-      `/api/users/${loginStore.userVo?.id}/profile/password`,
+      `/api/users/${userStore.userVo?.id}/profile/password`,
       passwdHash.new,
       {
         headers: { "Content-Type": "text/plain" },

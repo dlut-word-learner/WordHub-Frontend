@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import { useLoginStore } from "../store/loginStore";
+import { useUserStore } from "../store/userStore";
 import { i18n } from "../main";
 
 const routes: Array<RouteRecordRaw> = [
@@ -7,8 +7,8 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "Home",
     redirect: () => {
-      const loginStore = useLoginStore();
-      return loginStore.userVo ? "/dicts" : "/login";
+      const userStore = useUserStore();
+      return userStore.userVo ? "/dicts" : "/login";
     },
     meta: { requiresAuth: false },
   },
@@ -118,7 +118,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
-  if (to.meta.requiresAuth && !useLoginStore().userVo) {
+  if (to.meta.requiresAuth && !useUserStore().userVo) {
     // 如果需要身份验证并且用户未经身份验证，则重定向到登录页面
     ElMessage.warning(i18n.global.t("loginFirst"));
     next("Login");

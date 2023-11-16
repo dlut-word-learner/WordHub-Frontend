@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { UserVo, useLoginStore } from "../store/loginStore";
+import { UserVo, useUserStore } from "../store/userStore";
 import { useI18n } from "vue-i18n";
 import router from "../router";
 import sha3 from "crypto-js/sha3";
@@ -59,7 +59,7 @@ const form = reactive({
   password: "",
 });
 
-const loginStore = useLoginStore();
+const userStore = useUserStore();
 
 function login(): void {
   if (form.username == "" || form.password == "") {
@@ -78,8 +78,8 @@ function login(): void {
     .then((response) => {
       ElMessage.success(t("login.successPrompt"));
       const userVo: UserVo = response.data;
-      loginStore.userVo = userVo;
-      loginStore.password = hash;
+      userStore.userVo = userVo;
+      userStore.password = hash;
       getAvatar();
       router.push("/dicts");
     })
@@ -92,11 +92,11 @@ function login(): void {
 
 function getAvatar(): void {
   axios
-    .get(`/api/users/${loginStore.userVo?.id}/profile/avatar`, {
+    .get(`/api/users/${userStore.userVo?.id}/profile/avatar`, {
       responseType: "blob",
     })
     .then((response) => {
-      loginStore.avatar = window.URL.createObjectURL(response.data);
+      userStore.avatar = window.URL.createObjectURL(response.data);
     })
     .catch((error) => {
       console.log(error);

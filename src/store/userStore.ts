@@ -9,7 +9,7 @@ export interface UserVo {
   readonly role: number; // 0 -> Users; 1 -> Administrators
 }
 
-export const useLoginStore = defineStore(
+export const useUserStore = defineStore(
   "login",
   () => {
     const userVo: Ref<UserVo | null> = ref(null);
