@@ -299,7 +299,7 @@ function finish(): void {
   stopwatch.pause();
   if(userStore.userVo){
     axios
-      .post(`/api/dicts/${props.dictId}/qwerty`, { num: props.num })
+      .post(`/api/dicts/${props.dictId}/qwerty`, { num: props.num - skips.value })
       .catch((error) => {
         throwError(error, "learn.errUploadRec", t);
       });
