@@ -81,6 +81,7 @@ import { useI18n } from "vue-i18n";
 import { useOptionsStore } from "../../store/optionsStore";
 import { Task, useTaskStore } from "../../store/taskStore";
 import { useHistoryStore } from "../../store/historyStore";
+import { useUserStore } from "../../store/userStore";
 import { throwError } from "../Error";
 import axios from "axios";
 import router from "../../router";
@@ -88,6 +89,7 @@ import router from "../../router";
 const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
 const historyStore = useHistoryStore();
+const userStore = useUserStore();
 
 const dicts: Ref<DictVo[]> = ref([]);
 const currCate: Ref<string> = ref("all");
@@ -102,15 +104,17 @@ onMounted(async () => {
     const { data: dictsData } = await axios.get("/api/dicts");
     dicts.value = dictsData;
     historyStore.updateRecentlyUsedDicts();
-    const promises = dicts.value.map(async (dict) => {
-      const { data: reviewNum } = await axios.get(
-        `/api/dicts/${dict.id}/review/num`,
-      );
-      // Typescript set get 才支持异步，[]访问不支持！！！
-      numToReview.value.set(dict.id, reviewNum);
-      // console.log(dict.id, " : ", numToReview.value[dict.id]);
-    });
-    await Promise.all(promises);
+    if(userStore.userVo){
+      const promises = dicts.value.map(async (dict) => {
+        const { data: reviewNum } = await axios.get(
+          `/api/dicts/${dict.id}/review/num`,
+        );
+        // Typescript set get 才支持异步，[]访问不支持！！！
+        numToReview.value.set(dict.id, reviewNum);
+        // console.log(dict.id, " : ", numToReview.value[dict.id]);
+      });
+      await Promise.all(promises);
+    }
   } catch (error) {
     throwError(error, "dict.errGetDicts", t);
   }

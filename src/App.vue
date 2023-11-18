@@ -99,6 +99,7 @@ import router from "./router";
 import { i18n } from "./locales";
 import { onMounted } from "vue";
 import axios from "axios";
+import Cookies from 'js-cookie'
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -112,10 +113,8 @@ function logout(): void {
   })
     .then((data) => {
       if (data == "confirm") {
-        userStore.userVo = null;
-        userStore.password = "";
-        userStore.avatar = "";
-        localStorage.removeItem("satoken");
+        userStore.logout();
+        Cookies.remove("satoken");
         excludeCache.value = Task[taskStore.type];
         taskStore.type = Task.None;
         router.push("/");

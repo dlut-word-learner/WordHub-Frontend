@@ -10,16 +10,22 @@ export interface UserVo {
 }
 
 export const useUserStore = defineStore(
-  "login",
+  "user",
   () => {
     const userVo: Ref<UserVo | null> = ref(null);
     const password = ref("");
     const avatar = ref("");
+    const logout = ():void =>{
+      userVo.value = null;
+      password.value = "";
+      avatar.value = "";
+    }
 
     return {
       userVo,
       password,
       avatar,
+      logout,
     };
   },
   {
