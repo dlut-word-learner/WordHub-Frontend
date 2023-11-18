@@ -124,12 +124,14 @@ import axios from "axios";
 import router from "../router";
 import "./wordStyle.css";
 import "./animation.css";
+import { useUserStore } from "../store/userStore";
 
 const props = defineProps<{ lang: Lang; dictId: any; num: any }>();
 
 const { t } = useI18n();
 const optionsStore = useOptionsStore();
 const taskStore = useTaskStore();
+const userStore = useUserStore();
 const words = ref<WordVo[]>();
 const currWordIndex = ref(0);
 const visibleWordIndex = ref<number[]>([]);
@@ -295,11 +297,13 @@ function inputDone(isCorrect: boolean): void {
 function finish(): void {
   isAllFinished.value = true;
   stopwatch.pause();
-  axios
-    .post(`/api/dicts/${props.dictId}/qwerty`, { num: props.num })
-    .catch((error) => {
-      throwError(error, "learn.errUploadRec", t);
-    });
+  if(userStore.userVo){
+    axios
+      .post(`/api/dicts/${props.dictId}/qwerty`, { num: props.num })
+      .catch((error) => {
+        throwError(error, "learn.errUploadRec", t);
+      });
+  }
 }
 
 function goBack(): void {
