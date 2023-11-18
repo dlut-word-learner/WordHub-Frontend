@@ -97,6 +97,8 @@ import { Task, useTaskStore } from "./store/taskStore";
 import { excludeCache } from "./components/Dicts/common";
 import router from "./router";
 import { i18n } from "./locales";
+import { onMounted } from "vue";
+import axios from "axios";
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -132,6 +134,21 @@ watch(
   },
   { immediate: true },
 );
+
+onMounted(()=>{
+  if(userStore.userVo){
+    axios
+    .get(`/api/users/${userStore.userVo.id}/profile/avatar`, {
+      responseType: "blob",
+    })
+    .then((response) => {
+      userStore.avatar = window.URL.createObjectURL(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+})
 </script>
 
 <style scoped>

@@ -23,6 +23,8 @@ export const useUserStore = defineStore(
     };
   },
   {
-    persist: true,
+    persist: {
+      paths: ['userVo', 'password'],
+    }
   },
 );
