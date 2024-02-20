@@ -33,4 +33,4 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ![](screenshots/screenshot3.png)
 
 ## License
-Licensed under the [GNU Affero General Public License, version 3 or any later version](LICENSE).
+Licensed under the [GNU Affero General Public License, version 3 or any later version](LICENSES/AGPL-3.0-or-later.txt).
