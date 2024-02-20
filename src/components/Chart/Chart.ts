@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 WordHub Organization <integral@member.fsf.org>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 /**
  * 返回从过去numDays天到今天每天日期字符串数组
  * @param numDays 倒推多少天

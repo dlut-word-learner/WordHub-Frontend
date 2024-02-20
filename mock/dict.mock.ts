@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 WordHub Organization <integral@member.fsf.org>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import Mock from "mockjs";
 import { defineMock } from "vite-plugin-mock-dev-server";
 import { DictVo, WordToReviewVo, WordVo } from "../src/components/Dicts/common";

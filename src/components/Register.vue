@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2024 WordHub Organization <integral@member.fsf.org>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 <template>
   <div id="body">
     <img alt="WordHub" src="/wordhub.png" width="100" height="100" />

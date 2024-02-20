@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 WordHub Organization <integral@member.fsf.org>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // chart.mock.ts
 import { defineMock } from "vite-plugin-mock-dev-server";
 import { Task } from "../src/store/taskStore";
