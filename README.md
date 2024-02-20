@@ -20,5 +20,11 @@
 
 ## Screenshots
 
+![](screenshots/screenshot1.png)
+
+![](screenshots/screenshot2.png)
+
+![](screenshots/screenshot3.png)
+
 ## License
 Licensed under the [GNU Affero General Public License, version 3 or any later version](LICENSE).
